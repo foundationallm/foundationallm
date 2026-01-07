@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Core API Reference | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Core API Reference | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/apis-sdks/apis/core-api/api-reference.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="core-api-reference">Core API Reference</h1>
+
+<p>Complete endpoint reference for the FoundationaLLM Core API, designed for developers integrating FoundationaLLM into applications.</p>
+<h2 id="developer-overview">Developer Overview</h2>
+<p>The Core API is the primary interface for building applications that interact with FoundationaLLM agents. Use this API to:</p>
+<ul>
+<li><strong>Send prompts to agents</strong> and receive AI-generated responses</li>
+<li><strong>Manage conversations</strong> (sessions) and message history</li>
+<li><strong>Upload files</strong> for agent analysis</li>
+<li><strong>List available agents</strong> the user has access to</li>
+<li><strong>Check service status</strong> and configuration</li>
+</ul>
+<h3 id="common-integration-patterns">Common Integration Patterns</h3>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Use Case</th>
+<th>Key Endpoints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Chatbot Integration</strong></td>
+<td>Embed AI chat in your app</td>
+<td><code>POST /completions</code>, <code>POST /sessions</code></td>
+</tr>
+<tr>
+<td><strong>Batch Processing</strong></td>
+<td>Process many requests</td>
+<td><code>POST /async-completions</code></td>
+</tr>
+<tr>
+<td><strong>Document Analysis</strong></td>
+<td>Analyze uploaded files</td>
+<td><code>POST /files/upload</code>, <code>POST /completions</code></td>
+</tr>
+<tr>
+<td><strong>Custom UI</strong></td>
+<td>Build custom chat interface</td>
+<td>All session and completion endpoints</td>
+</tr>
+</tbody>
+</table>
+<h2 id="base-url">Base URL</h2>
+<pre><code>https://{core-api-url}/instances/{instanceId}
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+<th>Where to Find</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>{core-api-url}</code></td>
+<td>Core API endpoint</td>
+<td>App Config: <code>FoundationaLLM:APIs:CoreAPI:APIUrl</code></td>
+</tr>
+<tr>
+<td><code>{instanceId}</code></td>
+<td>FoundationaLLM instance ID</td>
+<td>App Config: <code>FoundationaLLM:Instance:Id</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="authentication">Authentication</h2>
+<p>All Core API endpoints require authentication. FoundationaLLM supports two authentication methods:</p>
+<h3 id="method-1-entra-id-bearer-token-recommended">Method 1: Entra ID Bearer Token (Recommended)</h3>
+<p>Use Microsoft Entra ID (Azure AD) JWT tokens for authenticated user access. This is the standard approach for applications where users sign in.</p>
+<p><strong>Header:</strong></p>
+<pre><code>Authorization: Bearer &lt;jwt-token&gt;
+</code></pre>
+<p><strong>Getting a token with Azure CLI:</strong></p>
+<pre><code class="lang-bash"># Login to Azure
+az login
+
+# Get token for Core API (replace with your client ID)
+TOKEN=$(az account get-access-token \
+  --resource api://{core-api-client-id} \
+  --query accessToken -o tsv)
+</code></pre>
+<p><strong>Example curl request with Bearer token:</strong></p>
+<pre><code class="lang-bash">curl -X GET &quot;https://{core-api-url}/instances/{instanceId}/completions/agents&quot; \
+  -H &quot;Authorization: Bearer $TOKEN&quot; \
+  -H &quot;Content-Type: application/json&quot;
+</code></pre>
+<h3 id="method-2-agent-access-token">Method 2: Agent Access Token</h3>
+<p>Use Agent Access Tokens for scenarios where Entra ID authentication isn't practical, such as:</p>
+<ul>
+<li>Public-facing applications</li>
+<li>Embedded widgets</li>
+<li>Automated systems without user context</li>
+</ul>
+<p><strong>Header:</strong></p>
+<pre><code>X-AGENT-ACCESS-TOKEN: &lt;agent-token&gt;
+</code></pre>
+<p><strong>Example curl request with Agent Access Token:</strong></p>
+<pre><code class="lang-bash">curl -X POST &quot;https://{core-api-url}/instances/{instanceId}/completions&quot; \
+  -H &quot;X-AGENT-ACCESS-TOKEN: your-agent-access-token-here&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -d '{&quot;user_prompt&quot;: &quot;What can you help me with?&quot;}'
+</code></pre>
+<h3 id="authentication-comparison">Authentication Comparison</h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Entra ID Bearer Token</th>
+<th>Agent Access Token</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>User Identity</strong></td>
+<td>Tracks actual user</td>
+<td>Uses agent's virtual identity</td>
+</tr>
+<tr>
+<td><strong>Setup</strong></td>
+<td>Requires Entra ID app registration</td>
+<td>Created in Management Portal</td>
+</tr>
+<tr>
+<td><strong>Token Lifetime</strong></td>
+<td>Short-lived (typically 1 hour)</td>
+<td>Configurable expiration</td>
+</tr>
+<tr>
+<td><strong>Multi-agent</strong></td>
+<td>Access all permitted agents</td>
+<td>Bound to single agent</td>
+</tr>
+<tr>
+<td><strong>Audit Trail</strong></td>
+<td>Full user attribution</td>
+<td>Agent-level attribution</td>
+</tr>
+<tr>
+<td><strong>Best For</strong></td>
+<td>User-authenticated apps</td>
+<td>Public integrations</td>
+</tr>
+</tbody>
+</table>
+<h3 id="creating-agent-access-tokens">Creating Agent Access Tokens</h3>
+<ol>
+<li>Open the Management Portal</li>
+<li>Navigate to the agent's edit page</li>
+<li>Scroll to the <strong>Security</strong> section</li>
+<li>Click <strong>Create Access Token</strong></li>
+<li>Set description and expiration date</li>
+<li>Copy the generated token immediately</li>
+</ol>
+<p>See <a href="../../../management-portal/reference/concepts/agent-access-tokens.html">Agent Access Tokens</a> for detailed setup instructions.</p>
+<hr>
+<h2 id="completions-endpoints">Completions Endpoints</h2>
+<h3 id="post-completions">POST /completions</h3>
+<p>Request a synchronous completion from an agent. The API waits for the full response before returning.</p>
+<p><strong>curl Example (Bearer Token):</strong></p>
+<pre><code class="lang-bash">curl -X POST &quot;https://{core-api-url}/instances/{instanceId}/completions&quot; \
+  -H &quot;Authorization: Bearer $TOKEN&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -d '{
+    &quot;user_prompt&quot;: &quot;What is FoundationaLLM?&quot;,
+    &quot;agent_name&quot;: &quot;knowledge-agent&quot;
+  }'
+</code></pre>
+<p><strong>curl Example (Agent Access Token):</strong></p>
+<pre><code class="lang-bash">curl -X POST &quot;https://{core-api-url}/instances/{instanceId}/completions&quot; \
+  -H &quot;X-AGENT-ACCESS-TOKEN: your-token-here&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -d '{
+    &quot;user_prompt&quot;: &quot;What is FoundationaLLM?&quot;
+  }'
+</code></pre>
+<p><strong>Request Body:</strong></p>
+<pre><code class="lang-json">{
+  &quot;operation_id&quot;: &quot;optional-guid&quot;,
+  &quot;user_prompt&quot;: &quot;What can you help me with?&quot;,
+  &quot;session_id&quot;: &quot;conversation-session-id&quot;,
+  &quot;agent_name&quot;: &quot;my-agent&quot;,
+  &quot;attachments&quot;: [],
+  &quot;settings&quot;: {
+    &quot;model_parameters&quot;: {
+      &quot;temperature&quot;: 0.7,
+      &quot;max_new_tokens&quot;: 2000,
+      &quot;top_p&quot;: 0.95
+    },
+    &quot;agent_parameters&quot;: {
+      &quot;index_top_n&quot;: 10,
+      &quot;index_filter_expression&quot;: &quot;category eq 'documentation'&quot;
+    }
+  }
+}
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>operation_id</code></td>
+<td>string</td>
+<td>No</td>
+<td>Custom operation ID (auto-generated if not provided)</td>
+</tr>
+<tr>
+<td><code>user_prompt</code></td>
+<td>string</td>
+<td><strong>Yes</strong></td>
+<td>User's question or instruction</td>
+</tr>
+<tr>
+<td><code>session_id</code></td>
+<td>string</td>
+<td>No</td>
+<td>Conversation session for context continuity</td>
+</tr>
+<tr>
+<td><code>agent_name</code></td>
+<td>string</td>
+<td>No</td>
+<td>Specific agent to use (required for Bearer auth if multiple agents)</td>
+</tr>
+<tr>
+<td><code>attachments</code></td>
+<td>array</td>
+<td>No</td>
+<td>File attachment references from uploads</td>
+</tr>
+<tr>
+<td><code>settings</code></td>
+<td>object</td>
+<td>No</td>
+<td>Runtime parameter overrides</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Response (200 OK):</strong></p>
+<pre><code class="lang-json">{
+  &quot;operation_id&quot;: &quot;abc123-def456&quot;,
+  &quot;user_prompt&quot;: &quot;What can you help me with?&quot;,
+  &quot;completion&quot;: &quot;I can assist you with...&quot;,
+  &quot;content&quot;: [],
+  &quot;citations&quot;: [],
+  &quot;analysis_results&quot;: [],
+  &quot;user_prompt_embedding&quot;: [],
+  &quot;prompt_tokens&quot;: 125,
+  &quot;completion_tokens&quot;: 350,
+  &quot;total_tokens&quot;: 475,
+  &quot;total_cost&quot;: 0.0024
+}
+</code></pre>
+<p><strong>Error Responses:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>400</td>
+<td>Invalid request body</td>
+<td>Missing required field <code>user_prompt</code></td>
+</tr>
+<tr>
+<td>401</td>
+<td>Authentication required</td>
+<td>Invalid or expired token</td>
+</tr>
+<tr>
+<td>403</td>
+<td>Access denied</td>
+<td>No permission for specified agent</td>
+</tr>
+<tr>
+<td>429</td>
+<td>Quota exceeded</td>
+<td>Rate limit reached</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="post-async-completions">POST /async-completions</h3>
+<p>Start an asynchronous completion operation for long-running requests. Returns immediately with an operation ID.</p>
+<p><strong>curl Example:</strong></p>
+<pre><code class="lang-bash">curl -X POST &quot;https://{core-api-url}/instances/{instanceId}/async-completions&quot; \
+  -H &quot;Authorization: Bearer $TOKEN&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -d '{
+    &quot;user_prompt&quot;: &quot;Analyze this complex document and provide a detailed summary...&quot;,
+    &quot;agent_name&quot;: &quot;document-agent&quot;
+  }'
+</code></pre>
+<p><strong>Response (202 Accepted):</strong></p>
+<pre><code class="lang-json">{
+  &quot;operation_id&quot;: &quot;abc123-def456&quot;,
+  &quot;status&quot;: &quot;InProgress&quot;,
+  &quot;status_message&quot;: &quot;Operation started&quot;,
+  &quot;result&quot;: null
+}
+</code></pre>
+<p>Use the <code>operation_id</code> to poll for completion status.</p>
+<hr>
+<h3 id="get-completionsagents">GET /completions/agents</h3>
+<p>List agents available to the current user.</p>
+<p><strong>curl Example:</strong></p>
+<pre><code class="lang-bash">curl -X GET &quot;https://{core-api-url}/instances/{instanceId}/completions/agents&quot; \
+  -H &quot;Authorization: Bearer $TOKEN&quot;
+</code></pre>
+<p><strong>Response (200 OK):</strong></p>
+<pre><code class="lang-json">[
+  {
+    &quot;resource&quot;: {
+      &quot;type&quot;: &quot;agent&quot;,
+      &quot;name&quot;: &quot;knowledge-agent&quot;,
+      &quot;object_id&quot;: &quot;/instances/{instanceId}/providers/FoundationaLLM.Agent/agents/knowledge-agent&quot;,
+      &quot;display_name&quot;: &quot;Knowledge Agent&quot;,
+      &quot;description&quot;: &quot;Answers questions from documentation&quot;
+    },
+    &quot;roles&quot;: [&quot;Reader&quot;],
+    &quot;actions&quot;: [&quot;read&quot;]
+  }
+]
+</code></pre>
+<hr>
+<h2 id="sessions-endpoints">Sessions Endpoints</h2>
+<p>Sessions maintain conversation context across multiple messages.</p>
+<h3 id="get-sessions">GET /sessions</h3>
+<p>List all conversations for the current user.</p>
+<p><strong>curl Example:</strong></p>
+<pre><code class="lang-bash">curl -X GET &quot;https://{core-api-url}/instances/{instanceId}/sessions&quot; \
+  -H &quot;Authorization: Bearer $TOKEN&quot;
+</code></pre>
+<p><strong>Response (200 OK):</strong></p>
+<pre><code class="lang-json">[
+  {
+    &quot;id&quot;: &quot;session-guid&quot;,
+    &quot;name&quot;: &quot;My Conversation&quot;,
+    &quot;type&quot;: &quot;Session&quot;,
+    &quot;upn&quot;: &quot;user@example.com&quot;,
+    &quot;messages&quot;: [],
+    &quot;created_on&quot;: &quot;2024-01-15T10:30:00Z&quot;,
+    &quot;updated_on&quot;: &quot;2024-01-15T11:45:00Z&quot;
+  }
+]
+</code></pre>
+<hr>
+<h3 id="post-sessions">POST /sessions</h3>
+<p>Create a new conversation session.</p>
+<p><strong>curl Example (Bearer Token):</strong></p>
+<pre><code class="lang-bash">curl -X POST &quot;https://{core-api-url}/instances/{instanceId}/sessions&quot; \
+  -H &quot;Authorization: Bearer $TOKEN&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -d '{&quot;name&quot;: &quot;New Conversation&quot;}'
+</code></pre>
+<p><strong>curl Example (Agent Access Token):</strong></p>
+<pre><code class="lang-bash">curl -X POST &quot;https://{core-api-url}/instances/{instanceId}/sessions&quot; \
+  -H &quot;X-AGENT-ACCESS-TOKEN: your-token-here&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -d '{&quot;name&quot;: &quot;New Conversation&quot;}'
+</code></pre>
+<p><strong>Response (200 OK):</strong></p>
+<pre><code class="lang-json">{
+  &quot;id&quot;: &quot;new-session-guid&quot;,
+  &quot;name&quot;: &quot;New Conversation&quot;,
+  &quot;type&quot;: &quot;Session&quot;,
+  &quot;upn&quot;: &quot;user@example.com&quot;,
+  &quot;messages&quot;: [],
+  &quot;created_on&quot;: &quot;2024-01-15T12:00:00Z&quot;
+}
+</code></pre>
+<hr>
+<h3 id="get-sessionssessionidmessages">GET /sessions/{sessionId}/messages</h3>
+<p>Retrieve messages for a conversation.</p>
+<p><strong>curl Example:</strong></p>
+<pre><code class="lang-bash">curl -X GET &quot;https://{core-api-url}/instances/{instanceId}/sessions/{sessionId}/messages&quot; \
+  -H &quot;Authorization: Bearer $TOKEN&quot;
+</code></pre>
+<p><strong>Response (200 OK):</strong></p>
+<pre><code class="lang-json">[
+  {
+    &quot;id&quot;: &quot;message-guid&quot;,
+    &quot;type&quot;: &quot;Message&quot;,
+    &quot;session_id&quot;: &quot;session-guid&quot;,
+    &quot;sender&quot;: &quot;User&quot;,
+    &quot;sender_display_name&quot;: &quot;John Doe&quot;,
+    &quot;text&quot;: &quot;What is FoundationaLLM?&quot;,
+    &quot;tokens&quot;: 10,
+    &quot;timestamp&quot;: &quot;2024-01-15T10:30:00Z&quot;
+  },
+  {
+    &quot;id&quot;: &quot;message-guid-2&quot;,
+    &quot;type&quot;: &quot;Message&quot;,
+    &quot;session_id&quot;: &quot;session-guid&quot;,
+    &quot;sender&quot;: &quot;Assistant&quot;,
+    &quot;sender_display_name&quot;: &quot;Knowledge Agent&quot;,
+    &quot;text&quot;: &quot;FoundationaLLM is a platform for...&quot;,
+    &quot;tokens&quot;: 150,
+    &quot;timestamp&quot;: &quot;2024-01-15T10:30:05Z&quot;
+  }
+]
+</code></pre>
+<hr>
+<h3 id="delete-sessionssessionid">DELETE /sessions/{sessionId}</h3>
+<p>Delete a conversation and all its messages.</p>
+<p><strong>curl Example:</strong></p>
+<pre><code class="lang-bash">curl -X DELETE &quot;https://{core-api-url}/instances/{instanceId}/sessions/{sessionId}&quot; \
+  -H &quot;Authorization: Bearer $TOKEN&quot;
+</code></pre>
+<p><strong>Response (200 OK):</strong> Empty body</p>
+<hr>
+<h3 id="post-sessionssessionidmessagemessageidrate">POST /sessions/{sessionId}/message/{messageId}/rate</h3>
+<p>Rate an assistant response (thumbs up/down).</p>
+<p><strong>curl Example:</strong></p>
+<pre><code class="lang-bash">curl -X POST &quot;https://{core-api-url}/instances/{instanceId}/sessions/{sessionId}/message/{messageId}/rate&quot; \
+  -H &quot;Authorization: Bearer $TOKEN&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -d '{
+    &quot;rating&quot;: true,
+    &quot;comments&quot;: &quot;Very helpful response&quot;
+  }'
+</code></pre>
+<hr>
+<h2 id="files-endpoints">Files Endpoints</h2>
+<h3 id="post-filesupload">POST /files/upload</h3>
+<p>Upload a file attachment for agent analysis.</p>
+<p><strong>curl Example:</strong></p>
+<pre><code class="lang-bash">curl -X POST &quot;https://{core-api-url}/instances/{instanceId}/files/upload&quot; \
+  -H &quot;Authorization: Bearer $TOKEN&quot; \
+  -F &quot;file=@/path/to/document.pdf&quot; \
+  -F &quot;agent_name=knowledge-agent&quot; \
+  -F &quot;session_id=session-guid&quot;
+</code></pre>
+<p><strong>Response (200 OK):</strong></p>
+<pre><code class="lang-json">{
+  &quot;object_id&quot;: &quot;/instances/{instanceId}/providers/FoundationaLLM.Attachment/attachments/file-guid&quot;,
+  &quot;display_name&quot;: &quot;document.pdf&quot;,
+  &quot;content_type&quot;: &quot;application/pdf&quot;
+}
+</code></pre>
+<hr>
+<h2 id="status-endpoints">Status Endpoints</h2>
+<h3 id="get-status">GET /status</h3>
+<p>Get Core API service status.</p>
+<p><strong>curl Example:</strong></p>
+<pre><code class="lang-bash">curl -X GET &quot;https://{core-api-url}/instances/{instanceId}/status&quot; \
+  -H &quot;Authorization: Bearer $TOKEN&quot;
+</code></pre>
+<p><strong>Response (200 OK):</strong></p>
+<pre><code class="lang-json">{
+  &quot;status&quot;: &quot;ready&quot;,
+  &quot;name&quot;: &quot;CoreAPI&quot;,
+  &quot;version&quot;: &quot;1.0.0&quot;,
+  &quot;instance_id&quot;: &quot;instance-guid&quot;
+}
+</code></pre>
+<hr>
+<h2 id="branding-endpoints">Branding Endpoints</h2>
+<h3 id="get-branding">GET /branding</h3>
+<p>Get portal branding configuration.</p>
+<p><strong>curl Example:</strong></p>
+<pre><code class="lang-bash">curl -X GET &quot;https://{core-api-url}/instances/{instanceId}/branding&quot; \
+  -H &quot;Authorization: Bearer $TOKEN&quot;
+</code></pre>
+<p><strong>Response (200 OK):</strong></p>
+<pre><code class="lang-json">{
+  &quot;company_name&quot;: &quot;FoundationaLLM&quot;,
+  &quot;page_title&quot;: &quot;FoundationaLLM User Portal&quot;,
+  &quot;logo_url&quot;: &quot;foundationallm-logo-white.svg&quot;,
+  &quot;primary_color&quot;: &quot;#131833&quot;,
+  &quot;primary_text_color&quot;: &quot;#fff&quot;
+}
+</code></pre>
+<hr>
+<h2 id="rate-limiting-and-quotas">Rate Limiting and Quotas</h2>
+<p>The Core API enforces quota limits to prevent abuse and ensure fair usage.</p>
+<h3 id="quota-response">Quota Response</h3>
+<p>When quota is exceeded:</p>
+<p><strong>Response (429 Too Many Requests):</strong></p>
+<pre><code class="lang-json">{
+  &quot;quota_exceeded&quot;: true,
+  &quot;quota_name&quot;: &quot;AgentCompletionRequestRate&quot;,
+  &quot;retry_after_seconds&quot;: 60,
+  &quot;message&quot;: &quot;Rate limit exceeded. Try again later.&quot;
+}
+</code></pre>
+<h3 id="handling-rate-limits-in-code">Handling Rate Limits in Code</h3>
+<pre><code class="lang-bash"># Example retry logic with curl
+response=$(curl -s -w &quot;\n%{http_code}&quot; -X POST \
+  &quot;https://{core-api-url}/instances/{instanceId}/completions&quot; \
+  -H &quot;Authorization: Bearer $TOKEN&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -d '{&quot;user_prompt&quot;: &quot;Hello&quot;}')
+
+http_code=$(echo &quot;$response&quot; | tail -1)
+if [ &quot;$http_code&quot; = &quot;429&quot; ]; then
+  echo &quot;Rate limited. Waiting 60 seconds...&quot;
+  sleep 60
+  # Retry request
+fi
+</code></pre>
+<hr>
+<h2 id="validation-rules">Validation Rules</h2>
+<h3 id="request-validation">Request Validation</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Validation</th>
+<th>Error Message</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>user_prompt</code></td>
+<td>Required, non-empty</td>
+<td>&quot;user_prompt is required&quot;</td>
+</tr>
+<tr>
+<td><code>session_id</code></td>
+<td>Valid GUID format</td>
+<td>&quot;Invalid session_id format&quot;</td>
+</tr>
+<tr>
+<td><code>agent_name</code></td>
+<td>Must exist and be accessible</td>
+<td>&quot;Agent not found or access denied&quot;</td>
+</tr>
+<tr>
+<td><code>temperature</code></td>
+<td>0.0 to 1.0</td>
+<td>&quot;temperature must be between 0 and 1&quot;</td>
+</tr>
+<tr>
+<td><code>max_new_tokens</code></td>
+<td>Positive integer</td>
+<td>&quot;max_new_tokens must be positive&quot;</td>
+</tr>
+</tbody>
+</table>
+<h3 id="common-validation-errors">Common Validation Errors</h3>
+<pre><code class="lang-json">{
+  &quot;error&quot;: {
+    &quot;code&quot;: &quot;ValidationError&quot;,
+    &quot;message&quot;: &quot;One or more validation errors occurred&quot;,
+    &quot;details&quot;: [
+      {
+        &quot;field&quot;: &quot;user_prompt&quot;,
+        &quot;message&quot;: &quot;The user_prompt field is required.&quot;
+      }
+    ]
+  }
+}
+</code></pre>
+<hr>
+<h2 id="complete-workflow-example">Complete Workflow Example</h2>
+<p>Here's a complete example of creating a session, sending a message, and retrieving the response:</p>
+<pre><code class="lang-bash"># Set variables
+CORE_API=&quot;https://your-core-api.azurecontainerapps.io&quot;
+INSTANCE_ID=&quot;your-instance-guid&quot;
+TOKEN=$(az account get-access-token --resource api://your-client-id --query accessToken -o tsv)
+
+# 1. Create a new session
+SESSION=$(curl -s -X POST &quot;$CORE_API/instances/$INSTANCE_ID/sessions&quot; \
+  -H &quot;Authorization: Bearer $TOKEN&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -d '{&quot;name&quot;: &quot;API Test Conversation&quot;}')
+
+SESSION_ID=$(echo $SESSION | jq -r '.id')
+echo &quot;Created session: $SESSION_ID&quot;
+
+# 2. Send a message
+RESPONSE=$(curl -s -X POST &quot;$CORE_API/instances/$INSTANCE_ID/completions&quot; \
+  -H &quot;Authorization: Bearer $TOKEN&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -d &quot;{
+    \&quot;user_prompt\&quot;: \&quot;What is FoundationaLLM?\&quot;,
+    \&quot;session_id\&quot;: \&quot;$SESSION_ID\&quot;,
+    \&quot;agent_name\&quot;: \&quot;knowledge-agent\&quot;
+  }&quot;)
+
+echo &quot;Response: $(echo $RESPONSE | jq -r '.completion')&quot;
+
+# 3. Retrieve conversation history
+MESSAGES=$(curl -s -X GET &quot;$CORE_API/instances/$INSTANCE_ID/sessions/$SESSION_ID/messages&quot; \
+  -H &quot;Authorization: Bearer $TOKEN&quot;)
+
+echo &quot;Messages in session: $(echo $MESSAGES | jq length)&quot;
+</code></pre>
+<hr>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="index.html">Core API Overview</a></li>
+<li><a href="directly-calling-core-api.html">Directly Calling Core API</a></li>
+<li><a href="../../../management-portal/reference/concepts/agent-access-tokens.html">Agent Access Tokens</a></li>
+<li><a href="../../../management-portal/reference/concepts/quotas.html">Quotas Reference</a></li>
+<li><a href="../../sdks/dotnet/index.html">.NET SDK</a></li>
+<li><a href="../../sdks/python/index.html">Python SDK</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

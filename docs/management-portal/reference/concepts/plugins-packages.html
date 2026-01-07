@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Plugins &amp; Plugin Packages | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Plugins &amp; Plugin Packages | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/management-portal/reference/concepts/plugins-packages.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="plugins--plugin-packages">Plugins &amp; Plugin Packages</h1>
+
+<p>This document provides reference information for plugins and plugin packages in FoundationaLLM.</p>
+<h2 id="overview">Overview</h2>
+<p>Plugins extend the functionality of the FoundationaLLM platform. Plugins can be used to add new features, integrate with external systems, or perform other tasks. Plugins can be managed using the FoundationaLLM Management Portal (interactively) or the FoundationaLLM Management API (programmatically).</p>
+<h2 id="plugin-packages">Plugin Packages</h2>
+<p>A FoundationaLLM plugin package is a unit of versioning and deployment of one or more plugins.</p>
+<h3 id="supported-package-types">Supported Package Types</h3>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Package Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Python</td>
+<td>ZIP package</td>
+<td>Contains agent workflow and agent tool plugins. Scheduled to be replaced by Wheel packages.</td>
+</tr>
+<tr>
+<td>.NET</td>
+<td>NuGet package</td>
+<td>Contains data source, data pipeline stage, content text extraction, and content text partitioning plugins. Fully supported by Management API.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="package-naming-convention">Package Naming Convention</h3>
+<p>Plugin package names must follow a strict naming convention: <code>{platform}-{name}</code>, where:</p>
+<ul>
+<li><code>{platform}</code> can be <code>Dotnet</code> or <code>Python</code></li>
+<li><code>{name}</code> can only contain alphanumerical characters, underlines, or hyphens</li>
+</ul>
+<p>Example: <code>Dotnet-FoundationaLLMDataPipelinePlugins</code></p>
+<h3 id="managing-plugin-packages-via-api">Managing Plugin Packages via API</h3>
+<h4 id="create-or-update-a-plugin-package">Create or Update a Plugin Package</h4>
+<pre><code class="lang-http">POST /instances/{instanceId}/providers/FoundationaLLM.Plugin/pluginPackages/{packageName}
+</code></pre>
+<p>Request body:</p>
+<ul>
+<li>Must be of type <code>form-data</code></li>
+<li>Must contain a file with the key <code>file</code> (the NuGet package)</li>
+<li>Must contain a text with key <code>resource</code>:</li>
+</ul>
+<pre><code class="lang-json">{
+    &quot;type&quot;: &quot;plugin-package&quot;,
+    &quot;name&quot;: &quot;{packageName}&quot;
+}
+</code></pre>
+<h4 id="list-plugin-packages">List Plugin Packages</h4>
+<pre><code class="lang-http">GET /instances/{instanceId}/providers/FoundationaLLM.Plugin/pluginPackages
+</code></pre>
+<hr>
+<h2 id="plugins">Plugins</h2>
+<h3 id="plugin-types">Plugin Types</h3>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Category</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Python</td>
+<td>Agent Workflow</td>
+<td>Implements agent workflows running in LangChain API</td>
+</tr>
+<tr>
+<td>Python</td>
+<td>Agent Tool</td>
+<td>Implements agent tools for LangChain workflow host</td>
+</tr>
+<tr>
+<td>.NET</td>
+<td>Data Source</td>
+<td>Implements data sources for data pipelines</td>
+</tr>
+<tr>
+<td>.NET</td>
+<td>Data Pipeline Stage</td>
+<td>Implements stages for data pipeline execution</td>
+</tr>
+<tr>
+<td>.NET</td>
+<td>Content Text Extraction</td>
+<td>Implements text extraction from binary content</td>
+</tr>
+<tr>
+<td>.NET</td>
+<td>Content Text Partitioning</td>
+<td>Implements text partitioning strategies</td>
+</tr>
+</tbody>
+</table>
+<h3 id="plugin-naming-convention">Plugin Naming Convention</h3>
+<p>Plugin names must follow the format <code>{platform}-{packageName}-{pluginName}</code>, where:</p>
+<ul>
+<li><code>{platform}</code> can be <code>Dotnet</code> or <code>Python</code></li>
+<li><code>{packageName}</code> is the plugin package name (alphanumerical, underlines, hyphens only)</li>
+<li><code>{pluginName}</code> is the plugin name (alphanumerical, underlines, hyphens only)</li>
+</ul>
+<p>Example: <code>Dotnet-FoundationaLLMDataPipelinePlugins-AzureAISearchIndexingDataPipelineStage</code></p>
+<h3 id="plugin-definition-structure">Plugin Definition Structure</h3>
+<pre><code class="lang-json">{
+    &quot;type&quot;: &quot;plugin&quot;,
+    &quot;name&quot;: &quot;Dotnet-FoundationaLLMDataPipelinePlugins-AzureAISearchIndexingDataPipelineStage&quot;,
+    &quot;object_id&quot;: &quot;instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/...&quot;,
+    &quot;display_name&quot;: &quot;Azure AI Search Indexing Data Pipeline Stage (FoundationaLLM)&quot;,
+    &quot;description&quot;: &quot;Provides the FoundationaLLM standard implementation for indexing data pipeline stages.&quot;,
+    &quot;category&quot;: &quot;Data Pipeline Stage&quot;,
+    &quot;parameters&quot;: [...],
+    &quot;parameter_selection_hints&quot;: {...},
+    &quot;dependencies&quot;: [...]
+}
+</code></pre>
+<h3 id="plugin-parameters">Plugin Parameters</h3>
+<p>Each plugin has zero or more parameters. Supported parameter types:</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>string</code></td>
+<td>A single string value</td>
+</tr>
+<tr>
+<td><code>int</code></td>
+<td>A single integer value</td>
+</tr>
+<tr>
+<td><code>float</code></td>
+<td>A single floating-point value</td>
+</tr>
+<tr>
+<td><code>bool</code></td>
+<td>A single boolean value</td>
+</tr>
+<tr>
+<td><code>datetime</code></td>
+<td>A single date and time value</td>
+</tr>
+<tr>
+<td><code>array</code></td>
+<td>An array of values</td>
+</tr>
+<tr>
+<td><code>resource-object-id</code></td>
+<td>A FoundationaLLM resource identifier</td>
+</tr>
+</tbody>
+</table>
+<h4 id="parameter-selection-hints">Parameter Selection Hints</h4>
+<p>For <code>resource-object-id</code> parameters, the <code>parameter_selection_hints</code> property provides UI guidance:</p>
+<pre><code class="lang-json">&quot;parameter_selection_hints&quot;: {
+    &quot;APIEndpointConfigurationObjectId&quot;: {
+        &quot;resourcePath&quot;: &quot;providers/FoundationaLLM.Configuration/apiEndpointConfigurations&quot;,
+        &quot;filterActionPayload&quot;: {
+            &quot;Category&quot;: &quot;General&quot;,
+            &quot;Subcategory&quot;: &quot;Indexing&quot;
+        }
+    }
+}
+</code></pre>
+<h3 id="plugin-dependencies">Plugin Dependencies</h3>
+<p>Plugins can have dependencies on other plugins. Dependency types:</p>
+<ul>
+<li><strong>Single</strong>: Exactly one dependency plugin must be selected</li>
+<li><strong>Multiple</strong>: One or more dependency plugins must be selected</li>
+</ul>
+<pre><code class="lang-json">&quot;dependencies&quot;: [
+    {
+        &quot;selection_type&quot;: &quot;Single&quot;,
+        &quot;dependency_plugin_names&quot;: [
+            &quot;Dotnet-FoundationaLLMDataPipelinePlugins-TokenContentTextPartitioning&quot;,
+            &quot;Dotnet-FoundationaLLMDataPipelinePlugins-SemanticContentTextPartitioning&quot;
+        ]
+    }
+]
+</code></pre>
+<h3 id="managing-plugins-via-api">Managing Plugins via API</h3>
+<h4 id="list-all-plugins">List All Plugins</h4>
+<pre><code class="lang-http">GET /instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins
+</code></pre>
+<h4 id="filter-plugins-by-category">Filter Plugins by Category</h4>
+<pre><code class="lang-http">POST /instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/filter
+</code></pre>
+<p>Request body:</p>
+<pre><code class="lang-json">{
+    &quot;categories&quot;: [
+        &quot;Data Source&quot;,
+        &quot;Data Pipeline Stage&quot;
+    ]
+}
+</code></pre>
+<p>Supported categories: <code>Data Source</code>, <code>Data Pipeline Stage</code>, <code>Context Text Extraction</code>, <code>Content Text Partitioning</code></p>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="../../how-to-guides/managing-plugins.html">Managing Plugins</a></li>
+<li><a href="data-pipelines.html">Data Pipelines</a></li>
+<li><a href="agents-workflows.html">Agents &amp; Workflows</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

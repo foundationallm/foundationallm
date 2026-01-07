@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Data Sources | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Data Sources | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/management-portal/how-to-guides/data/data-sources.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="data-sources">Data Sources</h1>
+
+<p>Learn how to configure and manage data sources in the Management Portal.</p>
+<h2 id="overview">Overview</h2>
+<p>Data sources define the storage locations from which agents and data pipelines can retrieve information. They provide the connection configuration needed to access your organizational data.</p>
+<h2 id="accessing-data-sources">Accessing Data Sources</h2>
+<ol>
+<li>In the Management Portal sidebar, click <strong>Data Sources</strong> under the <strong>Data</strong> section</li>
+<li>The data sources list loads, showing all configured sources</li>
+</ol>
+<h2 id="data-source-list">Data Source List</h2>
+<p>The table displays:</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Name</strong></td>
+<td>Unique identifier for the data source</td>
+</tr>
+<tr>
+<td><strong>Source Type</strong></td>
+<td>Type of storage (Azure Data Lake, SharePoint, etc.)</td>
+</tr>
+<tr>
+<td><strong>Edit</strong></td>
+<td>Settings icon to modify configuration</td>
+</tr>
+<tr>
+<td><strong>Delete</strong></td>
+<td>Trash icon to remove the data source</td>
+</tr>
+</tbody>
+</table>
+<h3 id="searching-and-managing">Searching and Managing</h3>
+<ul>
+<li>Use the search box to filter by name</li>
+<li>Click the refresh button to reload the list</li>
+<li>Click column headers to sort</li>
+</ul>
+<h2 id="supported-data-source-types">Supported Data Source Types</h2>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Azure Data Lake</strong></td>
+<td>Azure Data Lake Storage Gen2 containers</td>
+</tr>
+<tr>
+<td><strong>OneLake</strong></td>
+<td>Microsoft Fabric OneLake storage</td>
+</tr>
+<tr>
+<td><strong>SharePoint Online</strong></td>
+<td>SharePoint document libraries</td>
+</tr>
+<tr>
+<td><strong>Azure SQL Database</strong></td>
+<td>Azure SQL databases</td>
+</tr>
+<tr>
+<td><strong>Web</strong></td>
+<td>Public web content via URLs</td>
+</tr>
+</tbody>
+</table>
+<h2 id="creating-a-data-source">Creating a Data Source</h2>
+<ol>
+<li>Click <strong>Create Data Source</strong> at the top right of the page</li>
+<li>Configure the data source settings</li>
+</ol>
+<h3 id="basic-information">Basic Information</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+<th>Requirements</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Data Source Name</strong></td>
+<td>Unique identifier</td>
+<td>Letters, numbers, dashes, underscores only</td>
+</tr>
+<tr>
+<td><strong>Description</strong></td>
+<td>Purpose and contents</td>
+<td>Optional but recommended</td>
+</tr>
+</tbody>
+</table>
+<h3 id="select-data-source-type">Select Data Source Type</h3>
+<p>Choose the appropriate type from the dropdown:</p>
+<ul>
+<li>Azure Data Lake</li>
+<li>OneLake</li>
+<li>SharePoint Online</li>
+<li>Azure SQL Database</li>
+<li>Web</li>
+</ul>
+<h3 id="configure-connection-details">Configure Connection Details</h3>
+<p>Connection settings vary by data source type:</p>
+<h4 id="azure-data-lake">Azure Data Lake</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Authentication Type</strong></td>
+<td>How to authenticate (Connection String, Account Key, Azure Identity)</td>
+</tr>
+<tr>
+<td><strong>Connection String</strong></td>
+<td>Full connection string (if using Connection String auth)</td>
+</tr>
+<tr>
+<td><strong>API Key</strong></td>
+<td>Storage account key (if using Account Key auth)</td>
+</tr>
+<tr>
+<td><strong>Endpoint</strong></td>
+<td>Storage account endpoint URL</td>
+</tr>
+<tr>
+<td><strong>Account Name</strong></td>
+<td>Storage account name (if using Azure Identity)</td>
+</tr>
+<tr>
+<td><strong>Folders</strong></td>
+<td>Container/folder paths to access (press Enter after each)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Authentication Options:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+<th>Best For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Connection String</strong></td>
+<td>Full connection string with SAS or key</td>
+<td>Development, testing</td>
+</tr>
+<tr>
+<td><strong>Account Key</strong></td>
+<td>Storage account access key</td>
+<td>Simple deployments</td>
+</tr>
+<tr>
+<td><strong>Azure Identity</strong></td>
+<td>Managed Identity authentication</td>
+<td>Production, secure access</td>
+</tr>
+</tbody>
+</table>
+<h4 id="onelake">OneLake</h4>
+<p>Similar to Azure Data Lake, with authentication options for Fabric workspaces.</p>
+<h4 id="sharepoint-online">SharePoint Online</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Site URL</strong></td>
+<td>SharePoint site URL</td>
+</tr>
+<tr>
+<td><strong>Document Library</strong></td>
+<td>Library to access</td>
+</tr>
+<tr>
+<td><strong>Authentication</strong></td>
+<td>Microsoft Graph authentication settings</td>
+</tr>
+</tbody>
+</table>
+<h4 id="azure-sql-database">Azure SQL Database</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Server</strong></td>
+<td>SQL Server hostname</td>
+</tr>
+<tr>
+<td><strong>Database</strong></td>
+<td>Database name</td>
+</tr>
+<tr>
+<td><strong>Authentication</strong></td>
+<td>SQL or Azure AD authentication</td>
+</tr>
+<tr>
+<td><strong>Tables/Views</strong></td>
+<td>Specific tables or views to access</td>
+</tr>
+</tbody>
+</table>
+<h4 id="web">Web</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>URL(s)</strong></td>
+<td>Web pages to crawl</td>
+</tr>
+<tr>
+<td><strong>Crawl Depth</strong></td>
+<td>How deep to follow links</td>
+</tr>
+</tbody>
+</table>
+<h3 id="specifying-folders">Specifying Folders</h3>
+<p>For storage-based sources, specify folders using chips:</p>
+<ol>
+<li>Type the folder path (e.g., <code>container/folder</code>)</li>
+<li>Press <strong>Enter</strong> or <strong>,</strong> to add the chip</li>
+<li>Repeat for additional folders</li>
+<li>Click the X on a chip to remove it</li>
+</ol>
+<h2 id="editing-data-sources">Editing Data Sources</h2>
+<ol>
+<li>Locate the data source in the list</li>
+<li>Click the <strong>Settings</strong> icon (⚙️)</li>
+<li>Modify settings as needed</li>
+<li>Click <strong>Save Changes</strong></li>
+</ol>
+<blockquote>
+<p><strong>Note:</strong> The data source name cannot be changed after creation.</p>
+</blockquote>
+<h2 id="deleting-data-sources">Deleting Data Sources</h2>
+<ol>
+<li>Click the <strong>Trash</strong> icon (🗑️) for the data source</li>
+<li>Confirm deletion in the dialog</li>
+</ol>
+<blockquote>
+<p><strong>Warning:</strong> Deleting a data source affects any data pipelines or agents using it. Verify dependencies before deleting.</p>
+</blockquote>
+<h2 id="access-control">Access Control</h2>
+<p>Configure who can access and manage the data source:</p>
+<ol>
+<li>Open the data source for editing</li>
+<li>Click <strong>Access Control</strong> at the top right</li>
+<li>Add or remove role assignments</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Permission</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM.DataSource/dataSources/read</code></td>
+<td>View the data source</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.DataSource/dataSources/write</code></td>
+<td>Edit configuration</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.DataSource/dataSources/delete</code></td>
+<td>Delete the data source</td>
+</tr>
+</tbody>
+</table>
+<h2 id="best-practices">Best Practices</h2>
+<h3 id="security">Security</h3>
+<ul>
+<li>Use Azure Identity (Managed Identity) for production environments</li>
+<li>Avoid embedding secrets in connection strings when possible</li>
+<li>Apply principle of least privilege to folder access</li>
+</ul>
+<h3 id="organization">Organization</h3>
+<ul>
+<li>Use descriptive names that indicate the data content</li>
+<li>Document the purpose in the description field</li>
+<li>Group related data in logical folder structures</li>
+</ul>
+<h3 id="performance">Performance</h3>
+<ul>
+<li>Limit folder scope to only necessary paths</li>
+<li>Consider separate data sources for different data types</li>
+</ul>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="connection-test-fails">Connection Test Fails</h3>
+<ul>
+<li>Verify authentication credentials are correct</li>
+<li>Check network connectivity to the storage endpoint</li>
+<li>Ensure firewall rules allow access from FoundationaLLM services</li>
+</ul>
+<h3 id="data-not-accessible">Data Not Accessible</h3>
+<ul>
+<li>Verify folder paths are correct</li>
+<li>Check that the service principal or managed identity has appropriate permissions</li>
+<li>Review Azure Storage access policies</li>
+</ul>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="knowledge-sources/azure-data-lake.html">Azure Data Lake Knowledge Source</a></li>
+<li><a href="knowledge-sources/sharepoint-online.html">SharePoint Online</a></li>
+<li><a href="data-pipelines/creating-data-pipelines.html">Creating Data Pipelines</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

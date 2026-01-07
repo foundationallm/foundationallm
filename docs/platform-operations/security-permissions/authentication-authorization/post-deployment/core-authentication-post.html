@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Core API &amp; User Portal Post-Deployment Configuration | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Core API &amp; User Portal Post-Deployment Configuration | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/platform-operations/security-permissions/authentication-authorization/post-deployment/core-authentication-post.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../../index.html">
+            <img id="logo" class="svg" src="../../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="core-api--user-portal-post-deployment-configuration">Core API &amp; User Portal Post-Deployment Configuration</h1>
+
+<p>Complete these steps after running <code>azd up</code> to finalize Core API and Chat Portal authentication.</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li>Deployment completed successfully</li>
+<li>App Configuration access configured (see <a href="../pre-requisites.html">Prerequisites</a>)</li>
+<li>App registrations created (see <a href="../pre-deployment/core-authentication-setup.html">Pre-Deployment Setup</a>)</li>
+</ul>
+<h2 id="update-app-configuration-settings">Update App Configuration Settings</h2>
+<h3 id="step-1-access-app-configuration">Step 1: Access App Configuration</h3>
+<ol>
+<li>Sign in to <a href="https://portal.azure.com/">Azure Portal</a></li>
+<li>Navigate to your deployment resource group</li>
+<li>Select the <strong>App Configuration</strong> resource</li>
+<li>Select <strong>Configuration explorer</strong></li>
+</ol>
+<h3 id="step-2-filter-settings">Step 2: Filter Settings</h3>
+<ol>
+<li>Enter <code>entra</code> in the search box</li>
+<li>Check the box next to <strong>Key</strong> to select all Entra-related settings</li>
+<li>Click <strong>Edit</strong> to open the JSON editor</li>
+</ol>
+<h3 id="step-3-update-values">Step 3: Update Values</h3>
+<p>Update the following settings with values from your app registrations:</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM:Chat:Entra:ClientId</code></td>
+<td>Application (client) ID of <code>FoundationaLLM-User-Portal</code></td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Chat:Entra:TenantId</code></td>
+<td>Directory (tenant) ID</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Chat:Entra:Scopes</code></td>
+<td><code>api://FoundationaLLM-Core/Data.Read</code></td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:CoreAPI:Entra:ClientId</code></td>
+<td>Application (client) ID of <code>FoundationaLLM-Core-API</code></td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:CoreAPI:Entra:TenantId</code></td>
+<td>Directory (tenant) ID</td>
+</tr>
+</tbody>
+</table>
+<h3 id="step-4-verify-default-values">Step 4: Verify Default Values</h3>
+<p>Confirm these values are correct:</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Expected Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM:Chat:Entra:CallbackPath</code></td>
+<td><code>/signin-oidc</code></td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Chat:Entra:Instance</code></td>
+<td><code>https://login.microsoftonline.com/</code></td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:CoreAPI:Entra:CallbackPath</code></td>
+<td><code>/signin-oidc</code></td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:CoreAPI:Entra:Instance</code></td>
+<td><code>https://login.microsoftonline.com/</code></td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:CoreAPI:Entra:Scopes</code></td>
+<td><code>Data.Read</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="step-5-save-changes">Step 5: Save Changes</h3>
+<p>Click <strong>Apply</strong> to save all configuration changes.</p>
+<h2 id="restart-services">Restart Services</h2>
+<p>After updating configuration, restart the services to apply changes.</p>
+<h3 id="azure-container-apps-quick-start">Azure Container Apps (Quick Start)</h3>
+<ol>
+<li>Navigate to your resource group</li>
+<li>Select the <strong>Core API</strong> Container App (ends with <code>coreapica</code>)</li>
+<li>Select <strong>Revisions</strong> in left menu</li>
+<li>Select the active revision</li>
+<li>Click <strong>Restart</strong> in the Revision details panel</li>
+<li>Repeat for <strong>Chat UI</strong> Container App (ends with <code>chatuica</code>)</li>
+</ol>
+<h3 id="azure-kubernetes-service-standard">Azure Kubernetes Service (Standard)</h3>
+<p><strong>Via Azure Portal:</strong></p>
+<ol>
+<li>Navigate to the AKS resource</li>
+<li>Select <strong>Workloads</strong> &gt; <strong>Pods</strong> tab</li>
+<li>Filter by namespace: <code>fllm</code></li>
+<li>Select <code>core-api</code> and <code>chat-ui</code> pods</li>
+<li>Click <strong>Delete</strong> (new pods auto-create)</li>
+</ol>
+<p><strong>Via kubectl:</strong></p>
+<pre><code class="lang-bash">kubectl rollout restart deployment/core-api -n fllm
+kubectl rollout restart deployment/chat-ui -n fllm
+</code></pre>
+<h2 id="verify-authentication">Verify Authentication</h2>
+<h3 id="test-sign-in">Test Sign-In</h3>
+<ol>
+<li>Navigate to your Chat Portal URL</li>
+<li>You should be redirected to Microsoft sign-in</li>
+<li>Enter your Entra ID credentials</li>
+<li>Verify successful authentication</li>
+</ol>
+<h3 id="troubleshoot-issues">Troubleshoot Issues</h3>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Redirect loop</td>
+<td>Verify redirect URI in app registration matches deployment URL</td>
+</tr>
+<tr>
+<td>Invalid client</td>
+<td>Check <code>FoundationaLLM:Chat:Entra:ClientId</code> value</td>
+</tr>
+<tr>
+<td>Invalid scope</td>
+<td>Verify scope format: <code>api://FoundationaLLM-Core/Data.Read</code></td>
+</tr>
+<tr>
+<td>AADSTS50011</td>
+<td>Add correct redirect URI to app registration</td>
+</tr>
+<tr>
+<td>AADSTS700016</td>
+<td>Verify tenant ID is correct</td>
+</tr>
+</tbody>
+</table>
+<h3 id="check-logs">Check Logs</h3>
+<p><strong>ACA:</strong></p>
+<pre><code class="lang-bash">az containerapp logs show -n &lt;app-name&gt; -g &lt;resource-group&gt;
+</code></pre>
+<p><strong>AKS:</strong></p>
+<pre><code class="lang-bash">kubectl logs deployment/core-api -n fllm --tail=100
+kubectl logs deployment/chat-ui -n fllm --tail=100
+</code></pre>
+<h2 id="next-steps">Next Steps</h2>
+<ol>
+<li>Complete <a href="management-authentication-post.html">Management API Post-Deployment</a></li>
+<li>Complete <a href="authorization-post.html">Authorization Post-Deployment</a></li>
+<li>Configure <a href="../../role-based-access-control/index.html">Role-Based Access Control</a></li>
+</ol>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="../index.html">Authentication Setup Overview</a></li>
+<li><a href="../../../deployment/app-configuration-values.html">App Configuration Values</a></li>
+<li><a href="../../../monitoring-troubleshooting/troubleshooting.html">Troubleshooting</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

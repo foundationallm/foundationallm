@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Deployment Information | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Deployment Information | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/management-portal/how-to-guides/fllm-platform/deployment-information.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="deployment-information">Deployment Information</h1>
+
+<p>Learn how to view deployment details and monitor API health for your FoundationaLLM instance.</p>
+<h2 id="overview">Overview</h2>
+<p>The Deployment Information page provides visibility into your FoundationaLLM deployment, including instance identification and API health status.</p>
+<h2 id="accessing-deployment-information">Accessing Deployment Information</h2>
+<ol>
+<li>In the Management Portal sidebar, click <strong>Deployment Information</strong> under the <strong>FLLM Platform</strong> section</li>
+<li>The deployment information page displays</li>
+</ol>
+<h2 id="instance-information">Instance Information</h2>
+<h3 id="instance-id">Instance ID</h3>
+<p>The page displays your unique <strong>Instance ID</strong>:</p>
+<ul>
+<li>Used to identify your specific FoundationaLLM deployment</li>
+<li>Required when contacting support or troubleshooting</li>
+<li>Used internally for API routing and configuration</li>
+</ul>
+<h2 id="api-status">API Status</h2>
+<p>The page displays status cards for core APIs:</p>
+<h3 id="management-api">Management API</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Name</strong></td>
+<td>Management API</td>
+</tr>
+<tr>
+<td><strong>Description</strong></td>
+<td>Used by the Management Portal to manage the FoundationaLLM platform</td>
+</tr>
+<tr>
+<td><strong>Status Endpoint</strong></td>
+<td><code>/{instanceId}/status</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="authorization-api">Authorization API</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Name</strong></td>
+<td>Authorization API</td>
+</tr>
+<tr>
+<td><strong>Description</strong></td>
+<td>Manages role-based access control (RBAC) and auth-related functions</td>
+</tr>
+<tr>
+<td><strong>Status Endpoint</strong></td>
+<td><code>/status</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="api-status-indicators">API Status Indicators</h2>
+<p>Each API card shows:</p>
+<table>
+<thead>
+<tr>
+<th>Indicator</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Green/Online</strong></td>
+<td>API is responding normally</td>
+</tr>
+<tr>
+<td><strong>Red/Offline</strong></td>
+<td>API is not responding</td>
+</tr>
+<tr>
+<td><strong>Yellow/Degraded</strong></td>
+<td>API is responding but with issues</td>
+</tr>
+</tbody>
+</table>
+<h2 id="monitoring-api-health">Monitoring API Health</h2>
+<h3 id="real-time-status">Real-Time Status</h3>
+<p>The API status cards refresh automatically or can be manually refreshed:</p>
+<ol>
+<li>View the current status on each card</li>
+<li>Check the timestamp of the last check</li>
+<li>Refresh the page to get updated status</li>
+</ol>
+<h3 id="status-endpoints">Status Endpoints</h3>
+<p>You can also check API status directly:</p>
+<p><strong>Management API:</strong></p>
+<pre><code>GET {ManagementAPIUrl}/instances/{instanceId}/status
+</code></pre>
+<p><strong>Authorization API:</strong></p>
+<pre><code>GET {AuthorizationAPIUrl}/status
+</code></pre>
+<h2 id="use-cases">Use Cases</h2>
+<h3 id="troubleshooting">Troubleshooting</h3>
+<p>When experiencing issues:</p>
+<ol>
+<li>Check API status on this page</li>
+<li>Note which APIs are offline or degraded</li>
+<li>Provide this information to support</li>
+</ol>
+<h3 id="monitoring">Monitoring</h3>
+<p>For ongoing health monitoring:</p>
+<ol>
+<li>Periodically check this page</li>
+<li>Set up external monitoring to ping status endpoints</li>
+<li>Configure alerts for API unavailability</li>
+</ol>
+<h3 id="documentation">Documentation</h3>
+<p>When documenting your deployment:</p>
+<ol>
+<li>Record the Instance ID</li>
+<li>Note API endpoints for reference</li>
+<li>Document expected normal status</li>
+</ol>
+<h2 id="additional-apis">Additional APIs</h2>
+<blockquote>
+<p><strong>TODO</strong>: Document additional API status cards if they become available, such as:</p>
+<ul>
+<li>Core API</li>
+<li>Orchestration API</li>
+<li>Gateway API</li>
+</ul>
+</blockquote>
+<h2 id="troubleshooting-1">Troubleshooting</h2>
+<h3 id="api-shows-offline">API Shows Offline</h3>
+<ol>
+<li>Check network connectivity</li>
+<li>Verify the API service is running in Azure</li>
+<li>Review Azure service health</li>
+<li>Check for deployment/update in progress</li>
+</ol>
+<h3 id="status-not-updating">Status Not Updating</h3>
+<ol>
+<li>Refresh the browser page</li>
+<li>Check browser console for errors</li>
+<li>Verify authentication is still valid</li>
+</ol>
+<h3 id="cannot-access-page">Cannot Access Page</h3>
+<ol>
+<li>Verify you have Management Portal access</li>
+<li>Check your role assignments</li>
+<li>Try signing out and back in</li>
+</ol>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="configuration.html">Configuration</a></li>
+<li><a href="../../../apis-sdks/index.md">APIs &amp; SDKs Overview</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

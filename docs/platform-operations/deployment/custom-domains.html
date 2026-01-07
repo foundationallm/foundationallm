@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Custom Domains | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Custom Domains | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../toc.html">
+      <meta name="docfx:tocrel" content="../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/platform-operations/deployment/custom-domains.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../index.html">
+            <img id="logo" class="svg" src="../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="custom-domains">Custom Domains</h1>
+
+<p>Configure custom domain names for FoundationaLLM portals and APIs to match your organization's branding.</p>
+<h2 id="overview">Overview</h2>
+<p>Both Azure Container Apps (ACA) and Azure Kubernetes Service (AKS) deployments support custom domains with SSL certificates.</p>
+<table>
+<thead>
+<tr>
+<th>Deployment Type</th>
+<th>Certificate Management</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Quick Start (ACA)</td>
+<td>Azure managed or custom</td>
+</tr>
+<tr>
+<td>Standard (AKS)</td>
+<td>Custom certificates required</td>
+</tr>
+</tbody>
+</table>
+<h2 id="azure-container-apps-quick-start">Azure Container Apps (Quick Start)</h2>
+<h3 id="adding-a-custom-domain">Adding a Custom Domain</h3>
+<ol>
+<li><p><strong>Open Azure Portal</strong></p>
+<ul>
+<li>Navigate to your subscription and resource group</li>
+</ul>
+</li>
+<li><p><strong>Select Container App</strong></p>
+<ul>
+<li>Choose the ACA instance (e.g., <code>chat</code> or <code>management</code>)</li>
+</ul>
+</li>
+<li><p><strong>Configure Domain</strong></p>
+<ul>
+<li>Select <strong>Settings</strong> &gt; <strong>Custom domains</strong></li>
+<li>Click <strong>Add custom domain</strong></li>
+<li>Enter your domain name</li>
+</ul>
+</li>
+<li><p><strong>Configure DNS</strong></p>
+<ul>
+<li>Note the DNS records displayed in the dialog:
+<ul>
+<li><strong>CNAME</strong> record pointing to your Container App</li>
+<li><strong>TXT</strong> record for domain verification</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>Validate Domain</strong></p>
+<ul>
+<li>Add the required DNS records to your DNS provider</li>
+<li>Return to Azure Portal and click <strong>Validate</strong></li>
+</ul>
+</li>
+<li><p><strong>Add Certificate</strong></p>
+<ul>
+<li>Choose <strong>Managed certificate</strong> (free, auto-renewed) OR</li>
+<li>Upload a custom certificate</li>
+<li>Click <strong>Add</strong></li>
+</ul>
+</li>
+</ol>
+<h3 id="certificate-options">Certificate Options</h3>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Managed Certificate</strong></td>
+<td>Free Azure-managed SSL</td>
+<td>Most deployments</td>
+</tr>
+<tr>
+<td><strong>Custom Certificate</strong></td>
+<td>Upload your own PFX</td>
+<td>Enterprise requirements</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Note:</strong> Managed certificates may take a few minutes to provision.</p>
+</blockquote>
+<p>For detailed instructions, see <a href="https://learn.microsoft.com/azure/container-apps/custom-domains-certificates">Custom domain names and certificates in Azure Container Apps</a>.</p>
+<h2 id="azure-kubernetes-service-standard">Azure Kubernetes Service (Standard)</h2>
+<h3 id="pre-deployment-ssl-setup">Pre-Deployment SSL Setup</h3>
+<p>For Standard deployments, SSL certificates must be provisioned before deployment.</p>
+<ol>
+<li><p><strong>Obtain Certificates</strong></p>
+<ul>
+<li>Acquire SSL certificates for each domain</li>
+<li>Export to PFX format with private key</li>
+</ul>
+</li>
+<li><p><strong>Place Certificate Files</strong></p>
+<pre><code>deploy/standard/certs/
+├── api.example.com.pfx
+├── management-api.example.com.pfx
+├── chat.example.com.pfx
+└── management.example.com.pfx
+</code></pre>
+</li>
+<li><p><strong>Configure Deployment Manifest</strong></p>
+<ul>
+<li>Update <code>Deployment-Manifest.json</code> with hostnames</li>
+</ul>
+</li>
+<li><p><strong>Deploy</strong></p>
+<ul>
+<li>Certificates are automatically configured during deployment</li>
+</ul>
+</li>
+</ol>
+<h3 id="certificate-requirements">Certificate Requirements</h3>
+<table>
+<thead>
+<tr>
+<th>Service</th>
+<th>Hostname Example</th>
+<th>File Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Core API</td>
+<td><code>api.example.com</code></td>
+<td><code>api.example.com.pfx</code></td>
+</tr>
+<tr>
+<td>Management API</td>
+<td><code>management-api.example.com</code></td>
+<td><code>management-api.example.com.pfx</code></td>
+</tr>
+<tr>
+<td>Chat Portal</td>
+<td><code>chat.example.com</code></td>
+<td><code>chat.example.com.pfx</code></td>
+</tr>
+<tr>
+<td>Management Portal</td>
+<td><code>management.example.com</code></td>
+<td><code>management.example.com.pfx</code></td>
+</tr>
+</tbody>
+</table>
+<p>For detailed instructions, see <a href="https://learn.microsoft.com/azure/aks/app-routing-dns-ssl">Set up a custom domain name and SSL certificate with the application routing add-on</a>.</p>
+<h2 id="update-entra-id-redirect-uris">Update Entra ID Redirect URIs</h2>
+<p>After configuring custom domains, update the App Registration redirect URIs.</p>
+<h3 id="chat-portal-user-portal">Chat Portal (User Portal)</h3>
+<ol>
+<li>Navigate to <strong>Azure Portal</strong> &gt; <strong>Microsoft Entra ID</strong></li>
+<li>Select <strong>App registrations</strong></li>
+<li>Search for and select the Chat UI app registration</li>
+<li>Select <strong>Manage</strong> &gt; <strong>Authentication</strong></li>
+<li>In <strong>Single-page application Redirect URIs</strong>, add:
+<pre><code>https://your-custom-domain.com/signin-oidc
+</code></pre>
+</li>
+<li>Click <strong>Save</strong></li>
+</ol>
+<h3 id="management-portal">Management Portal</h3>
+<ol>
+<li>Navigate to <strong>App registrations</strong></li>
+<li>Search for and select the Management UI app registration</li>
+<li>Select <strong>Manage</strong> &gt; <strong>Authentication</strong></li>
+<li>In <strong>Single-page application Redirect URIs</strong>, add:
+<pre><code>https://your-custom-domain.com/management/signin-oidc
+</code></pre>
+</li>
+<li>Click <strong>Save</strong></li>
+</ol>
+<h3 id="using-the-update-script">Using the Update Script</h3>
+<p>For Quick Start deployments, run:</p>
+<pre><code class="lang-powershell">cd deploy/quick-start
+../common/scripts/Update-OAuthCallbackUris.ps1
+</code></pre>
+<h2 id="dns-configuration">DNS Configuration</h2>
+<h3 id="required-dns-records">Required DNS Records</h3>
+<table>
+<thead>
+<tr>
+<th>Record Type</th>
+<th>Name</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CNAME</strong></td>
+<td><code>chat</code></td>
+<td><code>&lt;aca-fqdn&gt;</code> or <code>&lt;aks-ingress-ip&gt;</code></td>
+</tr>
+<tr>
+<td><strong>CNAME</strong></td>
+<td><code>management</code></td>
+<td><code>&lt;aca-fqdn&gt;</code> or <code>&lt;aks-ingress-ip&gt;</code></td>
+</tr>
+<tr>
+<td><strong>CNAME</strong></td>
+<td><code>api</code></td>
+<td><code>&lt;aca-fqdn&gt;</code> or <code>&lt;aks-ingress-ip&gt;</code></td>
+</tr>
+<tr>
+<td><strong>A</strong> (AKS only)</td>
+<td>Various</td>
+<td>Ingress IP address</td>
+</tr>
+</tbody>
+</table>
+<h3 id="private-dns-standard-deployment">Private DNS (Standard Deployment)</h3>
+<p>For Standard deployments with private networking:</p>
+<ol>
+<li>Deployment generates <code>hosts</code> file in <code>deploy/standard/config/</code></li>
+<li>Add entries to:
+<ul>
+<li>Local <code>hosts</code> file for testing, OR</li>
+<li>Organization's private DNS server</li>
+</ul>
+</li>
+</ol>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Certificate not trusted</td>
+<td>Ensure certificate chain is complete</td>
+</tr>
+<tr>
+<td>DNS validation failed</td>
+<td>Check DNS propagation (allow 24-48 hours)</td>
+</tr>
+<tr>
+<td>Redirect loop</td>
+<td>Verify redirect URIs in App Registration</td>
+</tr>
+<tr>
+<td>Mixed content warnings</td>
+<td>Ensure all resources use HTTPS</td>
+</tr>
+</tbody>
+</table>
+<h2 id="best-practices">Best Practices</h2>
+<ol>
+<li><strong>Use Managed Certificates</strong> (ACA) when possible for automatic renewal</li>
+<li><strong>Plan DNS Changes</strong> in advance - propagation takes time</li>
+<li><strong>Test in Staging</strong> before updating production</li>
+<li><strong>Monitor Certificate Expiry</strong> for custom certificates</li>
+<li><strong>Document Custom Domains</strong> for team reference</li>
+</ol>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="deployment-quick-start.html">Quick Start Deployment</a></li>
+<li><a href="deployment-standard.html">Standard Deployment</a></li>
+<li><a href="security-permissions/authentication-authorization/index.md">Authentication Setup</a></li>
+<li><a href="standard-manifest.html">Deployment Manifest</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

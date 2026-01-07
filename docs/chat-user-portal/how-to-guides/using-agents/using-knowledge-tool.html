@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Using the Knowledge Tool | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Using the Knowledge Tool | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/chat-user-portal/how-to-guides/using-agents/using-knowledge-tool.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="using-the-knowledge-tool">Using the Knowledge Tool</h1>
+
+<p>Learn how the Knowledge Tool helps agents search and retrieve relevant information from documents and knowledge bases.</p>
+<h2 id="what-is-the-knowledge-tool">What Is the Knowledge Tool?</h2>
+<p>The Knowledge Tool enables agents to search through documents and retrieve relevant information to answer your questions. Instead of relying solely on general knowledge, agents with this tool can:</p>
+<ul>
+<li>Search uploaded files for specific information</li>
+<li>Query organizational knowledge bases</li>
+<li>Retrieve relevant excerpts from documents</li>
+<li>Provide answers grounded in your actual data</li>
+</ul>
+<h2 id="when-the-knowledge-tool-is-active">When the Knowledge Tool Is Active</h2>
+<p>The Knowledge Tool works automatically when:</p>
+<ul>
+<li>The agent has access to knowledge sources</li>
+<li>You've uploaded files to the conversation</li>
+<li>You ask questions about specific content</li>
+</ul>
+<p>You don't need to explicitly activate it — the agent uses it when relevant to your question.</p>
+<h2 id="how-it-works">How It Works</h2>
+<h3 id="the-search-process">The Search Process</h3>
+<ol>
+<li><strong>You ask a question</strong> about a topic or document</li>
+<li><strong>The agent searches</strong> through available knowledge sources</li>
+<li><strong>Relevant passages are retrieved</strong> from documents</li>
+<li><strong>The agent synthesizes</strong> an answer using the retrieved information</li>
+<li><strong>Sources may be cited</strong> in the response</li>
+</ol>
+<h3 id="knowledge-sources">Knowledge Sources</h3>
+<p>The Knowledge Tool can search:</p>
+<table>
+<thead>
+<tr>
+<th>Source Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Uploaded files</strong></td>
+<td>Documents you've attached to the conversation</td>
+</tr>
+<tr>
+<td><strong>Knowledge bases</strong></td>
+<td>Pre-configured document collections</td>
+</tr>
+<tr>
+<td><strong>Connected data sources</strong></td>
+<td>Organizational repositories (SharePoint, data lakes, etc.)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="what-you-can-do">What You Can Do</h2>
+<h3 id="ask-questions-about-documents">Ask Questions About Documents</h3>
+<p>Upload a document and ask:</p>
+<ul>
+<li>&quot;What does this report say about Q3 performance?&quot;</li>
+<li>&quot;Summarize the key findings from the uploaded study&quot;</li>
+<li>&quot;What recommendations does the document make?&quot;</li>
+<li>&quot;Find all mentions of [specific term] in this file&quot;</li>
+</ul>
+<h3 id="search-across-multiple-files">Search Across Multiple Files</h3>
+<p>When you upload several files:</p>
+<ul>
+<li>&quot;Compare the conclusions across all uploaded reports&quot;</li>
+<li>&quot;Which document discusses pricing changes?&quot;</li>
+<li>&quot;What do these files say about the timeline?&quot;</li>
+</ul>
+<h3 id="query-knowledge-bases">Query Knowledge Bases</h3>
+<p>If the agent has access to knowledge bases:</p>
+<ul>
+<li>&quot;What's our company policy on [topic]?&quot;</li>
+<li>&quot;Find documentation about [feature]&quot;</li>
+<li>&quot;What procedures should I follow for [task]?&quot;</li>
+</ul>
+<h3 id="get-specific-information">Get Specific Information</h3>
+<p>Ask detailed questions:</p>
+<ul>
+<li>&quot;What was the revenue in Q2 according to the financial report?&quot;</li>
+<li>&quot;Who is mentioned as the project lead in the document?&quot;</li>
+<li>&quot;What date was the policy last updated?&quot;</li>
+</ul>
+<h2 id="example-prompts">Example Prompts</h2>
+<h3 id="document-summarization">Document Summarization</h3>
+<blockquote>
+<p>&quot;I've uploaded our annual report. Please summarize the executive summary and highlight the three most important metrics.&quot;</p>
+</blockquote>
+<h3 id="specific-fact-finding">Specific Fact Finding</h3>
+<blockquote>
+<p>&quot;According to the uploaded employee handbook, how many vacation days do employees receive after their first year?&quot;</p>
+</blockquote>
+<h3 id="cross-document-analysis">Cross-Document Analysis</h3>
+<blockquote>
+<p>&quot;Compare the project timelines mentioned in the two uploaded project plans and identify any conflicts.&quot;</p>
+</blockquote>
+<h3 id="knowledge-base-search">Knowledge Base Search</h3>
+<blockquote>
+<p>&quot;What does our IT documentation say about setting up VPN access?&quot;</p>
+</blockquote>
+<h2 id="understanding-responses">Understanding Responses</h2>
+<h3 id="grounded-answers">Grounded Answers</h3>
+<p>When the Knowledge Tool is used:</p>
+<ul>
+<li>Responses are based on actual document content</li>
+<li>The agent may quote or paraphrase source material</li>
+<li>Answers are limited to what's in the knowledge sources</li>
+</ul>
+<h3 id="when-information-isnt-found">When Information Isn't Found</h3>
+<p>If the agent can't find relevant information:</p>
+<ul>
+<li>It will tell you the information wasn't found</li>
+<li>It may ask for clarification</li>
+<li>It might suggest alternative sources or approaches</li>
+</ul>
+<h3 id="content-artifacts">Content Artifacts</h3>
+<p>Some agents show &quot;Content Artifacts&quot; — clickable items that show:</p>
+<ul>
+<li>Source document titles</li>
+<li>Retrieved passages</li>
+<li>Metadata about the information source</li>
+</ul>
+<p>Click on content artifacts to see details about where information came from.</p>
+<h2 id="tips-for-best-results">Tips for Best Results</h2>
+<h3 id="ask-specific-questions">Ask Specific Questions</h3>
+<p>Instead of: &quot;Tell me about this document&quot;
+Try: &quot;What are the main conclusions in section 3 of the document?&quot;</p>
+<h3 id="provide-context">Provide Context</h3>
+<ul>
+<li>Mention which document you're asking about (if multiple are uploaded)</li>
+<li>Specify the type of information you need</li>
+<li>Include relevant keywords</li>
+</ul>
+<h3 id="use-clear-file-names">Use Clear File Names</h3>
+<p>When uploading files:</p>
+<ul>
+<li>Use descriptive names</li>
+<li>Reference files by name in your questions</li>
+<li>Organize related files together</li>
+</ul>
+<h3 id="start-broad-then-narrow">Start Broad, Then Narrow</h3>
+<ol>
+<li>First: &quot;What topics does this document cover?&quot;</li>
+<li>Then: &quot;Tell me more about [specific topic] from the document&quot;</li>
+<li>Finally: &quot;What specific recommendations does it make about [detail]?&quot;</li>
+</ol>
+<h2 id="limitations">Limitations</h2>
+<h3 id="what-the-knowledge-tool-cannot-do">What the Knowledge Tool Cannot Do</h3>
+<ul>
+<li>Search your local computer or systems outside the platform</li>
+<li>Access documents you haven't uploaded or that aren't in configured sources</li>
+<li>Read scanned images without OCR (text-as-images)</li>
+<li>Access real-time or frequently changing data</li>
+</ul>
+<h3 id="search-scope">Search Scope</h3>
+<ul>
+<li>Searches only configured knowledge sources</li>
+<li>May not find information in poorly formatted documents</li>
+<li>Very large documents may have some sections not indexed</li>
+</ul>
+<h3 id="information-accuracy">Information Accuracy</h3>
+<ul>
+<li>Answers depend on the quality of source documents</li>
+<li>The agent interprets and summarizes — verify critical information</li>
+<li>Outdated documents may provide outdated information</li>
+</ul>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="agent-doesnt-find-information">Agent Doesn't Find Information</h3>
+<p><strong>If the information should be there:</strong></p>
+<ul>
+<li>Rephrase your question using different terms</li>
+<li>Ask what topics the document covers</li>
+<li>Check if the document uploaded successfully</li>
+<li>Verify the document format is searchable (not a scanned image)</li>
+</ul>
+<p><strong>If you're unsure:</strong></p>
+<ul>
+<li>Ask the agent what files it has access to</li>
+<li>Try uploading the document again</li>
+<li>Use simpler, more direct questions</li>
+</ul>
+<h3 id="incorrect-information-retrieved">Incorrect Information Retrieved</h3>
+<ul>
+<li>Ask for the source of the information</li>
+<li>Request direct quotes from the document</li>
+<li>Rephrase to be more specific about what you want</li>
+<li>Check if the agent is looking at the correct document</li>
+</ul>
+<h3 id="knowledge-base-not-available">Knowledge Base Not Available</h3>
+<ul>
+<li>The agent may not have knowledge base access configured</li>
+<li>Try a different agent with knowledge base capabilities</li>
+<li>Contact your administrator about available knowledge sources</li>
+</ul>
+<h3 id="cant-find-specific-passages">Can't Find Specific Passages</h3>
+<ul>
+<li>The passage may not be indexed correctly</li>
+<li>Try searching for key unique terms from the passage</li>
+<li>Ask about the general topic first</li>
+<li>Consider if the document format allows text extraction</li>
+</ul>
+<h2 id="security-and-privacy">Security and Privacy</h2>
+<ul>
+<li>Uploaded files are processed to extract searchable content</li>
+<li>Knowledge base access is controlled by administrators</li>
+<li>Search results are limited to what you're authorized to access</li>
+<li>Follow your organization's document handling policies</li>
+</ul>
+<h2 id="differences-from-code-interpreter">Differences from Code Interpreter</h2>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Knowledge Tool</th>
+<th>Code Interpreter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Purpose</strong></td>
+<td>Search and retrieve</td>
+<td>Compute and analyze</td>
+</tr>
+<tr>
+<td><strong>Output</strong></td>
+<td>Text from documents</td>
+<td>Calculated results, charts</td>
+</tr>
+<tr>
+<td><strong>Best for</strong></td>
+<td>Q&amp;A about content</td>
+<td>Data analysis</td>
+</tr>
+<tr>
+<td><strong>File use</strong></td>
+<td>Search text</td>
+<td>Process data</td>
+</tr>
+</tbody>
+</table>
+<p>Use both tools together for powerful document analysis:</p>
+<ol>
+<li>Upload data files</li>
+<li>Use Knowledge Tool to understand the context</li>
+<li>Use Code Interpreter to analyze the data</li>
+</ol>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="uploading-files.html">Uploading Files to a Conversation</a> — Get documents into the conversation</li>
+<li><a href="using-code-interpreter.html">Using the Code Interpreter Tool</a> — Analyze data programmatically</li>
+<li><a href="viewing-agent-prompts.html">Viewing Agent Prompts</a> — See what context is used</li>
+<li><a href="downloading-files.html">Downloading Files from a Conversation</a> — Save generated outputs</li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Data Pipelines | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Data Pipelines | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/management-portal/reference/concepts/data-pipelines.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="data-pipelines">Data Pipelines</h1>
+
+<h2 id="overview">Overview</h2>
+<p>The following diagram illustrates the high level structure of a FoundationaLLM data pipeline:</p>
+<p><img src="../../media/concepts-data-pipeline.png" alt="Data Pipeline Overview"></p>
+<p>Data pipelines have three main components:</p>
+<ul>
+<li><strong>Data Pipeline Data Source</strong>: The source of the data that will be processed by the pipeline.</li>
+<li><strong>Data Pipeline Stages</strong>: The stages that the data will go through in the pipeline. The stages are structure as a forest, with one or more starting stages.</li>
+<li><strong>Data Pipeline Trigger</strong>: The trigger that will start the pipeline execution. Trigger can be a schedule, an event (e.g., new content added to the data source), or a manual action.</li>
+</ul>
+<p>The data source and the stages define parameters that are required for the pipeline execution. The parameters metadata is provided by the plugin that implements that particular data source or stage. Parameters can have default values, which can be overridden when the pipeline is executed.</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>Triggers of type <code>Schedule</code> or <code>Event</code> must provide a complete set of parameter values. This is because the trigger will use these values to start the pipeline execution and there is no user interaction to provide missing values. In the case of a manual trigger, the user will be prompted to provide the missing values.</p>
+</div>
+<p>Here is an example of a simple data pipeline that reads data from an Azure Data Lake storage account, extracts text from files, partitions the text into chunks of a certain size, embeds the chunks and deposits them into an Azure AI Search index:</p>
+<pre><code class="lang-json">{
+    &quot;type&quot;: &quot;data-pipeline&quot;,
+    &quot;name&quot;: &quot;DataPipeline01&quot;,
+    &quot;display_name&quot;: &quot;Data Pipeline 01&quot;,
+    &quot;description&quot;: &quot;Data Pipeline demo.&quot;,
+    &quot;active&quot;: false,
+    &quot;data_source&quot;: {
+        &quot;name&quot;: &quot;VGDataLake&quot;,
+        &quot;description&quot;: &quot;Victorious Ground data lake storage.&quot;,
+        &quot;plugin_object_id&quot;: &quot;instances/{{instanceId}}/providers/FoundationaLLM.Plugin/plugins/AzureDataLakeDataSource&quot;,
+        &quot;plugin_parameters&quot;: [
+            {
+                &quot;parameter_metadata&quot;: {
+                    &quot;name&quot;: &quot;Folders&quot;,
+                    &quot;type&quot;: &quot;array&quot;,
+                    &quot;description&quot;: &quot;A list of strings defining data lake folders.&quot;
+                },
+                &quot;default_value&quot;: null
+            }
+        ],
+        &quot;data_source_object_id&quot;: &quot;instances/{{instanceId}}/providers/FoundationaLLM.DataSource/dataSources/alchemy&quot;
+    },
+    &quot;starting_stages&quot;: [
+        {
+            &quot;name&quot;: &quot;Extract&quot;,
+            &quot;description&quot;: &quot;Extract text from binary content items.&quot;,
+            &quot;plugin_object_id&quot;: &quot;instances/{{instanceId}}/providers/FoundationaLLM.Plugin/plugins/TextExtractionDataPipelineStage&quot;,
+            &quot;plugin_parameters&quot;: null,
+            &quot;next_stages&quot;: [
+                {
+                    &quot;name&quot;: &quot;Partition&quot;,
+                    &quot;description&quot;: &quot;Partition text into chunks.&quot;,
+                    &quot;plugin_object_id&quot;: &quot;instances/{{instanceId}}/providers/FoundationaLLM.Plugin/plugins/TextPartitioningDataPipelineStage&quot;,
+                    &quot;plugin_parameters&quot;: [
+                        {
+                            &quot;parameter_metadata&quot;: {
+                                &quot;name&quot;: &quot;PartitioningStrategy&quot;,
+                                &quot;type&quot;: &quot;string&quot;,
+                                &quot;description&quot;: &quot;The partitioning strategy to be used (can be Token or Semantic).&quot;
+                            },
+                            &quot;default_value&quot;: &quot;Token&quot;
+                        }
+                    ],
+                    &quot;plugin_dependencies&quot;: [
+                        {
+                            &quot;plugin_object_id&quot;: &quot;instances/{{instanceId}}/providers/FoundationaLLM.Plugin/plugins/TokenContentTextPartitioning&quot;,
+                            &quot;plugin_parameters&quot;: [
+                                {
+                                    &quot;parameter_metadata&quot;: {
+                                        &quot;name&quot;: &quot;PartitionSizeTokens&quot;,
+                                        &quot;type&quot;: &quot;int&quot;,
+                                        &quot;description&quot;: &quot;The size in tokens of the text partitions.&quot;
+                                    },
+                                    &quot;default_value&quot;: 400
+                                },
+                                {
+                                    &quot;parameter_metadata&quot;: {
+                                        &quot;name&quot;: &quot;PartitionOverlapTokens&quot;,
+                                        &quot;type&quot;: &quot;int&quot;,
+                                        &quot;description&quot;: &quot;The size in tokens of text partitions overlap.&quot;
+                                    },
+                                    &quot;default_value&quot;: 100
+                                }
+                            ]
+                        }
+                    ],
+                    &quot;next_stages&quot;: [
+                        {
+                            &quot;name&quot;: &quot;Embed&quot;,
+                            &quot;description&quot;: &quot;Embed chunks of text.&quot;,
+                            &quot;plugin_object_id&quot;: &quot;instances/{{instanceId}}/providers/FoundationaLLM.Plugin/plugins/GatewayTextEmbeddingDataPipelineStage&quot;,
+                            &quot;plugin_parameters&quot;: [
+                                {
+                                    &quot;parameter_metadata&quot;: {
+                                        &quot;name&quot;: &quot;EmbeddingModel&quot;,
+                                        &quot;type&quot;: &quot;string&quot;,
+                                        &quot;description&quot;: &quot;The embedding model used for embedding.&quot;
+                                    },
+                                    &quot;default_value&quot;: &quot;text-embedding-3-large&quot;
+                                },
+                                {
+                                    &quot;parameter_metadata&quot;: {
+                                        &quot;name&quot;: &quot;EmbeddingDimensions&quot;,
+                                        &quot;type&quot;: &quot;int&quot;,
+                                        &quot;description&quot;: &quot;The number of dimensions used for embedding.&quot;
+                                    },
+                                    &quot;default_value&quot;: 2048
+                                }
+                            ],
+                            &quot;next_stages&quot;: [
+                                {
+                                    &quot;name&quot;: &quot;Index&quot;,
+                                    &quot;description&quot;: &quot;Persist embeddings to a vector store.&quot;,
+                                    &quot;plugin_object_id&quot;: &quot;instances/{{instanceId}}/providers/FoundationaLLM.Plugin/plugins/AzureAISearchIndexingDataPipelineStage&quot;,
+                                    &quot;plugin_parameters&quot;: [
+                                        {
+                                            &quot;parameter_metadata&quot;: {
+                                                &quot;name&quot;: &quot;APIEndpointConfigurationObjectId&quot;,
+                                                &quot;type&quot;: &quot;resource-object-id&quot;,
+                                                &quot;description&quot;: &quot;The FoundationaLLM resource object identifier of the API Endpoint Configuration resource that represents the target Azure AI Search instance.&quot;
+                                            },
+                                            &quot;default_value&quot;: &quot;instances/{{instanceId}}/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/AzureAISearch&quot;
+                                        },
+                                        {
+                                            &quot;parameter_metadata&quot;: {
+                                                &quot;name&quot;: &quot;IndexName&quot;,
+                                                &quot;type&quot;: &quot;string&quot;,
+                                                &quot;description&quot;: &quot;The name of the Azure AI Search index.&quot;
+                                            },
+                                            &quot;default_value&quot;: &quot;demo-index&quot;
+                                        },
+                                        {
+                                            &quot;parameter_metadata&quot;: {
+                                                &quot;name&quot;: &quot;IndexPartitionName&quot;,
+                                                &quot;type&quot;: &quot;string&quot;,
+                                                &quot;description&quot;: &quot;The name of the index partition (to be added as a metadata entry and used for logical separation within a given physical index.&quot;
+                                            },
+                                            &quot;default_value&quot;: &quot;Dune&quot;
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    &quot;triggers&quot;: [
+        {
+            &quot;name&quot;: &quot;Default pipeline schedule&quot;,
+            &quot;trigger_type&quot;: &quot;Schedule&quot;,
+            &quot;trigger_cron_schedule&quot;: &quot;0 6 * * *&quot;,
+            &quot;parameter_values&quot;: {
+                &quot;DataSource.VGDataLake.Folders&quot;: [
+                    &quot;vectorization-input/Dune&quot;
+                ],
+                &quot;Stage.Partition.PartitioningStrategy&quot;: &quot;Token&quot;,
+                &quot;Stage.Partition.Dependency.TokenContentTextPartitioning.PartitionSizeTokens&quot;: 400,
+                &quot;Stage.Partition.Dependency.TokenContentTextPartitioning.PartitionOverlapTokens&quot;: 100,
+                &quot;Stage.Embed.EmbeddingModel&quot;: &quot;text-embedding-3-large&quot;,
+                &quot;Stage.Embed.EmbeddingDimensions&quot;: 2048,
+                &quot;Stage.Index.APIEndpointConfigurationObjectId&quot;: &quot;instances/{{instanceId}}/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/AzureAISearch&quot;,
+                &quot;Stage.Index.IndexName&quot;: &quot;demo-index&quot;,
+                &quot;Stage.Index.IndexPartitionName&quot;: &quot;Dune&quot;
+            }
+        }
+    ]
+}
+</code></pre>
+<p>The most important rules that govern the structure of data pipelines are:</p>
+<ul>
+<li>Both the data source and the stages must specify the configuration of the plugins that implement them. This is done by using the following properties:
+<ul>
+<li><code>plugin_object_id</code>: The FoundationaLLM resource identifier of the plugin that implements the data source or stage.</li>
+<li><code>plugin_parameters</code>: The parameters that are required by the plugin. The parameters are defined by the plugin and can have default values. The values in the <code>parameter_metadata</code> are provided by the plugin definition. For more details about plugin parameters, see <a href="../plugin/plugin.md">Plugins</a>.</li>
+<li><code>plugin_dependencies</code>: The dependencies that the plugin has. Dependencies are other plugins that the plugin requires to function properly. Dependencies can have their own parameters. The metadata required to select dependency plugins is provided by the plugin definition. For more details about plugin dependencies, see <a href="../plugin/plugin.md">Plugins</a>.</li>
+</ul>
+</li>
+<li>The <code>active</code> flag indicates whether the pipeline can be triggered or not. If the pipeline is not active, it will not be executed.</li>
+<li>The data source must specify the FoundationaLLM resource identifier of the data source that it represents. This is done by using the <code>data_source_object_id</code> property. The data source object must be compatible with the pluging specified by the <code>plugin_object_id</code> property.</li>
+<li>The data source name and the stage names must be unique within the data pipeline pipeline.</li>
+<li>The data source name and the stage names can only contain alphanumerical characters, underlines, or hyphens.</li>
+<li>The stages must specify the next stages that the data will go through. This is done by using the <code>next_stages</code> property. The stages can have multiple next stages, forming a forest of stages. The stages must specify the configuration of the plugins that implement them, as described above.</li>
+<li>The triggers must specify the parameter values that are required by the data source and the stages. The parameter values are provided as a dictionary where the key is the parameter name and the value is the parameter value. The parameter values must be provided for all the parameters that are required by the data source and the stages. The parameter values are used to start the pipeline execution.</li>
+</ul>
+<h3 id="trigger-parameter-values-naming-convention">Trigger parameter values naming convention</h3>
+<p>The trigger parameter values are named using the following convention:</p>
+<ul>
+<li>For the data source, the naming structure is <code>DataSource.{DataSourceName}.{ParameterName}</code>. In the example above, the data source is named <code>VGDataLake</code>, so the parameter values for the data source are named <code>DataSource.VGDataLake.{ParameterName}</code>.</li>
+<li>For the stages, the naming structure is <code>Stage.{StageName}.{ParameterName}</code>. In the example above, the stages are named <code>Extract</code>, <code>Partition</code>, <code>Embed</code>, and <code>Index</code>, so the parameter values for the stages are named <code>Stage.{StageName}.{ParameterName}</code>.</li>
+<li>For stages that have dependency plugins, the naming structure is <code>Stage.{StageName}.Dependency.{DependencyPluginName}.{ParameterName}</code>. In the example above, the <code>Partition</code> stage has a dependency plugin named <code>TokenContentTextPartitioning</code>, so the parameter values for the dependency plugin are named <code>Stage.Partition.Dependency.TokenContentTextPartitioning.{ParameterName}</code>.</li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

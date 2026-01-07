@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Rating Agent Responses | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Rating Agent Responses | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/chat-user-portal/how-to-guides/using-agents/rating-responses.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="rating-agent-responses">Rating Agent Responses</h1>
+
+<p>Provide feedback on agent responses to help improve quality and inform administrators.</p>
+<h2 id="why-rate-responses">Why Rate Responses?</h2>
+<p>Your ratings help:</p>
+<ul>
+<li><strong>Improve agent quality</strong>: Administrators use feedback to refine agent configurations</li>
+<li><strong>Track performance</strong>: Organizations can monitor how well agents are meeting user needs</li>
+<li><strong>Identify issues</strong>: Low ratings highlight problems that need attention</li>
+<li><strong>Guide development</strong>: Feedback influences future agent improvements</li>
+</ul>
+<h2 id="when-rating-is-available">When Rating Is Available</h2>
+<p>The rating feature appears when:</p>
+<ul>
+<li>Your administrator has enabled message rating</li>
+<li>The agent is configured to allow ratings</li>
+<li>The agent's response has finished generating</li>
+</ul>
+<p>Look for the <strong>Rate Message</strong> button in the footer of agent responses.</p>
+<h2 id="how-to-rate-a-response">How to Rate a Response</h2>
+<h3 id="step-1-find-the-rate-button">Step 1: Find the Rate Button</h3>
+<ol>
+<li>Look at the bottom of an agent's response message</li>
+<li>Find the <strong>Rate Message</strong> button (shows a thumbs-up icon 👍)</li>
+<li>The icon changes based on any existing rating:
+<ul>
+<li>Outline icon: Not yet rated</li>
+<li>Filled thumbs-up: You liked this response</li>
+<li>Filled thumbs-down: You disliked this response</li>
+</ul>
+</li>
+</ol>
+<h3 id="step-2-open-the-rating-dialog">Step 2: Open the Rating Dialog</h3>
+<ol>
+<li>Click <strong>Rate Message</strong></li>
+<li>A dialog opens with rating options</li>
+</ol>
+<h3 id="step-3-choose-your-rating">Step 3: Choose Your Rating</h3>
+<p>In the rating dialog:</p>
+<table>
+<thead>
+<tr>
+<th>Button</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Like</strong> (thumbs up)</td>
+<td>The response was helpful, accurate, and useful</td>
+</tr>
+<tr>
+<td><strong>Dislike</strong> (thumbs down)</td>
+<td>The response had issues, was unhelpful, or incorrect</td>
+</tr>
+</tbody>
+</table>
+<p>Click a button to select your rating:</p>
+<ul>
+<li>The button fills in to show your selection</li>
+<li>Click the same button again to remove your rating</li>
+<li>You can change your mind before submitting</li>
+</ul>
+<h3 id="step-4-add-comments-optional">Step 4: Add Comments (Optional)</h3>
+<p>The <strong>Comments</strong> field lets you explain your rating:</p>
+<p><strong>For positive ratings, you might note:</strong></p>
+<ul>
+<li>What made the response particularly helpful</li>
+<li>How the agent exceeded expectations</li>
+<li>Specific aspects that worked well</li>
+</ul>
+<p><strong>For negative ratings, consider explaining:</strong></p>
+<ul>
+<li>What was incorrect or misleading</li>
+<li>What information was missing</li>
+<li>How the response could have been better</li>
+<li>What you expected instead</li>
+</ul>
+<h3 id="step-5-submit-your-rating">Step 5: Submit Your Rating</h3>
+<ol>
+<li>Click <strong>Submit</strong> to save your rating</li>
+<li>A confirmation message appears: &quot;Rating submitted!&quot;</li>
+<li>The dialog closes automatically</li>
+</ol>
+<h2 id="rating-indicators">Rating Indicators</h2>
+<p>After rating, the response shows your feedback:</p>
+<table>
+<thead>
+<tr>
+<th>Icon State</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>👍 (filled)</td>
+<td>You liked this response</td>
+</tr>
+<tr>
+<td>👎 (filled)</td>
+<td>You disliked this response</td>
+</tr>
+<tr>
+<td>👍 (outline)</td>
+<td>Not rated, or rating cleared</td>
+</tr>
+</tbody>
+</table>
+<h2 id="changing-your-rating">Changing Your Rating</h2>
+<p>You can update a rating at any time:</p>
+<ol>
+<li>Click <strong>Rate Message</strong> on the response</li>
+<li>Select a different rating option</li>
+<li>Update your comments if desired</li>
+<li>Click <strong>Submit</strong></li>
+</ol>
+<p>Your new rating replaces the previous one.</p>
+<h2 id="clearing-a-rating">Clearing a Rating</h2>
+<p>To remove your rating entirely:</p>
+<ol>
+<li>Click <strong>Rate Message</strong></li>
+<li>Click your current rating (Like or Dislike) to deselect it</li>
+<li>Clear the comments field if desired</li>
+<li>Click <strong>Submit</strong></li>
+</ol>
+<h2 id="what-makes-a-good-rating">What Makes a Good Rating?</h2>
+<h3 id="when-to-give-a-positive-rating-">When to Give a Positive Rating (👍)</h3>
+<ul>
+<li>The response directly answered your question</li>
+<li>Information was accurate and complete</li>
+<li>The format was easy to read and use</li>
+<li>The agent understood your intent correctly</li>
+<li>The response saved you time or effort</li>
+</ul>
+<h3 id="when-to-give-a-negative-rating-">When to Give a Negative Rating (👎)</h3>
+<ul>
+<li>The response was factually incorrect</li>
+<li>The agent misunderstood your question</li>
+<li>Important information was missing</li>
+<li>The response was confusing or poorly formatted</li>
+<li>The agent gave generic content instead of specific help</li>
+</ul>
+<h3 id="writing-helpful-comments">Writing Helpful Comments</h3>
+<p><strong>Good comments are specific:</strong></p>
+<p>Instead of: &quot;Bad response&quot;
+Try: &quot;The sales figures for Q3 were incorrect — actual revenue was $2.1M not $1.8M&quot;</p>
+<p>Instead of: &quot;Great!&quot;<br>
+Try: &quot;The step-by-step format made it easy to follow the instructions&quot;</p>
+<h2 id="when-rating-isnt-available">When Rating Isn't Available</h2>
+<p>You won't see the rating option if:</p>
+<ul>
+<li><strong>Feature disabled</strong>: Your administrator hasn't enabled ratings</li>
+<li><strong>Agent configuration</strong>: The specific agent doesn't support ratings</li>
+<li><strong>Message still loading</strong>: Wait for the response to complete</li>
+<li><strong>User messages</strong>: Only agent responses can be rated</li>
+</ul>
+<h2 id="privacy-and-visibility">Privacy and Visibility</h2>
+<p>Your ratings:</p>
+<ul>
+<li>Are associated with your user account</li>
+<li>Are visible to administrators and system managers</li>
+<li>May be used to improve agent performance</li>
+<li>Help identify patterns across users</li>
+</ul>
+<blockquote>
+<p><strong>Note:</strong> Comments should be professional and focused on the response quality. Avoid including sensitive personal information in rating comments.</p>
+</blockquote>
+<h2 id="best-practices">Best Practices</h2>
+<h3 id="rate-consistently">Rate Consistently</h3>
+<ul>
+<li>Apply the same standards across similar responses</li>
+<li>Don't let one bad experience color ratings of unrelated responses</li>
+<li>Rate based on the specific response, not the agent overall</li>
+</ul>
+<h3 id="provide-constructive-feedback">Provide Constructive Feedback</h3>
+<ul>
+<li>Focus on how the response could improve</li>
+<li>Be specific about what was wrong or right</li>
+<li>Suggest what a better response would include</li>
+</ul>
+<h3 id="rate-important-responses">Rate Important Responses</h3>
+<ul>
+<li>You don't need to rate every message</li>
+<li>Focus on responses that were notably helpful or problematic</li>
+<li>Your feedback is most valuable for responses you have expertise to evaluate</li>
+</ul>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="rate-button-not-visible">Rate Button Not Visible</h3>
+<ul>
+<li>The feature may not be enabled — contact your administrator</li>
+<li>Wait for the response to finish generating</li>
+<li>Check if you're looking at an agent response (not your own message)</li>
+</ul>
+<h3 id="rating-wont-submit">Rating Won't Submit</h3>
+<ul>
+<li>Check your internet connection</li>
+<li>Try refreshing the page and rating again</li>
+<li>Ensure you've selected either Like or Dislike</li>
+</ul>
+<h3 id="comments-not-saving">Comments Not Saving</h3>
+<ul>
+<li>Comments are saved with the rating submission</li>
+<li>Make sure you clicked <strong>Submit</strong> after adding comments</li>
+<li>Very long comments may be truncated</li>
+</ul>
+<h3 id="wrong-rating-submitted">Wrong Rating Submitted</h3>
+<ul>
+<li>Click <strong>Rate Message</strong> to open the dialog again</li>
+<li>Select the correct rating</li>
+<li>Click <strong>Submit</strong> to update</li>
+</ul>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="viewing-agent-prompts.html">Viewing Agent Prompts</a> — Understand how responses are generated</li>
+<li><a href="managing-conversations.html">Managing Conversations</a> — Organize your chat history</li>
+<li><a href="copying-prompts-results.html">Copying Messages</a> — Save responses you find valuable</li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

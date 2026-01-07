@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Role Definitions | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Role Definitions | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/platform-operations/security-permissions/role-based-access-control/role-definitions.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="role-definitions">Role Definitions</h1>
+
+<p>A role definition is a collection of permissions that defines what actions can be performed.</p>
+<h2 id="role-definition-structure">Role Definition Structure</h2>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Name</code></td>
+<td>Display name of the role</td>
+</tr>
+<tr>
+<td><code>Id</code></td>
+<td>Unique identifier (GUID)</td>
+</tr>
+<tr>
+<td><code>Description</code></td>
+<td>Purpose of the role</td>
+</tr>
+<tr>
+<td><code>Actions</code></td>
+<td>Control plane actions allowed</td>
+</tr>
+<tr>
+<td><code>NotActions</code></td>
+<td>Actions excluded from Actions</td>
+</tr>
+<tr>
+<td><code>DataActions</code></td>
+<td>Data plane actions allowed</td>
+</tr>
+<tr>
+<td><code>NotDataActions</code></td>
+<td>Actions excluded from DataActions</td>
+</tr>
+<tr>
+<td><code>AssignableScopes</code></td>
+<td>Where the role can be assigned</td>
+</tr>
+</tbody>
+</table>
+<h2 id="built-in-roles">Built-in Roles</h2>
+<h3 id="owner">Owner</h3>
+<p>Full control over all resources, including role assignment management.</p>
+<pre><code class="lang-json">{
+  &quot;Name&quot;: &quot;Owner&quot;,
+  &quot;Id&quot;: &quot;1301f8d4-3bea-4880-945f-315dbd2ddb46&quot;,
+  &quot;Description&quot;: &quot;Full access to manage all resources, including the ability to assign roles.&quot;,
+  &quot;Actions&quot;: [&quot;*&quot;],
+  &quot;NotActions&quot;: [],
+  &quot;AssignableScopes&quot;: [&quot;/&quot;]
+}
+</code></pre>
+<h3 id="contributor">Contributor</h3>
+<p>Manage all resources except role assignments.</p>
+<pre><code class="lang-json">{
+  &quot;Name&quot;: &quot;Contributor&quot;,
+  &quot;Id&quot;: &quot;e459c3a6-6b93-4062-85b3-fffc9fb253df&quot;,
+  &quot;Description&quot;: &quot;Manage everything except access to resources.&quot;,
+  &quot;Actions&quot;: [&quot;*&quot;],
+  &quot;NotActions&quot;: [
+    &quot;FoundationaLLM.Authorization/*/delete&quot;,
+    &quot;FoundationaLLM.Authorization/*/write&quot;
+  ],
+  &quot;AssignableScopes&quot;: [&quot;/&quot;]
+}
+</code></pre>
+<h3 id="reader">Reader</h3>
+<p>Read-only access to all resources.</p>
+<pre><code class="lang-json">{
+  &quot;Name&quot;: &quot;Reader&quot;,
+  &quot;Id&quot;: &quot;00a53e72-f66e-4c03-8f81-7e885fd2eb35&quot;,
+  &quot;Description&quot;: &quot;Read-only access to all resources.&quot;,
+  &quot;Actions&quot;: [&quot;*/read&quot;],
+  &quot;NotActions&quot;: [],
+  &quot;AssignableScopes&quot;: [&quot;/&quot;]
+}
+</code></pre>
+<h3 id="user-access-administrator">User Access Administrator</h3>
+<p>Manage role assignments only.</p>
+<pre><code class="lang-json">{
+  &quot;Name&quot;: &quot;User Access Administrator&quot;,
+  &quot;Id&quot;: &quot;fb8e0fd0-f7e2-4957-89d6-19f44f7d6618&quot;,
+  &quot;Description&quot;: &quot;Manage user access to resources.&quot;,
+  &quot;Actions&quot;: [
+    &quot;FoundationaLLM.Authorization/roleAssignments/read&quot;,
+    &quot;FoundationaLLM.Authorization/roleAssignments/write&quot;,
+    &quot;FoundationaLLM.Authorization/roleAssignments/delete&quot;
+  ],
+  &quot;NotActions&quot;: [],
+  &quot;AssignableScopes&quot;: [&quot;/&quot;]
+}
+</code></pre>
+<h2 id="action-format">Action Format</h2>
+<p>Actions follow this pattern:</p>
+<pre><code>FoundationaLLM.{ProviderName}/{resourceType}/{action}
+</code></pre>
+<h3 id="examples">Examples</h3>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM.Agent/agents/read</code></td>
+<td>Read agents</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Agent/agents/write</code></td>
+<td>Create/update agents</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Agent/agents/delete</code></td>
+<td>Delete agents</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Prompt/prompts/*</code></td>
+<td>All prompt actions</td>
+</tr>
+<tr>
+<td><code>*/read</code></td>
+<td>Read all resources</td>
+</tr>
+<tr>
+<td><code>*</code></td>
+<td>All actions</td>
+</tr>
+</tbody>
+</table>
+<h3 id="wildcards">Wildcards</h3>
+<table>
+<thead>
+<tr>
+<th>Wildcard</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>*</code></td>
+<td>All actions on all resources</td>
+</tr>
+<tr>
+<td><code>*/read</code></td>
+<td>Read all resource types</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Agent/*</code></td>
+<td>All Agent provider actions</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Agent/agents/*</code></td>
+<td>All actions on agents</td>
+</tr>
+</tbody>
+</table>
+<h2 id="control-vs-data-plane">Control vs Data Plane</h2>
+<h3 id="control-plane-actions">Control Plane Actions</h3>
+<p>Specified in <code>Actions</code> and <code>NotActions</code>. Examples:</p>
+<ul>
+<li>Create/update/delete resources</li>
+<li>Manage configurations</li>
+<li>Manage role assignments</li>
+</ul>
+<h3 id="data-plane-actions">Data Plane Actions</h3>
+<p>Specified in <code>DataActions</code> and <code>NotDataActions</code>. Examples:</p>
+<ul>
+<li>Read resource content</li>
+<li>Execute operations</li>
+<li>Access data</li>
+</ul>
+<blockquote>
+<p><strong>Important:</strong> Control plane access is NOT inherited to data plane. Having <code>FoundationaLLM.Agent/agents/write</code> does not grant <code>FoundationaLLM.Agent/agents/read</code>.</p>
+</blockquote>
+<h2 id="listing-role-definitions">Listing Role Definitions</h2>
+<h3 id="via-management-api">Via Management API</h3>
+<pre><code class="lang-http">GET /instances/{instanceId}/providers/FoundationaLLM.Authorization/roleDefinitions
+Authorization: Bearer &lt;token&gt;
+</code></pre>
+<h3 id="via-azure-cli">Via Azure CLI</h3>
+<pre><code class="lang-bash">token=$(az account get-access-token \
+  --scope api://FoundationaLLM-Management/Data.Manage \
+  --query accessToken -o tsv)
+
+curl -H &quot;Authorization: Bearer $token&quot; \
+  &quot;https://&lt;management-api&gt;/instances/{instanceId}/providers/FoundationaLLM.Authorization/roleDefinitions&quot;
+</code></pre>
+<h2 id="role-selection-guide">Role Selection Guide</h2>
+<table>
+<thead>
+<tr>
+<th>Use Case</th>
+<th>Recommended Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Full administration</td>
+<td>Owner</td>
+</tr>
+<tr>
+<td>Resource management only</td>
+<td>Contributor</td>
+</tr>
+<tr>
+<td>View resources only</td>
+<td>Reader</td>
+</tr>
+<tr>
+<td>Manage access only</td>
+<td>User Access Administrator</td>
+</tr>
+<tr>
+<td>Agent users</td>
+<td>Reader (on specific agents)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="role-assignments.html">Role Assignments</a></li>
+<li><a href="scope.html">Scope</a></li>
+<li><a href="role-management.html">Role Management</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

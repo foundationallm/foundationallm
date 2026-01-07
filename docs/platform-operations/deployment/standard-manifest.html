@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Deployment Manifest Setup | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Deployment Manifest Setup | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../toc.html">
+      <meta name="docfx:tocrel" content="../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/platform-operations/deployment/standard-manifest.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../index.html">
+            <img id="logo" class="svg" src="../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="deployment-manifest-setup">Deployment Manifest Setup</h1>
+
+<p>The Deployment Manifest is a JSON file that configures all aspects of a Standard (AKS) deployment.</p>
+<h2 id="overview">Overview</h2>
+<p>The manifest template is located at:</p>
+<pre><code>deploy/standard/Deployment-Manifest.template.json
+</code></pre>
+<p>Copy to create your deployment configuration:</p>
+<pre><code class="lang-powershell">cp Deployment-Manifest.template.json Deployment-Manifest.json
+</code></pre>
+<blockquote>
+<p><strong>Tip:</strong> Create separate manifests for different environments (dev, test, prod).</p>
+</blockquote>
+<h2 id="general-settings">General Settings</h2>
+<p>Root-level properties defining the deployment:</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>adminObjectId</code></td>
+<td>GUID</td>
+<td>AD Group Object ID for admins</td>
+<td><code>995a549b-067e-...</code></td>
+</tr>
+<tr>
+<td><code>baseDomain</code></td>
+<td>String</td>
+<td>Base domain for services</td>
+<td><code>example.com</code></td>
+</tr>
+<tr>
+<td><code>createVpnGateway</code></td>
+<td>Boolean</td>
+<td>Create VPN Gateway</td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td><code>environment</code></td>
+<td>String</td>
+<td>Environment identifier</td>
+<td><code>dev</code>, <code>test</code>, <code>prod</code></td>
+</tr>
+<tr>
+<td><code>instanceId</code></td>
+<td>GUID</td>
+<td>Unique deployment instance ID</td>
+<td><code>5d40d2ee-aeb5-...</code></td>
+</tr>
+<tr>
+<td><code>k8sNamespace</code></td>
+<td>String</td>
+<td>Kubernetes namespace</td>
+<td><code>fllm</code></td>
+</tr>
+<tr>
+<td><code>letsEncryptEmail</code></td>
+<td>Email</td>
+<td>Let's Encrypt notifications</td>
+<td><code>admin@example.com</code></td>
+</tr>
+<tr>
+<td><code>location</code></td>
+<td>String</td>
+<td>Azure region</td>
+<td><code>eastus2</code></td>
+</tr>
+<tr>
+<td><code>networkName</code></td>
+<td>String</td>
+<td>Pre-provisioned network name</td>
+<td><code>fllm-network</code></td>
+</tr>
+<tr>
+<td><code>project</code></td>
+<td>String</td>
+<td>Project identifier (3-8 chars)</td>
+<td><code>fllm</code></td>
+</tr>
+<tr>
+<td><code>subscription</code></td>
+<td>GUID</td>
+<td>Azure subscription ID</td>
+<td><code>ad82622e-458a-...</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="notes">Notes</h3>
+<ul>
+<li><strong><code>createVpnGateway</code></strong>: Set to <code>false</code> if using existing VPN or ExpressRoute</li>
+<li><strong><code>instanceId</code></strong>: Generate a unique GUID; used by authorization system</li>
+<li><strong><code>letsEncryptEmail</code></strong>: Only needed if using Let's Encrypt certificates</li>
+<li><strong><code>location</code></strong>: Choose a region supporting required Azure OpenAI models</li>
+</ul>
+<h3 id="supported-models-by-region">Supported Models by Region</h3>
+<p>The template auto-configures available models:</p>
+<ul>
+<li>gpt-35-turbo (0613, 1106)</li>
+<li>gpt-4 (1106-Preview)</li>
+<li>gpt-4o (2024-05-13)</li>
+<li>text-embedding-ada-002 (2)</li>
+<li>text-embedding-3-large/small</li>
+</ul>
+<p>See <a href="https://learn.microsoft.com/azure/ai-services/openai/concepts/models#model-summary-table-and-region-availability">Azure OpenAI model availability</a>.</p>
+<h2 id="entra-client-ids">Entra Client IDs</h2>
+<p>Application registration client IDs:</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Description</th>
+<th>Reference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>authorization</code></td>
+<td>Authorization API</td>
+<td><a href="security-permissions/authentication-authorization/pre-deployment/authorization-setup.md">Authorization Setup</a></td>
+</tr>
+<tr>
+<td><code>chat</code></td>
+<td>Chat Portal</td>
+<td><a href="security-permissions/authentication-authorization/pre-deployment/core-authentication-setup.md">Core Auth Setup</a></td>
+</tr>
+<tr>
+<td><code>core</code></td>
+<td>Core API</td>
+<td><a href="security-permissions/authentication-authorization/pre-deployment/core-authentication-setup.md">Core Auth Setup</a></td>
+</tr>
+<tr>
+<td><code>managementapi</code></td>
+<td>Management API</td>
+<td><a href="security-permissions/authentication-authorization/pre-deployment/management-authentication-setup.md">Management Auth Setup</a></td>
+</tr>
+<tr>
+<td><code>managementui</code></td>
+<td>Management Portal</td>
+<td><a href="security-permissions/authentication-authorization/pre-deployment/management-authentication-setup.md">Management Auth Setup</a></td>
+</tr>
+<tr>
+<td><code>vectorizationapi</code></td>
+<td>Vectorization API</td>
+<td>Authentication Setup</td>
+</tr>
+</tbody>
+</table>
+<h2 id="entra-client-secrets">Entra Client Secrets</h2>
+<p>Secrets for authorization:</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>authorization</code></td>
+<td>Client secret for Authorization app registration</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Security:</strong> Store secrets securely. Consider using Azure Key Vault references.</p>
+</blockquote>
+<h2 id="entra-instances">Entra Instances</h2>
+<p>Cloud endpoints for authentication:</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>authorization</code></td>
+<td><code>https://login.microsoftonline.com/</code></td>
+</tr>
+</tbody>
+</table>
+<p>For sovereign clouds, use the appropriate login URL.</p>
+<h2 id="entra-scopes">Entra Scopes</h2>
+<p>API scopes for each service:</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Example</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>authorization</code></td>
+<td><code>api://FoundationaLLM-Authorization-Auth</code></td>
+<td>Authorization API scope</td>
+</tr>
+<tr>
+<td><code>chat</code></td>
+<td><code>api://FoundationaLLM-Auth/Data.Read</code></td>
+<td>Chat Portal scope</td>
+</tr>
+<tr>
+<td><code>core</code></td>
+<td><code>Data.Read</code></td>
+<td>Core API scope</td>
+</tr>
+<tr>
+<td><code>managementapi</code></td>
+<td><code>Data.Manage</code></td>
+<td>Management API scope</td>
+</tr>
+<tr>
+<td><code>managementui</code></td>
+<td><code>api://FoundationaLLM-Management-Auth/Data.Manage</code></td>
+<td>Management Portal scope</td>
+</tr>
+<tr>
+<td><code>vectorizationapi</code></td>
+<td><code>Data.Manage</code></td>
+<td>Vectorization API scope</td>
+</tr>
+</tbody>
+</table>
+<h2 id="ingress-configuration">Ingress Configuration</h2>
+<h3 id="api-ingress-backend-cluster">API Ingress (Backend Cluster)</h3>
+<pre><code class="lang-json">{
+  &quot;apiIngress&quot;: {
+    &quot;coreapi&quot;: {
+      &quot;host&quot;: &quot;api.fllm.example.com&quot;,
+      &quot;path&quot;: &quot;/core/&quot;,
+      &quot;pathType&quot;: &quot;ImplementationSpecific&quot;,
+      &quot;serviceName&quot;: &quot;core-api&quot;,
+      &quot;sslCert&quot;: &quot;coreapi&quot;
+    },
+    &quot;managementapi&quot;: {
+      &quot;host&quot;: &quot;management-api.fllm.example.com&quot;,
+      &quot;path&quot;: &quot;/management/&quot;,
+      &quot;pathType&quot;: &quot;ImplementationSpecific&quot;,
+      &quot;serviceName&quot;: &quot;management-api&quot;,
+      &quot;sslCert&quot;: &quot;managementapi&quot;
+    },
+    &quot;vectorizationapi&quot;: {
+      &quot;host&quot;: &quot;vectorization-api.fllm.example.com&quot;,
+      &quot;path&quot;: &quot;/vectorization/&quot;,
+      &quot;pathType&quot;: &quot;ImplementationSpecific&quot;,
+      &quot;serviceName&quot;: &quot;vectorization-api&quot;,
+      &quot;sslCert&quot;: &quot;vectorizationapi&quot;
+    }
+  }
+}
+</code></pre>
+<h3 id="frontend-ingress-frontend-cluster">Frontend Ingress (Frontend Cluster)</h3>
+<pre><code class="lang-json">{
+  &quot;frontendIngress&quot;: {
+    &quot;chatui&quot;: {
+      &quot;host&quot;: &quot;chat.fllm.example.com&quot;,
+      &quot;path&quot;: &quot;/&quot;,
+      &quot;pathType&quot;: &quot;ImplementationSpecific&quot;,
+      &quot;serviceName&quot;: &quot;chat-ui&quot;,
+      &quot;sslCert&quot;: &quot;chatui&quot;
+    },
+    &quot;managementui&quot;: {
+      &quot;host&quot;: &quot;management.fllm.example.com&quot;,
+      &quot;path&quot;: &quot;/&quot;,
+      &quot;pathType&quot;: &quot;ImplementationSpecific&quot;,
+      &quot;serviceName&quot;: &quot;management-ui&quot;,
+      &quot;sslCert&quot;: &quot;managementui&quot;
+    }
+  }
+}
+</code></pre>
+<h2 id="resource-groups">Resource Groups</h2>
+<p>Define resource group names for each workload:</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Purpose</th>
+<th>Default Pattern</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>app</code></td>
+<td>AKS clusters</td>
+<td><code>rg-{env}-{region}-app-{project}</code></td>
+</tr>
+<tr>
+<td><code>auth</code></td>
+<td>Authorization storage</td>
+<td><code>rg-{env}-{region}-auth-{project}</code></td>
+</tr>
+<tr>
+<td><code>data</code></td>
+<td>Customer data</td>
+<td><code>rg-{env}-{region}-data-{project}</code></td>
+</tr>
+<tr>
+<td><code>dns</code></td>
+<td>Private DNS</td>
+<td><code>rg-{env}-{region}-dns-{project}</code></td>
+</tr>
+<tr>
+<td><code>jbx</code></td>
+<td>Jumpbox</td>
+<td><code>rg-{env}-{region}-jbx-{project}</code></td>
+</tr>
+<tr>
+<td><code>net</code></td>
+<td>Networking</td>
+<td><code>rg-{env}-{region}-net-{project}</code></td>
+</tr>
+<tr>
+<td><code>oai</code></td>
+<td>Azure OpenAI</td>
+<td><code>rg-{env}-{region}-oai-{project}</code></td>
+</tr>
+<tr>
+<td><code>ops</code></td>
+<td>Operations</td>
+<td><code>rg-{env}-{region}-ops-{project}</code></td>
+</tr>
+<tr>
+<td><code>storage</code></td>
+<td>FLLM storage</td>
+<td><code>rg-{env}-{region}-storage-{project}</code></td>
+</tr>
+<tr>
+<td><code>vec</code></td>
+<td>Vector databases</td>
+<td><code>rg-{env}-{region}-vec-{project}</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="external-resource-groups">External Resource Groups</h2>
+<p>Pre-existing resource groups:</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dns</code></td>
+<td>Pre-provisioned Private DNS zones</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Note:</strong> Remove corresponding entry from <code>resourceGroups</code> if using external resources.</p>
+</blockquote>
+<h2 id="example-manifest">Example Manifest</h2>
+<pre><code class="lang-json">{
+  &quot;adminObjectId&quot;: &quot;995a549b-067e-4fe3-9f90-98d78b9ed086&quot;,
+  &quot;baseDomain&quot;: &quot;example.com&quot;,
+  &quot;createVpnGateway&quot;: false,
+  &quot;environment&quot;: &quot;dev&quot;,
+  &quot;instanceId&quot;: &quot;5d40d2ee-aeb5-4391-95a0-1fd9045d7720&quot;,
+  &quot;k8sNamespace&quot;: &quot;fllm&quot;,
+  &quot;letsEncryptEmail&quot;: &quot;admin@example.com&quot;,
+  &quot;location&quot;: &quot;eastus2&quot;,
+  &quot;networkName&quot;: &quot;fllm-network&quot;,
+  &quot;project&quot;: &quot;ai&quot;,
+  &quot;subscription&quot;: &quot;ad82622e-458a-4a48-8023-6b18eed1cf79&quot;,
+  
+  &quot;entraClientIds&quot;: {
+    &quot;authorization&quot;: &quot;...&quot;,
+    &quot;chat&quot;: &quot;...&quot;,
+    &quot;core&quot;: &quot;...&quot;,
+    &quot;managementapi&quot;: &quot;...&quot;,
+    &quot;managementui&quot;: &quot;...&quot;,
+    &quot;vectorizationapi&quot;: &quot;...&quot;
+  },
+  
+  &quot;entraClientSecrets&quot;: {
+    &quot;authorization&quot;: &quot;...&quot;
+  },
+  
+  &quot;entraInstances&quot;: {
+    &quot;authorization&quot;: &quot;https://login.microsoftonline.com/&quot;
+  },
+  
+  &quot;entraScopes&quot;: {
+    &quot;authorization&quot;: &quot;api://FoundationaLLM-Authorization-Auth&quot;,
+    &quot;chat&quot;: &quot;api://FoundationaLLM-Auth/Data.Read&quot;,
+    &quot;core&quot;: &quot;Data.Read&quot;,
+    &quot;managementapi&quot;: &quot;Data.Manage&quot;,
+    &quot;managementui&quot;: &quot;api://FoundationaLLM-Management-Auth/Data.Manage&quot;,
+    &quot;vectorizationapi&quot;: &quot;Data.Manage&quot;
+  },
+  
+  &quot;resourceGroups&quot;: {
+    &quot;app&quot;: &quot;rg-ai-dev-eastus2-app&quot;,
+    &quot;auth&quot;: &quot;rg-ai-dev-eastus2-auth&quot;,
+    &quot;data&quot;: &quot;rg-ai-dev-eastus2-data&quot;,
+    &quot;dns&quot;: &quot;rg-ai-dev-eastus2-dns&quot;,
+    &quot;jbx&quot;: &quot;rg-ai-dev-eastus2-jbx&quot;,
+    &quot;net&quot;: &quot;rg-ai-dev-eastus2-net&quot;,
+    &quot;oai&quot;: &quot;rg-ai-dev-eastus2-oai&quot;,
+    &quot;ops&quot;: &quot;rg-ai-dev-eastus2-ops&quot;,
+    &quot;storage&quot;: &quot;rg-ai-dev-eastus2-storage&quot;,
+    &quot;vec&quot;: &quot;rg-ai-dev-eastus2-vec&quot;
+  }
+}
+</code></pre>
+<h2 id="validation">Validation</h2>
+<p>Before deployment, verify:</p>
+<ol>
+<li>All GUIDs are valid</li>
+<li>Domain names are correct</li>
+<li>SSL certificates are in place</li>
+<li>Entra app registrations exist</li>
+<li>Resource group names follow conventions</li>
+</ol>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="deployment-standard.html">Standard Deployment</a></li>
+<li><a href="security-permissions/authentication-authorization/index.md">Authentication Setup</a></li>
+<li><a href="custom-domains.html">Custom Domains</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

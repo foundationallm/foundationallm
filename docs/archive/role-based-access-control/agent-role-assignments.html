@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Automate the management of role assignments for agents | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Automate the management of role assignments for agents | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../toc.html">
+      <meta name="docfx:tocrel" content="../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/archive/role-based-access-control/agent-role-assignments.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../index.html">
+            <img id="logo" class="svg" src="../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="automate-the-management-of-role-assignments-for-agents">Automate the management of role assignments for agents</h1>
+
+<h2 id="calling-the-management-rest-api">Calling the Management REST API</h2>
+<p>All calls to the FoundationaLLM Management REST API must use HTTPS and include the <code>Authorization</code> header with a valid Bearer token for the Microsoft Entra ID identity used to perform the call. The token must have the <code>Data.Manage</code> scope.</p>
+<p>The identity must have one of the following roles assigned at the scope of the FoundationaLLM agent:</p>
+<ul>
+<li><code>Owner</code></li>
+<li><code>User Access Administrator</code></li>
+</ul>
+<p>The URL of the Management REST API can be obtained from the <code>Deployment information</code> section of the FoundationaLLM Management Portal:</p>
+<p><img src="../media/management-portal-deployment-information.png" alt="The Deployment information section in the FoundationaLLM Management Portal"></p>
+<p>Here is an example of how to get an access token for the FoundationaLLM Management REST API:</p>
+<pre><code class="lang-cmd">az login
+az account get-access-token --scope api://FoundationaLLM-Management/Data.Manage
+</code></pre>
+<h2 id="listing-available-agents">Listing available agents</h2>
+<p>To list all agents in your FoundationaLLM instance, you can use the following REST API call:</p>
+<pre><code>HTTP GET {managementAPIUrl}/instances/{instanceId}/providers/FoundationaLLM.Agent/agents
+</code></pre>
+<p>where:</p>
+<ul>
+<li><code>{managementAPIUrl}</code> is the URL of the FoundationaLLM Management REST API.</li>
+<li><code>{instanceId}</code> is the ID of your FoundationaLLM instance.</li>
+</ul>
+<p>The response will be a list of objects representing agents. Each object has a property named <code>resource</code> that contains the agent's details as follows:</p>
+<pre><code class="lang-json">[
+    {
+        &quot;resource&quot;: {
+            &quot;type&quot;: &quot;knowledge-management&quot;,
+            &quot;name&quot;: &quot;FoundationaLLM&quot;,
+            &quot;object_id&quot;: &quot;/instances/73fad442-f614-4510-811f-414cb3a3d34b/providers/FoundationaLLM.Agent/agents/FoundationaLLM&quot;,
+            &quot;display_name&quot;: null,
+            &quot;description&quot;: &quot;Useful for answering questions about FoundationaLLM.&quot;,
+            &quot;cost_center&quot;: &quot;&quot;,
+            &quot;vectorization&quot;: {
+                &quot;dedicated_pipeline&quot;: true,
+                &quot;data_source_object_id&quot;: &quot;&quot;,
+                &quot;indexing_profile_object_ids&quot;: [
+                    &quot;&quot;
+                ],
+                &quot;text_embedding_profile_object_id&quot;: &quot;&quot;,
+                &quot;text_partitioning_profile_object_id&quot;: &quot;&quot;,
+                &quot;vectorization_data_pipeline_object_id&quot;: &quot;&quot;,
+                &quot;trigger_type&quot;: &quot;Event&quot;,
+                &quot;trigger_cron_schedule&quot;: &quot;* * * * *&quot;
+            },
+            &quot;inline_context&quot;: true,
+            &quot;sessions_enabled&quot;: true,
+            &quot;conversation_history_settings&quot;: {
+                &quot;enabled&quot;: false,
+                &quot;max_history&quot;: 5
+            },
+            &quot;gatekeeper_settings&quot;: {
+                &quot;use_system_setting&quot;: false,
+                &quot;options&quot;: []
+            },
+            &quot;orchestration_settings&quot;: {
+                &quot;orchestrator&quot;: &quot;LangChain&quot;,
+                &quot;agent_parameters&quot;: null
+            },
+            &quot;prompt_object_id&quot;: &quot;/instances/73fad442-f614-4510-811f-414cb3a3d34b/providers/FoundationaLLM.Prompt/prompts/FoundationaLLM&quot;,
+            &quot;ai_model_object_id&quot;: &quot;/instances/73fad442-f614-4510-811f-414cb3a3d34b/providers/FoundationaLLM.AIModel/aiModels/GPT4oMiniCompletionAIModel&quot;,
+            &quot;capabilities&quot;: [
+                &quot;OpenAI.Assistants&quot;
+            ],
+            &quot;tools&quot;: {
+                &quot;dalle-image-generation&quot;: {
+                    &quot;name&quot;: &quot;dalle-image-generation&quot;,
+                    &quot;description&quot;: &quot;Generates an image based on a prompt.&quot;,
+                    &quot;ai_model_object_ids&quot;: {
+                        &quot;main_model&quot;: &quot;/instances/73fad442-f614-4510-811f-414cb3a3d34b/providers/FoundationaLLM.AIModel/aiModels/DALLEImageGenerationModel&quot;
+                    },
+                    &quot;api_endpoint_configuration_object_ids&quot;: {},
+                    &quot;properties&quot;: {}
+                }
+            },
+            &quot;properties&quot;: {
+                &quot;welcome_message&quot;: &quot;&lt;p&gt;You are chatting with an agent named FoundationaLLM, who can answer questions about the FoundationaLLM platform.&lt;/p&gt;&lt;p&gt;Additional capabilities include:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Upload files and ask the agent to analyze them&lt;/li&gt;&lt;li&gt;Generate charts, files, and downloadable content&lt;/li&gt;&lt;li&gt;Generate images using DALL-E&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;em&gt;Please avoid sharing personally identifiable information (PII) while conversing with the agent.&lt;/em&gt;&lt;/p&gt;&quot;,
+                &quot;Azure.OpenAI.Assistant.Id&quot;: &quot;asst_wNLRX3klgprrg6ZFSbigfSJg&quot;
+            },
+            &quot;created_on&quot;: &quot;0001-01-01T00:00:00+00:00&quot;,
+            &quot;updated_on&quot;: &quot;2024-11-13T16:50:28.6257554+00:00&quot;,
+            &quot;created_by&quot;: null,
+            &quot;updated_by&quot;: &quot;ciprian@foundationaLLM.ai&quot;,
+            &quot;deleted&quot;: false,
+            &quot;expiration_date&quot;: null
+        }
+    }
+]
+</code></pre>
+<p>Make a note of the <code>object_id</code> property for the agent you want to assign a role to. You will need this value when requesting to add or remove role assignments for the agent.</p>
+<h2 id="adding-or-removing-role-assignments-for-an-agent">Adding or removing role assignments for an agent</h2>
+<p>To request adding or removing role assignments for an agent, you can use the following REST API call:</p>
+<pre><code class="lang-http">HTTP POST {managementAPIUrl}/instances/{instanceId}/providers/FoundationaLLM.Agent/agents/{agentName}/externalRoleAssignments
+</code></pre>
+<p>where:</p>
+<ul>
+<li><code>{managementAPIUrl}</code> is the URL of the FoundationaLLM Management REST API.</li>
+<li><code>{instanceId}</code> is the ID of your FoundationaLLM instance.</li>
+<li><code>{agentName}</code> is the name of the agent you want to assign a role to.</li>
+</ul>
+<p>For the example above, the <code>agentName</code> would be <code>FoundationaLLM</code> and the request should be:</p>
+<pre><code class="lang-http">HTTP POST {managementAPIUrl}/instances/73fad442-f614-4510-811f-414cb3a3d34b/providers/FoundationaLLM.Agent/agents/FoundationaLLM/externalRoleAssignments
+</code></pre>
+<p>The body of the request should contain the following JSON object:</p>
+<pre><code class="lang-json">{
+    &quot;roleAssignmentsToAdd&quot;: [
+        {
+            &quot;roleDefinitionId&quot;: &quot;00a53e72-f66e-4c03-8f81-7e885fd2eb35&quot;,
+            &quot;identities&quot;: [
+                &quot;user1@foundationallm.ai&quot;,
+                &quot;user2@foundationallm.ai&quot;
+            ],
+            &quot;expirationDate&quot;: &quot;2024-12-31T23:59:59Z&quot;
+        }
+    ],
+    &quot;roleAssignmentsToRemove&quot;: [
+        {
+            &quot;roleDefinitionId&quot;: &quot;00a53e72-f66e-4c03-8f81-7e885fd2eb35&quot;,
+            &quot;identities&quot;: []
+        }
+}
+</code></pre>
+<p>where:</p>
+<ul>
+<li>The role definition identifier <code>00a53e72-f66e-4c03-8f81-7e885fd2eb35</code> is the well-known identifier for the <code>Reader</code> role.</li>
+<li>The <code>identities</code> array contains the list of user principal names (UPNs) that you want to assign or remove to or from the role.</li>
+<li><code>expirationDate</code> is an optional property that specifies the date and time when the role assignment will expire.</li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

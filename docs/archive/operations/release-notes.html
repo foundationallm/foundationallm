@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Guidance for creating release notes | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Guidance for creating release notes | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../toc.html">
+      <meta name="docfx:tocrel" content="../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/archive/operations/release-notes.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../index.html">
+            <img id="logo" class="svg" src="../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="guidance-for-creating-release-notes">Guidance for creating release notes</h1>
+
+<p>Creating release notes is an essential part of the software development and release process. Release notes provide valuable information to end-users, stakeholders, and other team members about the changes, enhancements, and fixes introduced in a software release. Here's a structured process for creating release notes:</p>
+<h2 id="1-define-the-release-scope-and-content">1. Define the release scope and content</h2>
+<ul>
+<li>Understand the changes included in the release.</li>
+<li>Identify new features, enhancements, bug fixes, and any other significant changes.</li>
+</ul>
+<h2 id="2-use-a-version-control-system">2. Use a version control system</h2>
+<ul>
+<li>Review the commit history and pull requests associated with the release.</li>
+<li>Identify the issues or features implemented during the release period.</li>
+</ul>
+<h2 id="3-categorize-changes">3. Categorize changes</h2>
+<ul>
+<li>Group changes into categories for clarity. Common categories include:
+<ul>
+<li>New Features</li>
+<li>Enhancements</li>
+<li>Bug Fixes</li>
+<li>Deprecations</li>
+<li>Security Updates</li>
+</ul>
+</li>
+</ul>
+<h2 id="4-collect-information">4. Collect information</h2>
+<ul>
+<li>Gather details for each change, including:
+<ul>
+<li>Brief description of the change.</li>
+<li>Associated issue or feature request numbers.</li>
+<li>Names of contributors or teams involved.</li>
+</ul>
+</li>
+</ul>
+<h2 id="5-prioritize-information">5. Prioritize information</h2>
+<ul>
+<li>Arrange the changes in order of importance or relevance to users.</li>
+<li>Highlight major features or critical bug fixes at the top.</li>
+</ul>
+<h2 id="6-write-release-notes">6. Write Release Notes</h2>
+<ul>
+<li>Craft concise and clear release notes.</li>
+<li>Use a consistent format and style.</li>
+<li>Include a header with the release version, date, and any important announcements.</li>
+</ul>
+<h2 id="7-provide-context">7. Provide context</h2>
+<ul>
+<li>Offer context for each change. Explain why a feature was added or why a bug fix was necessary.</li>
+<li>Include information that helps users understand the impact of the changes.</li>
+</ul>
+<h2 id="8-include-links">8. Include links</h2>
+<ul>
+<li>Add links to relevant documentation, issue trackers, or pull requests for more details.</li>
+<li>This helps users and developers find additional information if needed.</li>
+</ul>
+<h2 id="9-test-release-notes">9. Test Release Notes</h2>
+<ul>
+<li>Review the release notes to ensure accuracy and completeness.</li>
+<li>Verify that all changes are appropriately documented.</li>
+</ul>
+<h2 id="10-review-with-stakeholders">10. Review with stakeholders</h2>
+<ul>
+<li>Share the draft release notes with relevant stakeholders, such as product managers, developers, and quality assurance teams.</li>
+<li>Incorporate feedback and make necessary adjustments.</li>
+</ul>
+<h2 id="11-publish-release-notes">11. Publish release notes</h2>
+<ul>
+<li>We will publish release notes as part of creating a new release in github.</li>
+<li>If applicable, notify users through email, social media, or other communication channels.</li>
+</ul>
+<h2 id="12-archive-previous-release-notes">12. Archive previous release notes</h2>
+<ul>
+<li>Maintain a historical record by archiving previous release notes.  Relase notes for previous releases will remain visible with those releases in github.</li>
+<li>This helps users track changes over time and understand the evolution of the software.</li>
+</ul>
+<h2 id="13-update-documentation">13. Update documentation</h2>
+<ul>
+<li>Ensure that other documentation, such as user guides or API documentation, is updated to reflect the changes introduced in the release.</li>
+</ul>
+<h2 id="14-automate-if-possible">14. Automate if possible</h2>
+<ul>
+<li>Consider automating parts of the release notes generation process, especially if your project follows a structured development workflow with clear commit messages and pull request descriptions.</li>
+</ul>
+<h2 id="15-seek-user-feedback">15. Seek user feedback</h2>
+<ul>
+<li>Encourage users to provide feedback on the release notes. This can help you improve the clarity and usefulness of future release notes.</li>
+</ul>
+<p>By following this process, you can create comprehensive and user-friendly release notes that effectively communicate the changes made in each software release.</p>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

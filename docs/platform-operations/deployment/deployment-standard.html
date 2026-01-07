@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Standard Deployment with AKS | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Standard Deployment with AKS | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../toc.html">
+      <meta name="docfx:tocrel" content="../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/platform-operations/deployment/deployment-standard.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../index.html">
+            <img id="logo" class="svg" src="../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="standard-deployment-with-aks">Standard Deployment with AKS</h1>
+
+<p>The Standard deployment uses Azure Kubernetes Service (AKS) for production environments requiring advanced orchestration, scalability, and enterprise-grade security features.</p>
+<h2 id="overview">Overview</h2>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Infrastructure</strong></td>
+<td>Azure Kubernetes Service (AKS)</td>
+</tr>
+<tr>
+<td><strong>Deployment Time</strong></td>
+<td>~2 hours</td>
+</tr>
+<tr>
+<td><strong>Scalability</strong></td>
+<td>Advanced Kubernetes orchestration</td>
+</tr>
+<tr>
+<td><strong>Networking</strong></td>
+<td>Private endpoints, VNet peering</td>
+</tr>
+<tr>
+<td><strong>SSL</strong></td>
+<td>Custom certificates required</td>
+</tr>
+</tbody>
+</table>
+<h2 id="architecture">Architecture</h2>
+<p>The Standard deployment creates:</p>
+<ul>
+<li><strong>Two AKS clusters</strong>: Frontend (portals) and Backend (APIs)</li>
+<li><strong>Private networking</strong>: VNet with subnets, private endpoints</li>
+<li><strong>Multiple resource groups</strong>: Organized by workload type</li>
+<li><strong>Full Azure monitoring</strong>: Log Analytics, Application Insights</li>
+</ul>
+<h2 id="prerequisites">Prerequisites</h2>
+<h3 id="azure-requirements">Azure Requirements</h3>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Azure Subscription</strong></td>
+<td>Dedicated subscription recommended</td>
+</tr>
+<tr>
+<td><strong>Azure OpenAI Access</strong></td>
+<td><a href="https://customervoice.microsoft.com/Pages/ResponsePage.aspx?id=v4j5cvGGr0GRqy180BHbR7en2Ais5pxKtso_Pz4b1_xUNTZBNzRKNlVQSFhZMU9aV09EVzYxWFdORCQlQCN0PWcu">Request access</a></td>
+</tr>
+<tr>
+<td><strong>VM Quota</strong></td>
+<td>~64 vCPUs minimum (varies by node SKU)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="service-principal-requirements">Service Principal Requirements</h3>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Scope</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Directory Reader</code></td>
+<td>Azure Tenant</td>
+</tr>
+<tr>
+<td><code>Owner</code></td>
+<td>Target resource groups (or subscription if RGs don't exist)</td>
+</tr>
+<tr>
+<td><code>DNS Zone Contributor</code></td>
+<td>DNS resource group</td>
+</tr>
+<tr>
+<td><code>Network Contributor</code></td>
+<td>Hub VNet resource</td>
+</tr>
+</tbody>
+</table>
+<h3 id="entra-id-requirements">Entra ID Requirements</h3>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>AD Groups</strong></td>
+<td><code>FLLM-Admins</code>, <code>FLLM-Users</code> (pre-created)</td>
+</tr>
+<tr>
+<td><strong>App Registrations</strong></td>
+<td>6 registrations (see <a href="security-permissions/authentication-authorization/index.md">Authentication Setup</a>)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="required-tools">Required Tools</h3>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Azure CLI v2.51.0+</td>
+<td>Azure management</td>
+</tr>
+<tr>
+<td>PowerShell 7.4.1+</td>
+<td>Deployment scripts</td>
+</tr>
+<tr>
+<td>Git</td>
+<td>Repository access</td>
+</tr>
+<tr>
+<td>Helm</td>
+<td>Kubernetes deployments</td>
+</tr>
+<tr>
+<td>kubectl</td>
+<td>Cluster management</td>
+</tr>
+<tr>
+<td>kubelogin</td>
+<td>AKS authentication</td>
+</tr>
+</tbody>
+</table>
+<h2 id="pre-deployment-information">Pre-Deployment Information</h2>
+<p>Gather the following before starting:</p>
+<h3 id="general-settings">General Settings</h3>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Project ID</td>
+<td>3-8 character identifier</td>
+<td><code>fllm</code></td>
+</tr>
+<tr>
+<td>Location</td>
+<td>Azure region</td>
+<td><code>eastus2</code></td>
+</tr>
+<tr>
+<td>Instance ID</td>
+<td>Unique GUID</td>
+<td><code>5d40d2ee-...</code></td>
+</tr>
+<tr>
+<td>Admin Group</td>
+<td>AD Group Object ID</td>
+<td><code>995a549b-...</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="network-configuration">Network Configuration</h3>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>VNet CIDR</td>
+<td><code>10.220.128.0/20</code></td>
+<td>Must be /20 netmask</td>
+</tr>
+<tr>
+<td>AKS Service CIDR</td>
+<td><code>10.100.0.0/16</code></td>
+<td>Kubernetes services</td>
+</tr>
+<tr>
+<td>Allowed External CIDRs</td>
+<td><code>192.168.100.0/24</code></td>
+<td>Access whitelist</td>
+</tr>
+</tbody>
+</table>
+<h3 id="aks-node-pools">AKS Node Pools</h3>
+<table>
+<thead>
+<tr>
+<th>Pool</th>
+<th>Default SKU</th>
+<th>Nodes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Backend User</td>
+<td><code>Standard_D8_v5</code></td>
+<td>1-3</td>
+</tr>
+<tr>
+<td>Backend System</td>
+<td><code>Standard_D2_v5</code></td>
+<td>1-3</td>
+</tr>
+<tr>
+<td>Frontend User</td>
+<td><code>Standard_D2_v5</code></td>
+<td>1-3</td>
+</tr>
+<tr>
+<td>Frontend System</td>
+<td><code>Standard_D2_v5</code></td>
+<td>1-3</td>
+</tr>
+</tbody>
+</table>
+<h3 id="ssl-certificates">SSL Certificates</h3>
+<p>Provision certificates in PFX format for:</p>
+<table>
+<thead>
+<tr>
+<th>Service</th>
+<th>Hostname Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Core API</td>
+<td><code>api.example.com</code></td>
+</tr>
+<tr>
+<td>Management API</td>
+<td><code>management-api.example.com</code></td>
+</tr>
+<tr>
+<td>Chat UI</td>
+<td><code>chat.example.com</code></td>
+</tr>
+<tr>
+<td>Management UI</td>
+<td><code>management.example.com</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="deployment-steps">Deployment Steps</h2>
+<h3 id="step-1-clone-repository">Step 1: Clone Repository</h3>
+<pre><code class="lang-powershell">git clone https://github.com/foundationallm/foundationallm.git
+cd foundationallm
+git checkout release/0.9.6
+</code></pre>
+<h3 id="step-2-configure-environment">Step 2: Configure Environment</h3>
+<pre><code class="lang-powershell">azd env new --location &lt;azure-region&gt; --subscription &lt;subscription-id&gt;
+</code></pre>
+<h3 id="step-3-prepare-ssl-certificates">Step 3: Prepare SSL Certificates</h3>
+<p>Place PFX files in <code>deploy/standard/certs/</code>:</p>
+<pre><code>deploy/standard/certs/
+├── api.example.com.pfx
+├── management-api.example.com.pfx
+├── chat.example.com.pfx
+└── management.example.com.pfx
+</code></pre>
+<h3 id="step-4-create-deployment-manifest">Step 4: Create Deployment Manifest</h3>
+<p>Copy and configure the manifest:</p>
+<pre><code class="lang-powershell">cp deploy/standard/Deployment-Manifest.template.json deploy/standard/Deployment-Manifest.json
+</code></pre>
+<p>Edit <code>Deployment-Manifest.json</code> with your settings. See <a href="standard-manifest.html">Deployment Manifest Setup</a> for details.</p>
+<h3 id="step-5-provision-infrastructure">Step 5: Provision Infrastructure</h3>
+<pre><code class="lang-powershell">cd deploy/standard
+azd provision
+</code></pre>
+<p>The script generates <code>hosts</code> file in <code>config/</code> folder with private endpoint IPs.</p>
+<h3 id="step-6-configure-network-access">Step 6: Configure Network Access</h3>
+<p>Ensure network connectivity to deployed resources:</p>
+<ul>
+<li>Update local hosts file, OR</li>
+<li>Configure organization DNS</li>
+</ul>
+<h3 id="step-7-deploy-applications">Step 7: Deploy Applications</h3>
+<pre><code class="lang-powershell">azd deploy
+</code></pre>
+<p>This deploys to both clusters and generates <code>hosts.ingress</code> with service endpoints.</p>
+<h3 id="step-8-post-deployment-configuration">Step 8: Post-Deployment Configuration</h3>
+<p><strong>Configure MS Graph Permissions:</strong></p>
+<pre><code class="lang-powershell">../common/scripts/Set-FllmGraphRoles.ps1 -resourceGroupName &lt;app-resource-group&gt;
+</code></pre>
+<p><strong>Update OAuth Callback URIs:</strong></p>
+<pre><code class="lang-powershell">../common/scripts/Update-OAuthCallbackUris.ps1
+</code></pre>
+<h3 id="step-9-verify-deployment">Step 9: Verify Deployment</h3>
+<ol>
+<li>Access the Chat UI URL</li>
+<li>Log in with an authorized user</li>
+<li>Send a test message: &quot;Who are you?&quot;</li>
+<li>Verify the default agent responds</li>
+</ol>
+<h2 id="resource-groups">Resource Groups</h2>
+<table>
+<thead>
+<tr>
+<th>Name Pattern</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>rg-{project}-{env}-{region}-app</code></td>
+<td>AKS clusters</td>
+</tr>
+<tr>
+<td><code>rg-{project}-{env}-{region}-auth</code></td>
+<td>Authorization storage</td>
+</tr>
+<tr>
+<td><code>rg-{project}-{env}-{region}-data</code></td>
+<td>Customer data</td>
+</tr>
+<tr>
+<td><code>rg-{project}-{env}-{region}-dns</code></td>
+<td>Private DNS</td>
+</tr>
+<tr>
+<td><code>rg-{project}-{env}-{region}-net</code></td>
+<td>Networking</td>
+</tr>
+<tr>
+<td><code>rg-{project}-{env}-{region}-oai</code></td>
+<td>Azure OpenAI</td>
+</tr>
+<tr>
+<td><code>rg-{project}-{env}-{region}-ops</code></td>
+<td>Operations</td>
+</tr>
+<tr>
+<td><code>rg-{project}-{env}-{region}-storage</code></td>
+<td>FLLM storage</td>
+</tr>
+<tr>
+<td><code>rg-{project}-{env}-{region}-vec</code></td>
+<td>Vector databases</td>
+</tr>
+</tbody>
+</table>
+<h2 id="updating-deployments">Updating Deployments</h2>
+<p>To update container images:</p>
+<pre><code class="lang-powershell">./Deploy-Images-Aks.ps1 `
+    -aksName &quot;&lt;aks-name&gt;&quot; `
+    -resourceGroup &quot;&lt;resource-group&gt;&quot; `
+    -tag &quot;&lt;version&gt;&quot;
+</code></pre>
+<p>See <a href="../how-to-guides/updating-container-versions.html">Updating Container Versions</a> for details.</p>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Quota exceeded</td>
+<td>Request quota increase for selected SKUs</td>
+</tr>
+<tr>
+<td>Network access denied</td>
+<td>Verify hosts file or DNS configuration</td>
+</tr>
+<tr>
+<td>Certificate errors</td>
+<td>Verify PFX format and placement</td>
+</tr>
+<tr>
+<td>Pod crashes</td>
+<td>Check pod logs with <code>kubectl logs</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="deployment-quick-start.html">Quick Start Deployment</a></li>
+<li><a href="standard-manifest.html">Deployment Manifest Setup</a></li>
+<li><a href="security-permissions/authentication-authorization/index.md">Authentication Setup</a></li>
+<li><a href="../security-permissions/network-security-groups.html">Network Security Groups</a></li>
+<li><a href="../how-to-guides/updating-container-versions.html">Updating Container Versions</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

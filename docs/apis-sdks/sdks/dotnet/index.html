@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>.NET SDK | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content=".NET SDK | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/apis-sdks/sdks/dotnet/index.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="net-sdk">.NET SDK</h1>
+
+<p>The FoundationaLLM .NET SDK provides client libraries for integrating with FoundationaLLM APIs in .NET applications.</p>
+<h2 id="overview">Overview</h2>
+<p>The SDK includes two NuGet packages:</p>
+<table>
+<thead>
+<tr>
+<th>Package</th>
+<th>Description</th>
+<th>NuGet</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>FoundationaLLM.Client.Core</strong></td>
+<td>Core API client for completions, sessions, agents</td>
+<td><a href="https://www.nuget.org/packages/FoundationaLLM.Client.Core">NuGet</a></td>
+</tr>
+<tr>
+<td><strong>FoundationaLLM.Client.Management</strong></td>
+<td>Management API client for resource management</td>
+<td><a href="https://www.nuget.org/packages/FoundationaLLM.Client.Management">NuGet</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="installation">Installation</h2>
+<pre><code class="lang-bash"># Core API client
+dotnet add package FoundationaLLM.Client.Core
+
+# Management API client
+dotnet add package FoundationaLLM.Client.Management
+</code></pre>
+<h2 id="client-architecture">Client Architecture</h2>
+<p>Each package provides two client classes:</p>
+<table>
+<thead>
+<tr>
+<th>Client Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>RESTClient</strong></td>
+<td>Low-level client with direct access to all API endpoints</td>
+</tr>
+<tr>
+<td><strong>Client</strong></td>
+<td>High-level client with simplified, user-friendly methods</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Choose based on your needs: RESTClient for complete API access, Client for simpler common operations.</p>
+</blockquote>
+<hr>
+<h2 id="core-client">Core Client</h2>
+<h3 id="quick-start">Quick Start</h3>
+<pre><code class="lang-csharp">using FoundationaLLM.Client.Core;
+using Azure.Identity;
+
+// Configuration
+var coreApiUrl = &quot;https://your-core-api.azurecontainerapps.io&quot;;
+var instanceId = &quot;your-instance-guid&quot;;
+var credential = new AzureCliCredential(); // or ManagedIdentityCredential for production
+
+// Create client
+var coreClient = new CoreClient(coreApiUrl, credential, instanceId);
+
+// Get available agents
+var agents = await coreClient.GetAgentsAsync();
+
+// Request a completion
+var response = await coreClient.GetCompletionAsync(
+    userPrompt: &quot;What can you help me with?&quot;,
+    agentName: &quot;default-agent&quot;
+);
+Console.WriteLine(response.Completion);
+</code></pre>
+<h3 id="using-dependency-injection">Using Dependency Injection</h3>
+<p><strong>1. Configuration file (appsettings.json):</strong></p>
+<pre><code class="lang-json">{
+  &quot;FoundationaLLM&quot;: {
+    &quot;APIEndpoints&quot;: {
+      &quot;CoreAPI&quot;: {
+        &quot;Essentials&quot;: {
+          &quot;APIUrl&quot;: &quot;https://your-core-api.azurecontainerapps.io&quot;
+        }
+      }
+    },
+    &quot;Instance&quot;: {
+      &quot;Id&quot;: &quot;your-instance-guid&quot;
+    }
+  }
+}
+</code></pre>
+<p><strong>2. Service registration:</strong></p>
+<pre><code class="lang-csharp">using FoundationaLLM.Client.Core;
+using FoundationaLLM.Common.Constants.Configuration;
+
+var builder = WebApplication.CreateBuilder(args);
+var credential = new DefaultAzureCredential();
+
+// Register Core clients
+builder.Services.AddCoreClient(
+    builder.Configuration[AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Essentials_APIUrl]!,
+    credential,
+    builder.Configuration[AppConfigurationKeys.FoundationaLLM_Instance_Id]!
+);
+</code></pre>
+<p><strong>3. Inject and use:</strong></p>
+<pre><code class="lang-csharp">public class ChatService
+{
+    private readonly ICoreClient _coreClient;
+    
+    public ChatService(ICoreClient coreClient)
+    {
+        _coreClient = coreClient;
+    }
+    
+    public async Task&lt;string&gt; GetResponseAsync(string question)
+    {
+        var response = await _coreClient.GetCompletionAsync(question);
+        return response.Completion;
+    }
+}
+</code></pre>
+<h3 id="core-client-methods">Core Client Methods</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GetAgentsAsync()</code></td>
+<td>List available agents</td>
+</tr>
+<tr>
+<td><code>GetCompletionAsync(prompt, agent)</code></td>
+<td>Request a completion</td>
+</tr>
+<tr>
+<td><code>GetChatCompletionAsync(prompt, sessionId, agent)</code></td>
+<td>Chat completion with session context</td>
+</tr>
+</tbody>
+</table>
+<h3 id="core-rest-client-methods">Core REST Client Methods</h3>
+<table>
+<thead>
+<tr>
+<th>Client</th>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Sessions</code></td>
+<td><code>GetSessionsAsync()</code></td>
+<td>List all sessions</td>
+</tr>
+<tr>
+<td><code>Sessions</code></td>
+<td><code>CreateSessionAsync(name)</code></td>
+<td>Create new session</td>
+</tr>
+<tr>
+<td><code>Sessions</code></td>
+<td><code>GetMessagesAsync(sessionId)</code></td>
+<td>Get session messages</td>
+</tr>
+<tr>
+<td><code>Sessions</code></td>
+<td><code>DeleteSessionAsync(sessionId)</code></td>
+<td>Delete session</td>
+</tr>
+<tr>
+<td><code>Completions</code></td>
+<td><code>GetCompletionAsync(request)</code></td>
+<td>Request completion</td>
+</tr>
+<tr>
+<td><code>Completions</code></td>
+<td><code>StartCompletionOperationAsync(request)</code></td>
+<td>Async completion</td>
+</tr>
+<tr>
+<td><code>Status</code></td>
+<td><code>GetServiceStatusAsync()</code></td>
+<td>Check API status</td>
+</tr>
+<tr>
+<td><code>Branding</code></td>
+<td><code>GetBrandingAsync()</code></td>
+<td>Get branding config</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="management-client">Management Client</h2>
+<h3 id="quick-start-1">Quick Start</h3>
+<pre><code class="lang-csharp">using FoundationaLLM.Client.Management;
+using Azure.Identity;
+
+// Configuration
+var managementApiUrl = &quot;https://your-management-api.azurecontainerapps.io&quot;;
+var instanceId = &quot;your-instance-guid&quot;;
+var credential = new AzureCliCredential();
+
+// Create client
+var managementClient = new ManagementClient(managementApiUrl, credential, instanceId);
+
+// List agents
+var agents = await managementClient.Agents.GetAgentsAsync();
+
+// Create a prompt
+await managementClient.Prompts.CreatePromptAsync(new PromptRequest
+{
+    Name = &quot;my-prompt&quot;,
+    DisplayName = &quot;My Prompt&quot;,
+    Category = &quot;AgentWorkflow&quot;,
+    Prefix = &quot;You are a helpful assistant...&quot;
+});
+
+// Delete and purge a data source
+await managementClient.DataSources.DeleteDataSourceAsync(&quot;old-source&quot;);
+await managementClient.DataSources.PurgeDataSourceAsync(&quot;old-source&quot;);
+</code></pre>
+<h3 id="using-dependency-injection-1">Using Dependency Injection</h3>
+<p><strong>1. Configuration file (appsettings.json):</strong></p>
+<pre><code class="lang-json">{
+  &quot;FoundationaLLM&quot;: {
+    &quot;APIEndpoints&quot;: {
+      &quot;ManagementAPI&quot;: {
+        &quot;Essentials&quot;: {
+          &quot;APIUrl&quot;: &quot;https://your-management-api.azurecontainerapps.io&quot;
+        }
+      }
+    },
+    &quot;Instance&quot;: {
+      &quot;Id&quot;: &quot;your-instance-guid&quot;
+    }
+  }
+}
+</code></pre>
+<p><strong>2. Service registration:</strong></p>
+<pre><code class="lang-csharp">using FoundationaLLM.Client.Management;
+
+builder.Services.AddManagementClient(
+    builder.Configuration[AppConfigurationKeys.FoundationaLLM_APIEndpoints_ManagementAPI_Essentials_APIUrl]!,
+    credential,
+    builder.Configuration[AppConfigurationKeys.FoundationaLLM_Instance_Id]!
+);
+</code></pre>
+<p><strong>3. Inject and use:</strong></p>
+<pre><code class="lang-csharp">public class AgentService
+{
+    private readonly IManagementClient _managementClient;
+    
+    public AgentService(IManagementClient managementClient)
+    {
+        _managementClient = managementClient;
+    }
+    
+    public async Task&lt;IEnumerable&lt;Agent&gt;&gt; GetAllAgentsAsync()
+    {
+        return await _managementClient.Agents.GetAgentsAsync();
+    }
+}
+</code></pre>
+<h3 id="management-client-interfaces">Management Client Interfaces</h3>
+<table>
+<thead>
+<tr>
+<th>Interface</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>IAgentManagementClient</code></td>
+<td>Manage agents</td>
+</tr>
+<tr>
+<td><code>IPromptManagementClient</code></td>
+<td>Manage prompts</td>
+</tr>
+<tr>
+<td><code>IDataSourceManagementClient</code></td>
+<td>Manage data sources</td>
+</tr>
+<tr>
+<td><code>IAIModelManagementClient</code></td>
+<td>Manage AI models</td>
+</tr>
+<tr>
+<td><code>IConfigurationManagementClient</code></td>
+<td>Manage configuration</td>
+</tr>
+<tr>
+<td><code>IVectorizationManagementClient</code></td>
+<td>Manage vectorization profiles</td>
+</tr>
+<tr>
+<td><code>IAttachmentManagementClient</code></td>
+<td>Manage attachments</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="azure-app-configuration-integration">Azure App Configuration Integration</h2>
+<p>Load configuration from Azure App Configuration:</p>
+<pre><code class="lang-csharp">var configuration = new ConfigurationBuilder()
+    .AddJsonFile(&quot;appsettings.json&quot;, optional: true)
+    .AddEnvironmentVariables()
+    .AddAzureAppConfiguration(options =&gt;
+    {
+        options.Connect(Environment.GetEnvironmentVariable(&quot;FLLM_AppConfig_ConnectionString&quot;));
+        options.ConfigureKeyVault(kv =&gt; kv.SetCredential(credential));
+        options.Select(AppConfigurationKeyFilters.FoundationaLLM_Instance);
+        options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_CoreAPI_Essentials);
+        options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_ManagementAPI_Essentials);
+    })
+    .Build();
+</code></pre>
+<hr>
+<h2 id="authentication">Authentication</h2>
+<h3 id="development-azure-cli">Development (Azure CLI)</h3>
+<pre><code class="lang-csharp">var credential = new AzureCliCredential();
+</code></pre>
+<h3 id="production-managed-identity">Production (Managed Identity)</h3>
+<pre><code class="lang-csharp">var credential = new ManagedIdentityCredential();
+</code></pre>
+<h3 id="using-defaultauthentication-helper">Using DefaultAuthentication Helper</h3>
+<pre><code class="lang-csharp">using FoundationaLLM.Common.Authentication;
+
+// Initialize for environment
+DefaultAuthentication.Initialize(isProduction: false, serviceName: &quot;MyApp&quot;);
+var credential = DefaultAuthentication.AzureCredential;
+</code></pre>
+<hr>
+<h2 id="configuration-options">Configuration Options</h2>
+<pre><code class="lang-csharp">var options = new APIClientSettings
+{
+    Timeout = TimeSpan.FromSeconds(600) // Default: 900 seconds
+};
+
+var coreClient = new CoreClient(apiUrl, credential, instanceId, options);
+</code></pre>
+<hr>
+<h2 id="error-handling">Error Handling</h2>
+<pre><code class="lang-csharp">try
+{
+    var response = await coreClient.GetCompletionAsync(&quot;What is FoundationaLLM?&quot;);
+}
+catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.Unauthorized)
+{
+    // Handle authentication error
+    Console.WriteLine(&quot;Authentication failed. Check your credentials.&quot;);
+}
+catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.TooManyRequests)
+{
+    // Handle rate limiting
+    Console.WriteLine(&quot;Rate limit exceeded. Retry later.&quot;);
+}
+catch (Exception ex)
+{
+    Console.WriteLine($&quot;Error: {ex.Message}&quot;);
+}
+</code></pre>
+<hr>
+<h2 id="examples">Examples</h2>
+<p>The <code>Core.Examples</code> test project in the FoundationaLLM repository contains comprehensive examples demonstrating:</p>
+<ul>
+<li>Session management</li>
+<li>Completion requests</li>
+<li>Agent configuration</li>
+<li>Data source management</li>
+<li>Vectorization workflows</li>
+</ul>
+<hr>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="../../apis/core-api/api-reference.html">Core API Reference</a></li>
+<li><a href="../../apis/management-api/api-reference.html">Management API Reference</a></li>
+<li><a href="../python/index.html">Python SDK</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Troubleshooting &amp; issue reporting guide | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Troubleshooting &amp; issue reporting guide | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../toc.html">
+      <meta name="docfx:tocrel" content="../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/archive/operations/troubleshooting.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../index.html">
+            <img id="logo" class="svg" src="../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="troubleshooting--issue-reporting-guide">Troubleshooting &amp; issue reporting guide</h1>
+
+<p>There are three common issues that may arise when using the FoundationaLLM platform. This guide provides a structured approach to troubleshooting these issues.</p>
+<h2 id="troubleshooting-azure-app-registration-misconfiguration">Troubleshooting Azure App Registration misconfiguration</h2>
+<h3 id="1-symptoms">1. <strong>Symptoms:</strong></h3>
+<ul>
+<li>Users unable to authenticate or access Azure services using the app.</li>
+<li>Error messages related to authentication failures.</li>
+</ul>
+<h3 id="2-troubleshooting-steps">2. <strong>Troubleshooting Steps:</strong></h3>
+<p>a. <strong>Verify App Registration Configuration:</strong></p>
+<ul>
+<li>Check the Azure Portal for the App Registration settings.</li>
+<li>Ensure the correct redirect URIs, client secrets, and authentication settings are configured by reviewing (the setup guide)[../deployment/authentication/core-authentication-setup-entra.md#update-app-configuration-settings].</li>
+</ul>
+<p>b. <strong>Error Logs Examination:</strong></p>
+<ul>
+<li>Review logs for any authentication-related errors.</li>
+<li>Check for error details and correlate them with misconfigured settings.</li>
+</ul>
+<h2 id="troubleshooting-missing-azure-app-registration-details-in-azure-app-configuration">Troubleshooting missing Azure App Registration details in Azure App Configuration</h2>
+<h3 id="1-symptoms-1">1. <strong>Symptoms:</strong></h3>
+<ul>
+<li>Application unable to retrieve configuration settings.</li>
+<li>Errors related to missing or invalid configuration values.</li>
+<li>Login problems similar to those described in the previous section.</li>
+</ul>
+<h3 id="2-troubleshooting-steps-1">2. <strong>Troubleshooting Steps:</strong></h3>
+<p>a. <strong>Check Azure App Configuration:</strong></p>
+<ul>
+<li>Verify that the App Registration details are correctly stored in Azure App Configuration using <a href="../deployment/authentication/index.md">the setup guide</a>.</li>
+<li>Ensure that keys, secrets, and connection strings are accurate.</li>
+</ul>
+<p>c. <strong>Azure App Configuration Logs:</strong></p>
+<ul>
+<li>Inspect Azure App Configuration logs for any errors related to configuration retrieval.</li>
+<li>Look for issues such as key not found or invalid values.</li>
+</ul>
+<p>d. <strong>Azure Key Vault Integration:</strong></p>
+<ul>
+<li>FoundationaLLM Azure Key Vault for sensitive configuration, verify the correct values are in Key Vault using [the setup guide][1].</li>
+<li>Ensure the Azure App Configuration managed identity has the necessary permissions to access Key Vault secrets.</li>
+</ul>
+<h2 id="troubleshooting-container-crashing">Troubleshooting container crashing</h2>
+<h3 id="1-symptoms-2">1. <strong>Symptoms:</strong></h3>
+<ul>
+<li>Containers restarting frequently or failing to start.</li>
+<li>Application unavailability due to container issues.</li>
+</ul>
+<h3 id="2-troubleshooting-steps-2">2. <strong>Troubleshooting Steps:</strong></h3>
+<p>a. <strong>Container Logs Examination:</strong></p>
+<ul>
+<li>Access container logs in Log Analytics to identify error messages or issues during startup.</li>
+<li>Look for any crashes, exceptions, or resource constraints.</li>
+</ul>
+<p>b. <strong>Resource Utilization:</strong></p>
+<ul>
+<li>Check resource utilization metrics (CPU, memory) for the container.</li>
+<li>Ensure that the container has adequate resources allocated.</li>
+</ul>
+<p>c. <strong>Dependency Check:</strong></p>
+<ul>
+<li>Examine dependencies within the containerized application.</li>
+<li>Verify that required services or components are accessible.</li>
+</ul>
+<p>d. <strong>Container Health Checks:</strong></p>
+<ul>
+<li>Identify and address health check failures impacting container stability.</li>
+</ul>
+<p>e. <strong>Container Image Update:</strong></p>
+<ul>
+<li>Review the container image version, update to the latest version to receive bug fixes and new features.</li>
+</ul>
+<h2 id="additional-support-and-issue-reporting">Additional support and issue reporting</h2>
+<p>If you encounter an issue that is not addressed by the troubleshooting steps outlined in this document, we encourage you to open a GitHub issue. This ensures that our team can provide tailored assistance and continuously improve our troubleshooting resources.</p>
+<h3 id="steps-to-open-a-github-issue">Steps to open a GitHub issue</h3>
+<ol>
+<li><p><strong>Navigate to our GitHub Repository:</strong></p>
+<ul>
+<li>Visit our GitHub repository at <a href="https://github.com/foundationallm/foundationallm">https://github.com/foundationallm/foundationallm</a>.</li>
+</ul>
+</li>
+<li><p><strong>Check Existing Issues:</strong></p>
+<ul>
+<li>Before creating a new issue, check the existing issues to see if the problem has already been reported or discussed.</li>
+</ul>
+</li>
+<li><p><strong>Create a New Issue:</strong></p>
+<ul>
+<li>Click on the &quot;Issues&quot; tab in the repository.</li>
+<li>Select &quot;New Issue&quot; to open a new issue template.</li>
+</ul>
+</li>
+<li><p><strong>Provide Detailed Information:</strong></p>
+<ul>
+<li>Clearly describe the issue, including symptoms, error messages, and steps to reproduce.</li>
+<li>Attach relevant logs or screenshots that can assist in understanding the problem.</li>
+</ul>
+</li>
+<li><p><strong>Tag the Issue Appropriately:</strong></p>
+<ul>
+<li>Tag the issue with relevant labels, such as &quot;bug,&quot; &quot;enhancement,&quot; or &quot;question,&quot; to categorize it correctly.</li>
+</ul>
+</li>
+<li><p><strong>Monitor for Updates:</strong></p>
+<ul>
+<li>After creating the issue, monitor it for updates and respond promptly to any requests for additional information.</li>
+</ul>
+</li>
+</ol>
+<p>By opening a GitHub issue at <a href="https://github.com/foundationallm/foundationallm">https://github.com/foundationallm/foundationallm</a>, you contribute to our collaborative effort in maintaining a robust and well-supported system. Our team values your feedback, and addressing issues through GitHub allows for a transparent and efficient resolution process.</p>
+<p>Thank you for your collaboration, and we look forward to assisting you with any challenges you may encounter. Your input is instrumental in enhancing the overall reliability and functionality of our system.</p>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

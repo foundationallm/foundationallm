@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title> | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content=" | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/archive/deployment/authentication-authorization/post-core-deployment.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+
+<h2 id="post-deployment">Post Deployment</h2>
+<p>Follow the instruction below to complete the setup of Microsoft Entra ID authentication for the Core API and Chat applications after the deployment is complete.</p>
+<h3 id="update-app-configuration-settings">Update App Configuration settings</h3>
+<ol>
+<li><p>Sign in to the <a href="https://portal.azure.com/">Azure portal</a> as at least a Contributor.</p>
+</li>
+<li><p>Navigate to the resource group that was created as part of the deployment.</p>
+</li>
+<li><p>Select the <strong>App Configuration</strong> resource and select <strong>Configuration explorer</strong> to view the values.</p>
+</li>
+<li><p>Enter <code>entra</code> in the search box to filter the results.</p>
+</li>
+<li><p>Check the box next to <strong>Key</strong> in the header to select all items.</p>
+</li>
+<li><p>Select <strong>Edit</strong> to open a JSON editor for the selected items.</p>
+<p><img src="media/app-configuration-entra-settings.png" alt="The configuration settings are filtered by entra and all items are selected." title="App Configuration settings for Microsoft Entra ID authentication"></p>
+</li>
+<li><p>Replace the values for the following settings with the values that you recorded earlier:</p>
+<ul>
+<li><code>FoundationaLLM:Chat:Entra:ClientId</code>: The <strong>Application (client) ID</strong> of the client application that you <a href="#register-the-client-application-in-the-microsoft-entra-admin-center">created earlier</a>.</li>
+<li><code>FoundationaLLM:Chat:Entra:Scopes</code>: The fully-qualified scopes path for the API application that you <a href="#expose-an-api-for-the-api-application">created earlier</a>. For example, it should look something like <code>api://FoundationaLLM-Core/Data.Read</code>.</li>
+<li><code>FoundationaLLM:Chat:Entra:TenantId</code>: The <strong>Directory (tenant) ID</strong> of the client application that you <a href="#register-the-client-application-in-the-microsoft-entra-admin-center">created earlier</a>.</li>
+<li><code>FoundationaLLM:CoreAPI:Entra:ClientId</code>: The <strong>Application (client) ID</strong> of the API application that you <a href="#register-the-api-application-in-the-microsoft-entra-admin-center">created earlier</a>.</li>
+<li><code>FoundationaLLM:CoreAPI:Entra:TenantId</code>: The <strong>Directory (tenant) ID</strong> of the API application that you <a href="#register-the-api-application-in-the-microsoft-entra-admin-center">created earlier</a>.</li>
+</ul>
+</li>
+<li><p>Validate the following values while reviewing the settings:</p>
+<ul>
+<li><code>FoundationaLLM:Chat:Entra:CallbackPath</code>: Should be <code>/signin-oidc</code>.</li>
+<li><code>FoundationaLLM:Chat:Entra:Instance</code>: Should be <code>https://login.microsoftonline.com/</code>.</li>
+<li><code>FoundationaLLM:CoreAPI:Entra:CallbackPath</code>: Should be <code>/signin-oidc</code>.</li>
+<li><code>FoundationaLLM:CoreAPI:Entra:Instance</code>: Should be <code>https://login.microsoftonline.com/</code>.</li>
+<li><code>FoundationaLLM:CoreAPI:Entra:Scopes</code>: Should be <code>Data.Read</code>.</li>
+</ul>
+</li>
+<li><p>Select <strong>Apply</strong> to save the changes.</p>
+</li>
+</ol>
+<!-- ### Update Key Vault secrets
+
+Key Vault stores the secrets for the client and API applications. You need to update the secrets with the values that you recorded earlier.
+
+1. Return to the [Azure portal](https://portal.azure.com/).
+2. Navigate to the resource group that was created as part of the deployment.
+3. Select the **Key Vault** resource and select **Secrets**. If you cannot see the secrets, add your user account as a **Key Vault Secrets Officer** through Access Control (IAM). You need this role in order to access the secrets and update them as a required part of the authentication setup.
+4. Open the `foundationallm-chat-entra-clientsecret` secret, then select **+ New Version**.
+5. Within the **Secret value** field, enter the **Client secret** of the client application that you [created earlier](#client-secret-for-the-client-application), then select **Create**.
+6. Open the `foundationallm-coreapi-entra-clientsecret` secret, then select **+ New Version**.
+7. Within the **Secret value** field, enter the **Client secret** of the API application that you [created earlier](#client-secret-for-the-api-application), then select **Create**. -->
+<h2 id="next-steps">Next steps</h2>
+<p>Now that Entra authentication is fully configured, restart the Core API and chat applications to apply the changes. Navigate to your chat application or refresh the page if it is already open. It should automatically prompt you to sign in with your Microsoft Entra ID account.</p>
+<h3 id="restart-core-api-and-chat-ui-applications-in-an-aca-deployment">Restart Core API and Chat UI applications in an ACA Deployment</h3>
+<p>To restart the Core API and Chat applications in an Azure Container Apps (ACA) deployment, you will need to navigate to the Core API and Chat applications and restart their container revisions, as indicated in the following Azure Portal screenshot:</p>
+<p><img src="media/restart-coreapi-aca.png" alt="Restarting the Core API Azure Container App." title="Restarting the Container App in Azure Portal."></p>
+<ol>
+<li>From the <code>Revisions</code> blade in the left navigation panel of the Core API or Chat UI container app detail page in Azure Portal, select the name of the running revision.</li>
+<li>A dialog panel titled <code>Revision details</code> should appear on the right side of the browser with a <code>Restart</code> button at the top.  Select the <code>Restart</code> button to restart the running container.</li>
+</ol>
+<p>Restarting in this manner will need to be performed for both the Core API container app and the Chat UI container app.</p>
+<h3 id="restart-core-api-and-chat-ui-applications-in-an-aks-deployment">Restart Core API and Chat UI applications in an AKS Deployment</h3>
+<p>To restart the Core API and Chat applications in an Azure Kubernetes Service (AKS) deployment, you will need to navigate to the AKS detail page in Azure Portal and perform the following:</p>
+<ol>
+<li>Select the <code>Workloads</code> blade from the left navigation panel.</li>
+<li>Select the <code>Pods</code> tab from the <code>Workloads</code> detail page.</li>
+<li>Select the Core API and Chat UI pods from the list (it helps if you select <code>default</code> in the <code>Filter by namespace</code> dropdown first).</li>
+<li>Select the <code>Delete</code> button to terminate the currently running pods.  New pods will be instantiated to take their place.</li>
+</ol>
+<p><img src="media/restart-containers-aks.png" alt="Restarting containers in AKS." title="Restarting the Core API and Chat UI services in an AKS deployment."></p>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

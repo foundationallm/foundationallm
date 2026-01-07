@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Role-Based Access Control | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Role-Based Access Control | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/platform-operations/security-permissions/role-based-access-control/index.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="role-based-access-control">Role-Based Access Control</h1>
+
+<p>FoundationaLLM RBAC provides fine-grained access control to platform resources.</p>
+<h2 id="overview">Overview</h2>
+<p>FoundationaLLM RBAC enables:</p>
+<ul>
+<li>Controlling who can access resources</li>
+<li>Defining what actions users can perform</li>
+<li>Scoping access to specific resources or the entire instance</li>
+<li>Auditing access changes</li>
+</ul>
+<h2 id="key-concepts">Key Concepts</h2>
+<table>
+<thead>
+<tr>
+<th>Concept</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Role Definition</strong></td>
+<td>A collection of permissions (actions)</td>
+</tr>
+<tr>
+<td><strong>Role Assignment</strong></td>
+<td>Grants a role to a principal at a scope</td>
+</tr>
+<tr>
+<td><strong>Principal</strong></td>
+<td>User, group, service principal, or managed identity</td>
+</tr>
+<tr>
+<td><strong>Scope</strong></td>
+<td>Where the access applies (instance or resource)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="built-in-roles">Built-in Roles</h2>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Owner</strong></td>
+<td>Full access including role assignment management</td>
+</tr>
+<tr>
+<td><strong>Contributor</strong></td>
+<td>Full access except role assignment management</td>
+</tr>
+<tr>
+<td><strong>Reader</strong></td>
+<td>Read-only access to resources</td>
+</tr>
+<tr>
+<td><strong>User Access Administrator</strong></td>
+<td>Manage role assignments only</td>
+</tr>
+</tbody>
+</table>
+<p>See <a href="role-definitions.html">Role Definitions</a> for complete details.</p>
+<h2 id="how-rbac-works">How RBAC Works</h2>
+<pre><code class="lang-mermaid">graph LR
+    A[Principal] --&gt;|assigned| B[Role]
+    B --&gt;|defines| C[Permissions]
+    C --&gt;|applied at| D[Scope]
+    D --&gt;|grants access to| E[Resources]
+</code></pre>
+<ol>
+<li><strong>Principal</strong> requests access</li>
+<li>System checks <strong>role assignments</strong></li>
+<li><strong>Permissions</strong> are evaluated at the <strong>scope</strong></li>
+<li>Access is granted or denied</li>
+</ol>
+<h2 id="management-options">Management Options</h2>
+<h3 id="management-portal">Management Portal</h3>
+<p>The Management Portal provides a UI for:</p>
+<ul>
+<li>Viewing role assignments</li>
+<li>Creating new assignments</li>
+<li>Deleting assignments</li>
+<li>Managing access at instance and resource levels</li>
+</ul>
+<h3 id="management-api">Management API</h3>
+<p>Programmatic access via REST API:</p>
+<ul>
+<li>List role definitions</li>
+<li>Create/delete role assignments</li>
+<li>Query assignments by scope</li>
+<li>Retrieve identity information</li>
+</ul>
+<p>See <a href="role-management.html">Role Management</a> for API details.</p>
+<h2 id="quick-start">Quick Start</h2>
+<h3 id="grant-instance-access">Grant Instance Access</h3>
+<ol>
+<li>Navigate to Management Portal</li>
+<li>Select <strong>Security</strong> &gt; <strong>Instance Access Control</strong></li>
+<li>Click <strong>Add Role Assignment</strong></li>
+<li>Select principal (user/group)</li>
+<li>Select role</li>
+<li>Click <strong>Save</strong></li>
+</ol>
+<h3 id="grant-resource-access">Grant Resource Access</h3>
+<ol>
+<li>Navigate to the resource (e.g., Agent)</li>
+<li>Click <strong>Access Control</strong> button</li>
+<li>Click <strong>Add Role Assignment</strong></li>
+<li>Select principal and role</li>
+<li>Click <strong>Save</strong></li>
+</ol>
+<h2 id="inheritance">Inheritance</h2>
+<table>
+<thead>
+<tr>
+<th>Scope</th>
+<th>Inherits From</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Resource</td>
+<td>Instance</td>
+</tr>
+<tr>
+<td>Instance</td>
+<td>None (top level)</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Roles assigned at instance level apply to all resources</li>
+<li>Resource-level assignments add specific permissions</li>
+<li>Cannot remove inherited permissions at lower levels</li>
+</ul>
+<h2 id="documentation">Documentation</h2>
+<table>
+<thead>
+<tr>
+<th>Topic</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="role-definitions.html">Role Definitions</a></td>
+<td>Understanding role structure and permissions</td>
+</tr>
+<tr>
+<td><a href="role-assignments.html">Role Assignments</a></td>
+<td>How assignments work</td>
+</tr>
+<tr>
+<td><a href="scope.html">Scope</a></td>
+<td>Understanding scope levels</td>
+</tr>
+<tr>
+<td><a href="role-management.html">Role Management</a></td>
+<td>Managing assignments via Portal and API</td>
+</tr>
+<tr>
+<td><a href="agent-role-assignments.html">Agent Role Assignments</a></td>
+<td>Automating agent access control</td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="../authentication-authorization/index.html">Authentication Setup</a></li>
+<li><a href="../platform-security.html">Platform Security</a></li>
+<li><a href="../../../management-portal/reference/permissions-roles.html">Permissions Reference</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

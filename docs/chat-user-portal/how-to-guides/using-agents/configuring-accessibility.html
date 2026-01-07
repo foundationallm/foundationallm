@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Configuring Accessibility Settings | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Configuring Accessibility Settings | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/chat-user-portal/how-to-guides/using-agents/configuring-accessibility.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="configuring-accessibility-settings">Configuring Accessibility Settings</h1>
+
+<p>Customize the Chat User Portal to meet your visual and notification preferences. FoundationaLLM is designed with accessibility in mind, supporting WCAG (Web Content Accessibility Guidelines) compliance.</p>
+<h2 id="wcag-compliance-overview">WCAG Compliance Overview</h2>
+<p>The Chat User Portal is built following WCAG 2.1 Level AA guidelines to ensure accessibility for users with diverse abilities:</p>
+<table>
+<thead>
+<tr>
+<th>WCAG Principle</th>
+<th>Implementation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Perceivable</strong></td>
+<td>Text alternatives, adaptable content, distinguishable elements</td>
+</tr>
+<tr>
+<td><strong>Operable</strong></td>
+<td>Keyboard accessible, sufficient time, navigable</td>
+</tr>
+<tr>
+<td><strong>Understandable</strong></td>
+<td>Readable, predictable, input assistance</td>
+</tr>
+<tr>
+<td><strong>Robust</strong></td>
+<td>Compatible with assistive technologies</td>
+</tr>
+</tbody>
+</table>
+<h3 id="key-accessibility-features">Key Accessibility Features</h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Keyboard Navigation</strong></td>
+<td>Full functionality without a mouse</td>
+</tr>
+<tr>
+<td><strong>Screen Reader Support</strong></td>
+<td>ARIA labels and semantic HTML</td>
+</tr>
+<tr>
+<td><strong>Text Scaling</strong></td>
+<td>Adjustable text size up to 200%</td>
+</tr>
+<tr>
+<td><strong>Color Independence</strong></td>
+<td>Information not conveyed by color alone</td>
+</tr>
+<tr>
+<td><strong>Focus Indicators</strong></td>
+<td>Visible focus states on interactive elements</td>
+</tr>
+<tr>
+<td><strong>Error Identification</strong></td>
+<td>Clear error messages and guidance</td>
+</tr>
+</tbody>
+</table>
+<h2 id="accessing-accessibility-settings">Accessing Accessibility Settings</h2>
+<ol>
+<li>Click the <strong>Settings</strong> button (gear icon ⚙️) in the bottom-left corner of the sidebar, next to your name</li>
+<li>In the Settings dialog, click the <strong>Accessibility</strong> tab</li>
+<li>Adjust settings as needed</li>
+<li>Click <strong>Close</strong> when finished — changes are applied immediately</li>
+</ol>
+<h2 id="available-settings">Available Settings</h2>
+<h3 id="auto-hide-popup-notifications">Auto-Hide Popup Notifications</h3>
+<p>Control whether notification messages (toasts) disappear automatically or stay visible until you dismiss them.</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>On</strong> (default)</td>
+<td>Notifications fade away after a few seconds</td>
+</tr>
+<tr>
+<td><strong>Off</strong></td>
+<td>Notifications stay visible until you click to dismiss them</td>
+</tr>
+</tbody>
+</table>
+<p><strong>When to disable auto-hide:</strong></p>
+<ul>
+<li>If you need more time to read notifications</li>
+<li>If you use a screen reader and want notifications to remain accessible</li>
+<li>If you frequently miss important status messages</li>
+</ul>
+<p><strong>How to change:</strong></p>
+<ol>
+<li>Find the <strong>Auto hide popup notifications</strong> toggle</li>
+<li>Click the toggle to switch between On and Off</li>
+</ol>
+<h3 id="text-size">Text Size</h3>
+<p>Adjust the overall text size throughout the portal to improve readability.</p>
+<table>
+<thead>
+<tr>
+<th>Size</th>
+<th>Best For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>80%</strong></td>
+<td>Seeing more content on screen</td>
+</tr>
+<tr>
+<td><strong>100%</strong> (default)</td>
+<td>Standard viewing</td>
+</tr>
+<tr>
+<td><strong>150%</strong></td>
+<td>Easier reading, larger text</td>
+</tr>
+</tbody>
+</table>
+<p><strong>How to change:</strong></p>
+<ol>
+<li>Find the <strong>Text size</strong> slider</li>
+<li>Drag the slider left to decrease or right to increase</li>
+<li>The percentage displays next to the slider (e.g., &quot;120%&quot;)</li>
+<li>Text updates immediately as you adjust</li>
+</ol>
+<blockquote>
+<p><strong>Tip:</strong> You can also use your browser's built-in zoom (<code>Ctrl +</code> / <code>Ctrl -</code> on Windows, <code>Cmd +</code> / <code>Cmd -</code> on Mac) for additional size adjustments.</p>
+</blockquote>
+<h2 id="keyboard-navigation">Keyboard Navigation</h2>
+<p>The Chat User Portal supports full keyboard navigation:</p>
+<h3 id="general-navigation">General Navigation</h3>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Keys</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Move between elements</td>
+<td><code>Tab</code> / <code>Shift + Tab</code></td>
+</tr>
+<tr>
+<td>Activate buttons</td>
+<td><code>Enter</code> or <code>Space</code></td>
+</tr>
+<tr>
+<td>Close dialogs/popups</td>
+<td><code>Escape</code></td>
+</tr>
+<tr>
+<td>Submit messages</td>
+<td><code>Enter</code></td>
+</tr>
+<tr>
+<td>Add new line in message</td>
+<td><code>Shift + Enter</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="sidebar-shortcuts">Sidebar Shortcuts</h3>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Keys</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Navigate to chat</td>
+<td><code>Tab</code> to chat, then <code>Enter</code></td>
+</tr>
+<tr>
+<td>Delete a chat</td>
+<td>Select chat, then <code>Delete</code> or <code>Backspace</code></td>
+</tr>
+<tr>
+<td>Close sidebar</td>
+<td><code>Tab</code> to toggle button, then <code>Enter</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="message-area">Message Area</h3>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Keys</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Navigate between messages</td>
+<td><code>Tab</code> through message elements</td>
+</tr>
+<tr>
+<td>Copy message</td>
+<td><code>Tab</code> to Copy button, then <code>Enter</code></td>
+</tr>
+<tr>
+<td>Rate a response</td>
+<td><code>Tab</code> to Rate button, then <code>Enter</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="screen-reader-support">Screen Reader Support</h2>
+<p>The portal includes accessibility features for screen readers:</p>
+<ul>
+<li><strong>ARIA labels</strong>: Interactive elements have descriptive labels</li>
+<li><strong>Role attributes</strong>: Elements are properly identified (buttons, dialogs, lists)</li>
+<li><strong>Live regions</strong>: Status changes and notifications are announced</li>
+<li><strong>Focus management</strong>: Focus moves logically through the interface</li>
+</ul>
+<h3 id="recommended-screen-readers">Recommended Screen Readers</h3>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Recommended</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Windows</td>
+<td>NVDA, JAWS</td>
+</tr>
+<tr>
+<td>Mac</td>
+<td>VoiceOver</td>
+</tr>
+<tr>
+<td>Linux</td>
+<td>Orca</td>
+</tr>
+</tbody>
+</table>
+<h2 id="visual-accessibility-tips">Visual Accessibility Tips</h2>
+<h3 id="using-browser-features">Using Browser Features</h3>
+<p>Your browser offers additional accessibility options:</p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>How to Access</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Zoom</strong></td>
+<td><code>Ctrl +</code> / <code>Ctrl -</code> (Windows) or <code>Cmd +</code> / <code>Cmd -</code> (Mac)</td>
+</tr>
+<tr>
+<td><strong>High contrast mode</strong></td>
+<td>Enable in Windows Settings &gt; Accessibility</td>
+</tr>
+<tr>
+<td><strong>Dark mode</strong></td>
+<td>Some browsers apply system dark mode automatically</td>
+</tr>
+<tr>
+<td><strong>Custom fonts</strong></td>
+<td>Configure in browser accessibility settings</td>
+</tr>
+</tbody>
+</table>
+<h3 id="display-recommendations">Display Recommendations</h3>
+<p>For the best experience:</p>
+<ul>
+<li>Use a screen resolution of at least 1280×720</li>
+<li>Ensure sufficient contrast between text and background</li>
+<li>Position your monitor to reduce glare</li>
+<li>Take regular breaks when reading long conversations</li>
+</ul>
+<h2 id="mobile-accessibility">Mobile Accessibility</h2>
+<p>On mobile devices:</p>
+<ul>
+<li>Use your device's built-in accessibility features (VoiceOver on iOS, TalkBack on Android)</li>
+<li>Enable larger text in your device's Display settings</li>
+<li>The interface automatically adjusts for smaller screens</li>
+<li>Touch targets are sized for easy tapping</li>
+</ul>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="text-size-not-changing">Text Size Not Changing</h3>
+<ol>
+<li>Try refreshing the page (<code>F5</code> or <code>Ctrl + R</code>)</li>
+<li>Check that JavaScript is enabled in your browser</li>
+<li>Clear your browser cache and try again</li>
+</ol>
+<h3 id="screen-reader-not-reading-elements">Screen Reader Not Reading Elements</h3>
+<ol>
+<li>Ensure your screen reader is in &quot;forms mode&quot; or &quot;focus mode&quot; when interacting with inputs</li>
+<li>Try a different browser — Chrome and Firefox have the best screen reader support</li>
+<li>Update your screen reader to the latest version</li>
+</ol>
+<h3 id="keyboard-focus-not-visible">Keyboard Focus Not Visible</h3>
+<ol>
+<li>Check your browser's accessibility settings for &quot;Show focus indicators&quot;</li>
+<li>Some browser extensions can interfere with focus styles</li>
+<li>Try disabling browser extensions temporarily</li>
+</ol>
+<h3 id="settings-not-saving">Settings Not Saving</h3>
+<p>Accessibility settings are saved in your browser's session storage. They persist as long as:</p>
+<ul>
+<li>You stay logged in</li>
+<li>You don't clear browser data</li>
+<li>You use the same browser</li>
+</ul>
+<p>If settings reset unexpectedly:</p>
+<ol>
+<li>Check that cookies and site data aren't being blocked</li>
+<li>Avoid using &quot;private&quot; or &quot;incognito&quot; mode for persistent settings</li>
+</ol>
+<h2 id="wcag-21-feature-details">WCAG 2.1 Feature Details</h2>
+<h3 id="perceivable-content">Perceivable Content</h3>
+<p><strong>Text Alternatives (WCAG 1.1)</strong></p>
+<ul>
+<li>All images have alt text descriptions</li>
+<li>Icons are accompanied by text labels or ARIA labels</li>
+<li>Non-text content is described for screen readers</li>
+</ul>
+<p><strong>Adaptable Content (WCAG 1.3)</strong></p>
+<ul>
+<li>Content is structured with proper headings</li>
+<li>Form elements have associated labels</li>
+<li>Reading order is logical and consistent</li>
+</ul>
+<p><strong>Distinguishable Content (WCAG 1.4)</strong></p>
+<ul>
+<li>Text can be resized up to 200% without loss of functionality</li>
+<li>Color contrast meets 4.5:1 ratio for normal text</li>
+<li>Color is not the only means of conveying information</li>
+<li>Content reflows for different screen sizes</li>
+</ul>
+<h3 id="operable-interface">Operable Interface</h3>
+<p><strong>Keyboard Accessible (WCAG 2.1)</strong></p>
+<ul>
+<li>All functionality available via keyboard</li>
+<li>No keyboard traps</li>
+<li>Skip navigation option for repetitive content</li>
+</ul>
+<p><strong>Enough Time (WCAG 2.2)</strong></p>
+<ul>
+<li>Session timeouts provide warning and extension options</li>
+<li>Auto-hide notifications can be disabled</li>
+<li>No time-limited interactions required</li>
+</ul>
+<p><strong>Seizure Prevention (WCAG 2.3)</strong></p>
+<ul>
+<li>No flashing content above 3 flashes per second</li>
+<li>Animations respect reduced-motion preferences</li>
+</ul>
+<p><strong>Navigable (WCAG 2.4)</strong></p>
+<ul>
+<li>Page titles are descriptive</li>
+<li>Focus order is logical</li>
+<li>Link purpose is clear from context</li>
+<li>Multiple ways to find content</li>
+</ul>
+<h3 id="understandable-content">Understandable Content</h3>
+<p><strong>Readable (WCAG 3.1)</strong></p>
+<ul>
+<li>Page language is identified</li>
+<li>Technical terms are explained</li>
+<li>Plain language is used where possible</li>
+</ul>
+<p><strong>Predictable (WCAG 3.2)</strong></p>
+<ul>
+<li>Navigation is consistent across pages</li>
+<li>Components behave predictably</li>
+<li>Changes don't occur unexpectedly</li>
+</ul>
+<p><strong>Input Assistance (WCAG 3.3)</strong></p>
+<ul>
+<li>Errors are clearly identified</li>
+<li>Labels and instructions are provided</li>
+<li>Error suggestions help users correct mistakes</li>
+</ul>
+<h3 id="robust-technology">Robust Technology</h3>
+<p><strong>Compatible (WCAG 4.1)</strong></p>
+<ul>
+<li>Valid HTML markup</li>
+<li>ARIA properly implemented</li>
+<li>Status messages announced to screen readers</li>
+<li>Compatible with current assistive technologies</li>
+</ul>
+<h2 id="color-contrast">Color Contrast</h2>
+<p>The User Portal maintains accessible color contrast ratios:</p>
+<table>
+<thead>
+<tr>
+<th>Element</th>
+<th>Contrast Ratio</th>
+<th>WCAG Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Body text</td>
+<td>4.5:1 or higher</td>
+<td>Level AA</td>
+</tr>
+<tr>
+<td>Large text</td>
+<td>3:1 or higher</td>
+<td>Level AA</td>
+</tr>
+<tr>
+<td>UI components</td>
+<td>3:1 or higher</td>
+<td>Level AA</td>
+</tr>
+<tr>
+<td>Focus indicators</td>
+<td>3:1 or higher</td>
+<td>Level AA</td>
+</tr>
+</tbody>
+</table>
+<h3 id="checking-contrast">Checking Contrast</h3>
+<p>If you have difficulty distinguishing colors:</p>
+<ol>
+<li>Enable your operating system's high contrast mode</li>
+<li>Use browser extensions like &quot;High Contrast&quot; for Chrome</li>
+<li>Adjust display settings in your system preferences</li>
+</ol>
+<h2 id="reduced-motion">Reduced Motion</h2>
+<p>For users sensitive to motion:</p>
+<h3 id="system-preferences">System Preferences</h3>
+<p>The portal respects your operating system's reduced motion settings:</p>
+<ul>
+<li><strong>Windows</strong>: Settings &gt; Accessibility &gt; Visual effects &gt; Show animations</li>
+<li><strong>macOS</strong>: System Preferences &gt; Accessibility &gt; Display &gt; Reduce motion</li>
+<li><strong>iOS</strong>: Settings &gt; Accessibility &gt; Motion &gt; Reduce Motion</li>
+<li><strong>Android</strong>: Settings &gt; Accessibility &gt; Remove animations</li>
+</ul>
+<h3 id="what-changes-with-reduced-motion">What Changes with Reduced Motion</h3>
+<table>
+<thead>
+<tr>
+<th>Normal Behavior</th>
+<th>With Reduced Motion</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Animated transitions</td>
+<td>Instant transitions</td>
+</tr>
+<tr>
+<td>Sliding panels</td>
+<td>Instant show/hide</td>
+</tr>
+<tr>
+<td>Loading spinners</td>
+<td>Static indicators</td>
+</tr>
+<tr>
+<td>Smooth scrolling</td>
+<td>Instant scrolling</td>
+</tr>
+</tbody>
+</table>
+<h2 id="assistive-technology-compatibility">Assistive Technology Compatibility</h2>
+<h3 id="tested-screen-readers">Tested Screen Readers</h3>
+<table>
+<thead>
+<tr>
+<th>Screen Reader</th>
+<th>Browser</th>
+<th>Support Level</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NVDA</td>
+<td>Firefox, Chrome</td>
+<td>Full</td>
+</tr>
+<tr>
+<td>JAWS</td>
+<td>Chrome, Edge</td>
+<td>Full</td>
+</tr>
+<tr>
+<td>VoiceOver</td>
+<td>Safari, Chrome</td>
+<td>Full</td>
+</tr>
+<tr>
+<td>Narrator</td>
+<td>Edge</td>
+<td>Full</td>
+</tr>
+<tr>
+<td>Orca</td>
+<td>Firefox</td>
+<td>Basic</td>
+</tr>
+</tbody>
+</table>
+<h3 id="tips-for-screen-reader-users">Tips for Screen Reader Users</h3>
+<ol>
+<li><strong>Use Browse Mode</strong> to read conversation content</li>
+<li><strong>Use Forms Mode</strong> when typing in the message input</li>
+<li><strong>Listen for ARIA live regions</strong> announcing new messages</li>
+<li><strong>Use heading navigation</strong> (H key) to jump between sections</li>
+</ol>
+<h3 id="voice-control">Voice Control</h3>
+<p>For voice control users (Dragon NaturallySpeaking, Voice Control):</p>
+<ul>
+<li>Buttons have visible text labels</li>
+<li>Form fields have accessible names</li>
+<li>Links are descriptively named</li>
+<li>&quot;Click [element text]&quot; commands work reliably</li>
+</ul>
+<h2 id="cognitive-accessibility">Cognitive Accessibility</h2>
+<h3 id="simple-language">Simple Language</h3>
+<ul>
+<li>Error messages explain what went wrong and how to fix it</li>
+<li>Instructions use clear, concise language</li>
+<li>Complex terms include explanations</li>
+</ul>
+<h3 id="consistent-design">Consistent Design</h3>
+<ul>
+<li>Navigation stays in the same location</li>
+<li>Similar functions use similar designs</li>
+<li>Buttons and controls are predictably placed</li>
+</ul>
+<h3 id="memory-support">Memory Support</h3>
+<ul>
+<li>Conversation history is preserved</li>
+<li>Settings persist across sessions</li>
+<li>Important information isn't hidden</li>
+</ul>
+<h2 id="reporting-accessibility-issues">Reporting Accessibility Issues</h2>
+<p>If you encounter accessibility barriers:</p>
+<ol>
+<li>Note the specific issue and how it affects you</li>
+<li>Include the browser and assistive technology you're using</li>
+<li>Contact your organization's IT support</li>
+<li>Request that they report the issue to FoundationaLLM</li>
+</ol>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="managing-conversations.html">Managing Conversations</a> — Navigate and organize your chats</li>
+<li><a href="printing-conversations.html">Printing Conversations</a> — Create accessible printed copies</li>
+<li><a href="viewing-status-messages.html">Viewing Status Messages</a> — Accessible status notifications</li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

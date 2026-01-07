@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Viewing Agent Prompts | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Viewing Agent Prompts | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/chat-user-portal/how-to-guides/using-agents/viewing-agent-prompts.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="viewing-agent-prompts">Viewing Agent Prompts</h1>
+
+<p>Learn how to view the prompts used by agents when generating responses.</p>
+<h2 id="what-are-agent-prompts">What Are Agent Prompts?</h2>
+<p>When you send a message to an agent, a &quot;prompt&quot; is created that includes:</p>
+<ul>
+<li><strong>System instructions</strong>: The agent's core configuration and persona</li>
+<li><strong>Context</strong>: Relevant information retrieved from knowledge sources</li>
+<li><strong>Conversation history</strong>: Previous messages for continuity</li>
+<li><strong>Your message</strong>: The question or request you submitted</li>
+</ul>
+<p>Viewing prompts helps you understand how the agent generates its responses.</p>
+<h2 id="when-prompt-viewing-is-available">When Prompt Viewing Is Available</h2>
+<p>The &quot;View Prompt&quot; feature appears when:</p>
+<ul>
+<li>Your administrator has enabled prompt viewing</li>
+<li>The agent is configured to allow prompt visibility</li>
+<li>The response has finished generating</li>
+</ul>
+<p>Not all agents expose prompts — this is controlled by configuration.</p>
+<h2 id="how-to-view-a-prompt">How to View a Prompt</h2>
+<h3 id="step-1-find-the-view-prompt-button">Step 1: Find the View Prompt Button</h3>
+<ol>
+<li>Look at the bottom of an <strong>agent response</strong> (not your own messages)</li>
+<li>Find the message footer area where buttons appear</li>
+<li>Look for the <strong>View Prompt</strong> button (shows a book icon 📖)</li>
+</ol>
+<h3 id="step-2-open-the-prompt-dialog">Step 2: Open the Prompt Dialog</h3>
+<ol>
+<li>Click <strong>View Prompt</strong></li>
+<li>A dialog opens titled &quot;Completion Prompt&quot;</li>
+<li>The full prompt text is displayed</li>
+</ol>
+<h3 id="step-3-review-the-content">Step 3: Review the Content</h3>
+<p>The prompt dialog shows the text that was sent to the AI model to generate the response you received.</p>
+<h3 id="step-4-close-the-dialog">Step 4: Close the Dialog</h3>
+<p>Click <strong>Close</strong> to dismiss the prompt dialog and return to the conversation.</p>
+<h2 id="understanding-prompt-contents">Understanding Prompt Contents</h2>
+<h3 id="system-instructions">System Instructions</h3>
+<p>The beginning of the prompt typically contains:</p>
+<ul>
+<li>The agent's role and persona</li>
+<li>Guidelines for how to respond</li>
+<li>Any restrictions or rules</li>
+<li>Formatting preferences</li>
+</ul>
+<h3 id="retrieved-context">Retrieved Context</h3>
+<p>If the Knowledge Tool was used:</p>
+<ul>
+<li>Relevant passages from documents appear</li>
+<li>Information from knowledge bases is included</li>
+<li>This provides the &quot;grounding&quot; for the response</li>
+</ul>
+<h3 id="conversation-history">Conversation History</h3>
+<p>Recent messages may be included:</p>
+<ul>
+<li>Your previous questions</li>
+<li>The agent's previous answers</li>
+<li>This maintains continuity</li>
+</ul>
+<h3 id="your-current-message">Your Current Message</h3>
+<p>Your most recent question or request appears, forming the actual query the agent needs to address.</p>
+<h2 id="why-view-prompts">Why View Prompts?</h2>
+<h3 id="debugging-responses">Debugging Responses</h3>
+<p>Understanding the prompt helps when:</p>
+<ul>
+<li>Responses aren't what you expected</li>
+<li>The agent seems to miss information</li>
+<li>You want to know what context was used</li>
+</ul>
+<h3 id="learning-how-agents-work">Learning How Agents Work</h3>
+<p>Prompts reveal:</p>
+<ul>
+<li>How system instructions shape behavior</li>
+<li>What knowledge was retrieved</li>
+<li>How conversation context is used</li>
+</ul>
+<h3 id="verifying-context">Verifying Context</h3>
+<p>Check that:</p>
+<ul>
+<li>The right documents were searched</li>
+<li>Relevant information was retrieved</li>
+<li>The agent had proper context</li>
+</ul>
+<h3 id="improving-your-questions">Improving Your Questions</h3>
+<p>See how your input fits into the larger prompt to:</p>
+<ul>
+<li>Phrase questions more effectively</li>
+<li>Provide better context upfront</li>
+<li>Avoid redundant information</li>
+</ul>
+<h2 id="prompt-components-explained">Prompt Components Explained</h2>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Description</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>System prompt</strong></td>
+<td>Agent's base instructions</td>
+<td>Defines agent behavior and capabilities</td>
+</tr>
+<tr>
+<td><strong>Knowledge context</strong></td>
+<td>Retrieved document excerpts</td>
+<td>Grounds responses in specific information</td>
+</tr>
+<tr>
+<td><strong>Conversation history</strong></td>
+<td>Previous messages</td>
+<td>Maintains coherent dialogue</td>
+</tr>
+<tr>
+<td><strong>User message</strong></td>
+<td>Your current input</td>
+<td>The question being answered</td>
+</tr>
+</tbody>
+</table>
+<h2 id="when-view-prompt-is-not-available">When View Prompt Is Not Available</h2>
+<p>You won't see the View Prompt option if:</p>
+<ul>
+<li><strong>Feature disabled</strong>: Your administrator hasn't enabled it</li>
+<li><strong>Agent configuration</strong>: The specific agent doesn't allow prompt viewing</li>
+<li><strong>Message type</strong>: Only agent responses have viewable prompts (not your messages)</li>
+<li><strong>Still loading</strong>: Wait for the response to complete</li>
+</ul>
+<h2 id="tips-for-using-view-prompt">Tips for Using View Prompt</h2>
+<h3 id="compare-prompts-across-responses">Compare Prompts Across Responses</h3>
+<ul>
+<li>View prompts for multiple responses</li>
+<li>Notice how context changes based on your questions</li>
+<li>See how conversation history accumulates</li>
+</ul>
+<h3 id="check-knowledge-retrieval">Check Knowledge Retrieval</h3>
+<ul>
+<li>See what documents were searched</li>
+<li>Verify relevant passages were found</li>
+<li>Understand why certain information was used</li>
+</ul>
+<h3 id="understand-response-limitations">Understand Response Limitations</h3>
+<p>If a response was limited or incomplete:</p>
+<ul>
+<li>Check if the relevant information was in the prompt</li>
+<li>See if context was missing</li>
+<li>Understand what the agent had to work with</li>
+</ul>
+<h3 id="verify-agent-behavior">Verify Agent Behavior</h3>
+<ul>
+<li>Confirm the agent is following its instructions</li>
+<li>Check that appropriate guidelines are being applied</li>
+<li>Understand the agent's configured capabilities</li>
+</ul>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="view-prompt-button-not-showing">View Prompt Button Not Showing</h3>
+<ul>
+<li>The feature may be disabled for your environment</li>
+<li>The specific agent may not support prompt viewing</li>
+<li>Wait for the response to fully complete</li>
+<li>Contact your administrator to request access</li>
+</ul>
+<h3 id="prompt-text-is-very-long">Prompt Text Is Very Long</h3>
+<ul>
+<li>Prompts can be lengthy, especially with lots of context</li>
+<li>Scroll through the dialog to see all content</li>
+<li>The dialog is scrollable</li>
+</ul>
+<h3 id="cant-understand-the-prompt">Can't Understand the Prompt</h3>
+<p>Prompts may contain technical elements:</p>
+<ul>
+<li>System instructions are often detailed</li>
+<li>Formatting may include special tokens</li>
+<li>Focus on the parts relevant to your question</li>
+</ul>
+<h3 id="prompt-seems-incomplete">Prompt Seems Incomplete</h3>
+<ul>
+<li>Some prompt components may be summarized</li>
+<li>Very long contexts may be truncated</li>
+<li>Technical details may be omitted from the display</li>
+</ul>
+<h2 id="privacy-considerations">Privacy Considerations</h2>
+<p>Prompts may contain:</p>
+<ul>
+<li>System configurations (visible by design)</li>
+<li>Retrieved document content</li>
+<li>Previous conversation messages</li>
+<li>Your user inputs</li>
+</ul>
+<p>Follow organizational guidelines for handling prompt information.</p>
+<h2 id="using-prompts-for-better-results">Using Prompts for Better Results</h2>
+<h3 id="understand-what-helps">Understand What Helps</h3>
+<p>By viewing prompts, you can learn:</p>
+<ul>
+<li>What type of context improves responses</li>
+<li>How much conversation history matters</li>
+<li>What format of questions works best</li>
+</ul>
+<h3 id="adjust-your-approach">Adjust Your Approach</h3>
+<p>Based on prompt insights:</p>
+<ul>
+<li>Provide more specific questions</li>
+<li>Upload relevant documents</li>
+<li>Reference key terms the agent needs</li>
+<li>Maintain conversation focus</li>
+</ul>
+<h3 id="work-within-limitations">Work Within Limitations</h3>
+<p>If prompts reveal constraints:</p>
+<ul>
+<li>Work around token limits</li>
+<li>Provide concise inputs</li>
+<li>Focus on essential information</li>
+</ul>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="rating-responses.html">Rating Responses</a> — Provide feedback on agent outputs</li>
+<li><a href="using-knowledge-tool.html">Using the Knowledge Tool</a> — Understand context retrieval</li>
+<li><a href="monitoring-tokens.html">Monitoring Token Consumption</a> — Track prompt sizes</li>
+<li><a href="managing-conversations.html">Managing Conversations</a> — Control conversation history</li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

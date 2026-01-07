@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Knowledge management agent | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Knowledge management agent | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/archive/setup-guides/agents/knowledge-management-agent.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="knowledge-management-agent">Knowledge management agent</h1>
+
+<p>The FoundationaLLM (FLLM) Knowledge Management agent type supports the following scenarios:</p>
+<ul>
+<li><strong>With an Inline Context:</strong> Knowledge Management agents with an Inline Context pass the user's prompt directly to the Large Language Model (LLM).</li>
+<li><strong>Without an Inline Context:</strong> Knowledge Management agents without an Inline Context implement the <em>Retrieval Augmented Generation</em> (RAG) design pattern. RAG augments the user prompt with additional context to generate a more accurate response. The RAG flow uses a retrieval model to retrieve relevant documents from a knowledge base, such as a vector store, and then uses the retrieved documents to augment the user prompt before sending it to the LLM.
+<ul>
+<li>The creation of a Knowledge Management agent without an Inline Context requires an existing knowledge base, such as a vector store. Use the <a href="../vectorization/index.html">Vectorization</a> API to create a vector store prior to the creation of the agent.</li>
+</ul>
+</li>
+</ul>
+<h2 id="knowledge-management-agent-configuration">Knowledge Management Agent Configuration</h2>
+<p>The Knowledge Management agent configuration may reference the following resources:</p>
+<ul>
+<li><p><a href="../vectorization/vectorization-profiles.html#text-embedding-profiles">Vectorization text embedding profile</a>: The text embedding profile contains the configuration of the text embedding model used to embed the user prompt and perform a vector search in the knowledge base. This must match the text embedding profile used to populate the knowledge base.</p>
+</li>
+<li><p><a href="../vectorization/vectorization-profiles.html#indexing-profiles">Vectorization indexing profile</a>: The indexing profile contains the configuration of the service hosting the index.</p>
+</li>
+<li><p><a href="prompt-resource.html">Prompt</a>: The system prompt of the agent, describing the persona of the agent.</p>
+</li>
+</ul>
+<blockquote>
+<p><strong>Note</strong>: The Knowledge Management agent implementation currently supports the <a href="../vectorization/vectorization-profiles.html#azureaisearchindexer"><code>AzureAISearchIndexer</code></a> indexing profile.</p>
+</blockquote>
+<p>The structure of a Knowledge Management agent is the following:</p>
+<pre><code class="lang-json">{
+  &quot;type&quot;: &quot;knowledge-management&quot;,
+  &quot;name&quot;: &quot;&lt;name&gt;&quot;,
+  &quot;object_id&quot;: &quot;/instances/&lt;instance_id&gt;/providers/FoundationaLLM.Agent/agents/&lt;name&gt;&quot;,
+  &quot;description&quot;: &quot;&lt;description&gt;&quot;,
+  &quot;display_name&quot;: &quot;&lt;display_name&gt;&quot;,
+  &quot;inline_context&quot;: true,
+  &quot;vectorization&quot;: {
+    &quot;dedicated_pipeline&quot;: &quot;&quot;,
+    &quot;data_source_object_id&quot;: &quot;&lt;data_source_object_id&gt;&quot;,
+    &quot;indexing_profile_object_id&quot;: &quot;&lt;indexing_profile_object_id&gt;&quot;,
+    &quot;text_embedding_profile_object_id&quot;: &quot;&lt;text_embedding_profile_object_id&gt;&quot;,
+    &quot;text_partitioning_profile_object_id&quot;: &quot;&lt;text_partitioning_profile_object_id&gt;&quot;,
+    &quot;vectorization_data_pipeline_object_id&quot;: &quot;&quot;,
+    &quot;trigger_type&quot;: &quot;&quot;,
+    &quot;trigger_cron_schedule&quot;: &quot;&quot;
+  },
+  &quot;prompt_object_id&quot;: &quot;&lt;prompt_resource_objectid&gt;&quot;,
+  &quot;language_model&quot;: {
+    &quot;type&quot;: &quot;openai&quot;,
+    &quot;provider&quot;: &quot;microsoft&quot;,
+    &quot;temperature&quot;: 0.0,
+    &quot;use_chat&quot;: true,
+    &quot;api_endpoint&quot;: &quot;FoundationaLLM:AzureOpenAI:API:Endpoint&quot;,
+    &quot;api_key&quot;: &quot;FoundationaLLM:AzureOpenAI:API:Key&quot;,
+    &quot;api_version&quot;: &quot;FoundationaLLM:AzureOpenAI:API:Version&quot;,
+    &quot;version&quot;: &quot;FoundationaLLM:AzureOpenAI:API:Completions:ModelVersion&quot;,
+    &quot;deployment&quot;: &quot;FoundationaLLM:AzureOpenAI:API:Completions:DeploymentName&quot;
+  },
+  &quot;sessions_enabled&quot;: true,
+  &quot;conversation_history&quot;: {
+    &quot;enabled&quot;: true,
+    &quot;max_history&quot;: 5
+  },
+  &quot;gatekeeper&quot;: {
+    &quot;use_system_setting&quot;: false,
+    &quot;options&quot;: [
+      &quot;ContentSafety&quot;,
+      &quot;Presidio&quot;
+    ]
+  },
+  &quot;orchestration_settings&quot;: {
+    &quot;orchestrator&quot;: &quot;LangChain&quot;,
+    &quot;endpoint_configuration&quot;: {
+      &quot;endpoint&quot;: &quot;&quot;,
+      &quot;api_version&quot;: &quot;&quot;,
+      &quot;api_key&quot;: &quot;&quot;,
+      &quot;auth_type&quot;: &quot;&quot;,
+      &quot;api_key&quot;: &quot;&quot;,
+      &quot;provider&quot;: &quot;&quot;,
+      &quot;operation_type&quot;: &quot;chat&quot;
+    },
+    &quot;model_parameters&quot;: {
+      &quot;deployment_name&quot;: &quot;&quot;
+    }
+  }
+}
+</code></pre>
+<p>where:</p>
+<ul>
+<li><code>&lt;name&gt;</code> is the name of the agent.</li>
+<li><code>&lt;instance_id&gt;</code> is the instance ID of the deployment.</li>
+<li><code>&lt;description&gt;</code> is the description of the agent. Ensure that this description details the purpose of the agent.</li>
+<li><code>&lt;display_name&gt;</code> controls the title of the agent in the Chat UI dropdown menu.</li>
+<li><code>&lt;data_source_object_id&gt;</code> is the object ID of the Data Source resource.</li>
+<li><code>&lt;indexing_profile_object_id&gt;</code> is the object ID of the indexing profile resource.</li>
+<li><code>&lt;text_embedding_profile_object_id&gt;</code> is the object ID of the text embedding profile resource.</li>
+<li><code>&lt;text_partitioning_profile_object_id&gt;</code> is the object ID of the text partitioning profile resource.</li>
+<li><code>&lt;prompt_resource_objectid&gt;</code> is the object ID of the prompt resource.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>type</code></td>
+<td>The type of the agent - will always be <code>knowledge-management</code>. <strong><code>type</code> must be the first key in the request body.</strong></td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>The name of the agent.</td>
+</tr>
+<tr>
+<td><code>object_id</code></td>
+<td>The object ID of the agent. Remove this element when creating an agent as this is generated by the Management API.</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>The description of the agent, ensure this description details the purpose of the agent.</td>
+</tr>
+<tr>
+<td><code>display_name</code></td>
+<td>The title of the agent in the Chat UI dropdown menu. This field is optional.</td>
+</tr>
+<tr>
+<td><code>inline_context</code></td>
+<td>Whether or not the agent has an Inline Context.</td>
+</tr>
+<tr>
+<td><code>vectorization</code></td>
+<td>The <code>vectorization</code> object is only required for Knowledge Management agents without an Inline Context (<code>inline_context</code> is <code>false</code>). If the <code>vectorization</code> object is included, the <code>indexing_profile_object_id</code> and <code>text_embedding_profile_object_id</code> keys are required.</td>
+</tr>
+<tr>
+<td><code>vectorization.dedicated_pipeline</code></td>
+<td>A boolean indicating whether or not the agent has a dedicated Vectorization pipeline (implemented in an upcoming release).</td>
+</tr>
+<tr>
+<td><code>vectorization.data_source_object_id</code></td>
+<td>The object ID of the Data Source resource.</td>
+</tr>
+<tr>
+<td><code>vectorization.indexing_profile_object_id</code></td>
+<td>The object ID of the indexing profile resource.</td>
+</tr>
+<tr>
+<td><code>vectorization.text_embedding_profile_object_id</code></td>
+<td>The object ID of the text embedding profile resource.</td>
+</tr>
+<tr>
+<td><code>vectorization.text_partitioning_profile_object_id</code></td>
+<td>The object ID of the text partitioning profile resource.</td>
+</tr>
+<tr>
+<td><code>vectorization.vectorization_data_pipeline_object_id</code></td>
+<td>The resource ID of the agent's Vectorization pipeline (implemented in an upcoming release).</td>
+</tr>
+<tr>
+<td><code>vectorization.trigger_type</code></td>
+<td>The trigger type of the agent's Vectorization pipeline (implemented in an upcoming release). Permissible values are <code>Manual</code>, <code>Schedule</code>, and <code>Event</code>.</td>
+</tr>
+<tr>
+<td><code>vectorization.trigger_cron_schedule</code></td>
+<td>The schedule of the trigger in Cron format (implemented in an upcoming release). This property is valid only when <code>trigger_type</code> is <code>Schedule</code>.</td>
+</tr>
+<tr>
+<td><code>prompt_object_id</code></td>
+<td>The object ID of the prompt resource.</td>
+</tr>
+<tr>
+<td><code>language_model</code></td>
+<td>The language model configuration. <strong>The <code>language_model</code> object has been deprecated as of release 0.6.0.</strong></td>
+</tr>
+<tr>
+<td><code>language_model.type</code></td>
+<td>The type of the language model. Currently supporting OpenAI based langauge models.</td>
+</tr>
+<tr>
+<td><code>language_model.provider</code></td>
+<td>The provider of the language model. Currently supporting <code>microsoft</code> or <code>openai</code>.</td>
+</tr>
+<tr>
+<td><code>language_model.temperature</code></td>
+<td>The temperature value for the language model. A value between 0 and 1. Values closer to 0 return more factual information whereas values closer to 1 yield more creative responses.</td>
+</tr>
+<tr>
+<td><code>language_model.use_chat</code></td>
+<td>Determines the type of language model to use, as an example, when using Microsoft's Azure OpenAI, specifying <code>use_chat</code> equal to true will use the AzureChatOpenAI model vs. the AzureOpenAI model in LangChain.</td>
+</tr>
+<tr>
+<td><code>language_model.api_endpoint</code></td>
+<td>The configuration setting key that houses the API endpoint of the language model. The example above uses default FLLM values. Ensure this value is populated in application configuration.</td>
+</tr>
+<tr>
+<td><code>language_model.api_key</code></td>
+<td>The configuration setting key that houses a reference to a key vault value containing the API key for the language model service. Ensure these values are populated in key vault and app configuration.</td>
+</tr>
+<tr>
+<td><code>language_model.api_version</code></td>
+<td>The configuration setting key that houses the API version of the language model. The example above uses default FLLM values. Ensure this value is populated in application configuration.</td>
+</tr>
+<tr>
+<td><code>language_model.version</code></td>
+<td>The configuration setting key that houses the version of the language model deployment. The example above uses default FLLM values. Ensure this value is populated in application configuration.</td>
+</tr>
+<tr>
+<td><code>language_model.deployment</code></td>
+<td>The configuration setting key that houses the name given to the deployed language model. The example above uses default FLLM values. Ensure this value is populated in application configuration.</td>
+</tr>
+<tr>
+<td><code>sessions_enabled</code></td>
+<td>A boolean value that indicates whether the agent is session-less (false) or supports sessions(true).</td>
+</tr>
+<tr>
+<td><code>conversation_history</code></td>
+<td>The conversation history configuration.</td>
+</tr>
+<tr>
+<td><code>conversation_history.enabled</code></td>
+<td>Indicates if conversation history is retained for subsequent agent interactions(true).</td>
+</tr>
+<tr>
+<td><code>conversation_history.max_history</code></td>
+<td>indicates the number of messages to be retained.</td>
+</tr>
+<tr>
+<td><code>gatekeeper</code></td>
+<td>The gatekeeper configuration.</td>
+</tr>
+<tr>
+<td><code>gatekeeper.use_system_setting</code></td>
+<td>Indicates if the system settings are used for the gatekeeper.</td>
+</tr>
+<tr>
+<td><code>gatekeeper.options</code></td>
+<td>Contains the list of gatekeeper options. The sample provided overrides the system setting for gatekeeper and enables Azure Content Safety and MS Presidio in the messaging pipeline.</td>
+</tr>
+<tr>
+<td><code>orchestration_settings</code></td>
+<td>The settings for the agent orchestrator.</td>
+</tr>
+<tr>
+<td><code>orchestration_settings.orchestrator</code></td>
+<td>FoundationaLLM currently supports <code>LangChain</code> and <code>SemanticKernel</code> for both types of Knowledge Management agents; however, Knowledge Management agents with an Inline Context can also use the <a href="#azureopenaidirect-orchestrator"><code>AzureOpenAIDirect</code></a> and <a href="#azureaidirect-orchestrator"><code>AzureAIDirect</code></a> orchestrators.</td>
+</tr>
+<tr>
+<td><code>orchestration_settings.endpoint_configuration</code></td>
+<td>The endpoint configuration of the hosted LLM. FoundationaLLM currently supports Azure OpenAI and OpenAI.</td>
+</tr>
+<tr>
+<td><code>orchestration_settings.endpoint_configuration.endpoint</code></td>
+<td>The endpoint URL of the hosted LLM. The URL should be provided directly for the <code>LangChain</code> or <code>SemanticKernel</code> orchestrators; it should be provided as an Azure App Configuration key reference for the <code>AzureOpenAIDirect</code> or <code>AzureAIDirect</code> orchestrators.</td>
+</tr>
+<tr>
+<td><code>orchestration_settings.endpoint_configuration.api_version</code></td>
+<td>The API version of the hosted LLM. For Azure OpenAI, this value should be set to the <a href="https://learn.microsoft.com/en-us/azure/ai-services/openai/api-version-deprecation#latest-ga-api-release">latest GA version.</a> The API version should be provided directly for the <code>LangChain</code> or <code>SemanticKernel</code> orchestrators; it should be provided as an Azure App Configuration key reference for the <code>AzureOpenAIDirect</code> or <code>AzureAIDirect</code> orchestrators.</td>
+</tr>
+<tr>
+<td><code>orchestration_settings.endpoint_configuration.auth_type</code></td>
+<td>The authentication method of the hosted LLM. This value can either be <code>token</code> or <code>key</code>. For Azure OpenAI deployments, this value should be <code>token</code>, which configures the orchestrator to use Managed Identities for authentication. <code>key</code>-based authentication uses API keys.</td>
+</tr>
+<tr>
+<td><code>orchestration_settings.endpoint_configuration.api_key</code></td>
+<td>The name of the Azure App Configuration key storing the LLM endpoint API key. This parameter is required if <code>auth_type</code> is set to <code>key</code>.</td>
+</tr>
+<tr>
+<td><code>orchestration_settings.endpoint_configuration.provider</code></td>
+<td>The provider of the hosted LLM. FoundationaLLM currently supports <code>microsoft</code> (Azure OpenAI) or <code>openai</code>.</td>
+</tr>
+<tr>
+<td><code>orchestration_settings.endpoint_configuration.operation_type</code></td>
+<td>This field is set to <code>chat</code> by default and can be omitted.</td>
+</tr>
+<tr>
+<td><code>orchestration_settings.model_parameters</code></td>
+<td>Endpoint-specific model parameters. This field must be non-null if the <code>provider</code> is <code>microsoft</code>.</td>
+</tr>
+<tr>
+<td><code>orchestration_settings.model_parameters.deployment_name</code></td>
+<td>This field should be set to the name of the Azure OpenAI model deployment if the <code>provider</code> is <code>microsoft</code>.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="azureopenaidirect-orchestrator">AzureOpenAIDirect Orchestrator</h2>
+<p>The <code>AzureOpenAIDirect</code> orchestrator passes the user's prompt to an LLM deployed in an instance of Azure OpenAI Service, bypassing LangChain or Semantic Kernel.</p>
+<p>Example Configuration:</p>
+<pre><code class="lang-json">{
+  &quot;orchestration_settings&quot;: {
+    &quot;orchestrator&quot;: &quot;AzureOpenAIDirect&quot;,
+    &quot;endpoint_configuration&quot;: {
+      &quot;endpoint&quot;: &quot;FoundationaLLM:AzureOpenAI:API:Endpoint&quot;,
+      &quot;api_version&quot;: &quot;FoundationaLLM:AzureOpenAI:API:Version&quot;,
+      &quot;auth_type&quot;: &quot;key&quot;,
+      &quot;api_key&quot;: &quot;FoundationaLLM:AzureOpenAI:API:Key&quot;,
+      &quot;operation_type&quot;: &quot;chat&quot;
+    },
+    &quot;model_parameters&quot;: {
+      &quot;deployment_name&quot;: &quot;completions&quot;
+    }
+  }
+}
+</code></pre>
+<blockquote>
+<p><strong>Note:</strong> <code>AzureOpenAIDirect</code> is only compatible with Knowledge Management agents with an Inline Context.</p>
+</blockquote>
+<h2 id="azureaidirect-orchestrator">AzureAIDirect Orchestrator</h2>
+<p>The <code>AzureAIDirect</code> orchestrator passes the user's prompt to an LLM deployed as an <a href="https://learn.microsoft.com/en-us/azure/ai-studio/how-to/deploy-models-open">Azure AI Studio real-time endpoint.</a> This orchestrator allows customers to use a wider range of LLMs with FLLM agents.</p>
+<p>Example Configuration:</p>
+<pre><code class="lang-json">{
+  &quot;orchestration_settings&quot;: {
+    &quot;orchestrator&quot;: &quot;AzureAIDirect&quot;,
+    &quot;endpoint_configuration&quot;: {
+      &quot;endpoint&quot;: &quot;&lt;AZURE APP CONFIGURATION KEY&gt;&quot;,
+      &quot;api_key&quot;: &quot;&lt;AZURE APP CONFIGURATION KEY&gt;&quot;
+    },
+    &quot;model_parameters&quot;: {
+      &quot;temperature&quot;: 0.8,
+      &quot;max_new_tokens&quot;: 1000,
+      &quot;deployment_name&quot;: &quot;&lt;AZURE AI STUDIO DEPLOYMENT NAME&gt;&quot;
+    }
+  }
+}
+</code></pre>
+<blockquote>
+<p><strong>Note:</strong> <code>AzureAIDirect</code> is only compatible with Knowledge Management agents with an Inline Context.</p>
+</blockquote>
+<h2 id="managing-knowledge-management-agents">Managing Knowledge Management Agents</h2>
+<p>This section describes how to manage knowledge management agents using the Management API. <code>{{baseUrl}}</code> is the base URL of the Management API. <code>{{instanceId}}</code> is the unique identifier of the FLLM instance.</p>
+<h3 id="retrieve">Retrieve</h3>
+<pre><code class="lang-http">HTTP GET {{baseUrl}}/instances/{{instanceId}}/providers/FoundationaLLM.Agent/agents
+</code></pre>
+<h3 id="create-or-update">Create or update</h3>
+<pre><code class="lang-http">HTTP POST {{baseUrl}}/instances/{{instanceId}}/providers/FoundationaLLM.Agent/agents/&lt;name&gt;
+Content-Type: application/json
+
+BODY
+&lt;agent_configuration&gt;
+</code></pre>
+<p>where <code>&lt;agent_configuration&gt;</code> is the JSON agent configuration structure described above.</p>
+<h3 id="delete">Delete</h3>
+<pre><code class="lang-http">HTTP DELETE {{baseUrl}}/instances/{{instanceId}}/providers/FoundationaLLM.Agent/agents/&lt;name&gt;
+</code></pre>
+<div class="NOTE">
+<h5>Note</h5>
+<p>FLLM currently implements logical deletes for Knowledge Management agents. This means that users cannot create a Knowledge Management agent with the same name as a deleted Knowledge Management agent. Support for purging Knowledge Management agents will be added in a future release.</p>
+</div>
+<h2 id="validating-a-knowledge-management-agent">Validating a Knowledge Management Agent</h2>
+<p>Once configured, the knowledge management agent can be validated using an API call to the <a href="../exposed-apis/core-api.html">Core API</a> or via the <a href="../quickstart.html">User Portal</a>.</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>It can take up to 5 minutes for a new Knowledge Management agent to appear in the User Portal or be accessible for requests from the Core API.</p>
+</div>
+<h2 id="overriding-agent-parameters">Overriding agent parameters</h2>
+<p>The agent parameters can be overridden at the time of the API call. Refer to the <a href="../exposed-apis/core-api.html">Core API</a> documentation for more information.</p>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

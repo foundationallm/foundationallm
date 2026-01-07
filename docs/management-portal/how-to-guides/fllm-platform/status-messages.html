@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Publishing Status Messages | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Publishing Status Messages | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/management-portal/how-to-guides/fllm-platform/status-messages.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+
+<blockquote>
+<p><strong>This article is still being authored.</strong> Some sections contain placeholder content that requires additional information.</p>
+</blockquote>
+<h1 id="publishing-status-messages">Publishing Status Messages</h1>
+<p>Learn how to publish status, outage, and maintenance messages to inform users about system availability.</p>
+<h2 id="overview">Overview</h2>
+<p>Status messages allow IT administrators to communicate important information to users of the Chat User Portal. Use status messages to:</p>
+<ul>
+<li>Announce planned maintenance windows</li>
+<li>Notify users of ongoing outages or issues</li>
+<li>Communicate system updates or changes</li>
+<li>Provide important operational information</li>
+</ul>
+<h2 id="message-types">Message Types</h2>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Icon</th>
+<th>Purpose</th>
+<th>Use When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Information</strong></td>
+<td>ℹ️</td>
+<td>General announcements</td>
+<td>Sharing news, tips, or updates</td>
+</tr>
+<tr>
+<td><strong>Warning</strong></td>
+<td>⚠️</td>
+<td>Potential issues</td>
+<td>Planned maintenance, degraded performance</td>
+</tr>
+<tr>
+<td><strong>Error/Outage</strong></td>
+<td>❌</td>
+<td>Active problems</td>
+<td>System outages, critical issues</td>
+</tr>
+<tr>
+<td><strong>Success</strong></td>
+<td>✅</td>
+<td>Resolution notices</td>
+<td>Issues resolved, maintenance completed</td>
+</tr>
+</tbody>
+</table>
+<h2 id="accessing-status-message-management">Accessing Status Message Management</h2>
+<blockquote>
+<p><strong>TODO</strong>: Document the exact navigation path to status message management in the Management Portal.</p>
+</blockquote>
+<ol>
+<li>Log into the Management Portal</li>
+<li>Navigate to <strong>FLLM Platform</strong> &gt; <strong>Status Messages</strong> (or equivalent)</li>
+<li>The status message management page opens</li>
+</ol>
+<h2 id="creating-a-status-message">Creating a Status Message</h2>
+<h3 id="step-1-start-new-message">Step 1: Start New Message</h3>
+<ol>
+<li>Click <strong>Create Status Message</strong> or <strong>New Message</strong></li>
+<li>The message creation form opens</li>
+</ol>
+<h3 id="step-2-configure-message-content">Step 2: Configure Message Content</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+<th>Requirements</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Title</strong></td>
+<td>Brief headline for the message</td>
+<td>Required. Keep concise.</td>
+</tr>
+<tr>
+<td><strong>Message Body</strong></td>
+<td>Full content of the status message</td>
+<td>Required. Supports rich text.</td>
+</tr>
+<tr>
+<td><strong>Message Type</strong></td>
+<td>Severity/category of the message</td>
+<td>Required. See types above.</td>
+</tr>
+<tr>
+<td><strong>Priority</strong></td>
+<td>Display priority if multiple messages</td>
+<td>Optional. Higher = more prominent.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="step-3-set-display-options">Step 3: Set Display Options</h3>
+<h4 id="visibility-settings">Visibility Settings</h4>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Start Date/Time</strong></td>
+<td>When the message becomes visible</td>
+</tr>
+<tr>
+<td><strong>End Date/Time</strong></td>
+<td>When the message automatically hides</td>
+</tr>
+<tr>
+<td><strong>Active</strong></td>
+<td>Toggle to immediately show/hide the message</td>
+</tr>
+</tbody>
+</table>
+<h4 id="target-audience">Target Audience</h4>
+<blockquote>
+<p><strong>TODO</strong>: Document audience targeting options if available (e.g., all users, specific groups, specific agents).</p>
+</blockquote>
+<h3 id="step-4-preview-and-publish">Step 4: Preview and Publish</h3>
+<ol>
+<li>Review the message content and settings</li>
+<li>Use the preview option to see how it will appear</li>
+<li>Click <strong>Publish</strong> or <strong>Save</strong> to activate the message</li>
+</ol>
+<h2 id="managing-existing-messages">Managing Existing Messages</h2>
+<h3 id="viewing-active-messages">Viewing Active Messages</h3>
+<p>The status messages list shows:</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Title</strong></td>
+<td>Message headline</td>
+</tr>
+<tr>
+<td><strong>Type</strong></td>
+<td>Message severity/category</td>
+</tr>
+<tr>
+<td><strong>Status</strong></td>
+<td>Active, Scheduled, or Expired</td>
+</tr>
+<tr>
+<td><strong>Start/End</strong></td>
+<td>Display window</td>
+</tr>
+<tr>
+<td><strong>Actions</strong></td>
+<td>Edit, Deactivate, Delete</td>
+</tr>
+</tbody>
+</table>
+<h3 id="editing-a-message">Editing a Message</h3>
+<ol>
+<li>Find the message in the list</li>
+<li>Click the <strong>Edit</strong> button</li>
+<li>Modify content or settings</li>
+<li>Save changes</li>
+</ol>
+<p>Changes to active messages take effect immediately.</p>
+<h3 id="deactivating-a-message">Deactivating a Message</h3>
+<p>To temporarily hide a message without deleting it:</p>
+<ol>
+<li>Find the message in the list</li>
+<li>Click <strong>Deactivate</strong> or toggle the Active switch off</li>
+<li>The message stops displaying in the User Portal</li>
+</ol>
+<h3 id="deleting-a-message">Deleting a Message</h3>
+<ol>
+<li>Find the message in the list</li>
+<li>Click the <strong>Delete</strong> button</li>
+<li>Confirm the deletion</li>
+</ol>
+<blockquote>
+<p><strong>Warning:</strong> Deleted messages cannot be recovered.</p>
+</blockquote>
+<h2 id="display-rules-in-user-portal">Display Rules in User Portal</h2>
+<h3 id="where-messages-appear">Where Messages Appear</h3>
+<p>Status messages are displayed in the Chat User Portal:</p>
+<blockquote>
+<p><strong>TODO</strong>: Document specific display locations (e.g., banner at top, notification area, login page).</p>
+</blockquote>
+<ul>
+<li><strong>Banner Display</strong>: Messages may appear as banners at the top of the portal</li>
+<li><strong>Notification Area</strong>: Users may see notifications in the sidebar</li>
+<li><strong>Login Page</strong>: Critical messages may appear before login</li>
+</ul>
+<h3 id="message-behavior">Message Behavior</h3>
+<table>
+<thead>
+<tr>
+<th>Behavior</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Auto-dismiss</strong></td>
+<td>Some message types may auto-hide after being read</td>
+</tr>
+<tr>
+<td><strong>Persistent</strong></td>
+<td>Critical messages may stay visible until resolved</td>
+</tr>
+<tr>
+<td><strong>Dismissible</strong></td>
+<td>Users may be able to dismiss informational messages</td>
+</tr>
+</tbody>
+</table>
+<h3 id="multiple-messages">Multiple Messages</h3>
+<p>When multiple messages are active:</p>
+<ul>
+<li>Higher priority messages display more prominently</li>
+<li>Messages may stack or rotate</li>
+<li>Critical messages typically take precedence</li>
+</ul>
+<h2 id="scheduling-messages">Scheduling Messages</h2>
+<h3 id="planning-ahead">Planning Ahead</h3>
+<p>For planned maintenance:</p>
+<ol>
+<li>Create the message in advance</li>
+<li>Set the <strong>Start Date/Time</strong> to when you want it visible</li>
+<li>Set the <strong>End Date/Time</strong> to when maintenance ends (plus buffer)</li>
+<li>The message will automatically appear and disappear</li>
+</ol>
+<h3 id="maintenance-window-example">Maintenance Window Example</h3>
+<p>For a planned maintenance window on Saturday 2 AM - 6 AM:</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Title</td>
+<td>Scheduled Maintenance</td>
+</tr>
+<tr>
+<td>Message</td>
+<td>The system will be unavailable for scheduled maintenance.</td>
+</tr>
+<tr>
+<td>Type</td>
+<td>Warning</td>
+</tr>
+<tr>
+<td>Start</td>
+<td>Saturday 1:45 AM (15 min early notice)</td>
+</tr>
+<tr>
+<td>End</td>
+<td>Saturday 6:30 AM (30 min buffer)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="best-practices">Best Practices</h2>
+<h3 id="message-content">Message Content</h3>
+<ul>
+<li><strong>Be Clear</strong>: Use plain language everyone can understand</li>
+<li><strong>Be Specific</strong>: Include times, durations, and affected services</li>
+<li><strong>Be Actionable</strong>: Tell users what they should do (wait, contact support, etc.)</li>
+<li><strong>Be Timely</strong>: Update messages as situations evolve</li>
+</ul>
+<h3 id="message-timing">Message Timing</h3>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Advance Notice</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Major planned maintenance</td>
+<td>1-2 weeks</td>
+</tr>
+<tr>
+<td>Minor maintenance</td>
+<td>2-3 days</td>
+</tr>
+<tr>
+<td>Emergency maintenance</td>
+<td>As soon as known</td>
+</tr>
+<tr>
+<td>Outage notification</td>
+<td>Immediately</td>
+</tr>
+</tbody>
+</table>
+<h3 id="message-management">Message Management</h3>
+<ul>
+<li>Review and clean up old messages regularly</li>
+<li>Use scheduling for recurring maintenance</li>
+<li>Have templates ready for common scenarios</li>
+<li>Coordinate with support teams on messaging</li>
+</ul>
+<h2 id="templates">Templates</h2>
+<h3 id="planned-maintenance">Planned Maintenance</h3>
+<pre><code>Title: Scheduled Maintenance - [Date]
+
+The FoundationaLLM system will be unavailable for scheduled maintenance 
+on [Date] from [Start Time] to [End Time] [Timezone].
+
+During this time, the Chat User Portal will not be accessible. 
+Please plan your work accordingly.
+
+We apologize for any inconvenience.
+</code></pre>
+<h3 id="active-outage">Active Outage</h3>
+<pre><code>Title: Service Disruption - [Brief Description]
+
+We are currently experiencing issues with [affected service/feature].
+Our team is actively working to resolve this issue.
+
+Status: [Investigating/Identified/Fixing]
+Estimated Resolution: [Time if known, or &quot;TBD&quot;]
+
+We will provide updates as more information becomes available.
+</code></pre>
+<h3 id="resolution-notice">Resolution Notice</h3>
+<pre><code>Title: Resolved - [Original Issue]
+
+The [issue description] reported on [date/time] has been resolved.
+Normal service has been restored.
+
+Thank you for your patience.
+</code></pre>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="message-not-appearing">Message Not Appearing</h3>
+<ul>
+<li>Verify the message is set to <strong>Active</strong></li>
+<li>Check the Start Date/Time hasn't passed incorrectly</li>
+<li>Confirm the message hasn't been filtered by audience settings</li>
+<li>Clear browser cache and refresh the User Portal</li>
+</ul>
+<h3 id="message-wont-save">Message Won't Save</h3>
+<ul>
+<li>Check all required fields are filled</li>
+<li>Verify date/time formats are correct</li>
+<li>Ensure you have appropriate permissions</li>
+</ul>
+<h3 id="users-not-seeing-updates">Users Not Seeing Updates</h3>
+<ul>
+<li>Changes may take a few minutes to propagate</li>
+<li>Users may need to refresh their browser</li>
+<li>Check if caching is affecting message display</li>
+</ul>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="branding.html">Branding Configuration</a> — Customize portal appearance</li>
+<li><a href="configuration.html">Configuration Settings</a> — Platform configuration options</li>
+<li><a href="../../../chat-user-portal/how-to-guides/using-agents/viewing-status-messages.html">Viewing Status Messages</a> — End-user guide</li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

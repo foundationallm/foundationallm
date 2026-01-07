@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>OpenAI Model Endpoint Facades | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="OpenAI Model Endpoint Facades | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/apis-sdks/apis/core-api/openai-endpoint-facades.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+
+<blockquote>
+<p><strong>This article is still being authored.</strong> This feature is currently under development. Content will be updated as the feature is finalized.</p>
+</blockquote>
+<h1 id="openai-model-endpoint-facades">OpenAI Model Endpoint Facades</h1>
+<p>Learn about FoundationaLLM's OpenAI-compatible endpoint facades for simplified model integration.</p>
+<h2 id="overview">Overview</h2>
+<blockquote>
+<p><strong>TODO</strong>: This feature is under active development. Documentation will be completed when the feature is released.</p>
+</blockquote>
+<p>OpenAI Model Endpoint Facades provide an OpenAI-compatible API layer in front of FoundationaLLM's agent capabilities. This allows applications built for the OpenAI API to integrate with FoundationaLLM with minimal code changes.</p>
+<h2 id="purpose-and-use-cases">Purpose and Use Cases</h2>
+<h3 id="why-use-endpoint-facades">Why Use Endpoint Facades?</h3>
+<table>
+<thead>
+<tr>
+<th>Benefit</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Compatibility</strong></td>
+<td>Use existing OpenAI SDK code</td>
+</tr>
+<tr>
+<td><strong>Migration Path</strong></td>
+<td>Gradually move from OpenAI to FoundationaLLM</td>
+</tr>
+<tr>
+<td><strong>Familiar Interface</strong></td>
+<td>Standard chat completion format</td>
+</tr>
+<tr>
+<td><strong>Agent Benefits</strong></td>
+<td>Access FoundationaLLM's agent capabilities</td>
+</tr>
+</tbody>
+</table>
+<h3 id="ideal-scenarios">Ideal Scenarios</h3>
+<ul>
+<li>Migrating existing OpenAI-integrated applications</li>
+<li>Using libraries that expect OpenAI-compatible endpoints</li>
+<li>Building applications that may switch between providers</li>
+<li>Teams familiar with OpenAI API patterns</li>
+</ul>
+<h2 id="feature-status">Feature Status</h2>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Chat Completions endpoint</td>
+<td>Under Development</td>
+</tr>
+<tr>
+<td>Embeddings endpoint</td>
+<td>Under Development</td>
+</tr>
+<tr>
+<td>Streaming responses</td>
+<td>Under Development</td>
+</tr>
+<tr>
+<td>Function calling</td>
+<td>Under Development</td>
+</tr>
+</tbody>
+</table>
+<h2 id="configuration">Configuration</h2>
+<blockquote>
+<p><strong>TODO</strong>: Document configuration steps once the feature is finalized, including:</p>
+<ul>
+<li>Enabling endpoint facades in deployment</li>
+<li>Configuring facade endpoints</li>
+<li>Mapping facades to agents</li>
+<li>Authentication configuration</li>
+</ul>
+</blockquote>
+<h3 id="prerequisites">Prerequisites</h3>
+<ul>
+<li>FoundationaLLM deployment with endpoint facades enabled</li>
+<li>Appropriate API credentials configured</li>
+<li>Agent(s) to expose via the facade</li>
+</ul>
+<h3 id="setup-steps">Setup Steps</h3>
+<blockquote>
+<p><strong>TODO</strong>: Provide step-by-step setup instructions</p>
+</blockquote>
+<h2 id="api-reference">API Reference</h2>
+<h3 id="chat-completions-endpoint">Chat Completions Endpoint</h3>
+<blockquote>
+<p><strong>TODO</strong>: Document the endpoint specification</p>
+</blockquote>
+<p><strong>Expected Endpoint:</strong></p>
+<pre><code>POST /v1/chat/completions
+</code></pre>
+<p><strong>Expected Request Format:</strong></p>
+<pre><code class="lang-json">{
+  &quot;model&quot;: &quot;agent-name&quot;,
+  &quot;messages&quot;: [
+    {&quot;role&quot;: &quot;system&quot;, &quot;content&quot;: &quot;You are a helpful assistant.&quot;},
+    {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Hello!&quot;}
+  ],
+  &quot;temperature&quot;: 0.7,
+  &quot;max_tokens&quot;: 1000
+}
+</code></pre>
+<p><strong>Expected Response Format:</strong></p>
+<pre><code class="lang-json">{
+  &quot;id&quot;: &quot;chatcmpl-xxx&quot;,
+  &quot;object&quot;: &quot;chat.completion&quot;,
+  &quot;created&quot;: 1234567890,
+  &quot;model&quot;: &quot;agent-name&quot;,
+  &quot;choices&quot;: [
+    {
+      &quot;index&quot;: 0,
+      &quot;message&quot;: {
+        &quot;role&quot;: &quot;assistant&quot;,
+        &quot;content&quot;: &quot;Hello! How can I help you today?&quot;
+      },
+      &quot;finish_reason&quot;: &quot;stop&quot;
+    }
+  ],
+  &quot;usage&quot;: {
+    &quot;prompt_tokens&quot;: 10,
+    &quot;completion_tokens&quot;: 15,
+    &quot;total_tokens&quot;: 25
+  }
+}
+</code></pre>
+<h3 id="embeddings-endpoint">Embeddings Endpoint</h3>
+<blockquote>
+<p><strong>TODO</strong>: Document embeddings endpoint if included</p>
+</blockquote>
+<h2 id="usage-examples">Usage Examples</h2>
+<h3 id="python-with-openai-sdk">Python with OpenAI SDK</h3>
+<blockquote>
+<p><strong>TODO</strong>: Verify and complete example</p>
+</blockquote>
+<pre><code class="lang-python">from openai import OpenAI
+
+# Configure client to use FoundationaLLM facade
+client = OpenAI(
+    base_url=&quot;https://{fllm-api}/v1&quot;,
+    api_key=&quot;your-api-key&quot;  # TODO: Document key format
+)
+
+# Use standard OpenAI SDK methods
+response = client.chat.completions.create(
+    model=&quot;your-agent-name&quot;,  # Maps to FLLM agent
+    messages=[
+        {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;What can you help me with?&quot;}
+    ]
+)
+
+print(response.choices[0].message.content)
+</code></pre>
+<h3 id="curl-example">curl Example</h3>
+<blockquote>
+<p><strong>TODO</strong>: Verify and complete example</p>
+</blockquote>
+<pre><code class="lang-bash">curl -X POST &quot;https://{fllm-api}/v1/chat/completions&quot; \
+  -H &quot;Authorization: Bearer your-api-key&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -d '{
+    &quot;model&quot;: &quot;your-agent-name&quot;,
+    &quot;messages&quot;: [
+      {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;Hello!&quot;}
+    ]
+  }'
+</code></pre>
+<h2 id="mapping-to-foundationallm-concepts">Mapping to FoundationaLLM Concepts</h2>
+<table>
+<thead>
+<tr>
+<th>OpenAI Concept</th>
+<th>FoundationaLLM Equivalent</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>model</code> parameter</td>
+<td>Agent name</td>
+</tr>
+<tr>
+<td><code>messages</code> array</td>
+<td>Conversation context</td>
+</tr>
+<tr>
+<td><code>temperature</code></td>
+<td>Model parameter override</td>
+</tr>
+<tr>
+<td><code>max_tokens</code></td>
+<td><code>max_new_tokens</code> parameter</td>
+</tr>
+<tr>
+<td>API Key</td>
+<td>Agent Access Token or Bearer token</td>
+</tr>
+</tbody>
+</table>
+<h2 id="limitations">Limitations</h2>
+<blockquote>
+<p><strong>TODO</strong>: Document known limitations once feature is finalized</p>
+</blockquote>
+<p><strong>Expected Limitations:</strong></p>
+<ul>
+<li>Not all OpenAI parameters may be supported</li>
+<li>Some agent features may not map to OpenAI concepts</li>
+<li>Streaming behavior may differ</li>
+<li>Rate limits follow FoundationaLLM quotas</li>
+</ul>
+<h2 id="migration-guide">Migration Guide</h2>
+<h3 id="from-openai-to-foundationallm-facades">From OpenAI to FoundationaLLM Facades</h3>
+<blockquote>
+<p><strong>TODO</strong>: Provide migration steps</p>
+</blockquote>
+<ol>
+<li>Configure FoundationaLLM endpoint facade</li>
+<li>Update base URL in your application</li>
+<li>Map model names to agent names</li>
+<li>Test and verify functionality</li>
+</ol>
+<h3 id="considerations">Considerations</h3>
+<ul>
+<li>Review agent configurations match expected behavior</li>
+<li>Test streaming if used</li>
+<li>Verify token counting differences</li>
+<li>Update error handling for FLLM-specific errors</li>
+</ul>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="common-issues">Common Issues</h3>
+<blockquote>
+<p><strong>TODO</strong>: Document common issues and solutions</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Possible Cause</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>404 Not Found</td>
+<td>Facade not enabled</td>
+<td>Enable in configuration</td>
+</tr>
+<tr>
+<td>Authentication Error</td>
+<td>Invalid credentials</td>
+<td>Check API key configuration</td>
+</tr>
+<tr>
+<td>Model Not Found</td>
+<td>Agent doesn't exist</td>
+<td>Verify agent name</td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="api-reference.html">Core API Reference</a></li>
+<li><a href="../../../management-portal/reference/concepts/agent-access-tokens.html">Agent Access Tokens</a></li>
+<li><a href="../../../management-portal/how-to-guides/models-endpoints/ai-models.html">AI Models Configuration</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

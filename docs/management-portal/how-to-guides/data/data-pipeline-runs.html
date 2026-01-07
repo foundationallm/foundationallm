@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Data Pipeline Runs | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Data Pipeline Runs | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/management-portal/how-to-guides/data/data-pipeline-runs.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="data-pipeline-runs">Data Pipeline Runs</h1>
+
+<p>Learn how to view, filter, and analyze data pipeline execution history.</p>
+<h2 id="overview">Overview</h2>
+<p>The Data Pipeline Runs page provides visibility into pipeline execution history, allowing you to monitor processing status, investigate failures, and track data ingestion progress.</p>
+<h2 id="accessing-pipeline-runs">Accessing Pipeline Runs</h2>
+<ol>
+<li>In the Management Portal sidebar, click <strong>Data Pipeline Runs</strong> under the <strong>Data</strong> section</li>
+<li>The runs list loads, showing execution history sorted by most recent first</li>
+</ol>
+<h2 id="pipeline-runs-table">Pipeline Runs Table</h2>
+<p>The table displays:</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Item</strong></td>
+<td>Pipeline that was executed</td>
+</tr>
+<tr>
+<td><strong>Status</strong></td>
+<td>Current state (Running, Completed, Failed)</td>
+</tr>
+<tr>
+<td><strong>Success</strong></td>
+<td>Whether the run succeeded</td>
+</tr>
+<tr>
+<td><strong>Start Time</strong></td>
+<td>When execution began</td>
+</tr>
+<tr>
+<td><strong>End Time</strong></td>
+<td>When execution completed (if finished)</td>
+</tr>
+<tr>
+<td><strong>Duration</strong></td>
+<td>Total execution time</td>
+</tr>
+</tbody>
+</table>
+<h2 id="filtering-runs">Filtering Runs</h2>
+<p>Use the filters at the top of the table to narrow results:</p>
+<h3 id="available-filters">Available Filters</h3>
+<table>
+<thead>
+<tr>
+<th>Filter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Item</strong></td>
+<td>Select a specific pipeline</td>
+</tr>
+<tr>
+<td><strong>Status</strong></td>
+<td>Filter by execution status</td>
+</tr>
+<tr>
+<td><strong>Success</strong></td>
+<td>Filter by success/failure</td>
+</tr>
+<tr>
+<td><strong>Start Time</strong></td>
+<td>Time range presets</td>
+</tr>
+<tr>
+<td><strong>Start Time From/To</strong></td>
+<td>Custom date range (when &quot;Custom&quot; is selected)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="time-range-options">Time Range Options</h3>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>All</strong></td>
+<td>Show all runs</td>
+</tr>
+<tr>
+<td><strong>Last Hour</strong></td>
+<td>Runs started in the last hour</td>
+</tr>
+<tr>
+<td><strong>Last 24 Hours</strong></td>
+<td>Runs started in the last day</td>
+</tr>
+<tr>
+<td><strong>Last 7 Days</strong></td>
+<td>Runs started in the last week</td>
+</tr>
+<tr>
+<td><strong>Last 30 Days</strong></td>
+<td>Runs started in the last month</td>
+</tr>
+<tr>
+<td><strong>Custom</strong></td>
+<td>Specify start/end dates manually</td>
+</tr>
+</tbody>
+</table>
+<h3 id="using-custom-date-range">Using Custom Date Range</h3>
+<ol>
+<li>Select <strong>Custom</strong> from the Start Time dropdown</li>
+<li>Use the <strong>Start Time From</strong> calendar to set the begin date</li>
+<li>Use the <strong>Start Time To</strong> calendar to set the end date</li>
+<li>The list automatically filters</li>
+</ol>
+<h3 id="clearing-filters">Clearing Filters</h3>
+<p>Click <strong>Clear Filters</strong> to reset all filters to their default values.</p>
+<h2 id="refreshing-the-list">Refreshing the List</h2>
+<p>Click the <strong>Refresh</strong> button (🔄) to reload the pipeline runs list with the latest data.</p>
+<h2 id="run-status-indicators">Run Status Indicators</h2>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Running</strong></td>
+<td>Pipeline is currently executing</td>
+</tr>
+<tr>
+<td><strong>Completed</strong></td>
+<td>Pipeline finished execution</td>
+</tr>
+<tr>
+<td><strong>Failed</strong></td>
+<td>Pipeline encountered an error</td>
+</tr>
+<tr>
+<td><strong>Cancelled</strong></td>
+<td>Pipeline was manually stopped</td>
+</tr>
+</tbody>
+</table>
+<h2 id="viewing-run-details">Viewing Run Details</h2>
+<blockquote>
+<p><strong>TODO</strong>: Document how to view detailed run information when clicking on a specific run. This may include step-by-step execution logs, items processed, errors, and performance metrics.</p>
+</blockquote>
+<h2 id="common-scenarios">Common Scenarios</h2>
+<h3 id="finding-failed-runs">Finding Failed Runs</h3>
+<ol>
+<li>Set the <strong>Success</strong> filter to <strong>Failed</strong></li>
+<li>Review the list of failed runs</li>
+<li>Click on a run to investigate the cause</li>
+</ol>
+<h3 id="monitoring-active-runs">Monitoring Active Runs</h3>
+<ol>
+<li>Set the <strong>Status</strong> filter to <strong>Running</strong></li>
+<li>Monitor progress of active pipelines</li>
+<li>Use refresh to see updated status</li>
+</ol>
+<h3 id="reviewing-recent-activity">Reviewing Recent Activity</h3>
+<ol>
+<li>Set <strong>Start Time</strong> to <strong>Last 24 Hours</strong></li>
+<li>Review all pipeline activity from the last day</li>
+</ol>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="pipeline-takes-too-long">Pipeline Takes Too Long</h3>
+<ul>
+<li>Check if the data source has more data than expected</li>
+<li>Review stage configurations for optimization opportunities</li>
+<li>Consider breaking large datasets into smaller batches</li>
+</ul>
+<h3 id="frequent-failures">Frequent Failures</h3>
+<ul>
+<li>Check data source connectivity</li>
+<li>Review error messages in run details</li>
+<li>Verify authentication credentials haven't expired</li>
+</ul>
+<h3 id="runs-not-appearing">Runs Not Appearing</h3>
+<ul>
+<li>Click refresh to update the list</li>
+<li>Verify your filters aren't excluding the runs</li>
+<li>Check that you have permission to view the pipeline</li>
+</ul>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="data-pipelines/invoking-data-pipelines.html">Invoking Data Pipelines</a></li>
+<li><a href="data-pipelines/monitoring-data-pipelines.html">Monitoring Data Pipelines</a></li>
+<li><a href="data-pipelines/creating-data-pipelines.html">Creating Data Pipelines</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

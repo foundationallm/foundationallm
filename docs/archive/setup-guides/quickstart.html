@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Quickstart guide | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Quickstart guide | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../toc.html">
+      <meta name="docfx:tocrel" content="../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/archive/setup-guides/quickstart.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../index.html">
+            <img id="logo" class="svg" src="../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="quickstart-guide">Quickstart guide</h1>
+
+<p>After <a href="../deployment/index.html">deploying</a> Foundationa<strong>LLM</strong>, complete the following steps to get started:</p>
+<ol>
+<li>Configure your deployment's <a href="../deployment/authentication/index.md">authentication</a> settings.</li>
+<li>Setup your <a href="agents/index.html">agents</a> to define a persona and connect to your data sources to generate responses.</li>
+<li>Find your User Portal URL and log in to start using Foundationa<strong>LLM</strong>.</li>
+</ol>
+<h2 id="find-your-user-portal-chat-ui-url">Find your User Portal (chat UI) URL</h2>
+<p>If you performed an <strong>Azure Container Apps (ACA)</strong> deployment, follow these steps to obtain the URL for the chat UI application:</p>
+<ol>
+<li><p>Within the Resource Group that was created as part of the deployment, select the <strong>Container App</strong> resource whose name ends with <code>chatuica</code>.</p>
+<p><img src="media/resource-group-aca.png" alt="The Chat UI container app is selected in the deployed resource group."></p>
+</li>
+<li><p>Within the Overview pane, copy the <strong>Application Url</strong> value. This is the URL for the chat application.</p>
+<p><img src="media/aca-application-url.png" alt="The container app's Application Url is highlighted."></p>
+</li>
+</ol>
+<p>If you performed an <strong>Azure Kubernetes Service (AKS)</strong> deployment, follow these steps to obtain the URL for the chat UI application:</p>
+<ol>
+<li><p>Within the Resource Group that was created as part of the deployment, select the <strong>Kubernetes Service</strong> resource.</p>
+<p><img src="media/resource-group-aks.png" alt="The Kubernetes service is selected in the deployed resource group."></p>
+</li>
+<li><p>Select <strong>Properties</strong> in the left-hand menu and copy the <strong>HTTP application routing domain</strong> value. This is the URL for the chat application.</p>
+<p><img src="media/aks-http-app-routing-domain.png" alt="The HTTP application routing domain property is highlighted."></p>
+</li>
+</ol>
+<p>When you navigate to the chat UI application, you will be prompted to log in.</p>
+<p><img src="media/user-portal-login.png" alt="The user portal login screen is displayed."></p>
+<h2 id="find-your-core-api-url">Find your Core API URL</h2>
+<p>If you performed an <strong>Azure Container Apps (ACA)</strong> deployment, follow these steps to obtain the URL for the Core API:</p>
+<ol>
+<li><p>Within the Resource Group that was created as part of the deployment, select the <strong>Container App</strong> resource whose name ends with <code>coreca</code>.</p>
+<p><img src="media/resource-group-core-aca.png" alt="The Core API container app is selected in the deployed resource group."></p>
+</li>
+<li><p>Within the Overview pane, copy the <strong>Application Url</strong> value. This is the URL for the Core API.</p>
+<p><img src="media/aca-core-application-url.png" alt="The container app's Application Url is highlighted."></p>
+</li>
+</ol>
+<p>If you performed an <strong>Azure Kubernetes Service (AKS)</strong> deployment, follow these steps to obtain the URL for the chat UI application:</p>
+<ol>
+<li><p>Within the Resource Group that was created as part of the deployment, select the <strong>Kubernetes Service</strong> resource.</p>
+<p><img src="media/resource-group-aks.png" alt="The Kubernetes service is selected in the deployed resource group."></p>
+</li>
+<li><p>Select <strong>Properties</strong> in the left-hand menu and copy the <strong>HTTP application routing domain</strong> value. This is the URL for the chat application.</p>
+<p><img src="media/aks-http-app-routing-domain.png" alt="The HTTP application routing domain property is highlighted."></p>
+<p>Your Core API URL (for your AKS deployment) is the URL you just copied with <code>/core</code> appended to the end of it. For example, if your Core API URL is <code>https://1cf699fd0d89446eabf2.eastus.aksapp.io/</code>, then your Core API URL is <code>https://1cf699fd0d89446eabf2.eastus.aksapp.io/core</code>.</p>
+</li>
+</ol>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

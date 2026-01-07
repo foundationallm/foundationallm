@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Triggering vectorization | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Triggering vectorization | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/archive/setup-guides/vectorization/vectorization-triggering.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="triggering-vectorization">Triggering vectorization</h1>
+
+<p>Vectorization pipelines are started when the Management API receives a <code>process</code>vectorization request. The following types of triggers are supported:</p>
+<ul>
+<li>None (no triggering of vectorization pipelines).</li>
+<li>Manual (vectorization pipelines are triggered manually by calling the Vectorization API). The typical use cases for on-demand vectorization (either synchronous or asynchronous) are testing, manual vectorization (or re-vectorization), and application integration (where another platform component triggers vectorization).</li>
+<li>Content-based (vectorization pipelines are triggered automatically when either new content is added to a content source or existing content is updated).</li>
+<li>Schedule-based (vectorization pipelines are triggered automatically based on a schedule).</li>
+</ul>
+<div class="NOTE">
+<h5>Note</h5>
+<p>Content-based and schedule-based triggering are currently in pre-release and are not yet available in public releases of FLLM.</p>
+</div>
+<h2 id="vectorization-requests">Vectorization requests</h2>
+<p>The typical structure of a vectorization request is the following</p>
+<pre><code class="lang-json">{
+    &quot;id&quot;: &quot;fc4a2499-4771-4a2d-9ba0-3874c3d4586c&quot;,
+    &quot;object_id&quot;: &quot;/instances/1e22cd2a-7b81-4160-b79f-f6443e3a6ac2/providers/FoundationaLLM.Vectorization/vectorizationRequests/fc4a2499-4771-4a2d-9ba0-3874c3d4586c&quot;,    
+    &quot;content_identifier&quot;: {
+        &quot;data_source_object_id&quot;: &quot;/instances/1e22cd2a-7b81-4160-b79f-f6443e3a6ac2/providers/FoundationaLLM.DataSource/dataSources/datalake01&quot;,
+        &quot;multipart_id&quot;: [
+            &quot;abcdefg.dfs.core.windows.net&quot;,
+            &quot;vectorization-input&quot;,
+            &quot;/journals/2024/Journal-January-2024.pdf&quot;
+        ],
+        &quot;canonical_id&quot;: &quot;/journals/Journal-January-2024&quot;,
+        &quot;metadata&quot;: null
+    },
+    &quot;processing_type&quot;: &quot;Synchronous&quot;,    
+    &quot;steps&quot;: [
+        {
+            &quot;id&quot;: &quot;extract&quot;,
+            &quot;parameters&quot;: {}
+        },
+        {
+            &quot;id&quot;: &quot;partition&quot;,
+            &quot;parameters&quot;: {
+                &quot;text_partitioning_profile_name&quot;: &quot;DefaultTokenTextPartition_Small&quot;
+            }
+        },
+        {
+            &quot;id&quot;: &quot;embed&quot;,
+            &quot;parameters&quot;: {
+                &quot;text_embedding_profile_name&quot;: &quot;AzureOpenAI_Embedding&quot;
+            }
+        },
+        {
+            &quot;id&quot;: &quot;index&quot;,
+            &quot;parameters&quot;: {
+                &quot;indexing_profile_name&quot;: &quot;AzureAISearch_CPTEST&quot;
+            }
+        }
+    ],
+    &quot;completed_steps&quot;: [
+    ],
+    &quot;remaining_steps&quot;: [
+        &quot;extract&quot;,
+        &quot;partition&quot;,
+        &quot;embed&quot;,
+        &quot;index&quot;
+    ]
+}
+</code></pre>
+<p>The following table describes the properties of a vectorization request.</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>The unique identifier of the vectorization request. The system issuing the request is responsible for generating this value.</td>
+</tr>
+<tr>
+<td><code>object_id</code></td>
+<td>The object ID of the vectorization request. This can be empty when creating the request.</td>
+</tr>
+<tr>
+<td><code>content_identifier</code></td>
+<td>The content identifier of the content to be vectorized.</td>
+</tr>
+<tr>
+<td><code>content_identifier.data_source_object_id</code></td>
+<td>The object id of the data source resource indicating the location of the data to be vectorized.</td>
+</tr>
+<tr>
+<td><code>content_identifier.multipart_id</code></td>
+<td>The multipart ID of the content to be vectorized. The multipart ID is a list of strings that uniquely identifies the content. The multipart ID is specific to the content source profile.</td>
+</tr>
+<tr>
+<td><code>content_identifier.canonical_id</code></td>
+<td>The canonical ID of the content to be vectorized. The canonical ID is a string that uniquely identifies the content in a logical namespace. The caller is responsible for the generation of this identifier. The identifier should have a path form (using the <code>/</code> separator). The last part of the path should always be equal to the file name (without its extension).</td>
+</tr>
+<tr>
+<td><code>processing_type</code></td>
+<td>The type of processing to be performed. The following values are supported: <code>Synchronous</code> and <code>Asynchronous</code>. See <a href="vectorization-concepts.html">Vectorization concepts</a> for more details.</td>
+</tr>
+<tr>
+<td><code>steps</code></td>
+<td>The vectorization steps to be executed. Most vectorization requests will contain the full set of standard steps: <code>extract</code>, <code>partition</code>, <code>embed</code>, and <code>index</code>. Each step (except for the <code>extract</code> one) will contain one parameter specifying the name of the associated vectorization profile name.</td>
+</tr>
+<tr>
+<td><code>completed_steps</code></td>
+<td>The list of steps that have been completed. This array needs to be empty when creating a vectorization request.</td>
+</tr>
+<tr>
+<td><code>remaining_steps</code></td>
+<td>The list of steps that are yet to be executed. This array can't be empty when creating a vectorization request, at least one step is needed.</td>
+</tr>
+</tbody>
+</table>
+<p>The meaning of the <code>multipart</code> strings depends on the specific type of the data source.</p>
+<p>The following table describes the meaning of the multipart strings for the <code>AzureDataLake</code> content source.</p>
+<table>
+<thead>
+<tr>
+<th>Position</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>The URL of the Azure Data Lake storage account. When providing this value, you can use the <a href="#known-neutral-urls">known neutral URLs</a> naming conventions.</td>
+</tr>
+<tr>
+<td>2</td>
+<td>The name of the container.</td>
+</tr>
+<tr>
+<td>3</td>
+<td>The path of the file relative to the container.</td>
+</tr>
+</tbody>
+</table>
+<p>The following table describes the meaning of the multipart strings for the <code>SharePointOnline</code> content source.</p>
+<table>
+<thead>
+<tr>
+<th>Position</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>The URL of the SharePoint Online tenant. When providing this value, you can use the <a href="#known-neutral-urls">known neutral URLs</a> naming conventions.</td>
+</tr>
+<tr>
+<td>2</td>
+<td>The path of the site/subsite relative to the tenant URL.</td>
+</tr>
+<tr>
+<td>3</td>
+<td>The folder path, starting with the document library name.</td>
+</tr>
+<tr>
+<td>4</td>
+<td>The name of the file.</td>
+</tr>
+</tbody>
+</table>
+<p>The following table describes the meaning of the multipart strings for the <code>AzureSQLDatabase</code> content source.</p>
+<table>
+<thead>
+<tr>
+<th>Position</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>The name of the database schema.</td>
+</tr>
+<tr>
+<td>2</td>
+<td>The name of the table.</td>
+</tr>
+<tr>
+<td>3</td>
+<td>The name of the column that stores file content.</td>
+</tr>
+<tr>
+<td>4</td>
+<td>The name of the column that stores file row identifier.</td>
+</tr>
+<tr>
+<td>5</td>
+<td>The value of the row identifier.</td>
+</tr>
+<tr>
+<td>5</td>
+<td>The file name.</td>
+</tr>
+</tbody>
+</table>
+<p>The following table describes the meaning of the multipart strings for the <code>WebSite</code> content source.</p>
+<table>
+<thead>
+<tr>
+<th>Position</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>The protocol, either <code>http</code> or <code>https</code>.</td>
+</tr>
+<tr>
+<td>2</td>
+<td>The web URL without the protocol.</td>
+</tr>
+<tr>
+<td>3</td>
+<td>CSS classes to filter by, space delimited.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="known-neutral-urls">Known neutral URLs</h3>
+<p>Depending on the specific configuration of various layers of security, vectorization request might end up being filtered out by infrastructure components like firewalls or proxies. To avoid this, the Vectorization API supports the use of known neutral URLs.</p>
+<p>Known neutral URLs are URLs that have a neutral form that is not subject to filtering. The platform currently supports two conventions for specifing known neutral URLs:</p>
+<ul>
+<li>Simple: <code>xyz.blob.core.windows.net</code> - this will be translated into <code>https://xyz.blob.core.windows.net</code> by the platform.</li>
+<li>Complex: <code>FLLM:xyz#blob#core#windows#net</code> - this will be translated into <code>https://xyz.blob.core.windows.net</code> by the platform.</li>
+</ul>
+<p>Depending on the specific configuration of the infrastructure, one of the two conventions might be more suitable than the other.</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>To avoid bypassing security measures, the use of known neutral URLs is currently restricted to the following domains: <code>onelake.dfs.fabric.microsoft.com</code>, <code>blob.core.windows.net</code>, <code>dfs.core.windows.net</code>, and <code>sharepoint.com</code>.</p>
+</div>
+<p>When parsing multipart components that are subject to known neutral URL naming conventions, the platform will apply the following logic:</p>
+<ol>
+<li>If the component starts with <code>https://</code> or <code>http://</code> (case-insensitive), the platform will not apply any transformation since the explicit intent is to use a fully qualified URL.</li>
+<li>If the component starts with <code>FLLM:</code>, the platform will replace the <code>FLLM:</code> prefix with <code>https://</code> and replace all <code>#</code> characters with <code>.</code>. Then, it will check if the tail of the resulting URL is in the list of allowed domains. If it is, the platform will use the resulting URL. If it is not, the platform will use the original form of the component.</li>
+<li>At this point, the platform will assume that the component is a simple known neutral URL and will prepend <code>https://</code> to it. Then, if the tail of the resulting URL is in the list of allowed domains, the platform will use the resulting URL. If it is not, the platform will use the original form of the component.</li>
+</ol>
+<h3 id="creating-a-vectorization-request">Creating a vectorization request</h3>
+<p>See <a href="./vectorization-request-resources.md">Vectorization Request Resources</a> for more information on creating a vectorization request.</p>
+<p>Upon completion, the API will return a response with the following structure:</p>
+<pre><code class="lang-json">{
+    &quot;object_id&quot;:&quot;/instances/1e22cd2a-7b81-4160-b79f-f6443e3a6ac2/providers/FoundationaLLM.Vectorization/vectorizationrequests/6041849a-d4d8-428d-97ff-c6a3443ecdae&quot;,
+    &quot;is_success&quot;:true,
+    &quot;error_message&quot;:null
+}
+</code></pre>
+<h3 id="processing-a-vectorization-request">Processing a vectorization request</h3>
+<p>To initiate the processing of a vectorization request, the caller must issue a <code>process</code> request to the Management API through a <code>POST</code> on the resource object id (the body is <code>{}</code>). The following is an example of a <code>process</code>, example:    <code>{baseUrl}/instances/1e22cd2a-7b81-4160-b79f-f6443e3a6ac2/providers/FoundationaLLM.Vectorization/vectorizationrequests/6041849a-d4d8-428d-97ff-c6a3443ecdae/process</code>.</p>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

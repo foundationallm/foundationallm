@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Downloading Files from a Conversation | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Downloading Files from a Conversation | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/chat-user-portal/how-to-guides/using-agents/downloading-files.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="downloading-files-from-a-conversation">Downloading Files from a Conversation</h1>
+
+<p>Learn how to download files that agents generate during your conversation.</p>
+<h2 id="when-agents-generate-files">When Agents Generate Files</h2>
+<p>Some agents can create files as part of their responses. These files might include:</p>
+<ul>
+<li><strong>Charts and graphs</strong> — Visualizations created from data analysis</li>
+<li><strong>Generated images</strong> — Images created by image generation tools like DALL-E</li>
+<li><strong>Data exports</strong> — CSV, JSON, or other data files</li>
+<li><strong>Code files</strong> — Scripts or programs written by the agent</li>
+<li><strong>Reports</strong> — Formatted documents or summaries</li>
+<li><strong>Processed data</strong> — Results from calculations or transformations</li>
+</ul>
+<blockquote>
+<p><strong>Note:</strong> Not all agents can generate files. This capability depends on the tools and configurations enabled for each agent.</p>
+</blockquote>
+<h2 id="recognizing-downloadable-files">Recognizing Downloadable Files</h2>
+<p>When an agent generates a file, it appears in the conversation in one of these ways:</p>
+<h3 id="file-links-in-the-message">File Links in the Message</h3>
+<p>Files appear as clickable links within the agent's response. You'll see:</p>
+<ul>
+<li>A <strong>file icon</strong> next to the link indicating the file type</li>
+<li>The <strong>filename</strong> as clickable text</li>
+<li>Links are styled differently from regular web links</li>
+</ul>
+<h3 id="images-in-the-response">Images in the Response</h3>
+<p>Generated images display directly in the conversation:</p>
+<ul>
+<li>Click the image to view it in full size</li>
+<li>The full-size preview includes a close button</li>
+<li>Right-click the image preview to save it</li>
+</ul>
+<h3 id="additional-content-section">Additional Content Section</h3>
+<p>Some files appear in an <strong>Additional Content</strong> section at the bottom of the agent's message, separate from the main response text.</p>
+<h2 id="how-to-download-files">How to Download Files</h2>
+<h3 id="downloading-linked-files">Downloading Linked Files</h3>
+<ol>
+<li>Find the file link in the agent's response (look for the file icon 📄)</li>
+<li><strong>Click the link</strong> — the file will begin downloading</li>
+<li>Check your browser's download location for the file</li>
+<li>The file is saved with its original filename</li>
+</ol>
+<h3 id="saving-generated-images">Saving Generated Images</h3>
+<ol>
+<li><strong>Click the image</strong> in the conversation to open the full-size preview</li>
+<li><strong>Right-click</strong> on the preview image</li>
+<li>Select <strong>Save image as...</strong> from the context menu</li>
+<li>Choose a location and filename</li>
+<li>Click <strong>Save</strong></li>
+</ol>
+<p>Alternative method:</p>
+<ol>
+<li>Click the image to open the preview</li>
+<li>Use <code>Ctrl + S</code> (Windows) or <code>Cmd + S</code> (Mac) to save</li>
+</ol>
+<h2 id="file-types-you-may-encounter">File Types You May Encounter</h2>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Common Types</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Images</strong></td>
+<td>PNG, JPEG, SVG</td>
+<td>Charts, graphs, generated images</td>
+</tr>
+<tr>
+<td><strong>Data</strong></td>
+<td>CSV, JSON, XLSX</td>
+<td>Exported data, analysis results</td>
+</tr>
+<tr>
+<td><strong>Documents</strong></td>
+<td>PDF, TXT, MD</td>
+<td>Reports, summaries, documentation</td>
+</tr>
+<tr>
+<td><strong>Code</strong></td>
+<td>PY, JS, SQL</td>
+<td>Scripts, queries, programs</td>
+</tr>
+</tbody>
+</table>
+<h2 id="where-downloads-go">Where Downloads Go</h2>
+<p>Downloaded files go to your browser's default download location:</p>
+<table>
+<thead>
+<tr>
+<th>Operating System</th>
+<th>Default Location</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Windows</td>
+<td><code>C:\Users\[YourName]\Downloads</code></td>
+</tr>
+<tr>
+<td>Mac</td>
+<td><code>/Users/[YourName]/Downloads</code></td>
+</tr>
+<tr>
+<td>Linux</td>
+<td><code>/home/[YourName]/Downloads</code></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Tip:</strong> You can change your download location in your browser's settings under Downloads or Privacy &amp; Security.</p>
+</blockquote>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="download-doesnt-start">Download Doesn't Start</h3>
+<ul>
+<li><strong>Pop-up blocker</strong>: Your browser may be blocking the download. Look for a blocked pop-up notification in the address bar</li>
+<li><strong>Check downloads</strong>: Some browsers download files silently — check your Downloads folder</li>
+<li><strong>Try again</strong>: Click the link again; temporary network issues may have interrupted the download</li>
+</ul>
+<h3 id="file-wont-open">File Won't Open</h3>
+<ul>
+<li><strong>Check the file extension</strong>: Make sure you have software installed that can open the file type</li>
+<li><strong>File appears corrupted</strong>: Try downloading again</li>
+<li><strong>Large files</strong>: Large files may take longer to download completely</li>
+</ul>
+<h3 id="image-wont-save">Image Won't Save</h3>
+<ul>
+<li><strong>Wait for loading</strong>: Make sure the image has fully loaded before trying to save</li>
+<li><strong>Try the preview</strong>: Click to open the full-size preview, then save from there</li>
+<li><strong>Right-click options</strong>: If &quot;Save image as&quot; isn't available, try &quot;Copy image&quot; and paste into an image editor</li>
+</ul>
+<h3 id="cant-find-the-download">Can't Find the Download</h3>
+<ol>
+<li>Check your browser's download history (<code>Ctrl + J</code> on Windows, <code>Cmd + Shift + J</code> on Mac in Chrome)</li>
+<li>Look in your Downloads folder</li>
+<li>Search your computer for the filename</li>
+<li>Check if downloads are going to a different folder (browser settings)</li>
+</ol>
+<h3 id="file-link-shows-an-error">File Link Shows an Error</h3>
+<ul>
+<li>The file may have expired or been removed</li>
+<li>Try asking the agent to regenerate the file</li>
+<li>Check your internet connection</li>
+</ul>
+<h2 id="tips-for-managing-downloaded-files">Tips for Managing Downloaded Files</h2>
+<ol>
+<li><strong>Organize immediately</strong>: Move downloaded files to appropriate folders rather than leaving them in Downloads</li>
+<li><strong>Rename if needed</strong>: Generated filenames may be technical — rename to something meaningful</li>
+<li><strong>Check file integrity</strong>: Open files after downloading to verify they're complete and correct</li>
+<li><strong>Note the source</strong>: If saving for reference, note which conversation generated the file</li>
+</ol>
+<h2 id="security-considerations">Security Considerations</h2>
+<ul>
+<li>Downloaded files come from the agent's processing environment</li>
+<li>Treat downloaded files like any other download — scan with antivirus if concerned</li>
+<li>Be cautious with executable files (<code>.exe</code>, <code>.bat</code>, <code>.sh</code>) — review code before running</li>
+<li>Data exports may contain sensitive information — store securely</li>
+</ul>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="uploading-files.html">Uploading Files to a Conversation</a> — Send files to agents for analysis</li>
+<li><a href="using-code-interpreter.html">Using the Code Interpreter Tool</a> — How agents generate files</li>
+<li><a href="copying-prompts-results.html">Copying Messages</a> — Copy text content from responses</li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

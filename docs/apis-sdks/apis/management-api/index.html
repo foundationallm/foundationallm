@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Management API | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Management API | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/apis-sdks/apis/management-api/index.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="management-api">Management API</h1>
+
+<p>The Management API provides programmatic access to create, update, and manage FoundationaLLM resources. While the Core API handles user-facing chat interactions, the Management API handles administrative operations.</p>
+<h2 id="overview">Overview</h2>
+<p>The Management API enables:</p>
+<ul>
+<li><strong>Resource Management</strong>: Create, read, update, delete agents, prompts, data sources, pipelines</li>
+<li><strong>Configuration</strong>: Manage branding, app settings, API endpoints</li>
+<li><strong>Authorization</strong>: Manage role assignments and access control</li>
+<li><strong>Monitoring</strong>: Check API health and service status</li>
+</ul>
+<h2 id="comparison-core-api-vs-management-api">Comparison: Core API vs Management API</h2>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Core API</th>
+<th>Management API</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Purpose</strong></td>
+<td>User interactions</td>
+<td>Administrative operations</td>
+</tr>
+<tr>
+<td><strong>Primary Users</strong></td>
+<td>End users, applications</td>
+<td>Administrators, CI/CD pipelines</td>
+</tr>
+<tr>
+<td><strong>Operations</strong></td>
+<td>Chat completions, sessions</td>
+<td>Resource CRUD, configuration</td>
+</tr>
+<tr>
+<td><strong>Data Access</strong></td>
+<td>Read-only resources</td>
+<td>Full CRUD on resources</td>
+</tr>
+</tbody>
+</table>
+<h2 id="base-url">Base URL</h2>
+<table>
+<thead>
+<tr>
+<th>Deployment Type</th>
+<th>URL Pattern</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Azure Container Apps (ACA)</td>
+<td><code>https://{prefix}managementca.{region}.azurecontainerapps.io</code></td>
+</tr>
+<tr>
+<td>Azure Kubernetes Service (AKS)</td>
+<td><code>https://{cluster-fqdn}/management</code></td>
+</tr>
+</tbody>
+</table>
+<p>Find your URL in App Configuration: <code>FoundationaLLM:APIs:ManagementAPI:APIUrl</code></p>
+<h2 id="authentication">Authentication</h2>
+<p>All Management API endpoints require Entra ID authentication:</p>
+<pre><code class="lang-http">Authorization: Bearer &lt;entra-id-token&gt;
+</code></pre>
+<h2 id="api-architecture">API Architecture</h2>
+<p>The Management API uses a resource provider pattern similar to Azure Resource Manager:</p>
+<pre><code>/instances/{instanceId}/providers/{resourceProvider}/{resourceType}/{resourceName}
+</code></pre>
+<h3 id="resource-providers">Resource Providers</h3>
+<table>
+<thead>
+<tr>
+<th>Provider</th>
+<th>Description</th>
+<th>Resource Types</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM.Agent</code></td>
+<td>Agent management</td>
+<td>agents, workflows, tools</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Prompt</code></td>
+<td>Prompt templates</td>
+<td>prompts</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.DataSource</code></td>
+<td>Data connections</td>
+<td>dataSources</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.DataPipeline</code></td>
+<td>Data pipelines</td>
+<td>dataPipelines, dataPipelineRuns</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.AIModel</code></td>
+<td>AI model configs</td>
+<td>aiModels</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Configuration</code></td>
+<td>Platform settings</td>
+<td>appConfigurations, apiEndpoints</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Authorization</code></td>
+<td>Access control</td>
+<td>roleAssignments, roleDefinitions</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Plugin</code></td>
+<td>Plugin system</td>
+<td>plugins, pluginPackages</td>
+</tr>
+</tbody>
+</table>
+<p>See <a href="resource-providers-overview.html">Resource Providers Overview</a> for complete details.</p>
+<h2 id="common-operations">Common Operations</h2>
+<h3 id="list-resources">List Resources</h3>
+<pre><code class="lang-http">GET /instances/{instanceId}/providers/{provider}/{resourceType}
+</code></pre>
+<p>Example - List all agents:</p>
+<pre><code class="lang-bash">curl -X GET \
+  &quot;https://{management-api}/instances/{instanceId}/providers/FoundationaLLM.Agent/agents&quot; \
+  -H &quot;Authorization: Bearer $TOKEN&quot;
+</code></pre>
+<h3 id="get-resource">Get Resource</h3>
+<pre><code class="lang-http">GET /instances/{instanceId}/providers/{provider}/{resourceType}/{name}
+</code></pre>
+<h3 id="createupdate-resource">Create/Update Resource</h3>
+<pre><code class="lang-http">POST /instances/{instanceId}/providers/{provider}/{resourceType}/{name}
+Content-Type: application/json
+
+{
+  // resource definition
+}
+</code></pre>
+<h3 id="delete-resource">Delete Resource</h3>
+<pre><code class="lang-http">DELETE /instances/{instanceId}/providers/{provider}/{resourceType}/{name}
+</code></pre>
+<h3 id="purge-resource-permanent-delete">Purge Resource (Permanent Delete)</h3>
+<pre><code class="lang-http">POST /instances/{instanceId}/providers/{provider}/{resourceType}/{name}/purge
+</code></pre>
+<h2 id="access-methods">Access Methods</h2>
+<h3 id="1-direct-rest-calls">1. Direct REST Calls</h3>
+<p>Use tools like Postman, curl, or HTTP clients. See <a href="directly-calling-management-api.html">Directly Calling Management API</a>.</p>
+<h3 id="2-management-portal">2. Management Portal</h3>
+<p>The Management Portal UI consumes the Management API internally. All portal operations translate to API calls.</p>
+<h3 id="3-net-sdk">3. .NET SDK</h3>
+<p>Use the <code>FoundationaLLM.Client.Management</code> NuGet package:</p>
+<pre><code class="lang-csharp">var managementClient = new ManagementClient(apiUrl, credential, instanceId);
+var agents = await managementClient.Agents.GetAgentsAsync();
+</code></pre>
+<p>See <a href="../../sdks/dotnet/index.html">.NET SDK Documentation</a>.</p>
+<h3 id="4-cli-coming-soon">4. CLI (Coming Soon)</h3>
+<p>A command-line interface for Management API operations is planned.</p>
+<h2 id="key-features">Key Features</h2>
+<h3 id="resource-lifecycle">Resource Lifecycle</h3>
+<p>The Management API supports full resource lifecycle:</p>
+<ol>
+<li><strong>Create</strong>: Define new resources</li>
+<li><strong>Read</strong>: Retrieve resource configurations</li>
+<li><strong>Update</strong>: Modify existing resources</li>
+<li><strong>Delete</strong>: Soft delete (recoverable)</li>
+<li><strong>Purge</strong>: Permanent deletion</li>
+</ol>
+<h3 id="validation">Validation</h3>
+<p>Resources are validated on create/update:</p>
+<ul>
+<li>Required fields</li>
+<li>Name uniqueness</li>
+<li>Reference integrity</li>
+<li>Schema compliance</li>
+</ul>
+<h3 id="auditing">Auditing</h3>
+<p>All operations are logged with:</p>
+<ul>
+<li>User identity</li>
+<li>Timestamp</li>
+<li>Operation type</li>
+<li>Resource affected</li>
+</ul>
+<h2 id="swagger-documentation">Swagger Documentation</h2>
+<p>Access interactive API documentation:</p>
+<table>
+<thead>
+<tr>
+<th>Deployment</th>
+<th>URL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ACA</td>
+<td><code>https://{management-api-url}/swagger/</code></td>
+</tr>
+<tr>
+<td>AKS</td>
+<td><code>https://{aks-url}/management/swagger/v1/swagger.json</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="error-responses">Error Responses</h2>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>400</td>
+<td>Bad request (validation error)</td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized</td>
+</tr>
+<tr>
+<td>403</td>
+<td>Forbidden (insufficient permissions)</td>
+</tr>
+<tr>
+<td>404</td>
+<td>Resource not found</td>
+</tr>
+<tr>
+<td>409</td>
+<td>Conflict (resource already exists)</td>
+</tr>
+<tr>
+<td>500</td>
+<td>Internal server error</td>
+</tr>
+</tbody>
+</table>
+<p>Error response format:</p>
+<pre><code class="lang-json">{
+  &quot;error&quot;: {
+    &quot;code&quot;: &quot;ResourceNotFound&quot;,
+    &quot;message&quot;: &quot;The agent 'my-agent' was not found.&quot;
+  }
+}
+</code></pre>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="api-reference.html">API Reference</a></li>
+<li><a href="directly-calling-management-api.html">Directly Calling Management API</a></li>
+<li><a href="resource-providers-overview.html">Resource Providers Overview</a></li>
+<li><a href="data-pipelines.html">Data Pipelines API</a></li>
+<li><a href="../../sdks/dotnet/index.html">.NET SDK</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

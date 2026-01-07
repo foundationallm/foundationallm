@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Cosmos DB stored procedure to anonymize deleted sessions (conversations) | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Cosmos DB stored procedure to anonymize deleted sessions (conversations) | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../toc.html">
+      <meta name="docfx:tocrel" content="../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/archive/operations/purge-conversations.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../index.html">
+            <img id="logo" class="svg" src="../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="cosmos-db-stored-procedure-to-anonymize-deleted-sessions-conversations">Cosmos DB stored procedure to anonymize deleted sessions (conversations)</h1>
+
+<p>User conversations are stored in Cosmos DB. When a user deletes a conversation, the session document and associated documents (CompletionPrompt and Message) are marked as deleted (soft-deleted). As opposed to hard-deleting the documents, which would remove them from the database, soft-deleting allows for the possibility of restoring the conversation later. However, in some cases, it may be necessary to anonymize the deleted session to ensure that no sensitive information is retained in the database. Anonymizing the deleted session involves updating the associated documents to remove any potentially sensitive information, such as user input or analysis results. As opposed to hard-deleting the documents, which would remove them from the database, soft-deleting allows for the possibility of retaining statistical information and other metrics, such as token usage, user feedback, etc.</p>
+<p>This stored procedure anonymizes the deleted session by updating the associated documents to remove any potentially sensitive information.</p>
+<h2 id="creating-the-stored-procedure">Creating the stored procedure</h2>
+<p>To create the stored procedure, follow these steps:</p>
+<ol>
+<li><p>Open the Azure portal and navigate to your Cosmos DB account.</p>
+</li>
+<li><p>Select the &quot;Data Explorer&quot; option from the left-hand menu.</p>
+</li>
+<li><p>Right-click the <strong>Sessions</strong> container and select the <strong>New Stored Procedure</strong> option.</p>
+</li>
+<li><p>Copy and paste the following code into the stored procedure editor:</p>
+<pre><code class="lang-javascript">function anonymizeDeletedSession() {
+    var collection = getContext().getCollection();
+    var response = getContext().getResponse();
+
+    // Retrieve Session document
+    var sessionQuery = `SELECT * FROM c WHERE c.type = 'Session'`;
+
+    var isSessionAccepted = collection.queryDocuments(
+        collection.getSelfLink(),
+        sessionQuery,
+        {},
+        function (err, sessionDocuments, responseOptions) {
+            if (err) throw err;
+
+            if (sessionDocuments.length === 0 || !sessionDocuments[0].deleted) {
+                response.setBody(&quot;Session cannot be anonymized because it was not deleted.&quot;);
+                return;
+            }
+
+            // Session marked as deleted, proceed
+            var query = `SELECT * FROM c WHERE c.type = 'CompletionPrompt' OR c.type = 'Message'`;
+
+            var isAccepted = collection.queryDocuments(
+                collection.getSelfLink(),
+                query,
+                {},
+                function (err, documents, responseOptions) {
+                    if (err) throw err;
+
+                    if (documents.length === 0) {
+                        response.setBody(&quot;No related documents found.&quot;);
+                        return;
+                    }
+
+                    var updatedCount = 0;
+                    var processedCount = 0;
+
+                    documents.forEach(function (doc) {
+                        if (doc.type === &quot;CompletionPrompt&quot;) {
+                            doc.prompt = &quot;Deleted&quot;;
+                        }
+
+                        if (doc.type === &quot;Message&quot;) {
+                            doc.text = &quot;Deleted&quot;;
+
+                            if (Array.isArray(doc.content)) {
+                                doc.content.forEach(function (contentItem) {
+                                    contentItem.value = &quot;Deleted&quot;;
+                                });
+                            }
+
+                            if (Array.isArray(doc.analysisResults)) {
+                                doc.analysisResults.forEach(function (analysisItem) {
+                                    analysisItem.toolInput = &quot;Deleted&quot;;
+                                    analysisItem.toolOutput = &quot;Deleted&quot;;
+                                });
+                            }
+                        }
+
+                        // Update the document
+                        var acceptUpdate = collection.replaceDocument(doc._self, doc, function (err) {
+                            if (err) throw err;
+
+                            updatedCount++;
+                            processedCount++;
+
+                            // Check if all documents processed
+                            if (processedCount === documents.length) {
+                                response.setBody(&quot;Updated &quot; + updatedCount + &quot; documents.&quot;);
+                            }
+                        });
+
+                        if (!acceptUpdate) throw new Error(&quot;Update not accepted, aborting&quot;);
+                    });
+                }
+            );
+
+            if (!isAccepted) throw new Error(&quot;Query was not accepted by server.&quot;);
+        }
+    );
+
+    if (!isSessionAccepted) throw new Error(&quot;Session query was not accepted by server.&quot;);
+}
+</code></pre>
+</li>
+<li><p>Provide a name for the stored procedure (e.g., <code>anonymizeDeletedSession</code>).</p>
+</li>
+<li><p>Select the <strong>Save</strong> button to create the stored procedure.</p>
+</li>
+</ol>
+<h2 id="executing-the-stored-procedure">Executing the stored procedure</h2>
+<p>When you wish to anonymize a deleted session, you can execute the stored procedure by following these steps:</p>
+<ol>
+<li>In the Azure portal, navigate to your Cosmos DB account and select the <strong>Data Explorer</strong> option.</li>
+<li>Expand the <strong>Sessions</strong> container and expand the <strong>Stored Procedures</strong> option.</li>
+<li>Select the stored procedure you created (e.g., <code>anonymizeDeletedSession</code>).</li>
+<li>Click the <strong>Execute</strong> button to run the stored procedure.</li>
+<li>In the input parameters panel that appears, enter the <code>sessionId</code> of the session you want to anonymize into the <strong>Partition key value</strong> field, then select <strong>Execute</strong>.</li>
+<li>The stored procedure will run and anonymize the deleted session, updating the associated documents as necessary. The output will indicate the number of documents that were updated.</li>
+<li>If the session was not deleted, the output will indicate that the session cannot be anonymized because it was not deleted.</li>
+</ol>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

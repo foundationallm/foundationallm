@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Quick Start Deployment | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Quick Start Deployment | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../toc.html">
+      <meta name="docfx:tocrel" content="../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/platform-operations/deployment/deployment-quick-start.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../index.html">
+            <img id="logo" class="svg" src="../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="quick-start-deployment">Quick Start Deployment</h1>
+
+<p>The Quick Start deployment uses Azure Container Apps (ACA) for rapid deployment and streamlined development. This option is ideal for proof-of-concept, development, and smaller production workloads.</p>
+<h2 id="overview">Overview</h2>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Infrastructure</strong></td>
+<td>Azure Container Apps (ACA)</td>
+</tr>
+<tr>
+<td><strong>Deployment Time</strong></td>
+<td>~30 minutes</td>
+</tr>
+<tr>
+<td><strong>Scalability</strong></td>
+<td>Auto-scaling built-in</td>
+</tr>
+<tr>
+<td><strong>Networking</strong></td>
+<td>Public endpoints</td>
+</tr>
+<tr>
+<td><strong>SSL</strong></td>
+<td>Managed certificates</td>
+</tr>
+</tbody>
+</table>
+<h2 id="prerequisites">Prerequisites</h2>
+<h3 id="azure-requirements">Azure Requirements</h3>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Azure Subscription</strong></td>
+<td>Active subscription with billing enabled</td>
+</tr>
+<tr>
+<td><strong>Azure OpenAI Access</strong></td>
+<td><a href="https://customervoice.microsoft.com/Pages/ResponsePage.aspx?id=v4j5cvGGr0GRqy180BHbR7en2Ais5pxKtso_Pz4b1_xUNTZBNzRKNlVQSFhZMU9aV09EVzYxWFdORCQlQCN0PWcu">Request access here</a></td>
+</tr>
+<tr>
+<td><strong>VM Quota</strong></td>
+<td>Minimum 65 vCPUs across all VM families</td>
+</tr>
+<tr>
+<td><strong>Role Assignment</strong></td>
+<td>Owner on target subscription</td>
+</tr>
+</tbody>
+</table>
+<h3 id="entra-id-requirements">Entra ID Requirements</h3>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>App Registrations</strong></td>
+<td>6 registrations required (see <a href="security-permissions/authentication-authorization/index.md">Authentication Setup</a>)</td>
+</tr>
+<tr>
+<td><strong>Role Assignment</strong></td>
+<td>Owner on app registrations</td>
+</tr>
+</tbody>
+</table>
+<h3 id="required-tools">Required Tools</h3>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Version</th>
+<th>Installation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Azure Developer CLI</td>
+<td>v1.6.1+</td>
+<td><a href="https://learn.microsoft.com/azure/developer/azure-developer-cli/install-azd">Install azd</a></td>
+</tr>
+<tr>
+<td>Azure CLI</td>
+<td>v2.51.0+</td>
+<td><a href="https://docs.microsoft.com/cli/azure/install-azure-cli">Install Azure CLI</a></td>
+</tr>
+<tr>
+<td>PowerShell</td>
+<td>7.4.1+</td>
+<td><a href="https://learn.microsoft.com/powershell/scripting/install/installing-powershell">Install PowerShell</a></td>
+</tr>
+<tr>
+<td>Git</td>
+<td>Latest</td>
+<td><a href="https://git-scm.com/downloads">Install Git</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="optional-tools">Optional Tools</h3>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>.NET 8 SDK</td>
+<td>Local debugging</td>
+</tr>
+<tr>
+<td>Visual Studio 2022</td>
+<td>Development</td>
+</tr>
+<tr>
+<td>Docker Desktop</td>
+<td>Container testing</td>
+</tr>
+</tbody>
+</table>
+<h2 id="deployment-steps">Deployment Steps</h2>
+<h3 id="step-1-pre-deployment-setup">Step 1: Pre-Deployment Setup</h3>
+<p>Complete the <a href="security-permissions/authentication-authorization/index.md">Authentication Setup</a> to create the required Entra ID app registrations.</p>
+<blockquote>
+<p><strong>Important:</strong> App registrations must be created before deployment. You will update some values after deployment.</p>
+</blockquote>
+<h3 id="step-2-clone-repository">Step 2: Clone Repository</h3>
+<pre><code class="lang-powershell">git clone https://github.com/foundationallm/foundationallm.git
+cd foundationallm
+git checkout release/0.8.3
+</code></pre>
+<blockquote>
+<p><strong>Note:</strong> Use the latest <a href="https://github.com/foundationallm/foundationallm/releases">release branch</a> for production deployments. The <code>main</code> branch is for development.</p>
+</blockquote>
+<h3 id="step-3-install-deployment-utilities">Step 3: Install Deployment Utilities</h3>
+<pre><code class="lang-powershell">cd deploy/common/scripts
+./Get-AzCopy.ps1
+</code></pre>
+<h3 id="step-4-authenticate">Step 4: Authenticate</h3>
+<pre><code class="lang-powershell">cd deploy/quick-start
+
+# Azure CLI
+az login
+
+# Azure Developer CLI
+azd auth login
+
+# AzCopy
+../common/tools/azcopy/azcopy login
+</code></pre>
+<h3 id="step-5-configure-environment">Step 5: Configure Environment</h3>
+<pre><code class="lang-powershell">azd env new --location &lt;azure-region&gt; --subscription &lt;subscription-id&gt;
+</code></pre>
+<p><strong>Supported regions:</strong> Choose a region that supports Azure OpenAI and required models. See <a href="https://learn.microsoft.com/azure/ai-services/openai/concepts/models">Azure OpenAI regional availability</a>.</p>
+<h3 id="step-6-configure-authentication-settings">Step 6: Configure Authentication Settings</h3>
+<pre><code class="lang-powershell">../common/scripts/Set-AzdEnvEntra.ps1
+</code></pre>
+<p>This script prompts for your Entra ID app registration values.</p>
+<h3 id="step-7-optional-use-existing-azure-openai">Step 7: (Optional) Use Existing Azure OpenAI</h3>
+<p>If you have an existing Azure OpenAI instance:</p>
+<pre><code class="lang-powershell">azd env set OPENAI_NAME &lt;openai-name&gt;
+azd env set OPENAI_RESOURCE_GROUP &lt;resource-group&gt;
+azd env set OPENAI_SUBSCRIPTION_ID &lt;subscription-id&gt;
+</code></pre>
+<blockquote>
+<p><strong>Important:</strong> Ensure relevant Managed Identities (LangChain API, Semantic Kernel API, Gateway API) have <code>OpenAI Reader</code> role on the Azure OpenAI resource.</p>
+</blockquote>
+<h3 id="step-8-deploy">Step 8: Deploy</h3>
+<pre><code class="lang-powershell">azd up
+</code></pre>
+<p>This command:</p>
+<ol>
+<li>Provisions Azure infrastructure</li>
+<li>Updates App Configuration entries</li>
+<li>Deploys API and web services</li>
+<li>Imports default files to storage</li>
+</ol>
+<h2 id="post-deployment-configuration">Post-Deployment Configuration</h2>
+<h3 id="configure-ms-graph-permissions">Configure MS Graph Permissions</h3>
+<p>Run this script to grant MS Graph access:</p>
+<pre><code class="lang-powershell">cd deploy/quick-start
+../common/scripts/Set-FllmGraphRoles.ps1 -resourceGroupName rg-&lt;azd-env-name&gt;
+</code></pre>
+<blockquote>
+<p><strong>Requirement:</strong> User must be <code>Global Administrator</code> or have <code>Privileged Role Administrator</code> role.</p>
+</blockquote>
+<h3 id="update-oauth-callback-uris">Update OAuth Callback URIs</h3>
+<pre><code class="lang-powershell">../common/scripts/Update-OAuthCallbackUris.ps1
+</code></pre>
+<h3 id="verify-deployment">Verify Deployment</h3>
+<ol>
+<li>Navigate to the Chat Portal URL (from deployment output)</li>
+<li>Log in with an authorized user</li>
+<li>Send a test message to verify agent response</li>
+</ol>
+<h2 id="teardown">Teardown</h2>
+<p>To remove all deployed resources:</p>
+<pre><code class="lang-powershell">azd down --purge
+</code></pre>
+<blockquote>
+<p><strong>Important:</strong> Use <code>--purge</code> to permanently delete soft-deleted resources (Azure OpenAI, Key Vault, AI Search, Content Safety).</p>
+</blockquote>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Quota exceeded</td>
+<td><a href="https://learn.microsoft.com/azure/quotas/per-vm-quota-requests">Request quota increase</a></td>
+</tr>
+<tr>
+<td>Authentication errors</td>
+<td>Verify app registration settings</td>
+</tr>
+<tr>
+<td>Deployment fails</td>
+<td>Check <code>azd</code> logs for specific errors</td>
+</tr>
+<tr>
+<td>Container crashes</td>
+<td>Review container logs in Azure Portal</td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="deployment-standard.html">Standard Deployment</a></li>
+<li><a href="security-permissions/authentication-authorization/index.md">Authentication Setup</a></li>
+<li><a href="app-configuration-values.html">App Configuration Values</a></li>
+<li><a href="../monitoring-troubleshooting/troubleshooting.html">Troubleshooting</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

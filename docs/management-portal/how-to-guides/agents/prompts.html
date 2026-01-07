@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Managing Prompts | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Managing Prompts | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/management-portal/how-to-guides/agents/prompts.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="managing-prompts">Managing Prompts</h1>
+
+<p>Learn how to create and manage prompts in the Management Portal.</p>
+<h2 id="overview">Overview</h2>
+<p>Prompts are reusable text templates that define agent behavior, tool instructions, and data pipeline processing. They provide a centralized way to manage the instructions that guide AI model responses.</p>
+<h2 id="accessing-prompts">Accessing Prompts</h2>
+<ol>
+<li>In the Management Portal sidebar, click <strong>Prompts</strong> under the <strong>Agents</strong> section</li>
+<li>The prompt list loads, showing all available prompts</li>
+</ol>
+<h2 id="prompt-list">Prompt List</h2>
+<p>The table displays:</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Name</strong></td>
+<td>Unique identifier for the prompt</td>
+</tr>
+<tr>
+<td><strong>Category</strong></td>
+<td>Type of prompt (Workflow, Tool, DataPipeline)</td>
+</tr>
+<tr>
+<td><strong>Description</strong></td>
+<td>Purpose of the prompt</td>
+</tr>
+<tr>
+<td><strong>Edit</strong></td>
+<td>Settings icon to modify the prompt</td>
+</tr>
+</tbody>
+</table>
+<h3 id="searching-and-sorting">Searching and Sorting</h3>
+<ul>
+<li>Use the search box to filter by name or description</li>
+<li>Click column headers to sort</li>
+<li>Use pagination controls to navigate large lists</li>
+</ul>
+<h2 id="prompt-categories">Prompt Categories</h2>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Agent Workflow</strong></td>
+<td>Main prompts for agent orchestration, routing, and response generation</td>
+</tr>
+<tr>
+<td><strong>Agent Tool</strong></td>
+<td>Instructions for specific tools (code interpreter, knowledge search)</td>
+</tr>
+<tr>
+<td><strong>Data Pipeline</strong></td>
+<td>Prompts used in data processing workflows</td>
+</tr>
+</tbody>
+</table>
+<h2 id="creating-a-prompt">Creating a Prompt</h2>
+<ol>
+<li>Click <strong>Create Prompt</strong> at the top right of the page</li>
+<li>Configure the prompt settings:</li>
+</ol>
+<h3 id="prompt-configuration-fields">Prompt Configuration Fields</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+<th>Requirements</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Prompt Name</strong></td>
+<td>Unique identifier</td>
+<td>Letters, numbers, dashes, underscores only. No spaces.</td>
+</tr>
+<tr>
+<td><strong>Description</strong></td>
+<td>Purpose and usage notes</td>
+<td>Recommended for discoverability</td>
+</tr>
+<tr>
+<td><strong>Category</strong></td>
+<td>Type of prompt</td>
+<td>Select from dropdown</td>
+</tr>
+<tr>
+<td><strong>Prompt Prefix</strong></td>
+<td>Main prompt content</td>
+<td>The actual instructions for the AI</td>
+</tr>
+</tbody>
+</table>
+<ol start="3">
+<li>Click <strong>Create Prompt</strong> to save</li>
+</ol>
+<h3 id="name-validation">Name Validation</h3>
+<p>The prompt name validates in real-time:</p>
+<ul>
+<li>✔️ Green checkmark: Name is available</li>
+<li>❌ Red X: Name is invalid or already taken</li>
+</ul>
+<h2 id="editing-prompts">Editing Prompts</h2>
+<ol>
+<li>Locate the prompt in the list</li>
+<li>Click the <strong>Settings</strong> icon (⚙️) in the Edit column</li>
+<li>Modify the configuration</li>
+<li>Click <strong>Save Changes</strong></li>
+</ol>
+<blockquote>
+<p><strong>Note:</strong> The prompt name cannot be changed after creation. To rename, create a new prompt and update references.</p>
+</blockquote>
+<h2 id="writing-effective-prompts">Writing Effective Prompts</h2>
+<h3 id="best-practices">Best Practices</h3>
+<ol>
+<li><strong>Be specific</strong>: Clearly define the expected behavior</li>
+<li><strong>Include context</strong>: Specify the persona, tone, and constraints</li>
+<li><strong>Use examples</strong>: Include sample inputs and outputs when helpful</li>
+<li><strong>Structure clearly</strong>: Use formatting (headers, lists) for complex prompts</li>
+</ol>
+<h3 id="example-workflow-prompt">Example Workflow Prompt</h3>
+<pre><code>You are a helpful assistant that provides accurate information about company policies.
+
+Guidelines:
+- Answer questions concisely and professionally
+- If information is not available, clearly state so
+- Cite relevant policy documents when applicable
+- Do not make assumptions beyond the provided data
+
+Response Format:
+- Start with a direct answer
+- Provide supporting details
+- Include relevant references
+</code></pre>
+<h3 id="example-tool-prompt">Example Tool Prompt</h3>
+<pre><code>You are a code interpreter tool. Generate Python code to answer the user's question.
+
+Requirements:
+- Write clean, well-commented code
+- Handle edge cases appropriately
+- Return results in a clear format
+- Do not execute dangerous operations
+</code></pre>
+<h2 id="using-prompts-in-agents">Using Prompts in Agents</h2>
+<p>Prompts are referenced in agent configurations:</p>
+<h3 id="workflow-main-prompt">Workflow Main Prompt</h3>
+<p>Defined directly in the agent's workflow configuration as the primary system prompt.</p>
+<h3 id="additional-workflow-resources">Additional Workflow Resources</h3>
+<p>Added via the &quot;Add Workflow Resource&quot; dialog:</p>
+<ul>
+<li><strong>Resource Type</strong>: Prompt</li>
+<li><strong>Resource</strong>: Select the prompt</li>
+<li><strong>Resource Role</strong>: Purpose identifier (e.g., <code>router_prompt</code>, <code>final_prompt</code>)</li>
+</ul>
+<h3 id="tool-prompts">Tool Prompts</h3>
+<p>Added via the &quot;Add Tool Resource&quot; dialog when configuring agent tools:</p>
+<ul>
+<li><strong>main_prompt</strong>: Primary tool instructions</li>
+<li><strong>router_prompt</strong>: Instructions for tool selection</li>
+</ul>
+<h2 id="common-prompt-roles">Common Prompt Roles</h2>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>main_prompt</code></td>
+<td>Primary instructions for the workflow or tool</td>
+</tr>
+<tr>
+<td><code>router_prompt</code></td>
+<td>Instructions for selecting tools or routing</td>
+</tr>
+<tr>
+<td><code>files_prompt</code></td>
+<td>Instructions for file identification</td>
+</tr>
+<tr>
+<td><code>final_prompt</code></td>
+<td>Instructions for generating final responses</td>
+</tr>
+</tbody>
+</table>
+<h2 id="access-control">Access Control</h2>
+<p>Prompt permissions can be managed for each prompt:</p>
+<ol>
+<li>Open the prompt for editing</li>
+<li>Click <strong>Access Control</strong> at the top right</li>
+<li>Add or remove role assignments</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Permission</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM.Prompt/prompts/read</code></td>
+<td>View the prompt</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Prompt/prompts/write</code></td>
+<td>Edit the prompt</td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="../../reference/concepts/prompts-resources.html">Prompts &amp; Resources Reference</a></li>
+<li><a href="../../reference/concepts/agents-workflows.html">Agents &amp; Workflows</a></li>
+<li><a href="create-new-agent.html">Create New Agent</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

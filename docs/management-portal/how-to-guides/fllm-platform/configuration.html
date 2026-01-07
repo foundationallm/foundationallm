@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Configuration | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Configuration | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/management-portal/how-to-guides/fllm-platform/configuration.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="configuration">Configuration</h1>
+
+<p>Learn how to manage platform configuration and portal access settings.</p>
+<h2 id="overview">Overview</h2>
+<p>The Configuration page allows administrators to manage portal access permissions and instance-level settings for the FoundationaLLM deployment.</p>
+<h2 id="accessing-configuration">Accessing Configuration</h2>
+<ol>
+<li>In the Management Portal sidebar, click <strong>Configuration</strong> under the <strong>FLLM Platform</strong> section</li>
+<li>The configuration page loads with access control settings</li>
+</ol>
+<h2 id="portal-access-configuration">Portal Access Configuration</h2>
+<p>The Configuration page provides access control for both portals:</p>
+<h3 id="user-portal-access">User Portal Access</h3>
+<p>Control who can access the Chat User Portal:</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Scope</strong></td>
+<td><code>providers/FoundationaLLM.Configuration/appConfigurationSets/UserPortal</code></td>
+</tr>
+<tr>
+<td><strong>Role</strong></td>
+<td>Reader (required for portal access)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="management-portal-access">Management Portal Access</h3>
+<p>Control who can access the Management Portal:</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Scope</strong></td>
+<td><code>providers/FoundationaLLM.Configuration/appConfigurationSets/ManagementPortal</code></td>
+</tr>
+<tr>
+<td><strong>Role</strong></td>
+<td>Reader (required for portal access)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="managing-portal-access">Managing Portal Access</h2>
+<h3 id="granting-access">Granting Access</h3>
+<ol>
+<li>Click <strong>Access Control</strong> for the desired portal section</li>
+<li>In the dialog, click <strong>Add Role Assignment</strong></li>
+<li>Configure the assignment:
+<ul>
+<li><strong>Principal Type</strong>: User, Group, or Service Principal</li>
+<li><strong>Principal ID/Email</strong>: The Azure AD identifier</li>
+<li><strong>Role</strong>: Reader (for portal access)</li>
+</ul>
+</li>
+<li>Click <strong>Save</strong></li>
+</ol>
+<h3 id="revoking-access">Revoking Access</h3>
+<ol>
+<li>Click <strong>Access Control</strong> for the portal section</li>
+<li>Find the role assignment in the list</li>
+<li>Click the delete icon</li>
+<li>Confirm removal</li>
+</ol>
+<h2 id="role-requirements">Role Requirements</h2>
+<table>
+<thead>
+<tr>
+<th>Portal</th>
+<th>Required Role</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>User Portal</strong></td>
+<td>Reader on UserPortal config</td>
+<td>Can access Chat User Portal</td>
+</tr>
+<tr>
+<td><strong>Management Portal</strong></td>
+<td>Reader on ManagementPortal config</td>
+<td>Can access Management Portal</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Note:</strong> Users without at least Reader role on the appropriate configuration set will not be able to access the portal.</p>
+</blockquote>
+<h2 id="bulk-access-management">Bulk Access Management</h2>
+<p>For managing access for multiple users:</p>
+<ol>
+<li>Create an Azure AD security group</li>
+<li>Add users to the group</li>
+<li>Grant the Reader role to the group</li>
+<li>All group members gain portal access</li>
+</ol>
+<h2 id="access-patterns">Access Patterns</h2>
+<h3 id="self-service-user-portal">Self-Service User Portal</h3>
+<p>Grant Reader role to <code>All Users</code> or a broad group for self-service agent access.</p>
+<h3 id="restricted-management-portal">Restricted Management Portal</h3>
+<p>Limit Management Portal access to:</p>
+<ul>
+<li>IT Administrators</li>
+<li>Platform operators</li>
+<li>Development teams</li>
+</ul>
+<h3 id="department-level-access">Department-Level Access</h3>
+<p>Create groups per department:</p>
+<ul>
+<li><code>FLLM-Users-HR</code></li>
+<li><code>FLLM-Users-Finance</code></li>
+<li><code>FLLM-Admins</code></li>
+</ul>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="user-cannot-access-portal">User Cannot Access Portal</h3>
+<ol>
+<li>Verify the user's email/principal ID</li>
+<li>Check role assignments in Access Control</li>
+<li>Ensure the user is in an assigned group</li>
+<li>Verify Azure AD sync is current</li>
+</ol>
+<h3 id="access-control-changes-not-applying">Access Control Changes Not Applying</h3>
+<ol>
+<li>User may need to sign out and sign back in</li>
+<li>Token cache may need to clear (wait 5-10 minutes)</li>
+<li>Check for conflicting role assignments</li>
+</ol>
+<h3 id="groups-not-appearing">Groups Not Appearing</h3>
+<ol>
+<li>Verify the group exists in Azure AD</li>
+<li>Check that group sync is enabled</li>
+<li>Enter the group's Object ID directly</li>
+</ol>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="../security/instance-access-control.html">Instance Access Control</a></li>
+<li><a href="../../reference/permissions-roles.html">Permissions and Roles Reference</a></li>
+<li><a href="deployment-information.html">Deployment Information</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

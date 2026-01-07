@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Role Assignments | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Role Assignments | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/platform-operations/security-permissions/role-based-access-control/role-assignments.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="role-assignments">Role Assignments</h1>
+
+<p>Role assignments grant access by associating a principal with a role at a specific scope.</p>
+<h2 id="role-assignment-components">Role Assignment Components</h2>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Principal</strong></td>
+<td>Who receives access (user, group, service principal)</td>
+</tr>
+<tr>
+<td><strong>Role Definition</strong></td>
+<td>What access is granted</td>
+</tr>
+<tr>
+<td><strong>Scope</strong></td>
+<td>Where access applies</td>
+</tr>
+<tr>
+<td><strong>Name</strong></td>
+<td>Unique identifier for the assignment</td>
+</tr>
+<tr>
+<td><strong>Description</strong></td>
+<td>Optional explanation</td>
+</tr>
+</tbody>
+</table>
+<h2 id="assignment-structure">Assignment Structure</h2>
+<pre><code class="lang-json">{
+  &quot;RoleAssignmentName&quot;: &quot;00000000-0000-0000-0000-000000000000&quot;,
+  &quot;RoleAssignmentId&quot;: &quot;/instances/{instanceId}/providers/FoundationaLLM.Authorization/roleAssignments/00000000-0000-0000-0000-000000000000&quot;,
+  &quot;Scope&quot;: &quot;/instances/{instanceId}&quot;,
+  &quot;RoleDefinitionName&quot;: &quot;Contributor&quot;,
+  &quot;RoleDefinitionId&quot;: &quot;e459c3a6-6b93-4062-85b3-fffc9fb253df&quot;,
+  &quot;ObjectId&quot;: &quot;22222222-2222-2222-2222-222222222222&quot;,
+  &quot;ObjectType&quot;: &quot;User&quot;,
+  &quot;DisplayName&quot;: &quot;John Doe&quot;,
+  &quot;SignInName&quot;: &quot;john.doe@contoso.com&quot;,
+  &quot;Description&quot;: &quot;Platform administrator access&quot;
+}
+</code></pre>
+<h2 id="properties">Properties</h2>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>RoleAssignmentName</code></td>
+<td>Unique GUID for the assignment</td>
+</tr>
+<tr>
+<td><code>RoleAssignmentId</code></td>
+<td>Full resource path including name</td>
+</tr>
+<tr>
+<td><code>Scope</code></td>
+<td>Resource identifier where assignment applies</td>
+</tr>
+<tr>
+<td><code>RoleDefinitionName</code></td>
+<td>Human-readable role name</td>
+</tr>
+<tr>
+<td><code>RoleDefinitionId</code></td>
+<td>Role definition GUID</td>
+</tr>
+<tr>
+<td><code>ObjectId</code></td>
+<td>Principal's unique identifier</td>
+</tr>
+<tr>
+<td><code>ObjectType</code></td>
+<td><code>User</code>, <code>Group</code>, or <code>ServicePrincipal</code></td>
+</tr>
+<tr>
+<td><code>DisplayName</code></td>
+<td>Principal's display name</td>
+</tr>
+<tr>
+<td><code>SignInName</code></td>
+<td>Principal's UPN</td>
+</tr>
+<tr>
+<td><code>Description</code></td>
+<td>Optional description</td>
+</tr>
+</tbody>
+</table>
+<h2 id="principal-types">Principal Types</h2>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>User</strong></td>
+<td>Individual Entra ID user</td>
+<td>Named user access</td>
+</tr>
+<tr>
+<td><strong>Group</strong></td>
+<td>Entra ID security group</td>
+<td>Team/department access</td>
+</tr>
+<tr>
+<td><strong>ServicePrincipal</strong></td>
+<td>App registration or managed identity</td>
+<td>Automation/integration</td>
+</tr>
+</tbody>
+</table>
+<h2 id="assignment-examples">Assignment Examples</h2>
+<h3 id="instance-level-assignment">Instance-Level Assignment</h3>
+<p>Grant Contributor access to entire instance:</p>
+<pre><code class="lang-json">{
+  &quot;name&quot;: &quot;unique-guid&quot;,
+  &quot;principal_id&quot;: &quot;user-object-id&quot;,
+  &quot;principal_type&quot;: &quot;User&quot;,
+  &quot;role_definition_id&quot;: &quot;/providers/FoundationaLLM.Authorization/roleDefinitions/e459c3a6-6b93-4062-85b3-fffc9fb253df&quot;,
+  &quot;scope&quot;: &quot;/instances/{instanceId}&quot;,
+  &quot;description&quot;: &quot;Platform contributor&quot;
+}
+</code></pre>
+<h3 id="resource-level-assignment">Resource-Level Assignment</h3>
+<p>Grant Reader access to specific agent:</p>
+<pre><code class="lang-json">{
+  &quot;name&quot;: &quot;unique-guid&quot;,
+  &quot;principal_id&quot;: &quot;group-object-id&quot;,
+  &quot;principal_type&quot;: &quot;Group&quot;,
+  &quot;role_definition_id&quot;: &quot;/providers/FoundationaLLM.Authorization/roleDefinitions/00a53e72-f66e-4c03-8f81-7e885fd2eb35&quot;,
+  &quot;scope&quot;: &quot;/instances/{instanceId}/providers/FoundationaLLM.Agent/agents/sales-agent&quot;,
+  &quot;description&quot;: &quot;Sales team read access&quot;
+}
+</code></pre>
+<h2 id="creating-assignments">Creating Assignments</h2>
+<h3 id="via-management-portal">Via Management Portal</h3>
+<ol>
+<li>Navigate to <strong>Security</strong> &gt; <strong>Instance Access Control</strong> (or resource's Access Control)</li>
+<li>Click <strong>Add Role Assignment</strong></li>
+<li>Click <strong>Browse</strong> to select principal</li>
+<li>Select role from dropdown</li>
+<li>Add description (optional)</li>
+<li>Click <strong>Save</strong></li>
+</ol>
+<h3 id="via-management-api">Via Management API</h3>
+<pre><code class="lang-http">POST /instances/{instanceId}/providers/FoundationaLLM.Authorization/roleAssignments/{assignmentName}
+Content-Type: application/json
+Authorization: Bearer &lt;token&gt;
+
+{
+  &quot;name&quot;: &quot;55555555-4444-3333-2222-111111111111&quot;,
+  &quot;description&quot;: &quot;Sales team agent access&quot;,
+  &quot;principal_id&quot;: &quot;11111111-2222-3333-4444-555555555555&quot;,
+  &quot;principal_type&quot;: &quot;Group&quot;,
+  &quot;role_definition_id&quot;: &quot;/providers/FoundationaLLM.Authorization/roleDefinitions/00a53e72-f66e-4c03-8f81-7e885fd2eb35&quot;,
+  &quot;scope&quot;: &quot;/instances/{instanceId}/providers/FoundationaLLM.Agent/agents/sales-agent&quot;
+}
+</code></pre>
+<h2 id="querying-assignments">Querying Assignments</h2>
+<h3 id="filter-by-scope">Filter by Scope</h3>
+<pre><code class="lang-http">POST /instances/{instanceId}/providers/FoundationaLLM.Authorization/roleAssignments/filter
+Content-Type: application/json
+Authorization: Bearer &lt;token&gt;
+
+{
+  &quot;scope&quot;: &quot;/instances/{instanceId}&quot;
+}
+</code></pre>
+<h3 id="filter-by-resource">Filter by Resource</h3>
+<pre><code class="lang-http">POST /instances/{instanceId}/providers/FoundationaLLM.Authorization/roleAssignments/filter
+Content-Type: application/json
+
+{
+  &quot;scope&quot;: &quot;/instances/{instanceId}/providers/FoundationaLLM.Agent/agents/my-agent&quot;
+}
+</code></pre>
+<h2 id="deleting-assignments">Deleting Assignments</h2>
+<h3 id="via-management-portal-1">Via Management Portal</h3>
+<ol>
+<li>Navigate to role assignments list</li>
+<li>Find the assignment</li>
+<li>Click <strong>Delete</strong> icon</li>
+</ol>
+<h3 id="via-management-api-1">Via Management API</h3>
+<pre><code class="lang-http">DELETE /instances/{instanceId}/providers/FoundationaLLM.Authorization/roleAssignments/{assignmentName}
+Authorization: Bearer &lt;token&gt;
+</code></pre>
+<h2 id="inheritance">Inheritance</h2>
+<table>
+<thead>
+<tr>
+<th>Assignment Level</th>
+<th>Applies To</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Instance</td>
+<td>All resources in instance</td>
+</tr>
+<tr>
+<td>Resource</td>
+<td>Only that specific resource</td>
+</tr>
+</tbody>
+</table>
+<p>When viewing resource-level access control:</p>
+<ul>
+<li><strong>This resource</strong> = Direct assignment</li>
+<li><strong>Instance (inherited)</strong> = Inherited from instance</li>
+</ul>
+<h2 id="best-practices">Best Practices</h2>
+<table>
+<thead>
+<tr>
+<th>Practice</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Use Groups</strong></td>
+<td>Assign to groups, not individuals</td>
+</tr>
+<tr>
+<td><strong>Least Privilege</strong></td>
+<td>Grant minimum required access</td>
+</tr>
+<tr>
+<td><strong>Document</strong></td>
+<td>Add descriptions to assignments</td>
+</tr>
+<tr>
+<td><strong>Review Regularly</strong></td>
+<td>Audit assignments periodically</td>
+</tr>
+<tr>
+<td><strong>Scope Appropriately</strong></td>
+<td>Use resource scope when possible</td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="role-definitions.html">Role Definitions</a></li>
+<li><a href="scope.html">Scope</a></li>
+<li><a href="role-management.html">Role Management</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

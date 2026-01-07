@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Agents and Workflows | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Agents and Workflows | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/archive/setup-guides/agents/agents_workflows.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="agents-and-workflows">Agents and Workflows</h1>
+
+<p>Foundationa<strong>LLM</strong> (FLLM) agents are the core of the solution. They are responsible for providing users with a customized experience based on its configuration.</p>
+<h2 id="creation-of-a-new-agent">Creation of a new Agent</h2>
+<p>To create a new agent, you can use the <strong>Create Agent</strong> hyperlink in the <strong>Agents</strong> section of the <strong>Management Portal</strong>.</p>
+<h3 id="the-creation-of-a-new-agent-consists-of-5-sections">The creation of a new agent consists of 5 sections:</h3>
+<ul>
+<li>General</li>
+<li>Agent Configuration</li>
+<li>Workflow</li>
+<li>Tools</li>
+<li>Security</li>
+</ul>
+<h3 id="general-section">General Section</h3>
+<p>In this section, you can define the name, description and welcome message of the agent.  The Welcome message is what a user will see in the Chat portal as soon as they pick that agent from the dropdown to learn about the agent and its services that it provides before starting a chat conversation.</p>
+<p><img src="media/agent_Workflow_1.png" alt="General Agent information"></p>
+<h3 id="agent-configuration-section">Agent Configuration Section</h3>
+<p>In this section, you can define the following configurations:</p>
+<ul>
+<li><p><strong>Chat History</strong>: This setting allows you to enable or disable the chat history feature for the agent. When enabled, the agent will remember the context of previous conversations, allowing for more personalized and relevant responses. If disabled, the agent will not retain any memory of past interactions. It also allows you to define the number of messages to be stored in the chat history. The default is 5 messages.</p>
+</li>
+<li><p><strong>Gatekeeper</strong>: This setting allows you to enable or disable the gatekeeper feature for the agent. When enabled, the agent will have a gatekeeper that can filter and moderate the content of conversations, ensuring that inappropriate or harmful content is not generated. If disabled, the agent will not have any content moderation capabilities.
+You can choose from multiple options for the content safety:</p>
+<ul>
+<li><strong>Azure Content Safety</strong></li>
+<li><strong>Azure Content Safety Prompt Shield</strong></li>
+<li><strong>Lakera Guard</strong></li>
+<li><strong>Enkrypt Guardrails</strong>
+The Gatekeeper also allows you to enable the Data Protection aspect of the agent, which currently uses <strong>Microsoft Presidio</strong> to filter sensitive data in the conversations.</li>
+</ul>
+</li>
+<li><p><strong>Cost Center</strong>: This setting allows you to define a cost center for the agent. A cost center is a department or unit within an organization that is responsible for its own expenses and budget. By assigning a cost center to the agent, you can track and manage the costs associated with its operations.</p>
+</li>
+<li><p><strong>Expiration</strong>: This setting allows you to define an expiration date for the agent. After this date, the agent will no longer be available for use. This is useful for managing the lifecycle of agents and ensuring that they are only active when needed.</p>
+</li>
+<li><p><strong>Chat Portal Displays</strong>: This setting allows you to turn on or off 4 valuable capabilities in the <strong>Chat Portal</strong>.</p>
+<ul>
+<li>The amount of tokens used in the conversation. (Questions and Responses)</li>
+<li>The <strong>prompt</strong> used by the agent for a specific question including history and context.</li>
+<li>The option to rate the response of the agent.</li>
+<li>The ability to allow the user to upload files to the agent in the conversation.</li>
+</ul>
+</li>
+</ul>
+<p><img src="media/agent_Workflow_2.png" alt="Agent Configuration Section"></p>
+<h3 id="workflow-section">Workflow Section</h3>
+<p>In this section, you can define the workflow of the agent. The workflow is a sequence of steps that the agent follows to process user requests and provide responses. You can define the following aspects of the workflow:</p>
+<ul>
+<li><strong>Workflow Type</strong>: This setting allows you to choose the type of workflow for the agent. You can choose from the following options:
+<ul>
+<li><strong>OpenAIAssistants</strong>: Gives your agent the ability to take advantage of <strong>Code Interpreter</strong>, <strong>File Search</strong> and <strong>Function Calling</strong>.</li>
+<li><strong>LangGraphReactAgent</strong>: Gives your agent the ability to dynamically choose a tool from a predefined toolset in LangGraph</li>
+<li><strong>ExternalAgentWorkflow</strong>: Gives your agent the ability to use external workflows developed in Python and registered to be used by your Agent.</li>
+</ul>
+</li>
+<li><strong>Workflow name</strong>: This setting allows you to define the name of the workflow for the agent. The name should be descriptive and reflect the purpose of the workflow.</li>
+<li><strong>Workflow Package Name</strong>: This setting allows you to define the name of the workflow package for the agent. The package name should be descriptive and reflect the purpose of the workflow.</li>
+<li><strong>Workflow Host</strong>: This setting allows you to define the host of the workflow for the agent. Currently the host is required to be <strong>Langchain</strong> for all OpenAIAssistants workflows.</li>
+<li><strong>Workflow Main Model</strong>: This setting allows you to define the main model of the workflow for the agent. The main model is the primary large language model (LLM) that the agent uses to generate responses. You can choose from any of the models deployed as part of your instance.</li>
+<li><strong>Workflow Main Model Parameters</strong>: This setting allows you to define the parameters of the main model for the agent. The parameters are the settings that control the behavior of the model, such as temperature, max tokens, and top_p.</li>
+<li><strong>Workflow Main Prompt</strong>: This setting allows you to define the main prompt of the workflow for the agent. The main prompt is the definition of the persona of the agent and the instructions that it follows to generate responses.</li>
+</ul>
+<p><img src="media/agent_Workflow_3.png" alt="Agent Workflow configuration"></p>
+<h3 id="tools-section">Tools Section</h3>
+<p>In this section, you can define the tools that the agent can use to perform tasks and provide responses. The tools are external services or APIs that the agent can call to retrieve information or perform actions.</p>
+<p><img src="media/agent_Workflow_4.png" alt="Agent Tools configuration"></p>
+<p>Currently, the following tools are available out of the box:</p>
+<ul>
+<li><strong>DALLE3 Image Generator</strong></li>
+</ul>
+<p><img src="media/agent_Workflow_5.png" alt="DALLE3 Tool configuration"></p>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>The name of the tool HAS to be <strong>DALLEImageGeneration</strong> in order for the agent to be able to use it. The AI Model's Object role has to be <strong>main_model</strong> in the <strong>Tool Resources</strong> section.</p>
+</div>
+<h3 id="security-section">Security Section</h3>
+<p>In this section, you can define an Agent Access Token to be used by the agent. The Agent Access Token is a security token that is used to authenticate and authorize access to the agent's resources and services. It is a unique identifier that is generated for each agent and is used to ensure that only authorized users can access the agent's capabilities without requiring the user to be authenticated using Entra ID credentials.
+This is particularly useful for public applications that want to provide access to the agent without requiring users to log in with their Entra ID credentials.</p>
+<p><img src="media/agent_Workflow_6.png" alt="Agent Access Token configuration"></p>
+<p><a href="Agent_AccessToken.html">Access Token scenario</a></p>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

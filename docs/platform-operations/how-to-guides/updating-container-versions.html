@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Updating Container Versions | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Updating Container Versions | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../toc.html">
+      <meta name="docfx:tocrel" content="../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/platform-operations/how-to-guides/updating-container-versions.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../index.html">
+            <img id="logo" class="svg" src="../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="updating-container-versions">Updating Container Versions</h1>
+
+<p>This guide covers updating FoundationaLLM container images in Standard (AKS) deployments.</p>
+<h2 id="overview">Overview</h2>
+<p>Container updates are required to:</p>
+<ul>
+<li>Apply bug fixes</li>
+<li>Access new features</li>
+<li>Address security vulnerabilities</li>
+<li>Maintain platform compatibility</li>
+</ul>
+<h2 id="prerequisites">Prerequisites</h2>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Azure CLI</strong></td>
+<td>Configured for correct tenant/subscription</td>
+</tr>
+<tr>
+<td><strong>AKS Credentials</strong></td>
+<td>In <code>.kube/config</code> directory</td>
+</tr>
+<tr>
+<td><strong>Helm CLI</strong></td>
+<td>Installed and configured</td>
+</tr>
+<tr>
+<td><strong>kubectl</strong></td>
+<td>Installed and configured</td>
+</tr>
+</tbody>
+</table>
+<h3 id="getting-aks-credentials">Getting AKS Credentials</h3>
+<pre><code class="lang-powershell">az aks get-credentials `
+    --name &quot;&lt;aks-cluster-name&gt;&quot; `
+    --resource-group &quot;&lt;resource-group&gt;&quot;
+</code></pre>
+<h2 id="update-process">Update Process</h2>
+<h3 id="step-1-check-current-versions">Step 1: Check Current Versions</h3>
+<pre><code class="lang-powershell"># List all Helm releases
+helm list -A
+
+# Check specific deployment
+kubectl get deployment -n fllm -o wide
+</code></pre>
+<h3 id="step-2-get-current-values">Step 2: Get Current Values</h3>
+<p>Export the current Helm values:</p>
+<pre><code class="lang-powershell"># For backend services
+helm get values &quot;foundationallm&quot; --all &gt; gvalues.yaml
+
+# For frontend services
+helm get values &quot;foundationallm-web&quot; --all &gt; gvalues-web.yaml
+</code></pre>
+<h3 id="step-3-identify-target-version">Step 3: Identify Target Version</h3>
+<p>Check available versions:</p>
+<ul>
+<li><a href="https://github.com/foundationallm/foundationallm/releases">GitHub Releases</a></li>
+<li>Container registry tags</li>
+</ul>
+<h3 id="step-4-update-images">Step 4: Update Images</h3>
+<p>Use the deployment script:</p>
+<pre><code class="lang-powershell">cd deploy/scripts
+
+.\Deploy-Images-Aks.ps1 `
+    -aksName &quot;&lt;aks-name&gt;&quot; `
+    -resourceGroup &quot;&lt;resource-group&gt;&quot; `
+    -tag &quot;&lt;version-tag&gt;&quot; `
+    -charts &quot;*&quot; `
+    -namespace &quot;fllm&quot;
+</code></pre>
+<h2 id="script-parameters">Script Parameters</h2>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-name</code></td>
+<td><code>foundationallm</code></td>
+<td>Helm release name</td>
+</tr>
+<tr>
+<td><code>-aksName</code></td>
+<td>(Required)</td>
+<td>AKS cluster name</td>
+</tr>
+<tr>
+<td><code>-resourceGroup</code></td>
+<td>(Required)</td>
+<td>Azure resource group</td>
+</tr>
+<tr>
+<td><code>-tag</code></td>
+<td><code>latest</code></td>
+<td>Image version tag</td>
+</tr>
+<tr>
+<td><code>-charts</code></td>
+<td><code>*</code></td>
+<td>Charts to deploy (<code>*</code> for all)</td>
+</tr>
+<tr>
+<td><code>-valuesFile</code></td>
+<td><code>gvalues.yaml</code></td>
+<td>Helm values file path</td>
+</tr>
+<tr>
+<td><code>-namespace</code></td>
+<td>(Current)</td>
+<td>Kubernetes namespace</td>
+</tr>
+<tr>
+<td><code>-tlsEnv</code></td>
+<td><code>prod</code></td>
+<td>TLS environment (<code>prod</code>, <code>staging</code>, <code>none</code>, <code>custom</code>)</td>
+</tr>
+<tr>
+<td><code>-tlsHost</code></td>
+<td>-</td>
+<td>Custom TLS hostname</td>
+</tr>
+<tr>
+<td><code>-tlsSecretName</code></td>
+<td>-</td>
+<td>Custom TLS secret name</td>
+</tr>
+<tr>
+<td><code>-autoscale</code></td>
+<td><code>$false</code></td>
+<td>Enable autoscaling</td>
+</tr>
+</tbody>
+</table>
+<h2 id="selective-updates">Selective Updates</h2>
+<h3 id="update-specific-charts">Update Specific Charts</h3>
+<pre><code class="lang-powershell"># Update only API services
+.\Deploy-Images-Aks.ps1 `
+    -aksName &quot;&lt;aks-name&gt;&quot; `
+    -resourceGroup &quot;&lt;resource-group&gt;&quot; `
+    -tag &quot;0.9.0&quot; `
+    -charts &quot;core-api,management-api&quot;
+</code></pre>
+<h3 id="available-charts">Available Charts</h3>
+<table>
+<thead>
+<tr>
+<th>Chart</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>core-api</code></td>
+<td>Core API service</td>
+</tr>
+<tr>
+<td><code>management-api</code></td>
+<td>Management API service</td>
+</tr>
+<tr>
+<td><code>orchestration-api</code></td>
+<td>Orchestration service</td>
+</tr>
+<tr>
+<td><code>gatekeeper-api</code></td>
+<td>Content safety service</td>
+</tr>
+<tr>
+<td><code>chat-ui</code></td>
+<td>Chat portal</td>
+</tr>
+<tr>
+<td><code>management-ui</code></td>
+<td>Management portal</td>
+</tr>
+</tbody>
+</table>
+<h3 id="update-frontend-only">Update Frontend Only</h3>
+<pre><code class="lang-powershell">.\Deploy-Images-Aks.ps1 `
+    -aksName &quot;&lt;frontend-aks-name&gt;&quot; `
+    -resourceGroup &quot;&lt;resource-group&gt;&quot; `
+    -tag &quot;0.9.0&quot; `
+    -charts &quot;chat-ui,management-ui&quot;
+</code></pre>
+<h2 id="rolling-updates">Rolling Updates</h2>
+<p>Kubernetes performs rolling updates by default:</p>
+<ul>
+<li>Old pods remain until new pods are healthy</li>
+<li>No downtime during updates</li>
+<li>Automatic rollback on failure</li>
+</ul>
+<h3 id="monitor-update-progress">Monitor Update Progress</h3>
+<pre><code class="lang-powershell"># Watch deployment status
+kubectl rollout status deployment/core-api -n fllm
+
+# View pod status
+kubectl get pods -n fllm -w
+</code></pre>
+<h3 id="rollback-if-needed">Rollback if Needed</h3>
+<pre><code class="lang-powershell"># Rollback to previous version
+kubectl rollout undo deployment/core-api -n fllm
+
+# Rollback Helm release
+helm rollback foundationallm 1 -n fllm
+</code></pre>
+<h2 id="custom-values">Custom Values</h2>
+<h3 id="modifying-configuration">Modifying Configuration</h3>
+<p>Edit <code>gvalues.yaml</code> to customize:</p>
+<pre><code class="lang-yaml"># Example: Increase replica count
+coreApi:
+  replicaCount: 3
+  resources:
+    requests:
+      cpu: &quot;500m&quot;
+      memory: &quot;512Mi&quot;
+    limits:
+      cpu: &quot;1000m&quot;
+      memory: &quot;1Gi&quot;
+</code></pre>
+<h3 id="apply-custom-values">Apply Custom Values</h3>
+<pre><code class="lang-powershell">.\Deploy-Images-Aks.ps1 `
+    -aksName &quot;&lt;aks-name&gt;&quot; `
+    -resourceGroup &quot;&lt;resource-group&gt;&quot; `
+    -tag &quot;0.9.0&quot; `
+    -valuesFile &quot;custom-values.yaml&quot;
+</code></pre>
+<h2 id="verifying-updates">Verifying Updates</h2>
+<h3 id="check-image-versions">Check Image Versions</h3>
+<pre><code class="lang-powershell">kubectl get pods -n fllm -o jsonpath=&quot;{.items[*].spec.containers[*].image}&quot;
+</code></pre>
+<h3 id="check-service-health">Check Service Health</h3>
+<pre><code class="lang-powershell"># Get pod status
+kubectl get pods -n fllm
+
+# Check logs
+kubectl logs -n fllm deployment/core-api --tail=100
+</code></pre>
+<h3 id="test-functionality">Test Functionality</h3>
+<ol>
+<li>Access Chat Portal</li>
+<li>Send a test message</li>
+<li>Verify agent response</li>
+<li>Check Management Portal</li>
+</ol>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pods not starting</td>
+<td>Check <code>kubectl describe pod &lt;pod-name&gt; -n fllm</code></td>
+</tr>
+<tr>
+<td>Image pull errors</td>
+<td>Verify registry access and image tag</td>
+</tr>
+<tr>
+<td>Service unavailable</td>
+<td>Check <code>kubectl get svc -n fllm</code></td>
+</tr>
+<tr>
+<td>Configuration issues</td>
+<td>Compare <code>gvalues.yaml</code> with defaults</td>
+</tr>
+</tbody>
+</table>
+<h3 id="common-errors">Common Errors</h3>
+<p><strong>ImagePullBackOff:</strong></p>
+<pre><code class="lang-powershell"># Check image details
+kubectl describe pod &lt;pod-name&gt; -n fllm | grep -A 5 &quot;Image:&quot;
+
+# Verify registry credentials
+kubectl get secrets -n fllm
+</code></pre>
+<p><strong>CrashLoopBackOff:</strong></p>
+<pre><code class="lang-powershell"># Check pod logs
+kubectl logs &lt;pod-name&gt; -n fllm --previous
+
+# Check events
+kubectl get events -n fllm --sort-by='.lastTimestamp'
+</code></pre>
+<h2 id="maintenance-windows">Maintenance Windows</h2>
+<h3 id="best-practices">Best Practices</h3>
+<ol>
+<li><strong>Schedule Updates</strong> during low-traffic periods</li>
+<li><strong>Test in Staging</strong> before production</li>
+<li><strong>Review Release Notes</strong> for breaking changes</li>
+<li><strong>Backup</strong> before major updates</li>
+<li><strong>Monitor</strong> closely after updates</li>
+</ol>
+<h3 id="update-checklist">Update Checklist</h3>
+<ul>
+<li>[ ] Review release notes</li>
+<li>[ ] Backup current configuration</li>
+<li>[ ] Update staging environment</li>
+<li>[ ] Test functionality in staging</li>
+<li>[ ] Schedule production maintenance window</li>
+<li>[ ] Update production</li>
+<li>[ ] Verify all services</li>
+<li>[ ] Monitor for issues</li>
+</ul>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="../deployment/deployment-standard.html">Standard Deployment</a></li>
+<li><a href="creating-release-notes.html">Creating Release Notes</a></li>
+<li><a href="../monitoring-troubleshooting/troubleshooting.html">Troubleshooting</a></li>
+<li><a href="https://github.com/foundationallm/foundationallm/releases">GitHub Releases</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

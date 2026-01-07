@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Understand scope for FoundationaLLM RBAC | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Understand scope for FoundationaLLM RBAC | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../toc.html">
+      <meta name="docfx:tocrel" content="../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/archive/role-based-access-control/scope.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../index.html">
+            <img id="logo" class="svg" src="../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="understand-scope-for-foundationallm-rbac">Understand scope for FoundationaLLM RBAC</h1>
+
+<p><em>Scope</em> is the set of resources that a role assignment can access. When assigning roles, it is importan to understand how scope works so that you grant security principals only the level of access they need. Limiting scope also limits the potential damage that can be done if a security principal is compromised.</p>
+<h2 id="scope-levels">Scope levels</h2>
+<p>In FoundationaLLM, you can specify a scope at the following levels:</p>
+<ul>
+<li><em>Instance</em>: The FoundationaLLM deployment itself.</li>
+<li><em>Resource</em>: A specific resource in FoundationaLLM, such as an agent.</li>
+</ul>
+<p>The following rules apply to scope levels:</p>
+<ul>
+<li>Scopes are structured as a hierarchy. For example, a resource scope is always a child of an instance scope.</li>
+<li>Each level make the scope more specific. For example, a resource scope is more specific than an instance scope.</li>
+<li>Roles can be assigned at any of these levels of scope.</li>
+<li>Lower levels inherit the permissions of higher levels. For example, a role assignment at the instance level applies to all resources in the instance.</li>
+</ul>
+<h2 id="scope-format">Scope format</h2>
+<p>Scope is a string that identifies the exact scope of the role assignment. The scope is usually referred to as the <em>resource identifier</em> or <em>resource ID</em>.</p>
+<p>The scope consists of a series of identifiers separated by the slash (/) character. You can think of this string as expressing the following hierarchy, where text without placeholders (<code>{}</code>) are fixed identifiers:</p>
+<pre><code class="lang-text">/instances
+    /{instanceId}
+        /providers
+            /{providerName}
+                /{resourceType}
+                    /{resourceSubType1}
+                        /{resourceSubType2}
+                            /{resourceName}
+</code></pre>
+<ul>
+<li><code>{instanceId}</code> is unique identifier of the FoundationaLLM deployment (a GUID).</li>
+<li><code>{providerName}</code> is the name of the FoundationaLLM resource provider (for example, <code>FoundationaLLM.Agent</code>).</li>
+<li><code>{resourceType}</code> and <code>{resourceSubType*}</code> identify levels within the resource provider.</li>
+<li><code>{resourceName}</code> is the name of a specific resource.</li>
+</ul>
+<h2 id="scope-examples">Scope examples</h2>
+<table>
+<thead>
+<tr>
+<th>Scope</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Instance</td>
+<td><code>/instances/11111111-1111-1111-1111-111111111111</code></td>
+</tr>
+<tr>
+<td>Resource</td>
+<td><code>/instances/11111111-1111-1111-1111-111111111111/providers/FoundationaLLM.Agent/agents/agent1</code></td>
+</tr>
+<tr>
+<td>Resource</td>
+<td><code>/instances/11111111-1111-1111-1111-111111111111/providers/FoundationaLLM.DataSource/dataSources/datasource1</code></td>
+</tr>
+<tr>
+<td>Resource</td>
+<td><code>/instances/11111111-1111-1111-1111-111111111111/providers/FoundationaLLM.Agent/agents/agent1/models/gpt4</code>.</td>
+</tr>
+</tbody>
+</table>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

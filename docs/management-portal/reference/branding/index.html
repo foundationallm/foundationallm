@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Branding Reference | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Branding Reference | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/management-portal/reference/branding/index.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="branding-reference">Branding Reference</h1>
+
+<p>Reference documentation for customizing the visual appearance of your FoundationaLLM deployment.</p>
+<h2 id="overview">Overview</h2>
+<p>FoundationaLLM provides comprehensive branding customization for both the Management Portal and Chat User Portal. You can customize logos, colors, text, and messages to match your organization's visual identity.</p>
+<h2 id="configuration-methods">Configuration Methods</h2>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+<th>Best For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="using-management-portal.html">Management Portal</a></td>
+<td>Interactive UI-based configuration</td>
+<td>Real-time changes, visual preview</td>
+</tr>
+<tr>
+<td><a href="using-app-configuration.html">App Configuration</a></td>
+<td>Azure App Configuration values</td>
+<td>Infrastructure-as-code, deployment automation</td>
+</tr>
+<tr>
+<td><a href="using-rest-api.html">REST API</a></td>
+<td>Programmatic updates</td>
+<td>Custom tooling, automation</td>
+</tr>
+</tbody>
+</table>
+<h2 id="branding-elements">Branding Elements</h2>
+<h3 id="logo-configuration">Logo Configuration</h3>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Key</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Logo URL</td>
+<td><code>FoundationaLLM:Branding:LogoUrl</code></td>
+<td><code>foundationallm-logo-white.svg</code></td>
+</tr>
+<tr>
+<td>Logo Text</td>
+<td><code>FoundationaLLM:Branding:LogoText</code></td>
+<td><code>FoundationaLLM</code></td>
+</tr>
+<tr>
+<td>FavIcon URL</td>
+<td><code>FoundationaLLM:Branding:FavIconUrl</code></td>
+<td><code>favicon.ico</code></td>
+</tr>
+<tr>
+<td>Agent Icon URL</td>
+<td><code>FoundationaLLM:Branding:AgentIconUrl</code></td>
+<td>(empty)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="text-configuration">Text Configuration</h3>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Key</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Company Name</td>
+<td><code>FoundationaLLM:Branding:CompanyName</code></td>
+<td><code>FoundationaLLM</code></td>
+</tr>
+<tr>
+<td>Page Title</td>
+<td><code>FoundationaLLM:Branding:PageTitle</code></td>
+<td><code>FoundationaLLM User Portal</code></td>
+</tr>
+<tr>
+<td>Footer Text</td>
+<td><code>FoundationaLLM:Branding:FooterText</code></td>
+<td><code>FoundationaLLM © All rights reserved.</code></td>
+</tr>
+<tr>
+<td>No Agents Message</td>
+<td><code>FoundationaLLM:Branding:NoAgentsMessage</code></td>
+<td>System default message</td>
+</tr>
+<tr>
+<td>Default Welcome Message</td>
+<td><code>FoundationaLLM:Branding:DefaultAgentWelcomeMessage</code></td>
+<td><code>Start the conversation using the text box below.</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="color-configuration">Color Configuration</h3>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Key</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Primary Color</td>
+<td><code>FoundationaLLM:Branding:PrimaryColor</code></td>
+<td><code>#131833</code></td>
+</tr>
+<tr>
+<td>Primary Text Color</td>
+<td><code>FoundationaLLM:Branding:PrimaryTextColor</code></td>
+<td><code>#fff</code></td>
+</tr>
+<tr>
+<td>Secondary Color</td>
+<td><code>FoundationaLLM:Branding:SecondaryColor</code></td>
+<td><code>#334581</code></td>
+</tr>
+<tr>
+<td>Secondary Text Color</td>
+<td><code>FoundationaLLM:Branding:SecondaryTextColor</code></td>
+<td><code>#fff</code></td>
+</tr>
+<tr>
+<td>Accent Color</td>
+<td><code>FoundationaLLM:Branding:AccentColor</code></td>
+<td><code>#fff</code></td>
+</tr>
+<tr>
+<td>Accent Text Color</td>
+<td><code>FoundationaLLM:Branding:AccentTextColor</code></td>
+<td><code>#131833</code></td>
+</tr>
+<tr>
+<td>Background Color</td>
+<td><code>FoundationaLLM:Branding:BackgroundColor</code></td>
+<td><code>#fff</code></td>
+</tr>
+<tr>
+<td>Primary Button Background</td>
+<td><code>FoundationaLLM:Branding:PrimaryButtonBackgroundColor</code></td>
+<td><code>#5472d4</code></td>
+</tr>
+<tr>
+<td>Primary Button Text</td>
+<td><code>FoundationaLLM:Branding:PrimaryButtonTextColor</code></td>
+<td><code>#fff</code></td>
+</tr>
+<tr>
+<td>Secondary Button Background</td>
+<td><code>FoundationaLLM:Branding:SecondaryButtonBackgroundColor</code></td>
+<td><code>#70829a</code></td>
+</tr>
+<tr>
+<td>Secondary Button Text</td>
+<td><code>FoundationaLLM:Branding:SecondaryButtonTextColor</code></td>
+<td><code>#fff</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="mode-configuration">Mode Configuration</h3>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Key</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Kiosk Mode</td>
+<td><code>FoundationaLLM:Branding:KioskMode</code></td>
+<td><code>false</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="color-format-support">Color Format Support</h2>
+<p>Colors can be specified in:</p>
+<ul>
+<li><strong>Hex</strong>: <code>#RRGGBB</code> or <code>#RGB</code> (e.g., <code>#131833</code>, <code>#fff</code>)</li>
+<li><strong>RGB</strong>: <code>rgb(R, G, B)</code> (e.g., <code>rgb(19, 24, 51)</code>)</li>
+</ul>
+<h2 id="accessibility-guidelines">Accessibility Guidelines</h2>
+<h3 id="wcag-contrast-requirements">WCAG Contrast Requirements</h3>
+<table>
+<thead>
+<tr>
+<th>Standard</th>
+<th>Minimum Ratio</th>
+<th>Recommendation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>AA</strong></td>
+<td>4.5:1</td>
+<td>Required for text</td>
+</tr>
+<tr>
+<td><strong>AAA</strong></td>
+<td>7:1</td>
+<td>Recommended for enhanced accessibility</td>
+</tr>
+</tbody>
+</table>
+<h3 id="testing-contrast">Testing Contrast</h3>
+<p>The Management Portal branding page includes contrast testing:</p>
+<ol>
+<li>Enable &quot;Show contrast information&quot;</li>
+<li>Review the ratio between background and text colors</li>
+<li>Check AA and AAA compliance indicators</li>
+</ol>
+<h2 id="rich-text-fields">Rich Text Fields</h2>
+<p>The following fields support HTML formatting:</p>
+<ul>
+<li>Footer Text</li>
+<li>No Agents Message</li>
+<li>Default Agent Welcome Message</li>
+</ul>
+<p>Supported HTML elements:</p>
+<ul>
+<li><code>&lt;strong&gt;</code>, <code>&lt;b&gt;</code> - Bold text</li>
+<li><code>&lt;em&gt;</code>, <code>&lt;i&gt;</code> - Italic text</li>
+<li><code>&lt;a href=&quot;&quot;&gt;</code> - Links</li>
+<li><code>&lt;ul&gt;</code>, <code>&lt;ol&gt;</code>, <code>&lt;li&gt;</code> - Lists</li>
+<li><code>&lt;p&gt;</code> - Paragraphs</li>
+</ul>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="../../how-to-guides/fllm-platform/branding.html">Branding Configuration (How-To)</a></li>
+<li><a href="using-management-portal.html">Using Management Portal for Branding</a></li>
+<li><a href="using-app-configuration.html">Using App Configuration for Branding</a></li>
+<li><a href="using-rest-api.html">Using REST API for Branding</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

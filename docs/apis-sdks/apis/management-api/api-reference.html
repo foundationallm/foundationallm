@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Management API Reference | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Management API Reference | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/apis-sdks/apis/management-api/api-reference.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="management-api-reference">Management API Reference</h1>
+
+<p>Complete endpoint reference for the FoundationaLLM Management API.</p>
+<h2 id="base-url">Base URL</h2>
+<pre><code>https://{management-api-url}/instances/{instanceId}
+</code></pre>
+<h2 id="authentication">Authentication</h2>
+<p>All endpoints require Entra ID bearer token:</p>
+<pre><code class="lang-http">Authorization: Bearer &lt;jwt-token&gt;
+</code></pre>
+<hr>
+<h2 id="resource-operations">Resource Operations</h2>
+<p>All resource providers follow a consistent pattern:</p>
+<pre><code>/instances/{instanceId}/providers/{providerName}/{resourceType}/{resourceName}
+</code></pre>
+<h3 id="get---list-resources">GET - List Resources</h3>
+<pre><code class="lang-http">GET /instances/{instanceId}/providers/{provider}/{resourceType}
+</code></pre>
+<p><strong>Response (200 OK):</strong></p>
+<pre><code class="lang-json">[
+  {
+    &quot;resource&quot;: {
+      &quot;type&quot;: &quot;agent&quot;,
+      &quot;name&quot;: &quot;my-agent&quot;,
+      &quot;object_id&quot;: &quot;/instances/{instanceId}/providers/FoundationaLLM.Agent/agents/my-agent&quot;,
+      &quot;display_name&quot;: &quot;My Agent&quot;,
+      &quot;description&quot;: &quot;Agent description&quot;
+    },
+    &quot;roles&quot;: [&quot;Owner&quot;],
+    &quot;actions&quot;: [&quot;read&quot;, &quot;write&quot;, &quot;delete&quot;]
+  }
+]
+</code></pre>
+<h3 id="get---get-resource">GET - Get Resource</h3>
+<pre><code class="lang-http">GET /instances/{instanceId}/providers/{provider}/{resourceType}/{name}
+</code></pre>
+<p><strong>Response (200 OK):</strong></p>
+<pre><code class="lang-json">{
+  &quot;resource&quot;: {
+    &quot;type&quot;: &quot;agent&quot;,
+    &quot;name&quot;: &quot;my-agent&quot;,
+    &quot;object_id&quot;: &quot;/instances/{instanceId}/providers/FoundationaLLM.Agent/agents/my-agent&quot;,
+    // Full resource definition
+  },
+  &quot;roles&quot;: [&quot;Owner&quot;],
+  &quot;actions&quot;: [&quot;read&quot;, &quot;write&quot;, &quot;delete&quot;]
+}
+</code></pre>
+<h3 id="post---createupdate-resource">POST - Create/Update Resource</h3>
+<pre><code class="lang-http">POST /instances/{instanceId}/providers/{provider}/{resourceType}/{name}
+Content-Type: application/json
+
+{
+  // Resource definition
+}
+</code></pre>
+<p><strong>Response (200 OK):</strong></p>
+<pre><code class="lang-json">{
+  &quot;object_id&quot;: &quot;/instances/{instanceId}/providers/{provider}/{resourceType}/{name}&quot;
+}
+</code></pre>
+<h3 id="delete---delete-resource">DELETE - Delete Resource</h3>
+<pre><code class="lang-http">DELETE /instances/{instanceId}/providers/{provider}/{resourceType}/{name}
+</code></pre>
+<p><strong>Response (200 OK):</strong></p>
+<pre><code class="lang-json">{
+  &quot;object_id&quot;: &quot;/instances/{instanceId}/providers/{provider}/{resourceType}/{name}&quot;,
+  &quot;deleted&quot;: true
+}
+</code></pre>
+<h3 id="post---purge-resource">POST - Purge Resource</h3>
+<p>Permanently removes a soft-deleted resource:</p>
+<pre><code class="lang-http">POST /instances/{instanceId}/providers/{provider}/{resourceType}/{name}/purge
+</code></pre>
+<hr>
+<h2 id="agent-resource-provider">Agent Resource Provider</h2>
+<p><strong>Provider:</strong> <code>FoundationaLLM.Agent</code></p>
+<h3 id="agents">Agents</h3>
+<h4 id="list-agents">List Agents</h4>
+<pre><code class="lang-http">GET /instances/{instanceId}/providers/FoundationaLLM.Agent/agents
+</code></pre>
+<h4 id="get-agent">Get Agent</h4>
+<pre><code class="lang-http">GET /instances/{instanceId}/providers/FoundationaLLM.Agent/agents/{agentName}
+</code></pre>
+<h4 id="createupdate-agent">Create/Update Agent</h4>
+<pre><code class="lang-http">POST /instances/{instanceId}/providers/FoundationaLLM.Agent/agents/{agentName}
+Content-Type: application/json
+
+{
+  &quot;type&quot;: &quot;agent&quot;,
+  &quot;name&quot;: &quot;my-agent&quot;,
+  &quot;display_name&quot;: &quot;My Agent&quot;,
+  &quot;description&quot;: &quot;Agent description&quot;,
+  &quot;inline_context&quot;: false,
+  &quot;conversation_history_settings&quot;: {
+    &quot;enabled&quot;: true,
+    &quot;max_history&quot;: 5
+  },
+  &quot;gatekeeper_settings&quot;: {
+    &quot;use_system_setting&quot;: false,
+    &quot;options&quot;: [&quot;ContentSafety&quot;]
+  },
+  &quot;workflow_object_id&quot;: &quot;/instances/{instanceId}/providers/FoundationaLLM.Agent/workflows/my-workflow&quot;,
+  &quot;tool_object_ids&quot;: []
+}
+</code></pre>
+<h3 id="workflows">Workflows</h3>
+<h4 id="list-workflows">List Workflows</h4>
+<pre><code class="lang-http">GET /instances/{instanceId}/providers/FoundationaLLM.Agent/workflows
+</code></pre>
+<h4 id="createupdate-workflow">Create/Update Workflow</h4>
+<pre><code class="lang-http">POST /instances/{instanceId}/providers/FoundationaLLM.Agent/workflows/{workflowName}
+Content-Type: application/json
+
+{
+  &quot;type&quot;: &quot;workflow&quot;,
+  &quot;name&quot;: &quot;my-workflow&quot;,
+  &quot;workflow_type&quot;: &quot;OpenAIAssistants&quot;,
+  &quot;workflow_host&quot;: &quot;LangChain&quot;,
+  &quot;main_ai_model_object_id&quot;: &quot;/instances/{instanceId}/providers/FoundationaLLM.AIModel/aiModels/gpt-4o&quot;,
+  &quot;main_prompt_object_id&quot;: &quot;/instances/{instanceId}/providers/FoundationaLLM.Prompt/prompts/system-prompt&quot;
+}
+</code></pre>
+<h3 id="tools">Tools</h3>
+<h4 id="list-tools">List Tools</h4>
+<pre><code class="lang-http">GET /instances/{instanceId}/providers/FoundationaLLM.Agent/tools
+</code></pre>
+<h4 id="createupdate-tool">Create/Update Tool</h4>
+<pre><code class="lang-http">POST /instances/{instanceId}/providers/FoundationaLLM.Agent/tools/{toolName}
+Content-Type: application/json
+
+{
+  &quot;type&quot;: &quot;tool&quot;,
+  &quot;name&quot;: &quot;knowledge-search&quot;,
+  &quot;tool_type&quot;: &quot;knowledge-search&quot;,
+  &quot;description&quot;: &quot;Search knowledge base&quot;
+}
+</code></pre>
+<hr>
+<h2 id="prompt-resource-provider">Prompt Resource Provider</h2>
+<p><strong>Provider:</strong> <code>FoundationaLLM.Prompt</code></p>
+<h3 id="list-prompts">List Prompts</h3>
+<pre><code class="lang-http">GET /instances/{instanceId}/providers/FoundationaLLM.Prompt/prompts
+</code></pre>
+<h3 id="get-prompt">Get Prompt</h3>
+<pre><code class="lang-http">GET /instances/{instanceId}/providers/FoundationaLLM.Prompt/prompts/{promptName}
+</code></pre>
+<h3 id="createupdate-prompt">Create/Update Prompt</h3>
+<pre><code class="lang-http">POST /instances/{instanceId}/providers/FoundationaLLM.Prompt/prompts/{promptName}
+Content-Type: application/json
+
+{
+  &quot;type&quot;: &quot;prompt&quot;,
+  &quot;name&quot;: &quot;system-prompt&quot;,
+  &quot;display_name&quot;: &quot;System Prompt&quot;,
+  &quot;description&quot;: &quot;Main system prompt&quot;,
+  &quot;category&quot;: &quot;AgentWorkflow&quot;,
+  &quot;prefix&quot;: &quot;You are a helpful assistant...&quot;,
+  &quot;suffix&quot;: &quot;&quot;
+}
+</code></pre>
+<hr>
+<h2 id="data-source-resource-provider">Data Source Resource Provider</h2>
+<p><strong>Provider:</strong> <code>FoundationaLLM.DataSource</code></p>
+<h3 id="list-data-sources">List Data Sources</h3>
+<pre><code class="lang-http">GET /instances/{instanceId}/providers/FoundationaLLM.DataSource/dataSources
+</code></pre>
+<h3 id="createupdate-data-source">Create/Update Data Source</h3>
+<pre><code class="lang-http">POST /instances/{instanceId}/providers/FoundationaLLM.DataSource/dataSources/{dataSourceName}
+Content-Type: application/json
+
+{
+  &quot;type&quot;: &quot;data-source&quot;,
+  &quot;name&quot;: &quot;azure-storage&quot;,
+  &quot;display_name&quot;: &quot;Azure Storage&quot;,
+  &quot;data_source_type&quot;: &quot;AzureDataLake&quot;,
+  &quot;configuration&quot;: {
+    &quot;connection_string_secret_name&quot;: &quot;storage-connection&quot;,
+    &quot;containers&quot;: [&quot;documents&quot;]
+  }
+}
+</code></pre>
+<hr>
+<h2 id="data-pipeline-resource-provider">Data Pipeline Resource Provider</h2>
+<p><strong>Provider:</strong> <code>FoundationaLLM.DataPipeline</code></p>
+<p>See <a href="data-pipelines.html">Data Pipelines API</a> for complete documentation.</p>
+<h3 id="list-pipelines">List Pipelines</h3>
+<pre><code class="lang-http">GET /instances/{instanceId}/providers/FoundationaLLM.DataPipeline/dataPipelines
+</code></pre>
+<h3 id="execute-pipeline">Execute Pipeline</h3>
+<pre><code class="lang-http">POST /instances/{instanceId}/providers/FoundationaLLM.DataPipeline/dataPipelines/{pipelineName}/process
+</code></pre>
+<h3 id="list-pipeline-runs">List Pipeline Runs</h3>
+<pre><code class="lang-http">GET /instances/{instanceId}/providers/FoundationaLLM.DataPipeline/dataPipelineRuns
+</code></pre>
+<hr>
+<h2 id="ai-model-resource-provider">AI Model Resource Provider</h2>
+<p><strong>Provider:</strong> <code>FoundationaLLM.AIModel</code></p>
+<h3 id="list-ai-models">List AI Models</h3>
+<pre><code class="lang-http">GET /instances/{instanceId}/providers/FoundationaLLM.AIModel/aiModels
+</code></pre>
+<h3 id="createupdate-ai-model">Create/Update AI Model</h3>
+<pre><code class="lang-http">POST /instances/{instanceId}/providers/FoundationaLLM.AIModel/aiModels/{modelName}
+Content-Type: application/json
+
+{
+  &quot;type&quot;: &quot;ai-model&quot;,
+  &quot;name&quot;: &quot;gpt-4o&quot;,
+  &quot;display_name&quot;: &quot;GPT-4o&quot;,
+  &quot;model_type&quot;: &quot;completion&quot;,
+  &quot;deployment_name&quot;: &quot;gpt-4o-deployment&quot;,
+  &quot;api_endpoint_object_id&quot;: &quot;/instances/{instanceId}/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/azure-openai&quot;
+}
+</code></pre>
+<hr>
+<h2 id="configuration-resource-provider">Configuration Resource Provider</h2>
+<p><strong>Provider:</strong> <code>FoundationaLLM.Configuration</code></p>
+<h3 id="app-configurations">App Configurations</h3>
+<h4 id="list-configurations">List Configurations</h4>
+<pre><code class="lang-http">GET /instances/{instanceId}/providers/FoundationaLLM.Configuration/appConfigurations
+</code></pre>
+<h4 id="update-configuration">Update Configuration</h4>
+<pre><code class="lang-http">POST /instances/{instanceId}/providers/FoundationaLLM.Configuration/appConfigurations/{configName}
+Content-Type: application/json
+
+{
+  &quot;type&quot;: &quot;app-configuration&quot;,
+  &quot;name&quot;: &quot;Branding-CompanyName&quot;,
+  &quot;key&quot;: &quot;FoundationaLLM:Branding:CompanyName&quot;,
+  &quot;value&quot;: &quot;Contoso&quot;
+}
+</code></pre>
+<h3 id="api-endpoints">API Endpoints</h3>
+<h4 id="list-api-endpoints">List API Endpoints</h4>
+<pre><code class="lang-http">GET /instances/{instanceId}/providers/FoundationaLLM.Configuration/apiEndpointConfigurations
+</code></pre>
+<hr>
+<h2 id="authorization-resource-provider">Authorization Resource Provider</h2>
+<p><strong>Provider:</strong> <code>FoundationaLLM.Authorization</code></p>
+<h3 id="role-assignments">Role Assignments</h3>
+<h4 id="list-role-assignments">List Role Assignments</h4>
+<pre><code class="lang-http">GET /instances/{instanceId}/providers/FoundationaLLM.Authorization/roleAssignments
+</code></pre>
+<h4 id="create-role-assignment">Create Role Assignment</h4>
+<pre><code class="lang-http">POST /instances/{instanceId}/providers/FoundationaLLM.Authorization/roleAssignments/{assignmentName}
+Content-Type: application/json
+
+{
+  &quot;type&quot;: &quot;role-assignment&quot;,
+  &quot;name&quot;: &quot;assignment-guid&quot;,
+  &quot;principal_id&quot;: &quot;user-or-group-guid&quot;,
+  &quot;principal_type&quot;: &quot;User&quot;,
+  &quot;role_definition_id&quot;: &quot;/providers/FoundationaLLM.Authorization/roleDefinitions/1301f8d4-3bea-4880-945f-315dbd2ddb46&quot;,
+  &quot;scope&quot;: &quot;/instances/{instanceId}&quot;
+}
+</code></pre>
+<h3 id="role-definitions">Role Definitions</h3>
+<h4 id="list-role-definitions">List Role Definitions</h4>
+<pre><code class="lang-http">GET /instances/{instanceId}/providers/FoundationaLLM.Authorization/roleDefinitions
+</code></pre>
+<hr>
+<h2 id="status-endpoints">Status Endpoints</h2>
+<h3 id="service-status">Service Status</h3>
+<pre><code class="lang-http">GET /status
+</code></pre>
+<p><strong>Response:</strong></p>
+<pre><code class="lang-json">{
+  &quot;status&quot;: &quot;ready&quot;,
+  &quot;name&quot;: &quot;ManagementAPI&quot;,
+  &quot;version&quot;: &quot;1.0.0&quot;,
+  &quot;instance_id&quot;: &quot;instance-guid&quot;
+}
+</code></pre>
+<hr>
+<h2 id="identity-endpoints">Identity Endpoints</h2>
+<h3 id="get-current-user">Get Current User</h3>
+<pre><code class="lang-http">GET /instances/{instanceId}/identity
+</code></pre>
+<h3 id="search-security-principals">Search Security Principals</h3>
+<pre><code class="lang-http">GET /instances/{instanceId}/identity/securityPrincipals?search={searchTerm}
+</code></pre>
+<hr>
+<h2 id="error-responses">Error Responses</h2>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Code</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>400</td>
+<td>BadRequest</td>
+<td>Invalid request body</td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized</td>
+<td>Authentication required</td>
+</tr>
+<tr>
+<td>403</td>
+<td>Forbidden</td>
+<td>Insufficient permissions</td>
+</tr>
+<tr>
+<td>404</td>
+<td>NotFound</td>
+<td>Resource not found</td>
+</tr>
+<tr>
+<td>409</td>
+<td>Conflict</td>
+<td>Resource already exists</td>
+</tr>
+<tr>
+<td>500</td>
+<td>InternalError</td>
+<td>Server error</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Error Response Format:</strong></p>
+<pre><code class="lang-json">{
+  &quot;error&quot;: {
+    &quot;code&quot;: &quot;ResourceNotFound&quot;,
+    &quot;message&quot;: &quot;The resource 'my-agent' was not found in provider 'FoundationaLLM.Agent'.&quot;
+  }
+}
+</code></pre>
+<hr>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="index.html">Management API Overview</a></li>
+<li><a href="resource-providers-overview.html">Resource Providers Overview</a></li>
+<li><a href="data-pipelines.html">Data Pipelines API</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

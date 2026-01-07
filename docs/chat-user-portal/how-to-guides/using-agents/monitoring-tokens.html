@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Monitoring Token Consumption | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Monitoring Token Consumption | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/chat-user-portal/how-to-guides/using-agents/monitoring-tokens.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="monitoring-token-consumption">Monitoring Token Consumption</h1>
+
+<p>Understand and track token usage during your conversations with AI agents.</p>
+<h2 id="what-are-tokens">What Are Tokens?</h2>
+<p>Tokens are the units of text that AI models process. When you send a message or receive a response, the text is broken into tokens for processing.</p>
+<h3 id="token-basics">Token Basics</h3>
+<ul>
+<li><strong>1 token ≈ 4 characters</strong> in English (roughly 3/4 of a word)</li>
+<li>Shorter words may be one token, longer words may be multiple tokens</li>
+<li>Punctuation and spaces also consume tokens</li>
+<li>Non-English text may use more tokens per character</li>
+</ul>
+<h3 id="examples">Examples</h3>
+<table>
+<thead>
+<tr>
+<th>Text</th>
+<th>Approximate Tokens</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>&quot;Hello&quot;</td>
+<td>1 token</td>
+</tr>
+<tr>
+<td>&quot;Hello, how are you today?&quot;</td>
+<td>7 tokens</td>
+</tr>
+<tr>
+<td>&quot;The quick brown fox jumps over the lazy dog&quot;</td>
+<td>10 tokens</td>
+</tr>
+<tr>
+<td>A 500-word document</td>
+<td>~650-700 tokens</td>
+</tr>
+</tbody>
+</table>
+<h2 id="why-token-tracking-matters">Why Token Tracking Matters</h2>
+<p>Understanding token usage helps you:</p>
+<ul>
+<li><strong>Manage costs</strong>: Higher token usage may affect your organization's AI usage costs</li>
+<li><strong>Optimize prompts</strong>: Write more efficient prompts to reduce token consumption</li>
+<li><strong>Understand limits</strong>: Know when you're approaching conversation or request limits</li>
+<li><strong>Troubleshoot</strong>: Large token counts may explain slower responses</li>
+</ul>
+<h2 id="viewing-token-information">Viewing Token Information</h2>
+<p>Token display is a feature that must be enabled by your administrator. When enabled:</p>
+<h3 id="token-chip">Token Chip</h3>
+<p>Each message displays a <strong>token chip</strong> showing the token count:</p>
+<ul>
+<li>Located in the top-right corner of each message, next to the timestamp</li>
+<li>Shows &quot;Tokens: [number]&quot;</li>
+<li><strong>User messages</strong>: Show prompt tokens (what you sent)</li>
+<li><strong>Agent responses</strong>: Show completion tokens (what was generated)</li>
+</ul>
+<h3 id="token-chip-colors">Token Chip Colors</h3>
+<p>The token chip appearance differs based on the message type:</p>
+<ul>
+<li><strong>Your messages</strong>: Chip matches your message's accent color</li>
+<li><strong>Agent responses</strong>: Chip matches the agent message's theme color</li>
+</ul>
+<h2 id="when-token-display-is-hidden">When Token Display Is Hidden</h2>
+<p>You won't see token information if:</p>
+<ul>
+<li>Your administrator hasn't enabled token display</li>
+<li>The current agent doesn't have token display enabled</li>
+<li>The message is still being generated (tokens show after completion)</li>
+</ul>
+<blockquote>
+<p><strong>Note:</strong> Even when not displayed, tokens are still being consumed. Contact your administrator if you need token visibility enabled.</p>
+</blockquote>
+<h2 id="understanding-token-counts">Understanding Token Counts</h2>
+<h3 id="prompt-tokens-your-messages">Prompt Tokens (Your Messages)</h3>
+<p>Prompt tokens include:</p>
+<ul>
+<li>The text you typed</li>
+<li>Any system instructions the agent uses</li>
+<li>Context from previous messages in the conversation</li>
+<li>Information from uploaded files being referenced</li>
+</ul>
+<h3 id="completion-tokens-agent-responses">Completion Tokens (Agent Responses)</h3>
+<p>Completion tokens include:</p>
+<ul>
+<li>The agent's response text</li>
+<li>Any formatted content (tables, lists, code)</li>
+<li>Generated data or analysis</li>
+</ul>
+<h3 id="total-tokens">Total Tokens</h3>
+<p>The total tokens for a single exchange equals:</p>
+<ul>
+<li>Prompt tokens + Completion tokens</li>
+</ul>
+<p>For a conversation, total usage is the sum of all message token counts.</p>
+<h2 id="tips-for-optimizing-token-usage">Tips for Optimizing Token Usage</h2>
+<h3 id="write-concise-prompts">Write Concise Prompts</h3>
+<p>Instead of:</p>
+<blockquote>
+<p>&quot;I would like you to please help me understand what the quarterly sales numbers were for the last fiscal year, if you could be so kind as to summarize them for me.&quot;</p>
+</blockquote>
+<p>Try:</p>
+<blockquote>
+<p>&quot;Summarize Q1-Q4 sales from last fiscal year.&quot;</p>
+</blockquote>
+<h3 id="be-specific">Be Specific</h3>
+<p>Clear, specific questions reduce the need for follow-up clarifications:</p>
+<ul>
+<li>Specify the format you want (bullet points, table, paragraph)</li>
+<li>Mention the level of detail needed</li>
+<li>Include relevant constraints upfront</li>
+</ul>
+<h3 id="use-conversation-history-wisely">Use Conversation History Wisely</h3>
+<ul>
+<li>Reference previous responses instead of repeating information</li>
+<li>Start new conversations for unrelated topics</li>
+<li>The agent includes recent history, which adds to prompt tokens</li>
+</ul>
+<h3 id="break-down-complex-requests">Break Down Complex Requests</h3>
+<p>For complex tasks:</p>
+<ol>
+<li>Ask one question at a time</li>
+<li>Build on previous answers</li>
+<li>This often uses fewer total tokens than one massive request</li>
+</ol>
+<h2 id="token-limits">Token Limits</h2>
+<h3 id="message-limits">Message Limits</h3>
+<p>Individual messages may have token limits:</p>
+<ul>
+<li>Very long prompts may be truncated</li>
+<li>Extremely long responses may be cut short</li>
+<li>Your administrator sets these limits</li>
+</ul>
+<h3 id="conversation-context-limits">Conversation Context Limits</h3>
+<p>The conversation history included in each request has limits:</p>
+<ul>
+<li>Older messages may not be included in context</li>
+<li>This is why agents may &quot;forget&quot; earlier parts of long conversations</li>
+</ul>
+<h3 id="rate-limits">Rate Limits</h3>
+<p>Your organization may have:</p>
+<ul>
+<li>Requests per minute limits</li>
+<li>Tokens per minute limits</li>
+<li>Daily or monthly token quotas</li>
+</ul>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="token-count-seems-too-high">Token Count Seems Too High</h3>
+<p>High token counts may be due to:</p>
+<ul>
+<li>Long conversation history being included</li>
+<li>Uploaded files adding context</li>
+<li>Complex formatting in the response</li>
+<li>The agent retrieving information from knowledge bases</li>
+</ul>
+<h3 id="token-count-shows-zero-or-not-displaying">Token Count Shows Zero or Not Displaying</h3>
+<ul>
+<li>Wait for the message to finish generating</li>
+<li>Token display may not be enabled (ask your administrator)</li>
+<li>There may have been an error calculating tokens</li>
+</ul>
+<h3 id="response-cut-off-mid-sentence">Response Cut Off Mid-Sentence</h3>
+<p>The response may have hit a token limit:</p>
+<ul>
+<li>Try asking for a shorter response</li>
+<li>Request the information in parts</li>
+<li>Ask the agent to continue from where it stopped</li>
+</ul>
+<h3 id="slow-responses-with-high-token-counts">Slow Responses with High Token Counts</h3>
+<p>More tokens = longer processing time:</p>
+<ul>
+<li>Consider breaking the request into smaller parts</li>
+<li>Ask for summaries instead of full details</li>
+<li>Reduce the complexity of your request</li>
+</ul>
+<h2 id="checking-your-usage">Checking Your Usage</h2>
+<p>If you need to monitor overall token usage:</p>
+<ul>
+<li>Contact your administrator for usage reports</li>
+<li>Ask about organization-wide dashboards</li>
+<li>Review any quotas or limits that apply to your account</li>
+</ul>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="managing-conversations.html">Managing Conversations</a> — Control conversation length and context</li>
+<li><a href="copying-prompts-results.html">Copying Messages</a> — Extract content without regenerating</li>
+<li><a href="rating-responses.html">Rating Responses</a> — Provide feedback on responses</li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

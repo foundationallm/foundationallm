@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Network Security Groups | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Network Security Groups | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../toc.html">
+      <meta name="docfx:tocrel" content="../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/platform-operations/security-permissions/network-security-groups.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../index.html">
+            <img id="logo" class="svg" src="../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="network-security-groups">Network Security Groups</h1>
+
+<p>FoundationaLLM Standard deployment uses Network Security Groups (NSGs) to control network traffic in Azure Virtual Networks.</p>
+<h2 id="overview">Overview</h2>
+<p>NSGs provide stateful packet filtering based on:</p>
+<ul>
+<li>Source/destination IP addresses</li>
+<li>Source/destination ports</li>
+<li>Protocol (TCP, UDP, etc.)</li>
+<li>Direction (inbound/outbound)</li>
+</ul>
+<h2 id="application-gateway-nsg">Application Gateway NSG</h2>
+<p>The Application Gateway subnet requires specific NSG rules for Azure services.</p>
+<h3 id="inbound-rules">Inbound Rules</h3>
+<table>
+<thead>
+<tr>
+<th>Rule Name</th>
+<th>Access</th>
+<th>Source</th>
+<th>Destination</th>
+<th>Port</th>
+<th>Protocol</th>
+<th>Priority</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>allow-internet-http-inbound</code></td>
+<td>Allow</td>
+<td>Internet</td>
+<td>VirtualNetwork</td>
+<td>80</td>
+<td>TCP</td>
+<td>128</td>
+<td>Customizable</td>
+</tr>
+<tr>
+<td><code>allow-internet-https-inbound</code></td>
+<td>Allow</td>
+<td>Internet</td>
+<td>VirtualNetwork</td>
+<td>443</td>
+<td>TCP</td>
+<td>132</td>
+<td>Customizable</td>
+</tr>
+<tr>
+<td><code>allow-gatewaymanager-inbound</code></td>
+<td>Allow</td>
+<td>GatewayManager</td>
+<td>*</td>
+<td>65200-65535</td>
+<td>TCP</td>
+<td>148</td>
+<td><strong>Required</strong></td>
+</tr>
+<tr>
+<td><code>allow-loadbalancer-inbound</code></td>
+<td>Allow</td>
+<td>AzureLoadBalancer</td>
+<td>*</td>
+<td>*</td>
+<td>*</td>
+<td>164</td>
+<td><strong>Required</strong></td>
+</tr>
+<tr>
+<td><code>deny-all-inbound</code></td>
+<td>Deny</td>
+<td>*</td>
+<td>*</td>
+<td>*</td>
+<td>*</td>
+<td>4096</td>
+<td>Default deny</td>
+</tr>
+</tbody>
+</table>
+<h3 id="important-notes">Important Notes</h3>
+<ol>
+<li><strong>GatewayManager Rule</strong> - Required by Azure. Do not modify or delete.</li>
+<li><strong>LoadBalancer Rule</strong> - Required by Azure. Do not modify or delete.</li>
+<li><strong>Internet Rules</strong> - Can be restricted to specific IP ranges.</li>
+</ol>
+<p>For more information, see <a href="https://learn.microsoft.com/azure/application-gateway/configuration-infrastructure#network-security-groups">Azure Application Gateway NSG requirements</a>.</p>
+<h2 id="aks-subnet-nsgs">AKS Subnet NSGs</h2>
+<h3 id="backend-cluster">Backend Cluster</h3>
+<table>
+<thead>
+<tr>
+<th>Direction</th>
+<th>Source</th>
+<th>Destination</th>
+<th>Ports</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Inbound</td>
+<td>Application Gateway</td>
+<td>AKS Subnet</td>
+<td>443</td>
+<td>API traffic</td>
+</tr>
+<tr>
+<td>Inbound</td>
+<td>AzureLoadBalancer</td>
+<td>AKS Subnet</td>
+<td>*</td>
+<td>Health probes</td>
+</tr>
+<tr>
+<td>Outbound</td>
+<td>AKS Subnet</td>
+<td>Internet</td>
+<td>443</td>
+<td>Azure services</td>
+</tr>
+<tr>
+<td>Outbound</td>
+<td>AKS Subnet</td>
+<td>AzureCloud</td>
+<td>443</td>
+<td>Azure APIs</td>
+</tr>
+</tbody>
+</table>
+<h3 id="frontend-cluster">Frontend Cluster</h3>
+<table>
+<thead>
+<tr>
+<th>Direction</th>
+<th>Source</th>
+<th>Destination</th>
+<th>Ports</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Inbound</td>
+<td>Application Gateway</td>
+<td>AKS Subnet</td>
+<td>443</td>
+<td>Portal traffic</td>
+</tr>
+<tr>
+<td>Inbound</td>
+<td>AzureLoadBalancer</td>
+<td>AKS Subnet</td>
+<td>*</td>
+<td>Health probes</td>
+</tr>
+<tr>
+<td>Outbound</td>
+<td>AKS Subnet</td>
+<td>Backend</td>
+<td>443</td>
+<td>API calls</td>
+</tr>
+<tr>
+<td>Outbound</td>
+<td>AKS Subnet</td>
+<td>Internet</td>
+<td>443</td>
+<td>Azure services</td>
+</tr>
+</tbody>
+</table>
+<h2 id="private-endpoint-subnet">Private Endpoint Subnet</h2>
+<table>
+<thead>
+<tr>
+<th>Direction</th>
+<th>Source</th>
+<th>Destination</th>
+<th>Ports</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Inbound</td>
+<td>AKS Subnets</td>
+<td>Private Endpoints</td>
+<td>443</td>
+<td>Service access</td>
+</tr>
+<tr>
+<td>Inbound</td>
+<td>Jumpbox</td>
+<td>Private Endpoints</td>
+<td>443</td>
+<td>Admin access</td>
+</tr>
+<tr>
+<td>Outbound</td>
+<td>*</td>
+<td>*</td>
+<td>*</td>
+<td>Deny all</td>
+</tr>
+</tbody>
+</table>
+<h2 id="customization-guidelines">Customization Guidelines</h2>
+<h3 id="restricting-internet-access">Restricting Internet Access</h3>
+<p>Replace Internet source with specific CIDRs:</p>
+<pre><code class="lang-json">{
+  &quot;name&quot;: &quot;allow-corporate-https-inbound&quot;,
+  &quot;properties&quot;: {
+    &quot;access&quot;: &quot;Allow&quot;,
+    &quot;direction&quot;: &quot;Inbound&quot;,
+    &quot;protocol&quot;: &quot;Tcp&quot;,
+    &quot;sourceAddressPrefix&quot;: &quot;203.0.113.0/24&quot;,
+    &quot;sourcePortRange&quot;: &quot;*&quot;,
+    &quot;destinationAddressPrefix&quot;: &quot;VirtualNetwork&quot;,
+    &quot;destinationPortRange&quot;: &quot;443&quot;,
+    &quot;priority&quot;: 132
+  }
+}
+</code></pre>
+<h3 id="adding-custom-rules">Adding Custom Rules</h3>
+<p>Example: Allow specific IP range:</p>
+<pre><code class="lang-bash">az network nsg rule create \
+  --resource-group &lt;resource-group&gt; \
+  --nsg-name &lt;nsg-name&gt; \
+  --name allow-partner-https \
+  --priority 140 \
+  --access Allow \
+  --direction Inbound \
+  --protocol Tcp \
+  --source-address-prefixes 198.51.100.0/24 \
+  --source-port-ranges '*' \
+  --destination-address-prefixes VirtualNetwork \
+  --destination-port-ranges 443
+</code></pre>
+<h2 id="service-tags">Service Tags</h2>
+<p>Use Azure service tags for easier rule management:</p>
+<table>
+<thead>
+<tr>
+<th>Tag</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>VirtualNetwork</code></td>
+<td>All VNet addresses</td>
+</tr>
+<tr>
+<td><code>AzureLoadBalancer</code></td>
+<td>Azure Load Balancer</td>
+</tr>
+<tr>
+<td><code>Internet</code></td>
+<td>Public internet</td>
+</tr>
+<tr>
+<td><code>GatewayManager</code></td>
+<td>Azure Gateway Manager</td>
+</tr>
+<tr>
+<td><code>AzureCloud</code></td>
+<td>All Azure public IPs</td>
+</tr>
+<tr>
+<td><code>AzureCosmosDB</code></td>
+<td>Cosmos DB service</td>
+</tr>
+<tr>
+<td><code>Storage</code></td>
+<td>Azure Storage</td>
+</tr>
+<tr>
+<td><code>AzureKeyVault</code></td>
+<td>Key Vault service</td>
+</tr>
+</tbody>
+</table>
+<h2 id="monitoring-nsg-traffic">Monitoring NSG Traffic</h2>
+<h3 id="enable-flow-logs">Enable Flow Logs</h3>
+<pre><code class="lang-bash">az network watcher flow-log create \
+  --resource-group &lt;resource-group&gt; \
+  --nsg &lt;nsg-name&gt; \
+  --storage-account &lt;storage-account&gt; \
+  --enabled true
+</code></pre>
+<h3 id="view-nsg-effective-rules">View NSG Effective Rules</h3>
+<pre><code class="lang-bash">az network nic list-effective-nsg \
+  --resource-group &lt;resource-group&gt; \
+  --name &lt;nic-name&gt;
+</code></pre>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="common-issues">Common Issues</h3>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Connection timeout</td>
+<td>Check NSG rules allow traffic</td>
+</tr>
+<tr>
+<td>Service unavailable</td>
+<td>Verify Application Gateway rules</td>
+</tr>
+<tr>
+<td>Inter-service failures</td>
+<td>Check AKS subnet rules</td>
+</tr>
+</tbody>
+</table>
+<h3 id="nsg-diagnostic-commands">NSG Diagnostic Commands</h3>
+<pre><code class="lang-bash"># List NSG rules
+az network nsg rule list \
+  --resource-group &lt;resource-group&gt; \
+  --nsg-name &lt;nsg-name&gt; \
+  --output table
+
+# Check flow logs
+az network watcher flow-log show \
+  --resource-group &lt;resource-group&gt; \
+  --nsg &lt;nsg-name&gt;
+</code></pre>
+<h2 id="best-practices">Best Practices</h2>
+<table>
+<thead>
+<tr>
+<th>Practice</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Least Privilege</strong></td>
+<td>Only allow necessary traffic</td>
+</tr>
+<tr>
+<td><strong>Use Service Tags</strong></td>
+<td>Easier maintenance than IP ranges</td>
+</tr>
+<tr>
+<td><strong>Enable Flow Logs</strong></td>
+<td>Audit and troubleshooting</td>
+</tr>
+<tr>
+<td><strong>Document Changes</strong></td>
+<td>Track rule modifications</td>
+</tr>
+<tr>
+<td><strong>Test Changes</strong></td>
+<td>Verify in staging first</td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="platform-security.html">Platform Security</a></li>
+<li><a href="../deployment/deployment-standard.html">Standard Deployment</a></li>
+<li><a href="../monitoring-troubleshooting/troubleshooting.html">Troubleshooting</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

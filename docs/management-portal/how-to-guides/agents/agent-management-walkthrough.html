@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Agent Management UX Walkthrough | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Agent Management UX Walkthrough | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/management-portal/how-to-guides/agents/agent-management-walkthrough.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="agent-management-ux-walkthrough">Agent Management UX Walkthrough</h1>
+
+<p>A complete walkthrough of agent management tasks in the Management Portal.</p>
+<h2 id="overview">Overview</h2>
+<p>This guide walks you through the full user experience of managing agents in the Management Portal, from navigation to common tasks.</p>
+<h2 id="accessing-agent-management">Accessing Agent Management</h2>
+<h3 id="step-1-navigate-to-the-management-portal">Step 1: Navigate to the Management Portal</h3>
+<ol>
+<li>Open your browser and navigate to the Management Portal URL</li>
+<li>Sign in with your Microsoft Entra ID credentials</li>
+<li>The portal dashboard loads</li>
+</ol>
+<h3 id="step-2-find-the-agents-section">Step 2: Find the Agents Section</h3>
+<ol>
+<li>Look at the left sidebar navigation</li>
+<li>Find the <strong>Agents</strong> section</li>
+<li>You'll see several options:
+<ul>
+<li><strong>Create New Agent</strong> — Create a new agent</li>
+<li><strong>All Agents</strong> — View all agents you have access to</li>
+<li><strong>My Agents</strong> — View only agents you own</li>
+</ul>
+</li>
+</ol>
+<h2 id="viewing-agents">Viewing Agents</h2>
+<h3 id="the-all-agents-page">The All Agents Page</h3>
+<ol>
+<li>Click <strong>All Agents</strong> in the sidebar</li>
+<li>The agent list table loads with these columns:</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Name</strong></td>
+<td>Agent name (with display name if different)</td>
+</tr>
+<tr>
+<td><strong>Description</strong></td>
+<td>Brief description of the agent's purpose</td>
+</tr>
+<tr>
+<td><strong>Expiration Date</strong></td>
+<td>When the agent expires (if set)</td>
+</tr>
+<tr>
+<td><strong>Edit</strong></td>
+<td>⚙️ Settings icon to modify</td>
+</tr>
+<tr>
+<td><strong>Delete</strong></td>
+<td>🗑️ Trash icon to remove</td>
+</tr>
+<tr>
+<td><strong>Set Default</strong></td>
+<td>⭐ Star icon to make default</td>
+</tr>
+</tbody>
+</table>
+<h3 id="identifying-default-agents">Identifying Default Agents</h3>
+<ul>
+<li>The current default agent displays a <strong>Default</strong> chip badge next to its name</li>
+<li>Default agents have a filled star icon</li>
+</ul>
+<h3 id="searching-for-agents">Searching for Agents</h3>
+<ol>
+<li>Find the <strong>Search</strong> box above the table</li>
+<li>Type the agent name or description keywords</li>
+<li>The list filters in real-time as you type</li>
+<li>Clear the search to show all agents again</li>
+</ol>
+<h3 id="sorting-the-list">Sorting the List</h3>
+<ol>
+<li>Click any column header to sort by that column</li>
+<li>Click again to reverse the sort order</li>
+<li>An arrow indicator shows the current sort direction</li>
+</ol>
+<h3 id="pagination">Pagination</h3>
+<ol>
+<li>Use the <strong>rows per page</strong> dropdown to show 10, 25, 50, or 100 agents</li>
+<li>Navigate between pages using the pagination controls at the bottom</li>
+<li>The total count of agents is displayed</li>
+</ol>
+<h2 id="common-agent-management-tasks">Common Agent Management Tasks</h2>
+<h3 id="task-find-a-specific-agent">Task: Find a Specific Agent</h3>
+<p><strong>Scenario:</strong> You need to find an agent named &quot;Sales Assistant&quot;</p>
+<ol>
+<li>Go to <strong>All Agents</strong></li>
+<li>Type &quot;Sales&quot; in the search box</li>
+<li>Review the filtered results</li>
+<li>Click on the agent row or Edit icon to view details</li>
+</ol>
+<h3 id="task-edit-agent-configuration">Task: Edit Agent Configuration</h3>
+<p><strong>Scenario:</strong> You need to change an agent's welcome message</p>
+<ol>
+<li>Find the agent in the list</li>
+<li>Click the <strong>Settings</strong> icon (⚙️) in the Edit column</li>
+<li>The agent edit form opens</li>
+<li>Scroll to find the <strong>Welcome Message</strong> field</li>
+<li>Edit the content (rich text editor available)</li>
+<li>Click <strong>Save Changes</strong></li>
+<li>A success message confirms the update</li>
+</ol>
+<h3 id="task-delete-an-agent">Task: Delete an Agent</h3>
+<p><strong>Scenario:</strong> An agent is no longer needed and should be removed</p>
+<ol>
+<li>Find the agent in the list</li>
+<li>Click the <strong>Trash</strong> icon (🗑️) in the Delete column</li>
+<li>A confirmation dialog appears: &quot;Are you sure you want to delete the agent '[name]'?&quot;</li>
+<li>Click <strong>Yes</strong> to confirm or <strong>Cancel</strong> to abort</li>
+<li>The agent is removed from the list</li>
+</ol>
+<blockquote>
+<p><strong>Warning:</strong> Deletion is permanent. Users will no longer be able to access the deleted agent.</p>
+</blockquote>
+<h3 id="task-set-an-agent-as-default">Task: Set an Agent as Default</h3>
+<p><strong>Scenario:</strong> You want a specific agent to be the default for all users</p>
+<p><strong>Prerequisites:</strong> You need the User Access Administrator role</p>
+<ol>
+<li>Find the agent you want as default</li>
+<li>Click the <strong>Star</strong> icon (⭐) in the Set Default column</li>
+<li>Confirm by clicking <strong>Yes</strong> in the dialog</li>
+<li>The <strong>Default</strong> badge moves to this agent</li>
+<li>The previous default (if any) is cleared</li>
+</ol>
+<h3 id="task-view-only-your-agents">Task: View Only Your Agents</h3>
+<p><strong>Scenario:</strong> You want to focus on agents you own</p>
+<ol>
+<li>Click <strong>My Agents</strong> in the sidebar instead of All Agents</li>
+<li>The list shows only agents where you have the Owner role</li>
+<li>All the same management actions are available</li>
+</ol>
+<h2 id="access-control-for-agents">Access Control for Agents</h2>
+<h3 id="viewing-agent-permissions">Viewing Agent Permissions</h3>
+<ol>
+<li>Open an agent for editing</li>
+<li>Click <strong>Access Control</strong> at the top right of the page</li>
+<li>The role assignments panel opens showing:
+<ul>
+<li>Current role assignments</li>
+<li>Assigned principals (users/groups)</li>
+<li>Role types (Owner, Contributor, Reader)</li>
+</ul>
+</li>
+</ol>
+<h3 id="adding-role-assignments">Adding Role Assignments</h3>
+<ol>
+<li>In Access Control, click <strong>Add Role Assignment</strong></li>
+<li>Select the scope (agent or prompt)</li>
+<li>Choose the principal type (User, Group, Service Principal)</li>
+<li>Enter the principal ID or search for the user</li>
+<li>Select the role (Owner, Contributor, Reader)</li>
+<li>Click <strong>Save</strong></li>
+</ol>
+<h3 id="removing-role-assignments">Removing Role Assignments</h3>
+<ol>
+<li>In Access Control, find the assignment to remove</li>
+<li>Click the <strong>Delete</strong> button next to it</li>
+<li>Confirm the removal</li>
+<li>The access is revoked immediately</li>
+</ol>
+<h2 id="filtering-and-organization">Filtering and Organization</h2>
+<h3 id="best-practices-for-finding-agents">Best Practices for Finding Agents</h3>
+<table>
+<thead>
+<tr>
+<th>Goal</th>
+<th>Approach</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Find by name</td>
+<td>Use search with partial name</td>
+</tr>
+<tr>
+<td>Find by purpose</td>
+<td>Search using description keywords</td>
+</tr>
+<tr>
+<td>Find recent agents</td>
+<td>Sort by creation date (if visible)</td>
+</tr>
+<tr>
+<td>Find your agents</td>
+<td>Use My Agents view</td>
+</tr>
+<tr>
+<td>Find expiring agents</td>
+<td>Sort by Expiration Date</td>
+</tr>
+</tbody>
+</table>
+<h3 id="organizing-your-view">Organizing Your View</h3>
+<ol>
+<li><strong>Use search</strong> to quickly find specific agents</li>
+<li><strong>Sort by name</strong> for alphabetical navigation</li>
+<li><strong>Increase rows per page</strong> to see more at once</li>
+<li><strong>Use My Agents</strong> when focusing on your own work</li>
+</ol>
+<h2 id="refreshing-data">Refreshing Data</h2>
+<h3 id="manual-refresh">Manual Refresh</h3>
+<ol>
+<li>Click the <strong>Refresh</strong> button (🔄) at the top right of the table</li>
+<li>The list reloads with the latest data</li>
+<li>Useful after making changes in another tab</li>
+</ol>
+<h3 id="automatic-refresh">Automatic Refresh</h3>
+<ul>
+<li>The agent list doesn't auto-refresh</li>
+<li>Make changes in one session and refresh others to see updates</li>
+</ul>
+<h2 id="troubleshooting-common-issues">Troubleshooting Common Issues</h2>
+<h3 id="agent-not-appearing-in-list">Agent Not Appearing in List</h3>
+<ul>
+<li>Wait a moment for data to load</li>
+<li>Click Refresh to reload the list</li>
+<li>Verify you have permission to view the agent</li>
+<li>Check if you're in All Agents vs My Agents</li>
+</ul>
+<h3 id="cant-edit-an-agent">Can't Edit an Agent</h3>
+<ul>
+<li>The Edit icon appears grayed out</li>
+<li>You may only have Reader permission</li>
+<li>Contact the agent Owner for edit access</li>
+</ul>
+<h3 id="cant-delete-an-agent">Can't Delete an Agent</h3>
+<ul>
+<li>The Delete icon appears grayed out</li>
+<li>You need Owner or Contributor permission</li>
+<li>Contact an administrator for help</li>
+</ul>
+<h3 id="cant-set-default-agent">Can't Set Default Agent</h3>
+<ul>
+<li>You need User Access Administrator role</li>
+<li>Contact your administrator to request this permission</li>
+<li>Or ask an administrator to set the default for you</li>
+</ul>
+<h3 id="changes-not-saving">Changes Not Saving</h3>
+<ul>
+<li>Check for validation errors (red text below fields)</li>
+<li>Ensure required fields are filled</li>
+<li>Verify your session hasn't timed out</li>
+<li>Try refreshing and re-entering changes</li>
+</ul>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="create-new-agent.html">Create New Agent</a> — Full guide to agent creation</li>
+<li><a href="agent-creation-walkthrough.html">Agent Creation Walkthrough</a> — Step-by-step creation UX</li>
+<li><a href="all-agents.html">All Agents</a> — Reference for the All Agents page</li>
+<li><a href="my-agents.html">My Agents</a> — Reference for the My Agents page</li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

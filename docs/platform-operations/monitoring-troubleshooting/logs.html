@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>System Logs &amp; Audit Trails | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="System Logs &amp; Audit Trails | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../toc.html">
+      <meta name="docfx:tocrel" content="../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/platform-operations/monitoring-troubleshooting/logs.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../index.html">
+            <img id="logo" class="svg" src="../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="system-logs--audit-trails">System Logs &amp; Audit Trails</h1>
+
+<p>This guide covers accessing and analyzing logs in FoundationaLLM deployments.</p>
+<h2 id="overview">Overview</h2>
+<p>FoundationaLLM centralizes logs in Azure Log Analytics Workspace, providing:</p>
+<ul>
+<li>Unified view of all platform components</li>
+<li>Correlation across services</li>
+<li>Advanced query capabilities</li>
+<li>Integration with Azure Monitor</li>
+</ul>
+<h2 id="log-types">Log Types</h2>
+<table>
+<thead>
+<tr>
+<th>Log Type</th>
+<th>Source</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Application Logs</strong></td>
+<td>Container apps/pods</td>
+<td>Application errors, info, debug</td>
+</tr>
+<tr>
+<td><strong>Security Logs</strong></td>
+<td>Entra ID, Key Vault</td>
+<td>Authentication, authorization</td>
+</tr>
+<tr>
+<td><strong>System Logs</strong></td>
+<td>AKS, ACA infrastructure</td>
+<td>Platform health, scaling</td>
+</tr>
+<tr>
+<td><strong>Audit Logs</strong></td>
+<td>Key Vault, Cosmos DB</td>
+<td>Resource access tracking</td>
+</tr>
+</tbody>
+</table>
+<h2 id="log-location">Log Location</h2>
+<h3 id="standard-deployment">Standard Deployment</h3>
+<p>All logs flow to the Log Analytics Workspace created during deployment:</p>
+<ul>
+<li>Located in the Operations (<code>ops</code>) resource group</li>
+<li>Named: <code>log-{project}-{env}-{region}</code></li>
+</ul>
+<h3 id="quick-start-deployment">Quick Start Deployment</h3>
+<p>Logs are available in:</p>
+<ul>
+<li>Container Apps environment logs</li>
+<li>Log Analytics Workspace</li>
+</ul>
+<h2 id="accessing-logs">Accessing Logs</h2>
+<h3 id="azure-portal">Azure Portal</h3>
+<ol>
+<li>Navigate to <strong>Log Analytics workspace</strong></li>
+<li>Select <strong>Logs</strong> in the left menu</li>
+<li>Use Kusto Query Language (KQL) to query</li>
+</ol>
+<h3 id="azure-cli">Azure CLI</h3>
+<pre><code class="lang-bash"># Query logs
+az monitor log-analytics query \
+  --workspace &lt;workspace-id&gt; \
+  --analytics-query &quot;ContainerAppConsoleLogs | take 100&quot;
+</code></pre>
+<h2 id="common-queries">Common Queries</h2>
+<h3 id="application-errors">Application Errors</h3>
+<pre><code class="lang-kql">// Last 24 hours of errors across all services
+ContainerAppConsoleLogs
+| where TimeGenerated &gt; ago(24h)
+| where Log contains &quot;error&quot; or Log contains &quot;Error&quot; or Log contains &quot;ERROR&quot;
+| project TimeGenerated, ContainerAppName, Log
+| order by TimeGenerated desc
+</code></pre>
+<h3 id="specific-service-logs">Specific Service Logs</h3>
+<pre><code class="lang-kql">// Core API logs
+ContainerAppConsoleLogs
+| where ContainerAppName contains &quot;core-api&quot;
+| where TimeGenerated &gt; ago(1h)
+| project TimeGenerated, Log
+| order by TimeGenerated desc
+</code></pre>
+<h3 id="authentication-failures">Authentication Failures</h3>
+<pre><code class="lang-kql">// Failed authentication attempts
+AADSignInLogs
+| where TimeGenerated &gt; ago(7d)
+| where ResultType != 0
+| project TimeGenerated, UserPrincipalName, ResultType, ResultDescription
+| order by TimeGenerated desc
+</code></pre>
+<h3 id="key-vault-access">Key Vault Access</h3>
+<pre><code class="lang-kql">// Key Vault operations
+AzureDiagnostics
+| where ResourceProvider == &quot;MICROSOFT.KEYVAULT&quot;
+| where TimeGenerated &gt; ago(24h)
+| project TimeGenerated, OperationName, ResultType, CallerIPAddress
+| order by TimeGenerated desc
+</code></pre>
+<h3 id="request-performance">Request Performance</h3>
+<pre><code class="lang-kql">// API request duration
+AppRequests
+| where TimeGenerated &gt; ago(1h)
+| summarize avg(DurationMs), percentile(DurationMs, 95), count() by Name
+| order by avg_DurationMs desc
+</code></pre>
+<h3 id="container-restarts">Container Restarts</h3>
+<pre><code class="lang-kql">// Container restart events
+ContainerAppSystemLogs
+| where TimeGenerated &gt; ago(24h)
+| where Reason == &quot;Restarted&quot; or Reason == &quot;BackOff&quot;
+| project TimeGenerated, ContainerAppName, Reason, Log
+| order by TimeGenerated desc
+</code></pre>
+<h2 id="setting-up-alerts">Setting Up Alerts</h2>
+<h3 id="create-alert-rule">Create Alert Rule</h3>
+<ol>
+<li>Navigate to <strong>Monitor</strong> &gt; <strong>Alerts</strong></li>
+<li>Click <strong>+ Create</strong> &gt; <strong>Alert rule</strong></li>
+<li>Select your Log Analytics workspace</li>
+<li>Configure condition (e.g., error count &gt; threshold)</li>
+<li>Configure action group (email, webhook, etc.)</li>
+<li>Create rule</li>
+</ol>
+<h3 id="example-error-spike-alert">Example: Error Spike Alert</h3>
+<pre><code class="lang-kql">// Alert condition query
+ContainerAppConsoleLogs
+| where TimeGenerated &gt; ago(5m)
+| where Log contains &quot;error&quot; or Log contains &quot;ERROR&quot;
+| summarize ErrorCount = count() by bin(TimeGenerated, 5m)
+| where ErrorCount &gt; 10
+</code></pre>
+<h2 id="log-retention">Log Retention</h2>
+<h3 id="default-settings">Default Settings</h3>
+<table>
+<thead>
+<tr>
+<th>Log Type</th>
+<th>Default Retention</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Application Logs</td>
+<td>30 days</td>
+</tr>
+<tr>
+<td>Security Logs</td>
+<td>90 days</td>
+</tr>
+<tr>
+<td>System Logs</td>
+<td>30 days</td>
+</tr>
+</tbody>
+</table>
+<h3 id="changing-retention">Changing Retention</h3>
+<p><strong>Via Azure Portal:</strong></p>
+<ol>
+<li>Navigate to Log Analytics workspace</li>
+<li>Select <strong>Usage and estimated costs</strong></li>
+<li>Select <strong>Data Retention</strong></li>
+<li>Adjust retention period</li>
+</ol>
+<p><strong>Via Azure CLI:</strong></p>
+<pre><code class="lang-bash">az monitor log-analytics workspace update \
+  --resource-group &lt;resource-group&gt; \
+  --workspace-name &lt;workspace-name&gt; \
+  --retention-time 90
+</code></pre>
+<h2 id="long-term-archival">Long-Term Archival</h2>
+<p>For retention beyond 730 days:</p>
+<h3 id="export-to-storage-account">Export to Storage Account</h3>
+<ol>
+<li>Navigate to Log Analytics workspace</li>
+<li>Select <strong>Export</strong> under Settings</li>
+<li>Configure export to Storage Account</li>
+<li>Select tables and destination</li>
+</ol>
+<h3 id="archive-to-data-lake">Archive to Data Lake</h3>
+<p>Configure continuous export:</p>
+<pre><code class="lang-bash">az monitor log-analytics workspace data-export create \
+  --resource-group &lt;resource-group&gt; \
+  --workspace-name &lt;workspace-name&gt; \
+  --name &quot;archive-export&quot; \
+  --destination &lt;storage-account-resource-id&gt; \
+  --enable true \
+  --tables ContainerAppConsoleLogs
+</code></pre>
+<h2 id="access-control">Access Control</h2>
+<h3 id="required-permissions">Required Permissions</h3>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Access</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Log Analytics Reader</strong></td>
+<td>Read logs, run queries</td>
+</tr>
+<tr>
+<td><strong>Log Analytics Contributor</strong></td>
+<td>Read/write, manage queries</td>
+</tr>
+<tr>
+<td><strong>Monitoring Contributor</strong></td>
+<td>Full access to monitoring</td>
+</tr>
+</tbody>
+</table>
+<h3 id="restrict-access">Restrict Access</h3>
+<p>Use Azure RBAC to limit log access:</p>
+<pre><code class="lang-bash">az role assignment create \
+  --assignee &lt;user-or-group-id&gt; \
+  --role &quot;Log Analytics Reader&quot; \
+  --scope &lt;workspace-resource-id&gt;
+</code></pre>
+<h2 id="integration-with-azure-monitor">Integration with Azure Monitor</h2>
+<h3 id="application-insights">Application Insights</h3>
+<p>FoundationaLLM APIs integrate with Application Insights for:</p>
+<ul>
+<li>Request tracing</li>
+<li>Dependency tracking</li>
+<li>Performance metrics</li>
+<li>Custom telemetry</li>
+</ul>
+<h3 id="dashboards">Dashboards</h3>
+<p>Create custom dashboards:</p>
+<ol>
+<li>Navigate to <strong>Dashboard</strong> in Azure Portal</li>
+<li>Click <strong>+ Add tile</strong></li>
+<li>Select <strong>Logs</strong> and add your query</li>
+<li>Configure visualization</li>
+</ol>
+<h3 id="workbooks">Workbooks</h3>
+<p>Use Azure Monitor Workbooks for interactive reports:</p>
+<ol>
+<li>Navigate to <strong>Monitor</strong> &gt; <strong>Workbooks</strong></li>
+<li>Create or use existing templates</li>
+<li>Add queries and visualizations</li>
+</ol>
+<h2 id="azure-sentinel-integration">Azure Sentinel Integration</h2>
+<p>For advanced security monitoring:</p>
+<ol>
+<li><strong>Enable Azure Sentinel</strong> on the Log Analytics workspace</li>
+<li><strong>Configure data connectors</strong> for Entra ID, Key Vault</li>
+<li><strong>Create analytics rules</strong> for threat detection</li>
+<li><strong>Set up playbooks</strong> for automated response</li>
+</ol>
+<blockquote>
+<p><strong>Note:</strong> Azure Sentinel is not configured by default in Standard deployment.</p>
+</blockquote>
+<h2 id="best-practices">Best Practices</h2>
+<table>
+<thead>
+<tr>
+<th>Practice</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Centralize</strong></td>
+<td>Send all logs to single workspace</td>
+</tr>
+<tr>
+<td><strong>Retain</strong></td>
+<td>Set appropriate retention policies</td>
+</tr>
+<tr>
+<td><strong>Alert</strong></td>
+<td>Configure alerts for critical issues</td>
+</tr>
+<tr>
+<td><strong>Review</strong></td>
+<td>Regularly review security logs</td>
+</tr>
+<tr>
+<td><strong>Archive</strong></td>
+<td>Export for long-term compliance</td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="troubleshooting.html">Troubleshooting</a></li>
+<li><a href="../security-permissions/platform-security.html">Platform Security</a></li>
+<li><a href="../how-to-guides/backups.html">Backups &amp; Data Resiliency</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

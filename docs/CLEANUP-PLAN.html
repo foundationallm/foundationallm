@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Documentation Cleanup Plan | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Documentation Cleanup Plan | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../media/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/CLEANUP-PLAN.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="documentation-cleanup-plan">Documentation Cleanup Plan</h1>
+
+<blockquote>
+<p><strong>Status:</strong> ✅ EXECUTED on 2024-12-14
+<strong>Update:</strong> Removed redundant <code>reference/</code> folder on 2024-12-14 (content duplicated root-level files)</p>
+</blockquote>
+<p>This document outlines the plan to clean up legacy folders that remain after the documentation reorganization.</p>
+<h2 id="overview">Overview</h2>
+<p>After the reorganization documented in <code>REORGANIZATION-PLAN.md</code>, content has been moved to the new structure. However, the original folders remain and should be cleaned up.</p>
+<h2 id="pre-cleanup-actions">Pre-Cleanup Actions</h2>
+<p>Before archiving, the following content needs to be migrated to the new structure:</p>
+<h3 id="1-concepts--management-portal">1. Concepts → Management Portal</h3>
+<p>The <code>concepts/</code> folder has two files that need to be moved to <code>management-portal/reference/concepts/</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Destination</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>concepts/index.md</code></td>
+<td><code>management-portal/reference/concepts/index.md</code></td>
+<td>MOVE (glossary/overview)</td>
+</tr>
+<tr>
+<td><code>concepts/prompt/prompt-variable.md</code></td>
+<td><code>management-portal/reference/concepts/prompt-variables.md</code></td>
+<td>MOVE</td>
+</tr>
+</tbody>
+</table>
+<p>The other <code>concepts/</code> content has already been migrated:</p>
+<ul>
+<li><code>concepts/data-pipeline/data-pipeline.md</code> → ✅ <code>management-portal/reference/concepts/data-pipelines.md</code></li>
+<li><code>concepts/plugin/*.md</code> → ✅ <code>management-portal/reference/concepts/plugins-packages.md</code></li>
+<li><code>concepts/quota/*.md</code> → ✅ <code>management-portal/reference/concepts/quotas.md</code></li>
+</ul>
+<h3 id="2-release-notes---keep-in-place">2. Release Notes - Keep in Place</h3>
+<p>The <code>release-notes/</code> folder should remain at the root level as part of the new documentation structure. Update <code>outline.md</code> and <code>REORGANIZATION-PLAN.md</code> to reflect this.</p>
+<p><strong>Rationale:</strong> Release notes are a top-level documentation concern and should be easily discoverable at the root level alongside other primary sections.</p>
+<h2 id="verification-status">Verification Status</h2>
+<h3 id="-deployment--platform-operationsdeployment">✅ deployment/ → platform-operations/deployment/</h3>
+<table>
+<thead>
+<tr>
+<th>Original File</th>
+<th>New Location</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>deployment/index.md</code></td>
+<td><code>platform-operations/deployment/index.md</code></td>
+<td>✅ Migrated</td>
+</tr>
+<tr>
+<td><code>deployment/deployment-quick-start.md</code></td>
+<td><code>platform-operations/deployment/deployment-quick-start.md</code></td>
+<td>✅ Migrated</td>
+</tr>
+<tr>
+<td><code>deployment/deployment-standard.md</code></td>
+<td><code>platform-operations/deployment/deployment-standard.md</code></td>
+<td>✅ Migrated</td>
+</tr>
+<tr>
+<td><code>deployment/deployment-configuration.md</code></td>
+<td><code>platform-operations/deployment/deployment-configuration.md</code></td>
+<td>✅ Migrated</td>
+</tr>
+<tr>
+<td><code>deployment/app-configuration-values.md</code></td>
+<td><code>platform-operations/deployment/app-configuration-values.md</code></td>
+<td>✅ Migrated</td>
+</tr>
+<tr>
+<td><code>deployment/azure-resource-providers-requirements.md</code></td>
+<td><code>platform-operations/deployment/azure-resource-providers-requirements.md</code></td>
+<td>✅ Migrated</td>
+</tr>
+<tr>
+<td><code>deployment/custom-domains.md</code></td>
+<td><code>platform-operations/deployment/custom-domains.md</code></td>
+<td>✅ Migrated</td>
+</tr>
+<tr>
+<td><code>deployment/soft-delete.md</code></td>
+<td><code>platform-operations/deployment/soft-delete.md</code></td>
+<td>✅ Migrated</td>
+</tr>
+<tr>
+<td><code>deployment/standard/manifest.md</code></td>
+<td><code>platform-operations/deployment/standard-manifest.md</code></td>
+<td>✅ Migrated</td>
+</tr>
+<tr>
+<td><code>deployment/configure-access-control-for-services.md</code></td>
+<td><code>platform-operations/security-permissions/configure-access-control-services.md</code></td>
+<td>✅ Migrated</td>
+</tr>
+<tr>
+<td><code>deployment/authentication-authorization/*</code></td>
+<td><code>platform-operations/security-permissions/authentication-authorization/*</code></td>
+<td>✅ Migrated</td>
+</tr>
+</tbody>
+</table>
+<h3 id="-role-based-access-control--platform-operationssecurity-permissionsrole-based-access-control">✅ role-based-access-control/ → platform-operations/security-permissions/role-based-access-control/</h3>
+<table>
+<thead>
+<tr>
+<th>Original File</th>
+<th>New Location</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>role-based-access-control/index.md</code></td>
+<td><code>platform-operations/security-permissions/role-based-access-control/index.md</code></td>
+<td>✅ Migrated</td>
+</tr>
+<tr>
+<td><code>role-based-access-control/role-definitions.md</code></td>
+<td><code>platform-operations/security-permissions/role-based-access-control/role-definitions.md</code></td>
+<td>✅ Migrated</td>
+</tr>
+<tr>
+<td><code>role-based-access-control/role-assignments.md</code></td>
+<td><code>platform-operations/security-permissions/role-based-access-control/role-assignments.md</code></td>
+<td>✅ Migrated</td>
+</tr>
+<tr>
+<td><code>role-based-access-control/scope.md</code></td>
+<td><code>platform-operations/security-permissions/role-based-access-control/scope.md</code></td>
+<td>✅ Migrated</td>
+</tr>
+<tr>
+<td><code>role-based-access-control/role-management.md</code></td>
+<td><code>platform-operations/security-permissions/role-based-access-control/role-management.md</code></td>
+<td>✅ Migrated</td>
+</tr>
+<tr>
+<td><code>role-based-access-control/agent-role-assignments.md</code></td>
+<td><code>platform-operations/security-permissions/role-based-access-control/agent-role-assignments.md</code></td>
+<td>✅ Migrated</td>
+</tr>
+</tbody>
+</table>
+<h3 id="-setup-guides--various-locations">✅ setup-guides/ → Various Locations</h3>
+<table>
+<thead>
+<tr>
+<th>Original Location</th>
+<th>New Location</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>setup-guides/agents/agents_workflows.md</code></td>
+<td><code>management-portal/reference/concepts/agents-workflows.md</code></td>
+<td>✅ Migrated</td>
+</tr>
+<tr>
+<td><code>setup-guides/agents/Agent_AccessToken.md</code></td>
+<td><code>management-portal/reference/concepts/agent-access-tokens.md</code></td>
+<td>✅ Migrated</td>
+</tr>
+<tr>
+<td><code>setup-guides/agents/prompt-resource.md</code></td>
+<td><code>management-portal/reference/concepts/prompts-resources.md</code></td>
+<td>✅ Migrated</td>
+</tr>
+<tr>
+<td><code>setup-guides/agents/knowledge-management-agent.md</code></td>
+<td><code>archive/knowledge-management-agent.md</code></td>
+<td>✅ Archived (obsolete)</td>
+</tr>
+<tr>
+<td><code>setup-guides/branding/*</code></td>
+<td><code>management-portal/reference/branding/*</code></td>
+<td>✅ Migrated</td>
+</tr>
+<tr>
+<td><code>setup-guides/exposed-apis/core-api.md</code></td>
+<td><code>apis-sdks/apis/core-api/index.md</code></td>
+<td>✅ Migrated</td>
+</tr>
+<tr>
+<td><code>setup-guides/exposed-apis/management-api.md</code></td>
+<td><code>apis-sdks/apis/management-api/index.md</code></td>
+<td>✅ Migrated</td>
+</tr>
+<tr>
+<td><code>setup-guides/exposed-apis/resource-management/*</code></td>
+<td><code>management-portal/reference/concepts/resource-management.md</code></td>
+<td>✅ Migrated</td>
+</tr>
+<tr>
+<td><code>setup-guides/management-ui/management-ui.md</code></td>
+<td><code>management-portal/index.md</code></td>
+<td>✅ Migrated</td>
+</tr>
+<tr>
+<td><code>setup-guides/quickstart.md</code></td>
+<td><code>chat-user-portal/quick-start/quickstart.md</code></td>
+<td>✅ Migrated</td>
+</tr>
+<tr>
+<td><code>setup-guides/vectorization/*</code></td>
+<td><code>archive/vectorization/*</code></td>
+<td>✅ Archived (obsolete)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="-operations--platform-operations">✅ operations/ → platform-operations/</h3>
+<table>
+<thead>
+<tr>
+<th>Original File</th>
+<th>New Location</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>operations/backups.md</code></td>
+<td><code>platform-operations/how-to-guides/backups.md</code></td>
+<td>✅ Migrated</td>
+</tr>
+<tr>
+<td><code>operations/logs.md</code></td>
+<td><code>platform-operations/monitoring-troubleshooting/logs.md</code></td>
+<td>✅ Migrated</td>
+</tr>
+<tr>
+<td><code>operations/troubleshooting.md</code></td>
+<td><code>platform-operations/monitoring-troubleshooting/troubleshooting.md</code></td>
+<td>✅ Migrated</td>
+</tr>
+<tr>
+<td><code>operations/security.md</code></td>
+<td><code>platform-operations/security-permissions/platform-security.md</code></td>
+<td>✅ Migrated</td>
+</tr>
+<tr>
+<td><code>operations/graph-api-permissions.md</code></td>
+<td><code>platform-operations/security-permissions/graph-api-permissions.md</code></td>
+<td>✅ Migrated</td>
+</tr>
+<tr>
+<td><code>operations/network-security-groups.md</code></td>
+<td><code>platform-operations/security-permissions/network-security-groups.md</code></td>
+<td>✅ Migrated</td>
+</tr>
+<tr>
+<td><code>operations/vulnerabilities.md</code></td>
+<td><code>platform-operations/security-permissions/vulnerabilities.md</code></td>
+<td>✅ Migrated</td>
+</tr>
+<tr>
+<td><code>operations/update.md</code></td>
+<td><code>platform-operations/how-to-guides/updating-container-versions.md</code></td>
+<td>✅ Migrated</td>
+</tr>
+<tr>
+<td><code>operations/purge-conversations.md</code></td>
+<td><code>platform-operations/how-to-guides/purge-conversations.md</code></td>
+<td>✅ Migrated</td>
+</tr>
+<tr>
+<td><code>operations/release-notes.md</code></td>
+<td><code>platform-operations/how-to-guides/creating-release-notes.md</code></td>
+<td>✅ Migrated</td>
+</tr>
+</tbody>
+</table>
+<h3 id="-how-to-guides--management-portalhow-to-guides">✅ how-to-guides/ → management-portal/how-to-guides/</h3>
+<table>
+<thead>
+<tr>
+<th>Original File</th>
+<th>New Location</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>how-to-guides/create-model-agnostic-agent-claude.md</code></td>
+<td><code>management-portal/how-to-guides/agents/create-model-agnostic-agent-claude.md</code></td>
+<td>✅ Migrated</td>
+</tr>
+<tr>
+<td><code>how-to-guides/create-model-agnostic-agent-gpt4o.md</code></td>
+<td><code>management-portal/how-to-guides/agents/create-model-agnostic-agent-gpt4o.md</code></td>
+<td>✅ Migrated</td>
+</tr>
+</tbody>
+</table>
+<h3 id="-api--apis-sdks">✅ api/ → apis-sdks/</h3>
+<table>
+<thead>
+<tr>
+<th>Original File</th>
+<th>New Location</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>api/index.md</code></td>
+<td><code>apis-sdks/apis/core-api/api-reference.md</code></td>
+<td>✅ Migrated</td>
+</tr>
+<tr>
+<td><code>api/dotnet/index.md</code></td>
+<td><code>apis-sdks/sdks/dotnet/index.md</code></td>
+<td>✅ Migrated</td>
+</tr>
+<tr>
+<td><code>api/python/index.md</code></td>
+<td><code>apis-sdks/sdks/python/index.md</code></td>
+<td>✅ Migrated</td>
+</tr>
+</tbody>
+</table>
+<h2 id="execution-plan">Execution Plan</h2>
+<h3 id="phase-1-migrate-remaining-concepts-content">Phase 1: Migrate Remaining Concepts Content</h3>
+<pre><code class="lang-bash"># Move concepts/index.md to management-portal/reference/concepts/
+mv docs/concepts/index.md docs/management-portal/reference/concepts/index.md
+
+# Move prompt-variable.md
+mv docs/concepts/prompt/prompt-variable.md docs/management-portal/reference/concepts/prompt-variables.md
+</code></pre>
+<h3 id="phase-2-archive-legacy-folders">Phase 2: Archive Legacy Folders</h3>
+<p>Move legacy folders to <code>archive/</code> without &quot;legacy-&quot; prefix:</p>
+<pre><code class="lang-bash"># Create archive subdirectories
+mkdir -p docs/archive/api
+mkdir -p docs/archive/concepts
+mkdir -p docs/archive/deployment
+mkdir -p docs/archive/how-to-guides
+mkdir -p docs/archive/operations
+mkdir -p docs/archive/role-based-access-control
+mkdir -p docs/archive/setup-guides
+
+# Move content to archive
+mv docs/api/* docs/archive/api/
+mv docs/concepts/* docs/archive/concepts/
+mv docs/deployment/* docs/archive/deployment/
+mv docs/how-to-guides/* docs/archive/how-to-guides/
+mv docs/operations/* docs/archive/operations/
+mv docs/role-based-access-control/* docs/archive/role-based-access-control/
+mv docs/setup-guides/* docs/archive/setup-guides/
+
+# Remove empty directories
+rmdir docs/api
+rmdir docs/concepts
+rmdir docs/deployment
+rmdir docs/how-to-guides
+rmdir docs/operations
+rmdir docs/role-based-access-control
+rmdir docs/setup-guides
+</code></pre>
+<h3 id="phase-3-keep-release-notes-in-place">Phase 3: Keep release-notes in Place</h3>
+<p>The <code>release-notes/</code> folder remains at the root level. No action needed.</p>
+<h2 id="final-folder-structure">Final Folder Structure</h2>
+<p>After cleanup:</p>
+<pre><code>docs/
+├── apis-sdks/               # API and SDK documentation
+├── archive/                 # Archived content
+│   ├── api/                 # Old API docs
+│   ├── concepts/            # Old concepts docs
+│   ├── deployment/          # Old deployment docs
+│   ├── how-to-guides/       # Old how-to guides
+│   ├── knowledge-management-agent.md
+│   ├── operations/          # Old operations docs
+│   ├── README.md
+│   ├── role-based-access-control/  # Old RBAC docs
+│   ├── setup-guides/        # Old setup guides
+│   └── vectorization/       # Obsolete vectorization docs
+├── chat-user-portal/        # End-user documentation
+├── development/             # Developer guides
+├── management-portal/       # Management Portal documentation
+├── overview/                # Platform overview
+├── platform-operations/     # Deployment and operations
+├── release-notes/           # Release notes (kept at root)
+│   ├── breaking-changes.md
+│   └── release_notes_0.9.7.md
+├── docfx.json              # Build configuration
+├── toc.yml                 # Table of contents
+├── outline.md              # Structure reference
+├── schema.md               # Schema reference
+├── REORGANIZATION-PLAN.md
+├── CONTENT-TRACKING.md
+└── CLEANUP-PLAN.md
+</code></pre>
+<h2 id="update-to-documentation-structure">Update to Documentation Structure</h2>
+<h3 id="addition-to-outlinemd">Addition to outline.md</h3>
+<p>Add <code>release-notes/</code> as a top-level section:</p>
+<pre><code>docs/
+├── ...existing sections...
+├── release-notes/           # Release notes
+│   ├── breaking-changes.md
+│   └── [version-specific files]
+</code></pre>
+<h3 id="update-archivereadmemd">Update archive/README.md</h3>
+<pre><code class="lang-markdown"># Archived Documentation
+
+This folder contains documentation that has been superseded by the reorganized 
+documentation structure.
+
+## Contents
+
+| Folder | Original Purpose | Archived Date | Reason |
+|--------|-----------------|---------------|--------|
+| `api/` | API reference | 2024-12-14 | Moved to `apis-sdks/` |
+| `concepts/` | Concept definitions | 2024-12-14 | Moved to `management-portal/reference/concepts/` |
+| `deployment/` | Deployment guides | 2024-12-14 | Moved to `platform-operations/deployment/` |
+| `how-to-guides/` | How-to guides | 2024-12-14 | Moved to `management-portal/how-to-guides/` |
+| `operations/` | Operations guides | 2024-12-14 | Moved to `platform-operations/` |
+| `role-based-access-control/` | RBAC documentation | 2024-12-14 | Moved to `platform-operations/security-permissions/` |
+| `setup-guides/` | Setup guides | 2024-12-14 | Distributed to new sections |
+| `vectorization/` | Vectorization docs | 2024-12-14 | Feature deprecated |
+| `knowledge-management-agent.md` | Agent type docs | 2024-12-14 | Obsolete |
+
+## Note
+
+This content is kept for historical reference. Do not link to these files 
+from the main documentation. For current documentation, refer to the 
+corresponding files in the new documentation structure.
+</code></pre>
+<h2 id="post-cleanup-tasks">Post-Cleanup Tasks</h2>
+<ol>
+<li><strong>Update <code>toc.yml</code></strong> - Ensure TOC includes <code>release-notes/</code> at root level</li>
+<li><strong>Update <code>outline.md</code></strong> - Add <code>release-notes/</code> to the documented structure</li>
+<li><strong>Update <code>docfx.json</code></strong> - Ensure paths are correct</li>
+<li><strong>Verify build</strong> - Run docfx to ensure documentation builds</li>
+<li><strong>Update any external links</strong> - If documentation is published, update bookmarks</li>
+</ol>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

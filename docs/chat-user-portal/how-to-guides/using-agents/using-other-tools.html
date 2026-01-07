@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Using Other Tools | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Using Other Tools | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/chat-user-portal/how-to-guides/using-agents/using-other-tools.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="using-other-tools">Using Other Tools</h1>
+
+<p>Learn about additional tools and capabilities that may be available to agents beyond Code Interpreter and Knowledge tools.</p>
+<h2 id="understanding-agent-tools">Understanding Agent Tools</h2>
+<p>Agents in FoundationaLLM can be equipped with various tools that extend their capabilities. While Code Interpreter and Knowledge tools are common, agents may have access to:</p>
+<ul>
+<li>Image generation tools</li>
+<li>Custom organizational tools</li>
+<li>External API integrations</li>
+<li>Specialized processing capabilities</li>
+</ul>
+<h2 id="how-tools-work">How Tools Work</h2>
+<h3 id="automatic-tool-selection">Automatic Tool Selection</h3>
+<p>You don't need to manually select which tool to use:</p>
+<ol>
+<li><strong>Describe what you need</strong> in natural language</li>
+<li><strong>The agent determines</strong> which tool is appropriate</li>
+<li><strong>The tool executes</strong> and returns results</li>
+<li><strong>Results appear</strong> in the conversation</li>
+</ol>
+<h3 id="tool-transparency">Tool Transparency</h3>
+<p>Some agents show information about tool usage:</p>
+<ul>
+<li>Tool names may appear in responses</li>
+<li>Processing indicators show when tools are working</li>
+<li>Results clearly indicate they came from a tool</li>
+</ul>
+<h2 id="image-generation">Image Generation</h2>
+<p>Some agents can create images using tools like DALL-E.</p>
+<h3 id="when-to-use">When to Use</h3>
+<ul>
+<li>Creating illustrations or graphics</li>
+<li>Visualizing concepts</li>
+<li>Generating placeholder images</li>
+<li>Creating custom visuals</li>
+</ul>
+<h3 id="how-to-request-images">How to Request Images</h3>
+<p>Be descriptive in your request:</p>
+<ul>
+<li>&quot;Create an image of a modern office building at sunset&quot;</li>
+<li>&quot;Generate a diagram showing the project workflow&quot;</li>
+<li>&quot;Design a logo concept with blue and green colors&quot;</li>
+</ul>
+<h3 id="image-results">Image Results</h3>
+<p>Generated images:</p>
+<ul>
+<li>Appear directly in the conversation</li>
+<li>Can be clicked for full-size preview</li>
+<li>Can be downloaded by right-clicking</li>
+</ul>
+<h3 id="tips-for-better-images">Tips for Better Images</h3>
+<ul>
+<li>Be specific about style, colors, and composition</li>
+<li>Mention the intended use (icon, background, illustration)</li>
+<li>Request revisions by describing what to change</li>
+<li>Note: photorealistic images may have limitations</li>
+</ul>
+<h2 id="custom-organizational-tools">Custom Organizational Tools</h2>
+<p>Your organization may have deployed custom tools for specific purposes.</p>
+<h3 id="examples-of-custom-tools">Examples of Custom Tools</h3>
+<table>
+<thead>
+<tr>
+<th>Tool Type</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Database queries</strong></td>
+<td>Access internal data systems</td>
+</tr>
+<tr>
+<td><strong>API integrations</strong></td>
+<td>Connect to external services</td>
+</tr>
+<tr>
+<td><strong>Document processing</strong></td>
+<td>Handle specific document formats</td>
+</tr>
+<tr>
+<td><strong>Workflow automation</strong></td>
+<td>Trigger organizational processes</td>
+</tr>
+<tr>
+<td><strong>Specialized calculations</strong></td>
+<td>Industry-specific computations</td>
+</tr>
+</tbody>
+</table>
+<h3 id="discovering-custom-tools">Discovering Custom Tools</h3>
+<p>To learn what custom tools an agent has:</p>
+<ul>
+<li>Ask the agent: &quot;What tools do you have access to?&quot;</li>
+<li>Check the agent description in Settings &gt; Agents</li>
+<li>Contact your administrator for documentation</li>
+</ul>
+<h3 id="using-custom-tools">Using Custom Tools</h3>
+<p>Custom tools work like any other tool:</p>
+<ol>
+<li>Describe what you need</li>
+<li>The agent uses the appropriate tool</li>
+<li>Results appear in the response</li>
+</ol>
+<h2 id="external-api-integrations">External API Integrations</h2>
+<p>Some agents can connect to external services:</p>
+<ul>
+<li>Weather services</li>
+<li>Stock market data</li>
+<li>News aggregators</li>
+<li>Social media platforms</li>
+<li>Business applications</li>
+</ul>
+<h3 id="important-considerations">Important Considerations</h3>
+<ul>
+<li>API calls may have rate limits</li>
+<li>Real-time data depends on API availability</li>
+<li>Results are as current as the API provides</li>
+<li>Some integrations may require authentication</li>
+</ul>
+<h2 id="specialized-processing">Specialized Processing</h2>
+<p>Agents may have specialized capabilities:</p>
+<h3 id="language-processing">Language Processing</h3>
+<ul>
+<li>Translation between languages</li>
+<li>Sentiment analysis</li>
+<li>Text summarization</li>
+<li>Named entity recognition</li>
+</ul>
+<h3 id="document-processing">Document Processing</h3>
+<ul>
+<li>PDF extraction</li>
+<li>Form parsing</li>
+<li>Table recognition</li>
+<li>Metadata extraction</li>
+</ul>
+<h3 id="audiovisual-processing">Audio/Visual Processing</h3>
+<ul>
+<li>Image analysis and description</li>
+<li>Audio transcription</li>
+<li>Visual element detection</li>
+</ul>
+<h2 id="tips-for-using-tools-effectively">Tips for Using Tools Effectively</h2>
+<h3 id="be-specific-about-what-you-need">Be Specific About What You Need</h3>
+<p>Good: &quot;Generate a pie chart showing Q3 sales by region&quot;
+Not as good: &quot;Make a chart&quot;</p>
+<h3 id="ask-about-capabilities">Ask About Capabilities</h3>
+<p>If you're unsure what an agent can do:</p>
+<ul>
+<li>&quot;What tools or capabilities do you have?&quot;</li>
+<li>&quot;Can you access [specific system/data]?&quot;</li>
+<li>&quot;What types of files can you process?&quot;</li>
+</ul>
+<h3 id="provide-context">Provide Context</h3>
+<ul>
+<li>Explain why you need something</li>
+<li>Share relevant background</li>
+<li>Specify the output format you want</li>
+</ul>
+<h3 id="iterate-and-refine">Iterate and Refine</h3>
+<ul>
+<li>Start with a basic request</li>
+<li>Ask for modifications based on results</li>
+<li>Build on successful outputs</li>
+</ul>
+<h2 id="understanding-tool-limitations">Understanding Tool Limitations</h2>
+<h3 id="what-tools-cannot-do">What Tools Cannot Do</h3>
+<ul>
+<li>Access systems they're not connected to</li>
+<li>Bypass security controls</li>
+<li>Perform actions outside their scope</li>
+<li>Return real-time data without real-time connections</li>
+</ul>
+<h3 id="response-time">Response Time</h3>
+<p>Tool execution may take time depending on:</p>
+<ul>
+<li>The complexity of the operation</li>
+<li>External service response times</li>
+<li>Data processing requirements</li>
+</ul>
+<p>A loading indicator shows when tools are working.</p>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="tool-doesnt-seem-to-work">Tool Doesn't Seem to Work</h3>
+<ul>
+<li>The agent may not have that tool available</li>
+<li>Try rephrasing your request</li>
+<li>Ask what capabilities the agent has</li>
+<li>Try a different agent</li>
+</ul>
+<h3 id="unexpected-results">Unexpected Results</h3>
+<ul>
+<li>Be more specific in your request</li>
+<li>Ask the agent to explain what it did</li>
+<li>Try breaking the task into smaller steps</li>
+<li>Verify your input data</li>
+</ul>
+<h3 id="tool-response-is-slow">Tool Response is Slow</h3>
+<ul>
+<li>Complex operations take longer</li>
+<li>External APIs may have delays</li>
+<li>Large data processing requires time</li>
+<li>Wait for the response to complete</li>
+</ul>
+<h3 id="tool-returns-an-error">Tool Returns an Error</h3>
+<ul>
+<li>Check if your request is within the tool's capabilities</li>
+<li>Verify any input data is correct</li>
+<li>Try a simpler version of the request</li>
+<li>Ask the agent what went wrong</li>
+</ul>
+<h2 id="security-and-access">Security and Access</h2>
+<p>Tools operate within security boundaries:</p>
+<ul>
+<li>Access is controlled by administrators</li>
+<li>User permissions affect what tools can do</li>
+<li>Sensitive operations may require additional authentication</li>
+<li>Actions are logged for security auditing</li>
+</ul>
+<h2 id="learning-more">Learning More</h2>
+<h3 id="documentation">Documentation</h3>
+<ul>
+<li>Check organizational documentation for custom tools</li>
+<li>Review agent descriptions for capability details</li>
+<li>Ask your administrator about available integrations</li>
+</ul>
+<h3 id="experimentation">Experimentation</h3>
+<ul>
+<li>Try different types of requests</li>
+<li>Ask agents about their capabilities</li>
+<li>Test tools with sample data first</li>
+</ul>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="using-code-interpreter.html">Using the Code Interpreter Tool</a> — Data analysis and visualization</li>
+<li><a href="using-knowledge-tool.html">Using the Knowledge Tool</a> — Document search and retrieval</li>
+<li><a href="selecting-agent.html">Selecting an Agent</a> — Choose agents with the right tools</li>
+<li><a href="viewing-agent-prompts.html">Viewing Agent Prompts</a> — Understand how agents work</li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

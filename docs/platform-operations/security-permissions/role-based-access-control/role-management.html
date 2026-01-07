@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Managing Role Assignments | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Managing Role Assignments | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/platform-operations/security-permissions/role-based-access-control/role-management.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="managing-role-assignments">Managing Role Assignments</h1>
+
+<p>This guide covers managing role assignments via the Management Portal and API.</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>To manage role assignments, you must have:</p>
+<ul>
+<li><strong>User Access Administrator</strong> role at the appropriate scope, OR</li>
+<li><strong>Owner</strong> role</li>
+</ul>
+<p>Role ID: <code>/providers/FoundationaLLM.Authorization/roleDefinitions/fb8e0fd0-f7e2-4957-89d6-19f44f7d6618</code></p>
+<h2 id="management-portal">Management Portal</h2>
+<h3 id="accessing-role-management">Accessing Role Management</h3>
+<p><strong>Instance-Level:</strong></p>
+<ol>
+<li>Navigate to Management Portal</li>
+<li>Select <strong>Security</strong> &gt; <strong>Instance Access Control</strong></li>
+</ol>
+<p><strong>Resource-Level:</strong></p>
+<ol>
+<li>Navigate to the resource (e.g., Agent)</li>
+<li>Click <strong>Access Control</strong> button</li>
+</ol>
+<h3 id="viewing-assignments">Viewing Assignments</h3>
+<p>The role assignment list shows:</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Name</strong></td>
+<td>Role assignment name (expandable for details)</td>
+</tr>
+<tr>
+<td><strong>Type</strong></td>
+<td>User or Group</td>
+</tr>
+<tr>
+<td><strong>Scope</strong></td>
+<td>Instance or resource-level</td>
+</tr>
+<tr>
+<td><strong>Delete</strong></td>
+<td>Delete action</td>
+</tr>
+</tbody>
+</table>
+<p>Click the expand arrow to view full details.</p>
+<h3 id="creating-assignments">Creating Assignments</h3>
+<ol>
+<li>Click <strong>Add Role Assignment</strong></li>
+<li>Click <strong>Browse</strong> to search for identities</li>
+<li>Select user, group, or service principal</li>
+<li>The form auto-populates:
+<ul>
+<li>Principal Type</li>
+<li>Principal Name</li>
+<li>Principal Email</li>
+<li>Principal ID</li>
+</ul>
+</li>
+<li>Select <strong>Role</strong> from dropdown</li>
+<li>Add <strong>Description</strong> (optional)</li>
+<li>Click <strong>Save</strong></li>
+</ol>
+<h3 id="deleting-assignments">Deleting Assignments</h3>
+<ol>
+<li>Find the assignment in the list</li>
+<li>Click the <strong>Delete</strong> icon</li>
+<li>Confirm deletion</li>
+</ol>
+<blockquote>
+<p><strong>Note:</strong> You cannot edit assignments. Delete and recreate to make changes.</p>
+</blockquote>
+<h2 id="management-api">Management API</h2>
+<h3 id="authentication">Authentication</h3>
+<p>All API calls require:</p>
+<ul>
+<li>HTTPS</li>
+<li>Bearer token with <code>Data.Manage</code> scope</li>
+<li>User Access Administrator or Owner role</li>
+</ul>
+<p>Get token:</p>
+<pre><code class="lang-bash">az login
+az account get-access-token --scope api://FoundationaLLM-Management/Data.Manage
+</code></pre>
+<h3 id="role-definition-endpoints">Role Definition Endpoints</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Endpoint</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td><code>/instances/{instanceId}/providers/FoundationaLLM.Authorization/roleDefinitions</code></td>
+<td>List all role definitions</td>
+</tr>
+</tbody>
+</table>
+<h3 id="role-assignment-endpoints">Role Assignment Endpoints</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Endpoint</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>POST</td>
+<td><code>/.../roleAssignments/filter</code></td>
+<td>Query assignments by scope</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/.../roleAssignments/{name}</code></td>
+<td>Create assignment</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td><code>/.../roleAssignments/{name}</code></td>
+<td>Delete assignment</td>
+</tr>
+</tbody>
+</table>
+<h3 id="identity-endpoints">Identity Endpoints</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Endpoint</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>POST</td>
+<td><code>/instances/{instanceId}/identity/users/retrieve</code></td>
+<td>Search users</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/instances/{instanceId}/identity/groups/retrieve</code></td>
+<td>Search groups</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/instances/{instanceId}/identity/objects/retrievebyids</code></td>
+<td>Get objects by ID</td>
+</tr>
+</tbody>
+</table>
+<h3 id="api-examples">API Examples</h3>
+<h4 id="list-role-definitions">List Role Definitions</h4>
+<pre><code class="lang-bash">curl -X GET \
+  &quot;https://&lt;management-api&gt;/instances/{instanceId}/providers/FoundationaLLM.Authorization/roleDefinitions&quot; \
+  -H &quot;Authorization: Bearer $TOKEN&quot;
+</code></pre>
+<h4 id="query-assignments">Query Assignments</h4>
+<pre><code class="lang-bash">curl -X POST \
+  &quot;https://&lt;management-api&gt;/instances/{instanceId}/providers/FoundationaLLM.Authorization/roleAssignments/filter&quot; \
+  -H &quot;Authorization: Bearer $TOKEN&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -d '{&quot;scope&quot;:&quot;/instances/{instanceId}&quot;}'
+</code></pre>
+<h4 id="create-assignment">Create Assignment</h4>
+<pre><code class="lang-bash">curl -X POST \
+  &quot;https://&lt;management-api&gt;/instances/{instanceId}/providers/FoundationaLLM.Authorization/roleAssignments/{assignmentName}&quot; \
+  -H &quot;Authorization: Bearer $TOKEN&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -d '{
+    &quot;name&quot;: &quot;unique-assignment-guid&quot;,
+    &quot;description&quot;: &quot;Platform contributor access&quot;,
+    &quot;principal_id&quot;: &quot;user-or-group-object-id&quot;,
+    &quot;principal_type&quot;: &quot;User&quot;,
+    &quot;role_definition_id&quot;: &quot;/providers/FoundationaLLM.Authorization/roleDefinitions/e459c3a6-6b93-4062-85b3-fffc9fb253df&quot;,
+    &quot;scope&quot;: &quot;/instances/{instanceId}&quot;
+  }'
+</code></pre>
+<h4 id="delete-assignment">Delete Assignment</h4>
+<pre><code class="lang-bash">curl -X DELETE \
+  &quot;https://&lt;management-api&gt;/instances/{instanceId}/providers/FoundationaLLM.Authorization/roleAssignments/{assignmentName}&quot; \
+  -H &quot;Authorization: Bearer $TOKEN&quot;
+</code></pre>
+<h4 id="search-users">Search Users</h4>
+<pre><code class="lang-bash">curl -X POST \
+  &quot;https://&lt;management-api&gt;/instances/{instanceId}/identity/users/retrieve&quot; \
+  -H &quot;Authorization: Bearer $TOKEN&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -d '{
+    &quot;name&quot;: &quot;john&quot;,
+    &quot;ids&quot;: [],
+    &quot;page_number&quot;: 1,
+    &quot;page_size&quot;: 20
+  }'
+</code></pre>
+<h4 id="search-groups">Search Groups</h4>
+<pre><code class="lang-bash">curl -X POST \
+  &quot;https://&lt;management-api&gt;/instances/{instanceId}/identity/groups/retrieve&quot; \
+  -H &quot;Authorization: Bearer $TOKEN&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -d '{
+    &quot;name&quot;: &quot;sales&quot;,
+    &quot;ids&quot;: [],
+    &quot;page_number&quot;: 1,
+    &quot;page_size&quot;: 20
+  }'
+</code></pre>
+<h2 id="data-store">Data Store</h2>
+<p>Role assignments are stored in a dedicated data store:</p>
+<ul>
+<li>Isolated from main platform data</li>
+<li>Uses Azure Cosmos DB or Data Lake Storage Gen2</li>
+<li>Enables independent scaling</li>
+<li>Supports compliance auditing</li>
+</ul>
+<h2 id="auditing">Auditing</h2>
+<p>All role assignment changes are audited:</p>
+<ul>
+<li>Creation timestamp</li>
+<li>Modification history</li>
+<li>User who made changes</li>
+<li>Previous values</li>
+</ul>
+<p>View audit history in Management Portal or query via API.</p>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="role-definitions.html">Role Definitions</a></li>
+<li><a href="role-assignments.html">Role Assignments</a></li>
+<li><a href="scope.html">Scope</a></li>
+<li><a href="agent-role-assignments.html">Agent Role Assignments</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

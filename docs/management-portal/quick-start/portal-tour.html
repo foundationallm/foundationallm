@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Tour of the Management Portal | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Tour of the Management Portal | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../toc.html">
+      <meta name="docfx:tocrel" content="../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/management-portal/quick-start/portal-tour.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../index.html">
+            <img id="logo" class="svg" src="../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="tour-of-the-management-portal">Tour of the Management Portal</h1>
+
+<p>A guided tour of the FoundationaLLM Management Portal interface and its key features.</p>
+<h2 id="overview">Overview</h2>
+<p>The Management Portal is the administrative interface for configuring and managing your FoundationaLLM deployment. It provides IT administrators, developers, and power users with tools to create agents, configure data pipelines, manage security, and customize the platform.</p>
+<h2 id="accessing-the-management-portal">Accessing the Management Portal</h2>
+<ol>
+<li>Navigate to your Management Portal URL (typically <code>https://&lt;your-instance&gt;-portal.azurewebsites.net</code>)</li>
+<li>Sign in with your Microsoft Entra ID credentials</li>
+<li>Upon successful authentication, you'll see the main dashboard</li>
+</ol>
+<h2 id="main-navigation">Main Navigation</h2>
+<p>The sidebar on the left side of the screen provides access to all portal sections. The sidebar can be collapsed by clicking the arrow button in the header.</p>
+<h3 id="agents-section">Agents Section</h3>
+<table>
+<thead>
+<tr>
+<th>Menu Item</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Create New Agent</strong></td>
+<td>Step-by-step wizard for creating and configuring new AI agents</td>
+</tr>
+<tr>
+<td><strong>All Agents</strong></td>
+<td>View and manage all agents in the instance</td>
+</tr>
+<tr>
+<td><strong>My Agents</strong></td>
+<td>View agents you've created or own</td>
+</tr>
+<tr>
+<td><strong>Prompts</strong></td>
+<td>Manage prompt templates used by agents</td>
+</tr>
+</tbody>
+</table>
+<h3 id="data-section">Data Section</h3>
+<table>
+<thead>
+<tr>
+<th>Menu Item</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Data Sources</strong></td>
+<td>Configure connections to data repositories (Azure Data Lake, SharePoint, etc.)</td>
+</tr>
+<tr>
+<td><strong>Data Pipelines</strong></td>
+<td>Create and manage data processing pipelines</td>
+</tr>
+<tr>
+<td><strong>Data Pipeline Runs</strong></td>
+<td>Monitor pipeline execution and view run history</td>
+</tr>
+<tr>
+<td><strong>Knowledge Sources</strong></td>
+<td>Configure knowledge bases for agent retrieval</td>
+</tr>
+</tbody>
+</table>
+<h3 id="models-and-endpoints-section">Models and Endpoints Section</h3>
+<table>
+<thead>
+<tr>
+<th>Menu Item</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>AI Models</strong></td>
+<td>Configure AI model deployments (Azure OpenAI, etc.)</td>
+</tr>
+<tr>
+<td><strong>API Endpoints</strong></td>
+<td>Manage API endpoint configurations</td>
+</tr>
+</tbody>
+</table>
+<h3 id="security-section">Security Section</h3>
+<table>
+<thead>
+<tr>
+<th>Menu Item</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Instance Access Control</strong></td>
+<td>Manage role assignments and access permissions</td>
+</tr>
+</tbody>
+</table>
+<h3 id="fllm-platform-section">FLLM Platform Section</h3>
+<table>
+<thead>
+<tr>
+<th>Menu Item</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Branding</strong></td>
+<td>Customize the portal appearance (colors, logos, text)</td>
+</tr>
+<tr>
+<td><strong>Configuration</strong></td>
+<td>Configure portal access and instance-level settings</td>
+</tr>
+<tr>
+<td><strong>Deployment Information</strong></td>
+<td>View instance ID, API status, and deployment details</td>
+</tr>
+</tbody>
+</table>
+<h2 id="common-ui-elements">Common UI Elements</h2>
+<h3 id="page-headers">Page Headers</h3>
+<p>Each page includes:</p>
+<ul>
+<li><strong>Page title</strong>: Identifies the current section</li>
+<li><strong>Subheader</strong>: Brief description of the page's purpose</li>
+<li><strong>Action buttons</strong>: Context-specific actions (Create, Refresh, etc.)</li>
+</ul>
+<h3 id="data-tables">Data Tables</h3>
+<p>Resource lists use consistent table layouts:</p>
+<ul>
+<li><strong>Sortable columns</strong>: Click column headers to sort</li>
+<li><strong>Search</strong>: Filter results by name or other fields</li>
+<li><strong>Pagination</strong>: Navigate through large datasets (10, 25, 50, or 100 rows per page)</li>
+<li><strong>Edit/Delete actions</strong>: Row-level actions for managing resources</li>
+</ul>
+<h3 id="forms-and-wizards">Forms and Wizards</h3>
+<p>Configuration pages use:</p>
+<ul>
+<li><strong>Step items</strong>: Expandable cards that show current settings and allow editing</li>
+<li><strong>Toggle buttons</strong>: Yes/No switches for enabling features</li>
+<li><strong>Dropdowns</strong>: Selection lists for choosing options</li>
+<li><strong>Input validation</strong>: Real-time feedback on required fields and format requirements</li>
+</ul>
+<h3 id="access-control">Access Control</h3>
+<p>Resources with access control show:</p>
+<ul>
+<li><strong>Access Control button</strong>: Opens role assignment dialog</li>
+<li><strong>Scope selection</strong>: Choose the level at which permissions apply</li>
+<li><strong>Principal selection</strong>: Add users, groups, or service principals</li>
+</ul>
+<h2 id="user-account">User Account</h2>
+<p>The bottom of the sidebar displays:</p>
+<ul>
+<li><strong>User avatar</strong>: Your profile image</li>
+<li><strong>Username</strong>: Your display name (hover for full email)</li>
+<li><strong>Sign Out button</strong>: Log out of the portal</li>
+</ul>
+<h2 id="keyboard-navigation">Keyboard Navigation</h2>
+<p>The portal supports keyboard navigation:</p>
+<ul>
+<li><code>Tab</code> / <code>Shift+Tab</code>: Navigate between elements</li>
+<li><code>Enter</code> / <code>Space</code>: Activate buttons and links</li>
+<li><code>Escape</code>: Close dialogs and cancel operations</li>
+</ul>
+<h2 id="getting-started-workflow">Getting Started Workflow</h2>
+<p>For first-time users, the typical workflow is:</p>
+<ol>
+<li><strong>Configure AI Models</strong>: Set up your AI model deployments under Models and Endpoints</li>
+<li><strong>Create Data Sources</strong>: Connect to your data repositories under Data</li>
+<li><strong>Create Prompts</strong>: Define prompt templates under Agents &gt; Prompts</li>
+<li><strong>Create an Agent</strong>: Use the Create New Agent wizard</li>
+<li><strong>Configure Access</strong>: Set up role assignments under Security</li>
+<li><strong>Test</strong>: Access the Chat User Portal to test your agent</li>
+</ol>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="creating-first-agent.html">Creating Your First Agent</a></li>
+<li><a href="../how-to-guides/security/instance-access-control.html">Instance Access Control</a></li>
+<li><a href="../how-to-guides/fllm-platform/branding.html">Branding Configuration</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

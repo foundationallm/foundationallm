@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Configure Access Control for Azure Services | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Configure Access Control for Azure Services | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../toc.html">
+      <meta name="docfx:tocrel" content="../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/platform-operations/security-permissions/configure-access-control-services.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../index.html">
+            <img id="logo" class="svg" src="../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="configure-access-control-for-azure-services">Configure Access Control for Azure Services</h1>
+
+<p>FoundationaLLM uses Azure RBAC to control access to underlying Azure services. This guide covers granting access to App Configuration and Key Vault.</p>
+<h2 id="overview">Overview</h2>
+<p>FoundationaLLM follows least-privilege principles:</p>
+<ul>
+<li>Default: No user access</li>
+<li>Access must be explicitly granted</li>
+<li>Service accounts pre-configured by deployment</li>
+</ul>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li>FoundationaLLM deployed and running</li>
+<li><strong>Contributor</strong> role on the resource group or subscription</li>
+<li>Azure Portal access</li>
+</ul>
+<h2 id="azure-app-configuration">Azure App Configuration</h2>
+<p>Azure App Configuration stores application settings and feature flags.</p>
+<h3 id="available-roles">Available Roles</h3>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Permissions</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>App Configuration Data Reader</code></td>
+<td>Read settings and feature flags</td>
+<td>Services, local development</td>
+</tr>
+<tr>
+<td><code>App Configuration Data Owner</code></td>
+<td>Read and write settings</td>
+<td>Administrators</td>
+</tr>
+</tbody>
+</table>
+<h3 id="grant-access">Grant Access</h3>
+<h4 id="via-azure-portal">Via Azure Portal</h4>
+<ol>
+<li><p>Navigate to <a href="https://portal.azure.com/">Azure Portal</a></p>
+</li>
+<li><p>Go to your deployment resource group</p>
+<blockquote>
+<p><strong>Note:</strong> For ACA/AKS deployments, use the resource group <strong>without</strong> <code>ME_</code> or <code>MC_</code> prefix.</p>
+</blockquote>
+</li>
+<li><p>Select the <strong>App Configuration</strong> resource (name ends with <code>-appconfig</code>)</p>
+</li>
+<li><p>Select <strong>Access control (IAM)</strong> in left menu</p>
+</li>
+<li><p>Click <strong>+ Add</strong> &gt; <strong>Add role assignment</strong></p>
+</li>
+<li><p>Select role:</p>
+<ul>
+<li><strong>App Configuration Data Reader</strong> (for read access)</li>
+<li><strong>App Configuration Data Owner</strong> (for full access)</li>
+</ul>
+</li>
+<li><p>Click <strong>Next</strong></p>
+</li>
+<li><p>Click <strong>+ Select members</strong></p>
+</li>
+<li><p>Search for and select the user/group</p>
+</li>
+<li><p>Click <strong>Select</strong></p>
+</li>
+<li><p>Click <strong>Review + assign</strong></p>
+</li>
+</ol>
+<h4 id="via-azure-cli">Via Azure CLI</h4>
+<pre><code class="lang-bash"># Get resource ID
+APP_CONFIG_ID=$(az appconfig show \
+  --name &lt;app-config-name&gt; \
+  --resource-group &lt;resource-group&gt; \
+  --query id -o tsv)
+
+# Assign Reader role
+az role assignment create \
+  --assignee &lt;user-or-group-id&gt; \
+  --role &quot;App Configuration Data Reader&quot; \
+  --scope $APP_CONFIG_ID
+
+# Or assign Owner role
+az role assignment create \
+  --assignee &lt;user-or-group-id&gt; \
+  --role &quot;App Configuration Data Owner&quot; \
+  --scope $APP_CONFIG_ID
+</code></pre>
+<h2 id="azure-key-vault">Azure Key Vault</h2>
+<p>Azure Key Vault stores secrets, certificates, and keys.</p>
+<h3 id="available-roles-1">Available Roles</h3>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Permissions</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Key Vault Secrets User</code></td>
+<td>Read secrets</td>
+<td>Services, local development</td>
+</tr>
+<tr>
+<td><code>Key Vault Secrets Officer</code></td>
+<td>Read and write secrets</td>
+<td>Administrators</td>
+</tr>
+<tr>
+<td><code>Key Vault Administrator</code></td>
+<td>Full management</td>
+<td>Key Vault admins</td>
+</tr>
+</tbody>
+</table>
+<h3 id="grant-access-1">Grant Access</h3>
+<h4 id="via-azure-portal-1">Via Azure Portal</h4>
+<ol>
+<li>Navigate to your deployment resource group</li>
+<li>Select the <strong>Key Vault</strong> resource (name ends with <code>-kv</code>)</li>
+<li>Select <strong>Access control (IAM)</strong></li>
+<li>Click <strong>+ Add</strong> &gt; <strong>Add role assignment</strong></li>
+<li>Select role:
+<ul>
+<li><strong>Key Vault Secrets User</strong> (for read access)</li>
+<li><strong>Key Vault Secrets Officer</strong> (for management)</li>
+</ul>
+</li>
+<li>Click <strong>Next</strong></li>
+<li>Click <strong>+ Select members</strong></li>
+<li>Search for and select the user/group</li>
+<li>Click <strong>Select</strong></li>
+<li>Click <strong>Review + assign</strong></li>
+</ol>
+<h4 id="via-azure-cli-1">Via Azure CLI</h4>
+<pre><code class="lang-bash"># Get resource ID
+KEYVAULT_ID=$(az keyvault show \
+  --name &lt;keyvault-name&gt; \
+  --resource-group &lt;resource-group&gt; \
+  --query id -o tsv)
+
+# Assign Secrets User role
+az role assignment create \
+  --assignee &lt;user-or-group-id&gt; \
+  --role &quot;Key Vault Secrets User&quot; \
+  --scope $KEYVAULT_ID
+
+# Or assign Secrets Officer role
+az role assignment create \
+  --assignee &lt;user-or-group-id&gt; \
+  --role &quot;Key Vault Secrets Officer&quot; \
+  --scope $KEYVAULT_ID
+</code></pre>
+<h2 id="other-azure-resources">Other Azure Resources</h2>
+<h3 id="storage-accounts">Storage Accounts</h3>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Permissions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Storage Blob Data Reader</code></td>
+<td>Read blobs</td>
+</tr>
+<tr>
+<td><code>Storage Blob Data Contributor</code></td>
+<td>Read/write blobs</td>
+</tr>
+<tr>
+<td><code>Storage Blob Data Owner</code></td>
+<td>Full blob access</td>
+</tr>
+</tbody>
+</table>
+<h3 id="cosmos-db">Cosmos DB</h3>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Permissions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Cosmos DB Account Reader</code></td>
+<td>Read metadata</td>
+</tr>
+<tr>
+<td><code>Cosmos DB Operator</code></td>
+<td>Manage accounts</td>
+</tr>
+<tr>
+<td><code>DocumentDB Account Contributor</code></td>
+<td>Full access</td>
+</tr>
+</tbody>
+</table>
+<h3 id="azure-ai-search">Azure AI Search</h3>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Permissions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Search Index Data Reader</code></td>
+<td>Read index data</td>
+</tr>
+<tr>
+<td><code>Search Index Data Contributor</code></td>
+<td>Read/write index data</td>
+</tr>
+<tr>
+<td><code>Search Service Contributor</code></td>
+<td>Manage service</td>
+</tr>
+</tbody>
+</table>
+<h2 id="best-practices">Best Practices</h2>
+<table>
+<thead>
+<tr>
+<th>Practice</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Least Privilege</strong></td>
+<td>Grant minimum required permissions</td>
+</tr>
+<tr>
+<td><strong>Use Groups</strong></td>
+<td>Assign roles to groups, not individuals</td>
+</tr>
+<tr>
+<td><strong>Regular Review</strong></td>
+<td>Audit role assignments periodically</td>
+</tr>
+<tr>
+<td><strong>Just-in-Time</strong></td>
+<td>Consider PIM for sensitive roles</td>
+</tr>
+<tr>
+<td><strong>Document</strong></td>
+<td>Track who has access and why</td>
+</tr>
+</tbody>
+</table>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="access-denied-errors">Access Denied Errors</h3>
+<ol>
+<li>Verify role assignment exists</li>
+<li>Check correct resource scope</li>
+<li>Allow up to 30 minutes for propagation</li>
+<li>Verify user/group object ID</li>
+</ol>
+<h3 id="check-existing-assignments">Check Existing Assignments</h3>
+<pre><code class="lang-bash"># List role assignments
+az role assignment list \
+  --resource-group &lt;resource-group&gt; \
+  --output table
+
+# Check specific resource
+az role assignment list \
+  --scope &lt;resource-id&gt; \
+  --output table
+</code></pre>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="platform-security.html">Platform Security</a></li>
+<li><a href="role-based-access-control/index.html">Role-Based Access Control</a></li>
+<li><a href="../deployment/app-configuration-values.html">App Configuration Values</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

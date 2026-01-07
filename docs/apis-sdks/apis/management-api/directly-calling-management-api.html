@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Directly Calling the Management API | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Directly Calling the Management API | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/apis-sdks/apis/management-api/directly-calling-management-api.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="directly-calling-the-management-api">Directly Calling the Management API</h1>
+
+<p>This guide provides step-by-step instructions for configuring Postman and making direct calls to the FoundationaLLM Management API.</p>
+<h2 id="overview">Overview</h2>
+<p>The Management API enables programmatic management of FoundationaLLM resources:</p>
+<ul>
+<li>Agents, workflows, and tools</li>
+<li>Prompts</li>
+<li>Data sources and pipelines</li>
+<li>AI models and API endpoints</li>
+<li>Branding and configuration</li>
+<li>Role assignments</li>
+</ul>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>Before calling the Management API, you need:</p>
+<ol>
+<li><strong>Management API URL</strong> - From App Config: <code>FoundationaLLM:APIs:ManagementAPI:APIUrl</code></li>
+<li><strong>Instance ID</strong> - From App Config: <code>FoundationaLLM:Instance:Id</code></li>
+<li><strong>Entra ID App Registration</strong> - Management Portal client app</li>
+</ol>
+<h2 id="using-postman">Using Postman</h2>
+<h3 id="install-postman">Install Postman</h3>
+<p>Download and install <a href="https://www.getpostman.com/">Postman</a>.</p>
+<h3 id="import-the-collection">Import the Collection</h3>
+<p>Click the button below to fork the official FoundationaLLM Management API collection:</p>
+<p><a href="https://app.getpostman.com/run-collection/269456-839af3bb-2841-40d7-bb24-6409e9ef835e?action=collection%2Ffork&amp;source=rip_markdown&amp;collection-url=entityId%3D269456-839af3bb-2841-40d7-bb24-6409e9ef835e%26entityType%3Dcollection%26workspaceId%3D0d6298a2-c3cd-4530-900c-030ed0ae6dfa"><img src="https://run.pstmn.io/button.svg" alt="Run In Postman" style="width: 128px; height: 32px;"></a></p>
+<h3 id="configure-variables">Configure Variables</h3>
+<ol>
+<li>Select the <strong>FoundationaLLM.Management.API</strong> collection</li>
+<li>Click the <strong>Variables</strong> tab</li>
+<li>Update these <strong>Current value</strong> fields:</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+<th>Where to Find</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>baseUrl</code></td>
+<td>Management API URL</td>
+<td>App Config: <code>FoundationaLLM:APIs:ManagementAPI:APIUrl</code></td>
+</tr>
+<tr>
+<td><code>instanceId</code></td>
+<td>FoundationaLLM instance GUID</td>
+<td>App Config: <code>FoundationaLLM:Instance:Id</code></td>
+</tr>
+<tr>
+<td><code>tenantId</code></td>
+<td>Azure AD tenant ID</td>
+<td>Entra ID portal</td>
+</tr>
+<tr>
+<td><code>appClientId</code></td>
+<td>Management Portal client ID</td>
+<td>Entra ID app registration</td>
+</tr>
+<tr>
+<td><code>appScope</code></td>
+<td>API scope</td>
+<td>Entra ID app registration</td>
+</tr>
+</tbody>
+</table>
+<ol start="4">
+<li>Click <strong>Save</strong></li>
+</ol>
+<h3 id="configure-authentication">Configure Authentication</h3>
+<blockquote>
+<p><strong>Important:</strong> Add <code>https://oauth.pstmn.io/v1/callback</code> as a Redirect URI in your Management Portal Entra ID app registration.</p>
+</blockquote>
+<ol>
+<li>Select the <strong>Authorization</strong> tab in the collection</li>
+<li>Verify the OAuth 2.0 settings use the collection variables</li>
+<li>Scroll down and click <strong>Get New Access Token</strong></li>
+<li>Complete the login flow</li>
+<li>Click <strong>Use Token</strong></li>
+<li>Click <strong>Save</strong></li>
+</ol>
+<h3 id="make-your-first-request">Make Your First Request</h3>
+<ol>
+<li>Expand the collection and find <strong>Get Agents</strong></li>
+<li>Click <strong>Send</strong></li>
+<li>Verify a 200 OK response</li>
+</ol>
+<h2 id="using-curl">Using curl</h2>
+<h3 id="get-authentication-token">Get Authentication Token</h3>
+<pre><code class="lang-bash"># Login to Azure
+az login
+
+# Get token for Management API
+TOKEN=$(az account get-access-token \
+  --resource api://{management-api-client-id} \
+  --query accessToken -o tsv)
+</code></pre>
+<h3 id="list-agents">List Agents</h3>
+<pre><code class="lang-bash">curl -X GET \
+  &quot;https://{management-api}/instances/{instanceId}/providers/FoundationaLLM.Agent/agents&quot; \
+  -H &quot;Authorization: Bearer $TOKEN&quot;
+</code></pre>
+<h3 id="get-specific-agent">Get Specific Agent</h3>
+<pre><code class="lang-bash">curl -X GET \
+  &quot;https://{management-api}/instances/{instanceId}/providers/FoundationaLLM.Agent/agents/my-agent&quot; \
+  -H &quot;Authorization: Bearer $TOKEN&quot;
+</code></pre>
+<h3 id="create-agent">Create Agent</h3>
+<pre><code class="lang-bash">curl -X POST \
+  &quot;https://{management-api}/instances/{instanceId}/providers/FoundationaLLM.Agent/agents/new-agent&quot; \
+  -H &quot;Authorization: Bearer $TOKEN&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -d '{
+    &quot;type&quot;: &quot;agent&quot;,
+    &quot;name&quot;: &quot;new-agent&quot;,
+    &quot;display_name&quot;: &quot;New Agent&quot;,
+    &quot;description&quot;: &quot;A new agent&quot;,
+    &quot;inline_context&quot;: false,
+    &quot;conversation_history_settings&quot;: {
+      &quot;enabled&quot;: true,
+      &quot;max_history&quot;: 5
+    }
+  }'
+</code></pre>
+<h3 id="delete-agent">Delete Agent</h3>
+<pre><code class="lang-bash">curl -X DELETE \
+  &quot;https://{management-api}/instances/{instanceId}/providers/FoundationaLLM.Agent/agents/my-agent&quot; \
+  -H &quot;Authorization: Bearer $TOKEN&quot;
+</code></pre>
+<h3 id="purge-agent-permanent-delete">Purge Agent (Permanent Delete)</h3>
+<pre><code class="lang-bash">curl -X POST \
+  &quot;https://{management-api}/instances/{instanceId}/providers/FoundationaLLM.Agent/agents/my-agent/purge&quot; \
+  -H &quot;Authorization: Bearer $TOKEN&quot;
+</code></pre>
+<h2 id="common-operations">Common Operations</h2>
+<h3 id="managing-prompts">Managing Prompts</h3>
+<p><strong>List Prompts:</strong></p>
+<pre><code class="lang-bash">curl -X GET \
+  &quot;https://{management-api}/instances/{instanceId}/providers/FoundationaLLM.Prompt/prompts&quot; \
+  -H &quot;Authorization: Bearer $TOKEN&quot;
+</code></pre>
+<p><strong>Create Prompt:</strong></p>
+<pre><code class="lang-bash">curl -X POST \
+  &quot;https://{management-api}/instances/{instanceId}/providers/FoundationaLLM.Prompt/prompts/system-prompt&quot; \
+  -H &quot;Authorization: Bearer $TOKEN&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -d '{
+    &quot;type&quot;: &quot;prompt&quot;,
+    &quot;name&quot;: &quot;system-prompt&quot;,
+    &quot;display_name&quot;: &quot;System Prompt&quot;,
+    &quot;category&quot;: &quot;AgentWorkflow&quot;,
+    &quot;prefix&quot;: &quot;You are a helpful assistant specialized in...&quot;
+  }'
+</code></pre>
+<h3 id="managing-data-sources">Managing Data Sources</h3>
+<p><strong>List Data Sources:</strong></p>
+<pre><code class="lang-bash">curl -X GET \
+  &quot;https://{management-api}/instances/{instanceId}/providers/FoundationaLLM.DataSource/dataSources&quot; \
+  -H &quot;Authorization: Bearer $TOKEN&quot;
+</code></pre>
+<p><strong>Create Azure Data Lake Source:</strong></p>
+<pre><code class="lang-bash">curl -X POST \
+  &quot;https://{management-api}/instances/{instanceId}/providers/FoundationaLLM.DataSource/dataSources/my-storage&quot; \
+  -H &quot;Authorization: Bearer $TOKEN&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -d '{
+    &quot;type&quot;: &quot;data-source&quot;,
+    &quot;name&quot;: &quot;my-storage&quot;,
+    &quot;display_name&quot;: &quot;My Azure Storage&quot;,
+    &quot;data_source_type&quot;: &quot;AzureDataLake&quot;,
+    &quot;configuration&quot;: {
+      &quot;authentication_type&quot;: &quot;ManagedIdentity&quot;,
+      &quot;endpoint&quot;: &quot;https://mystorageaccount.blob.core.windows.net&quot;
+    }
+  }'
+</code></pre>
+<h3 id="managing-branding">Managing Branding</h3>
+<p><strong>Get Branding Settings:</strong></p>
+<pre><code class="lang-bash">curl -X GET \
+  &quot;https://{management-api}/instances/{instanceId}/providers/FoundationaLLM.Configuration/appConfigurations&quot; \
+  -H &quot;Authorization: Bearer $TOKEN&quot;
+</code></pre>
+<p><strong>Update Branding:</strong></p>
+<pre><code class="lang-bash">curl -X POST \
+  &quot;https://{management-api}/instances/{instanceId}/providers/FoundationaLLM.Configuration/appConfigurations/Branding-CompanyName&quot; \
+  -H &quot;Authorization: Bearer $TOKEN&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -d '{
+    &quot;type&quot;: &quot;app-configuration&quot;,
+    &quot;name&quot;: &quot;Branding-CompanyName&quot;,
+    &quot;key&quot;: &quot;FoundationaLLM:Branding:CompanyName&quot;,
+    &quot;value&quot;: &quot;My Company&quot;
+  }'
+</code></pre>
+<h3 id="managing-role-assignments">Managing Role Assignments</h3>
+<p><strong>List Role Assignments:</strong></p>
+<pre><code class="lang-bash">curl -X GET \
+  &quot;https://{management-api}/instances/{instanceId}/providers/FoundationaLLM.Authorization/roleAssignments&quot; \
+  -H &quot;Authorization: Bearer $TOKEN&quot;
+</code></pre>
+<p><strong>Create Role Assignment:</strong></p>
+<pre><code class="lang-bash">curl -X POST \
+  &quot;https://{management-api}/instances/{instanceId}/providers/FoundationaLLM.Authorization/roleAssignments/new-assignment&quot; \
+  -H &quot;Authorization: Bearer $TOKEN&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -d '{
+    &quot;type&quot;: &quot;role-assignment&quot;,
+    &quot;name&quot;: &quot;new-assignment&quot;,
+    &quot;principal_id&quot;: &quot;user-guid&quot;,
+    &quot;principal_type&quot;: &quot;User&quot;,
+    &quot;role_definition_id&quot;: &quot;/providers/FoundationaLLM.Authorization/roleDefinitions/00a53e72-f66e-4c03-8f81-7e885fd2eb35&quot;,
+    &quot;scope&quot;: &quot;/instances/{instanceId}&quot;
+  }'
+</code></pre>
+<h2 id="swagger-ui">Swagger UI</h2>
+<p>For interactive API exploration:</p>
+<table>
+<thead>
+<tr>
+<th>Deployment</th>
+<th>URL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ACA</td>
+<td><code>https://{management-api-url}/swagger/</code></td>
+</tr>
+<tr>
+<td>AKS</td>
+<td><code>https://{aks-url}/management/swagger/v1/swagger.json</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="error-handling">Error Handling</h2>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Meaning</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>400</td>
+<td>Invalid request</td>
+<td>Check JSON format and required fields</td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized</td>
+<td>Refresh authentication token</td>
+</tr>
+<tr>
+<td>403</td>
+<td>Forbidden</td>
+<td>Check role permissions</td>
+</tr>
+<tr>
+<td>404</td>
+<td>Not found</td>
+<td>Verify resource path and name</td>
+</tr>
+<tr>
+<td>409</td>
+<td>Conflict</td>
+<td>Resource already exists</td>
+</tr>
+<tr>
+<td>500</td>
+<td>Server error</td>
+<td>Check API logs</td>
+</tr>
+</tbody>
+</table>
+<h2 id="tips">Tips</h2>
+<ol>
+<li><strong>Use purge carefully</strong> - Purged resources cannot be recovered</li>
+<li><strong>Check permissions</strong> - Some operations require Owner or Contributor role</li>
+<li><strong>Validate JSON</strong> - API returns 400 for malformed requests</li>
+<li><strong>Use instance ID</strong> - All resource paths require the instance ID</li>
+</ol>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="index.html">Management API Overview</a></li>
+<li><a href="api-reference.html">API Reference</a></li>
+<li><a href="resource-providers-overview.html">Resource Providers Overview</a></li>
+<li><a href="../../sdks/dotnet/index.html">.NET SDK</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

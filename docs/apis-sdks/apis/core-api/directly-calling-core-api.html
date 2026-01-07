@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Directly Calling the Core API | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Directly Calling the Core API | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/apis-sdks/apis/core-api/directly-calling-core-api.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="directly-calling-the-core-api">Directly Calling the Core API</h1>
+
+<p>This guide explains how to call the FoundationaLLM Core API directly using tools like Postman, curl, or custom applications.</p>
+<h2 id="overview">Overview</h2>
+<p>While users typically interact with the Core API through the Chat User Portal, developers can call the API directly to:</p>
+<ul>
+<li>Integrate FoundationaLLM into custom applications</li>
+<li>Build automated workflows</li>
+<li>Test agent configurations</li>
+<li>Create custom chat interfaces</li>
+</ul>
+<h2 id="api-architecture">API Architecture</h2>
+<p>The Core API is the entry point to FoundationaLLM's orchestration layer:</p>
+<pre><code class="lang-mermaid">sequenceDiagram
+    actor U as Caller
+    participant C as Core API
+    participant G as Gatekeeper API
+    participant O as Orchestration API
+    participant L as LangChain API
+
+    U-&gt;&gt;C: POST /completions
+    C-&gt;&gt;G: Content safety check
+    G-&gt;&gt;C: Approved request
+    C-&gt;&gt;O: Process completion
+    O-&gt;&gt;L: Execute orchestration
+    L-&gt;&gt;O: LLM response
+    O-&gt;&gt;C: Processed response
+    C-&gt;&gt;U: Final response
+</code></pre>
+<blockquote>
+<p><strong>Note:</strong> The Gatekeeper can be bypassed by setting <code>FoundationaLLM:APIs:CoreAPI:BypassGatekeeper</code> to <code>true</code> in App Configuration. This improves performance but disables content filtering.</p>
+</blockquote>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>Before calling the Core API, you need:</p>
+<ol>
+<li><strong>Core API URL</strong> - See <a href="finding-core-api-url.html">Finding Your Core API URL</a></li>
+<li><strong>Instance ID</strong> - Found in App Configuration: <code>FoundationaLLM:Instance:Id</code></li>
+<li><strong>Authentication Token</strong> - Entra ID bearer token or Agent Access Token</li>
+</ol>
+<h2 id="using-postman">Using Postman</h2>
+<h3 id="install-postman">Install Postman</h3>
+<p>Download and install <a href="https://www.getpostman.com/">Postman</a>.</p>
+<h3 id="import-the-collection">Import the Collection</h3>
+<p>Click the button below to fork and import the official FoundationaLLM Core API Postman collection:</p>
+<p><a href="https://app.getpostman.com/run-collection/269456-9ad62116-3057-4166-abfc-ece23923bff5?action=collection%2Ffork&amp;source=rip_markdown&amp;collection-url=entityId%3D269456-9ad62116-3057-4166-abfc-ece23923bff5%26entityType%3Dcollection%26workspaceId%3D0d6298a2-c3cd-4530-900c-030ed0ae6dfa"><img src="https://run.pstmn.io/button.svg" alt="Run In Postman" style="width: 128px; height: 32px;"></a></p>
+<h3 id="configure-variables">Configure Variables</h3>
+<ol>
+<li>Select the <strong>FoundationaLLM.Core.API</strong> collection</li>
+<li>Click the <strong>Variables</strong> tab</li>
+<li>Update the following <strong>Current value</strong> fields:</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Value</th>
+<th>Where to Find</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>baseUrl</code></td>
+<td>Your Core API URL</td>
+<td>App Config: <code>FoundationaLLM:APIs:CoreAPI:APIUrl</code></td>
+</tr>
+<tr>
+<td><code>instanceId</code></td>
+<td>Your instance GUID</td>
+<td>App Config: <code>FoundationaLLM:Instance:Id</code></td>
+</tr>
+<tr>
+<td><code>tenantId</code></td>
+<td>Azure AD tenant ID</td>
+<td>Entra ID app registration</td>
+</tr>
+<tr>
+<td><code>appClientId</code></td>
+<td>Client ID</td>
+<td>Entra ID app registration</td>
+</tr>
+<tr>
+<td><code>appScope</code></td>
+<td>API scope</td>
+<td>Entra ID app registration</td>
+</tr>
+</tbody>
+</table>
+<ol start="4">
+<li>Click <strong>Save</strong></li>
+</ol>
+<h3 id="configure-authentication">Configure Authentication</h3>
+<ol>
+<li>Select the <strong>Authorization</strong> tab in the collection</li>
+<li>Scroll to the bottom and click <strong>Get New Access Token</strong></li>
+<li>Log in with your credentials</li>
+<li>Click <strong>Use Token</strong> after authentication</li>
+<li>Click <strong>Save</strong></li>
+</ol>
+<blockquote>
+<p><strong>Important:</strong> Add <code>https://oauth.pstmn.io/v1/callback</code> as a Redirect URI in your Entra ID app registration for Postman authentication to work.</p>
+</blockquote>
+<h3 id="make-your-first-request">Make Your First Request</h3>
+<ol>
+<li>Expand the <strong>sessions</strong> folder in the collection</li>
+<li>Select the <strong>GET Sessions</strong> request</li>
+<li>Click <strong>Send</strong></li>
+<li>Verify you receive a 200 OK response</li>
+</ol>
+<h2 id="using-curl">Using curl</h2>
+<h3 id="get-authentication-token">Get Authentication Token</h3>
+<p>First, obtain a bearer token using Azure CLI:</p>
+<pre><code class="lang-bash"># Login to Azure
+az login
+
+# Get token for Core API
+TOKEN=$(az account get-access-token \
+  --resource api://{core-api-client-id} \
+  --query accessToken -o tsv)
+</code></pre>
+<h3 id="list-sessions">List Sessions</h3>
+<pre><code class="lang-bash">curl -X GET \
+  &quot;https://{core-api-url}/instances/{instanceId}/sessions&quot; \
+  -H &quot;Authorization: Bearer $TOKEN&quot; \
+  -H &quot;Content-Type: application/json&quot;
+</code></pre>
+<h3 id="request-a-completion">Request a Completion</h3>
+<pre><code class="lang-bash">curl -X POST \
+  &quot;https://{core-api-url}/instances/{instanceId}/completions&quot; \
+  -H &quot;Authorization: Bearer $TOKEN&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -d '{
+    &quot;user_prompt&quot;: &quot;What is FoundationaLLM?&quot;,
+    &quot;agent_name&quot;: &quot;default-agent&quot;
+  }'
+</code></pre>
+<h3 id="create-a-session">Create a Session</h3>
+<pre><code class="lang-bash">curl -X POST \
+  &quot;https://{core-api-url}/instances/{instanceId}/sessions&quot; \
+  -H &quot;Authorization: Bearer $TOKEN&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -d '{
+    &quot;name&quot;: &quot;My New Conversation&quot;
+  }'
+</code></pre>
+<h3 id="completion-with-session-context">Completion with Session Context</h3>
+<pre><code class="lang-bash">curl -X POST \
+  &quot;https://{core-api-url}/instances/{instanceId}/completions&quot; \
+  -H &quot;Authorization: Bearer $TOKEN&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -d '{
+    &quot;user_prompt&quot;: &quot;Tell me more about that&quot;,
+    &quot;session_id&quot;: &quot;{session-id}&quot;,
+    &quot;agent_name&quot;: &quot;default-agent&quot;
+  }'
+</code></pre>
+<h2 id="using-agent-access-tokens">Using Agent Access Tokens</h2>
+<p>For unauthenticated access scenarios, use Agent Access Tokens:</p>
+<pre><code class="lang-bash">curl -X POST \
+  &quot;https://{core-api-url}/instances/{instanceId}/completions&quot; \
+  -H &quot;X-AGENT-ACCESS-TOKEN: {agent-access-token}&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -d '{
+    &quot;user_prompt&quot;: &quot;Hello, what can you do?&quot;
+  }'
+</code></pre>
+<p>See <a href="../../../management-portal/reference/concepts/agent-access-tokens.html">Agent Access Tokens</a> for setup instructions.</p>
+<h2 id="swagger-ui">Swagger UI</h2>
+<p>For interactive API exploration:</p>
+<table>
+<thead>
+<tr>
+<th>Deployment</th>
+<th>Swagger URL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ACA</td>
+<td><code>https://{core-api-url}/swagger/</code></td>
+</tr>
+<tr>
+<td>AKS</td>
+<td><code>https://{aks-url}/core/swagger/v1/swagger.json</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="common-request-patterns">Common Request Patterns</h2>
+<h3 id="sessionless-completion-quick-query">Sessionless Completion (Quick Query)</h3>
+<p>No conversation history:</p>
+<pre><code class="lang-json">{
+  &quot;user_prompt&quot;: &quot;What time is it in Tokyo?&quot;
+}
+</code></pre>
+<h3 id="session-based-completion-conversation">Session-based Completion (Conversation)</h3>
+<p>Maintains context:</p>
+<pre><code class="lang-json">{
+  &quot;user_prompt&quot;: &quot;What about in London?&quot;,
+  &quot;session_id&quot;: &quot;existing-session-id&quot;
+}
+</code></pre>
+<h3 id="completion-with-parameter-overrides">Completion with Parameter Overrides</h3>
+<p>Customize model behavior:</p>
+<pre><code class="lang-json">{
+  &quot;user_prompt&quot;: &quot;Write a creative story&quot;,
+  &quot;settings&quot;: {
+    &quot;model_parameters&quot;: {
+      &quot;temperature&quot;: 0.9,
+      &quot;max_new_tokens&quot;: 2000
+    }
+  }
+}
+</code></pre>
+<h3 id="completion-with-agent-selection">Completion with Agent Selection</h3>
+<p>Target a specific agent:</p>
+<pre><code class="lang-json">{
+  &quot;user_prompt&quot;: &quot;Analyze this data&quot;,
+  &quot;agent_name&quot;: &quot;data-analysis-agent&quot;
+}
+</code></pre>
+<h2 id="error-handling">Error Handling</h2>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Meaning</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>400</td>
+<td>Invalid request</td>
+<td>Check request body format</td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized</td>
+<td>Refresh authentication token</td>
+</tr>
+<tr>
+<td>403</td>
+<td>Forbidden</td>
+<td>Check user permissions</td>
+</tr>
+<tr>
+<td>404</td>
+<td>Not found</td>
+<td>Verify endpoint URL and IDs</td>
+</tr>
+<tr>
+<td>429</td>
+<td>Rate limited</td>
+<td>Wait and retry</td>
+</tr>
+<tr>
+<td>500</td>
+<td>Server error</td>
+<td>Check API logs</td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="index.html">Core API Overview</a></li>
+<li><a href="api-reference.html">API Reference</a></li>
+<li><a href="finding-core-api-url.html">Finding Your Core API URL</a></li>
+<li><a href="../../sdks/dotnet/index.html">.NET SDK</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

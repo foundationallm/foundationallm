@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Purging Deleted Conversations | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Purging Deleted Conversations | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../toc.html">
+      <meta name="docfx:tocrel" content="../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/platform-operations/how-to-guides/purge-conversations.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../index.html">
+            <img id="logo" class="svg" src="../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="purging-deleted-conversations">Purging Deleted Conversations</h1>
+
+<p>This guide explains how to anonymize deleted conversations in Cosmos DB to remove sensitive information while preserving statistical data.</p>
+<h2 id="overview">Overview</h2>
+<p>When users delete conversations in FoundationaLLM:</p>
+<ul>
+<li>The session is <strong>soft-deleted</strong> (marked as deleted)</li>
+<li>Original content remains in the database</li>
+<li>Statistical data (tokens, feedback) is preserved</li>
+</ul>
+<p>For compliance or security requirements, you may need to anonymize this content.</p>
+<h2 id="anonymization-approach">Anonymization Approach</h2>
+<p>The anonymization process:</p>
+<ol>
+<li>Identifies soft-deleted sessions</li>
+<li>Replaces sensitive content with &quot;Deleted&quot;</li>
+<li>Preserves metadata for analytics</li>
+</ol>
+<h3 id="what-gets-anonymized">What Gets Anonymized</h3>
+<table>
+<thead>
+<tr>
+<th>Document Type</th>
+<th>Anonymized Fields</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CompletionPrompt</code></td>
+<td><code>prompt</code></td>
+</tr>
+<tr>
+<td><code>Message</code></td>
+<td><code>text</code>, <code>content.value</code>, <code>analysisResults.toolInput</code>, <code>analysisResults.toolOutput</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="whats-preserved">What's Preserved</h3>
+<table>
+<thead>
+<tr>
+<th>Data</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Document IDs</td>
+<td>Reference integrity</td>
+</tr>
+<tr>
+<td>Timestamps</td>
+<td>Analytics</td>
+</tr>
+<tr>
+<td>Token counts</td>
+<td>Usage metrics</td>
+</tr>
+<tr>
+<td>User feedback</td>
+<td>Quality metrics</td>
+</tr>
+<tr>
+<td>Session structure</td>
+<td>Statistical analysis</td>
+</tr>
+</tbody>
+</table>
+<h2 id="creating-the-stored-procedure">Creating the Stored Procedure</h2>
+<h3 id="step-1-open-azure-portal">Step 1: Open Azure Portal</h3>
+<ol>
+<li>Navigate to your Cosmos DB account</li>
+<li>Select <strong>Data Explorer</strong></li>
+</ol>
+<h3 id="step-2-create-stored-procedure">Step 2: Create Stored Procedure</h3>
+<ol>
+<li>Expand your database</li>
+<li>Right-click the <strong>Sessions</strong> container</li>
+<li>Select <strong>New Stored Procedure</strong></li>
+</ol>
+<h3 id="step-3-add-stored-procedure-code">Step 3: Add Stored Procedure Code</h3>
+<p>Name: <code>anonymizeDeletedSession</code></p>
+<pre><code class="lang-javascript">function anonymizeDeletedSession() {
+    var collection = getContext().getCollection();
+    var response = getContext().getResponse();
+
+    // Retrieve Session document
+    var sessionQuery = `SELECT * FROM c WHERE c.type = 'Session'`;
+
+    var isSessionAccepted = collection.queryDocuments(
+        collection.getSelfLink(),
+        sessionQuery,
+        {},
+        function (err, sessionDocuments, responseOptions) {
+            if (err) throw err;
+
+            if (sessionDocuments.length === 0 || !sessionDocuments[0].deleted) {
+                response.setBody(&quot;Session cannot be anonymized because it was not deleted.&quot;);
+                return;
+            }
+
+            // Session marked as deleted, proceed
+            var query = `SELECT * FROM c WHERE c.type = 'CompletionPrompt' OR c.type = 'Message'`;
+
+            var isAccepted = collection.queryDocuments(
+                collection.getSelfLink(),
+                query,
+                {},
+                function (err, documents, responseOptions) {
+                    if (err) throw err;
+
+                    if (documents.length === 0) {
+                        response.setBody(&quot;No related documents found.&quot;);
+                        return;
+                    }
+
+                    var updatedCount = 0;
+                    var processedCount = 0;
+
+                    documents.forEach(function (doc) {
+                        if (doc.type === &quot;CompletionPrompt&quot;) {
+                            doc.prompt = &quot;Deleted&quot;;
+                        }
+
+                        if (doc.type === &quot;Message&quot;) {
+                            doc.text = &quot;Deleted&quot;;
+
+                            if (Array.isArray(doc.content)) {
+                                doc.content.forEach(function (contentItem) {
+                                    contentItem.value = &quot;Deleted&quot;;
+                                });
+                            }
+
+                            if (Array.isArray(doc.analysisResults)) {
+                                doc.analysisResults.forEach(function (analysisItem) {
+                                    analysisItem.toolInput = &quot;Deleted&quot;;
+                                    analysisItem.toolOutput = &quot;Deleted&quot;;
+                                });
+                            }
+                        }
+
+                        // Update the document
+                        var acceptUpdate = collection.replaceDocument(doc._self, doc, function (err) {
+                            if (err) throw err;
+
+                            updatedCount++;
+                            processedCount++;
+
+                            // Check if all documents processed
+                            if (processedCount === documents.length) {
+                                response.setBody(&quot;Updated &quot; + updatedCount + &quot; documents.&quot;);
+                            }
+                        });
+
+                        if (!acceptUpdate) throw new Error(&quot;Update not accepted, aborting&quot;);
+                    });
+                }
+            );
+
+            if (!isAccepted) throw new Error(&quot;Query was not accepted by server.&quot;);
+        }
+    );
+
+    if (!isSessionAccepted) throw new Error(&quot;Session query was not accepted by server.&quot;);
+}
+</code></pre>
+<h3 id="step-4-save">Step 4: Save</h3>
+<p>Click <strong>Save</strong> to create the stored procedure.</p>
+<h2 id="executing-the-stored-procedure">Executing the Stored Procedure</h2>
+<h3 id="via-azure-portal">Via Azure Portal</h3>
+<ol>
+<li>Navigate to <strong>Data Explorer</strong></li>
+<li>Expand <strong>Sessions</strong> container &gt; <strong>Stored Procedures</strong></li>
+<li>Select <code>anonymizeDeletedSession</code></li>
+<li>Click <strong>Execute</strong></li>
+<li>In the input panel:
+<ul>
+<li><strong>Partition key value</strong>: Enter the <code>sessionId</code> of the deleted session</li>
+</ul>
+</li>
+<li>Click <strong>Execute</strong></li>
+</ol>
+<h3 id="expected-output">Expected Output</h3>
+<p><strong>Success:</strong></p>
+<pre><code>Updated X documents.
+</code></pre>
+<p><strong>Session Not Deleted:</strong></p>
+<pre><code>Session cannot be anonymized because it was not deleted.
+</code></pre>
+<p><strong>No Related Documents:</strong></p>
+<pre><code>No related documents found.
+</code></pre>
+<h3 id="via-azure-cli">Via Azure CLI</h3>
+<pre><code class="lang-bash"># Execute stored procedure
+az cosmosdb sql stored-procedure execute \
+  --account-name &lt;cosmos-account&gt; \
+  --database-name &lt;database&gt; \
+  --container-name Sessions \
+  --name anonymizeDeletedSession \
+  --partition-key-value &lt;session-id&gt; \
+  --resource-group &lt;resource-group&gt;
+</code></pre>
+<h2 id="bulk-anonymization">Bulk Anonymization</h2>
+<p>For bulk anonymization of multiple sessions:</p>
+<h3 id="query-deleted-sessions">Query Deleted Sessions</h3>
+<pre><code class="lang-sql">SELECT c.id, c.sessionId 
+FROM c 
+WHERE c.type = 'Session' AND c.deleted = true
+</code></pre>
+<h3 id="automation-script">Automation Script</h3>
+<pre><code class="lang-powershell"># Get all deleted sessions
+$deletedSessions = az cosmosdb sql query \
+    --account-name $cosmosAccount \
+    --database-name $database \
+    --container-name Sessions \
+    --query &quot;SELECT c.sessionId FROM c WHERE c.type = 'Session' AND c.deleted = true&quot; \
+    | ConvertFrom-Json
+
+# Anonymize each session
+foreach ($session in $deletedSessions) {
+    Write-Host &quot;Anonymizing session: $($session.sessionId)&quot;
+    
+    az cosmosdb sql stored-procedure execute `
+        --account-name $cosmosAccount `
+        --database-name $database `
+        --container-name Sessions `
+        --name anonymizeDeletedSession `
+        --partition-key-value $session.sessionId `
+        --resource-group $resourceGroup
+}
+</code></pre>
+<h2 id="scheduling-automatic-purges">Scheduling Automatic Purges</h2>
+<h3 id="using-azure-functions">Using Azure Functions</h3>
+<p>Create a timer-triggered function to run periodically:</p>
+<pre><code class="lang-csharp">[FunctionName(&quot;AnonymizeDeletedSessions&quot;)]
+public static async Task Run(
+    [TimerTrigger(&quot;0 0 2 * * *&quot;)] TimerInfo timer, // Daily at 2 AM
+    [CosmosDB(
+        databaseName: &quot;%CosmosDbDatabase%&quot;,
+        containerName: &quot;Sessions&quot;,
+        Connection = &quot;CosmosDbConnection&quot;)] CosmosClient client,
+    ILogger log)
+{
+    // Implementation to find and anonymize deleted sessions
+}
+</code></pre>
+<blockquote>
+<p><strong>TODO:</strong> Provide complete Azure Function implementation for scheduled anonymization.</p>
+</blockquote>
+<h2 id="compliance-considerations">Compliance Considerations</h2>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Implementation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>GDPR Right to Erasure</strong></td>
+<td>Anonymize user data on request</td>
+</tr>
+<tr>
+<td><strong>Data Retention</strong></td>
+<td>Preserve aggregate statistics</td>
+</tr>
+<tr>
+<td><strong>Audit Trail</strong></td>
+<td>Log anonymization operations</td>
+</tr>
+<tr>
+<td><strong>Verification</strong></td>
+<td>Query to confirm anonymization</td>
+</tr>
+</tbody>
+</table>
+<h2 id="verification-query">Verification Query</h2>
+<p>Confirm anonymization:</p>
+<pre><code class="lang-sql">SELECT 
+    c.type,
+    c.text,
+    c.prompt
+FROM c 
+WHERE c.sessionId = '&lt;session-id&gt;'
+AND (c.type = 'Message' OR c.type = 'CompletionPrompt')
+</code></pre>
+<p>Expected result: All <code>text</code> and <code>prompt</code> fields show &quot;Deleted&quot;.</p>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="backups.html">Backups &amp; Data Resiliency</a></li>
+<li><a href="../security-permissions/platform-security.html">Platform Security</a></li>
+<li><a href="../monitoring-troubleshooting/logs.html">Logs &amp; Monitoring</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

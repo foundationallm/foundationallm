@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Post-Deployment Prerequisites | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Post-Deployment Prerequisites | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/platform-operations/security-permissions/authentication-authorization/pre-requisites.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="post-deployment-prerequisites">Post-Deployment Prerequisites</h1>
+
+<p>Complete these prerequisites before configuring authentication settings after deployment.</p>
+<h2 id="overview">Overview</h2>
+<p>After running <code>azd up</code> or <code>azd deploy</code>, you need to:</p>
+<ol>
+<li>Access App Configuration</li>
+<li>Obtain application URLs</li>
+<li>Update app registrations with deployment-specific values</li>
+</ol>
+<h2 id="setup-app-configuration-access">Setup App Configuration Access</h2>
+<h3 id="step-1-navigate-to-resources">Step 1: Navigate to Resources</h3>
+<ol>
+<li>Sign in to <a href="https://portal.azure.com/">Azure Portal</a></li>
+<li>Navigate to your deployment resource group</li>
+</ol>
+<blockquote>
+<p><strong>Note:</strong> For ACA deployments, you'll see an additional <code>ME_*</code> resource group. For AKS, you'll see <code>MC_*</code>. Access the main resource group (without prefix) for App Configuration.</p>
+</blockquote>
+<h3 id="step-2-verify-access">Step 2: Verify Access</h3>
+<ol>
+<li>Select the <strong>App Configuration</strong> resource</li>
+<li>Select <strong>Configuration explorer</strong></li>
+<li>Attempt to view values</li>
+</ol>
+<h3 id="step-3-add-permissions-if-needed">Step 3: Add Permissions (if needed)</h3>
+<p>If you cannot access configurations:</p>
+<ol>
+<li>Select <strong>Access control (IAM)</strong> in App Configuration</li>
+<li>Click <strong>+ Add</strong> &gt; <strong>Add role assignment</strong></li>
+<li>Select role: <strong>App Configuration Data Owner</strong></li>
+<li>Assign to your user account</li>
+<li>Click <strong>Review + assign</strong></li>
+</ol>
+<h2 id="obtain-application-urls">Obtain Application URLs</h2>
+<h3 id="azure-container-apps-quick-start">Azure Container Apps (Quick Start)</h3>
+<p><strong>Chat Portal URL:</strong></p>
+<ol>
+<li>Navigate to resource group</li>
+<li>Select Container App ending with <code>chatuica</code></li>
+<li>Copy <strong>Application Url</strong> from Overview</li>
+</ol>
+<p><strong>Management Portal URL:</strong></p>
+<ol>
+<li>Select Container App ending with <code>managementuica</code></li>
+<li>Copy <strong>Application Url</strong> from Overview</li>
+</ol>
+<h3 id="azure-kubernetes-service-standard">Azure Kubernetes Service (Standard)</h3>
+<p><strong>Chat Portal URL:</strong></p>
+<ol>
+<li>Navigate to resource group</li>
+<li>Select the <strong>Kubernetes service</strong> resource</li>
+<li>Select <strong>Properties</strong></li>
+<li>Note the <strong>HTTP application routing domain</strong></li>
+<li>Chat URL: <code>https://&lt;domain&gt;/</code></li>
+</ol>
+<p><strong>Management Portal URL:</strong></p>
+<ul>
+<li>Management URL: <code>https://&lt;domain&gt;/management/</code></li>
+</ul>
+<p><strong>Or from hosts file:</strong>
+Check <code>deploy/standard/config/hosts.ingress</code> generated during deployment.</p>
+<h2 id="urls-for-redirect-uris">URLs for Redirect URIs</h2>
+<p>Record these URLs for app registration updates:</p>
+<table>
+<thead>
+<tr>
+<th>Application</th>
+<th>URL Pattern (ACA)</th>
+<th>URL Pattern (AKS)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Chat Portal</td>
+<td><code>https://&lt;name&gt;chatuica.&lt;region&gt;.azurecontainerapps.io</code></td>
+<td><code>https://chat.&lt;domain&gt;</code></td>
+</tr>
+<tr>
+<td>Management Portal</td>
+<td><code>https://&lt;name&gt;managementuica.&lt;region&gt;.azurecontainerapps.io</code></td>
+<td><code>https://management.&lt;domain&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="update-redirect-uris">Update Redirect URIs</h2>
+<p>After obtaining URLs, update app registrations:</p>
+<h3 id="chat-portal-foundationallm-user-portal">Chat Portal (FoundationaLLM-User-Portal)</h3>
+<ol>
+<li>Navigate to <strong>Microsoft Entra ID</strong> &gt; <strong>App registrations</strong></li>
+<li>Select <strong>FoundationaLLM-User-Portal</strong></li>
+<li>Select <strong>Authentication</strong></li>
+<li>Under <strong>Single-page application</strong>, add:
+<pre><code>&lt;CHAT_PORTAL_URL&gt;/signin-oidc
+</code></pre>
+</li>
+<li>Click <strong>Save</strong></li>
+</ol>
+<h3 id="management-portal-foundationallm-management-portal">Management Portal (FoundationaLLM-Management-Portal)</h3>
+<ol>
+<li>Select <strong>FoundationaLLM-Management-Portal</strong></li>
+<li>Select <strong>Authentication</strong></li>
+<li>Under <strong>Single-page application</strong>, add:
+<pre><code>&lt;MANAGEMENT_PORTAL_URL&gt;/signin-oidc
+</code></pre>
+</li>
+<li>Click <strong>Save</strong></li>
+</ol>
+<h2 id="automation-script">Automation Script</h2>
+<p>For Quick Start deployments, use the provided script:</p>
+<pre><code class="lang-powershell">cd deploy/quick-start
+../common/scripts/Update-OAuthCallbackUris.ps1
+</code></pre>
+<p>This automatically updates redirect URIs based on deployed resources.</p>
+<h2 id="next-steps">Next Steps</h2>
+<p>After completing prerequisites:</p>
+<ol>
+<li><a href="post-deployment/core-authentication-post.html">Complete Core API Post-Deployment</a></li>
+<li><a href="post-deployment/management-authentication-post.html">Complete Management API Post-Deployment</a></li>
+<li><a href="post-deployment/authorization-post.html">Complete Authorization Post-Deployment</a></li>
+</ol>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="index.html">Authentication Setup Overview</a></li>
+<li><a href="../../deployment/app-configuration-values.html">App Configuration Values</a></li>
+<li><a href="../../monitoring-troubleshooting/troubleshooting.html">Troubleshooting</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

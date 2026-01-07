@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Using App Configuration for Branding | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Using App Configuration for Branding | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/management-portal/reference/branding/using-app-configuration.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="using-app-configuration-for-branding">Using App Configuration for Branding</h1>
+
+<p>Configure branding settings through Azure App Configuration for infrastructure-as-code deployments.</p>
+<h2 id="overview">Overview</h2>
+<p>Azure App Configuration provides a centralized store for branding settings, enabling:</p>
+<ul>
+<li>Infrastructure-as-code management</li>
+<li>Deployment automation</li>
+<li>Environment-specific configurations</li>
+<li>Version control of settings</li>
+</ul>
+<h2 id="configuration-keys">Configuration Keys</h2>
+<p>All branding keys follow the pattern: <code>FoundationaLLM:Branding:{SettingName}</code></p>
+<h3 id="text-settings">Text Settings</h3>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM:Branding:CompanyName</code></td>
+<td>String</td>
+<td>Organization name</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Branding:PageTitle</code></td>
+<td>String</td>
+<td>Browser tab title</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Branding:LogoText</code></td>
+<td>String</td>
+<td>Text if logo unavailable</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Branding:LogoUrl</code></td>
+<td>String</td>
+<td>Logo image path</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Branding:FavIconUrl</code></td>
+<td>String</td>
+<td>Favicon path</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Branding:AgentIconUrl</code></td>
+<td>String</td>
+<td>Default agent icon path</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Branding:FooterText</code></td>
+<td>String</td>
+<td>Footer HTML</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Branding:NoAgentsMessage</code></td>
+<td>String</td>
+<td>No agents message HTML</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Branding:DefaultAgentWelcomeMessage</code></td>
+<td>String</td>
+<td>Default welcome HTML</td>
+</tr>
+</tbody>
+</table>
+<h3 id="color-settings">Color Settings</h3>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Format</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM:Branding:PrimaryColor</code></td>
+<td>String</td>
+<td>Hex or RGB</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Branding:PrimaryTextColor</code></td>
+<td>String</td>
+<td>Hex or RGB</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Branding:SecondaryColor</code></td>
+<td>String</td>
+<td>Hex or RGB</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Branding:SecondaryTextColor</code></td>
+<td>String</td>
+<td>Hex or RGB</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Branding:AccentColor</code></td>
+<td>String</td>
+<td>Hex or RGB</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Branding:AccentTextColor</code></td>
+<td>String</td>
+<td>Hex or RGB</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Branding:BackgroundColor</code></td>
+<td>String</td>
+<td>Hex or RGB</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Branding:PrimaryButtonBackgroundColor</code></td>
+<td>String</td>
+<td>Hex or RGB</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Branding:PrimaryButtonTextColor</code></td>
+<td>String</td>
+<td>Hex or RGB</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Branding:SecondaryButtonBackgroundColor</code></td>
+<td>String</td>
+<td>Hex or RGB</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Branding:SecondaryButtonTextColor</code></td>
+<td>String</td>
+<td>Hex or RGB</td>
+</tr>
+</tbody>
+</table>
+<h3 id="mode-settings">Mode Settings</h3>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM:Branding:KioskMode</code></td>
+<td>String</td>
+<td><code>true</code> or <code>false</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="setting-values-via-azure-portal">Setting Values via Azure Portal</h2>
+<ol>
+<li>Navigate to your Azure App Configuration resource</li>
+<li>Click <strong>Configuration explorer</strong></li>
+<li>Click <strong>+ Create</strong> &gt; <strong>Key-value</strong></li>
+<li>Enter the key (e.g., <code>FoundationaLLM:Branding:CompanyName</code>)</li>
+<li>Enter the value</li>
+<li>Click <strong>Apply</strong></li>
+</ol>
+<h2 id="setting-values-via-azure-cli">Setting Values via Azure CLI</h2>
+<pre><code class="lang-bash"># Set a text value
+az appconfig kv set \
+  --name &lt;app-config-name&gt; \
+  --key &quot;FoundationaLLM:Branding:CompanyName&quot; \
+  --value &quot;Contoso&quot;
+
+# Set a color value
+az appconfig kv set \
+  --name &lt;app-config-name&gt; \
+  --key &quot;FoundationaLLM:Branding:PrimaryColor&quot; \
+  --value &quot;#1a2b3c&quot;
+</code></pre>
+<h2 id="setting-values-via-biceparm">Setting Values via Bicep/ARM</h2>
+<pre><code class="lang-bicep">resource appConfig 'Microsoft.AppConfiguration/configurationStores@2023-03-01' existing = {
+  name: appConfigName
+}
+
+resource brandingCompanyName 'Microsoft.AppConfiguration/configurationStores/keyValues@2023-03-01' = {
+  parent: appConfig
+  name: 'FoundationaLLM:Branding:CompanyName'
+  properties: {
+    value: 'Contoso'
+  }
+}
+
+resource brandingPrimaryColor 'Microsoft.AppConfiguration/configurationStores/keyValues@2023-03-01' = {
+  parent: appConfig
+  name: 'FoundationaLLM:Branding:PrimaryColor'
+  properties: {
+    value: '#1a2b3c'
+  }
+}
+</code></pre>
+<h2 id="environment-specific-configuration">Environment-Specific Configuration</h2>
+<p>Use labels for environment-specific settings:</p>
+<pre><code class="lang-bash"># Development
+az appconfig kv set \
+  --name &lt;app-config-name&gt; \
+  --key &quot;FoundationaLLM:Branding:PageTitle&quot; \
+  --value &quot;FoundationaLLM (Dev)&quot; \
+  --label &quot;dev&quot;
+
+# Production
+az appconfig kv set \
+  --name &lt;app-config-name&gt; \
+  --key &quot;FoundationaLLM:Branding:PageTitle&quot; \
+  --value &quot;FoundationaLLM&quot; \
+  --label &quot;prod&quot;
+</code></pre>
+<h2 id="value-format-notes">Value Format Notes</h2>
+<h3 id="color-values">Color Values</h3>
+<p>Supported formats:</p>
+<ul>
+<li><code>#RRGGBB</code> (6-digit hex)</li>
+<li><code>#RGB</code> (3-digit hex, expanded to 6-digit)</li>
+<li><code>rgb(R, G, B)</code> (RGB function)</li>
+</ul>
+<h3 id="html-values">HTML Values</h3>
+<p>For rich text fields (Footer, Messages), use properly escaped HTML:</p>
+<ul>
+<li>Escape special characters if needed</li>
+<li>Ensure HTML is valid</li>
+</ul>
+<h2 id="cache-considerations">Cache Considerations</h2>
+<p>App Configuration values are cached:</p>
+<ul>
+<li>Portal applications refresh periodically</li>
+<li>Users may need to refresh browser to see changes</li>
+<li>Consider cache timing when deploying updates</li>
+</ul>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="index.html">Branding Reference</a></li>
+<li><a href="using-management-portal.html">Using Management Portal for Branding</a></li>
+<li><a href="using-rest-api.html">Using REST API for Branding</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

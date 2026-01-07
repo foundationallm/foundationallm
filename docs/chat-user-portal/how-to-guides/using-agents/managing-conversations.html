@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Managing Conversations | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Managing Conversations | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/chat-user-portal/how-to-guides/using-agents/managing-conversations.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="managing-conversations">Managing Conversations</h1>
+
+<p>Create, organize, rename, and delete your conversations in the Chat User Portal.</p>
+<h2 id="understanding-conversations">Understanding Conversations</h2>
+<p>A conversation (also called a chat or session) is a continuous dialog with an AI agent. Each conversation:</p>
+<ul>
+<li>Has its own message history</li>
+<li>Maintains context from previous messages in that conversation</li>
+<li>Can use a different agent than other conversations</li>
+<li>Is saved automatically so you can return to it later</li>
+</ul>
+<h2 id="the-sidebar">The Sidebar</h2>
+<p>The sidebar on the left side of the screen shows all your saved conversations:</p>
+<ul>
+<li><strong>Chats</strong> header with a <strong>+</strong> button to create new conversations</li>
+<li>List of your conversations, newest first</li>
+<li>Each conversation shows its name (which you can customize)</li>
+<li>The currently selected conversation is highlighted</li>
+</ul>
+<h2 id="creating-a-new-conversation">Creating a New Conversation</h2>
+<h3 id="using-the--button">Using the + Button</h3>
+<ol>
+<li>Click the <strong>+</strong> button next to the &quot;Chats&quot; header in the sidebar</li>
+<li>A new conversation is created immediately</li>
+<li>The conversation becomes active and ready for your first message</li>
+</ol>
+<h3 id="automatic-creation">Automatic Creation</h3>
+<p>A new conversation is also created when:</p>
+<ul>
+<li>You switch agents during an active conversation</li>
+<li>Your current conversation is the first message with a new agent</li>
+</ul>
+<blockquote>
+<p><strong>Tip:</strong> If you accidentally create a new conversation when you meant to continue an existing one, click the existing conversation in the sidebar to return to it.</p>
+</blockquote>
+<h2 id="selecting-a-conversation">Selecting a Conversation</h2>
+<ol>
+<li>Look at the conversation list in the sidebar</li>
+<li>Click on any conversation to open it</li>
+<li>The selected conversation is highlighted with a colored background and left border</li>
+<li>Your messages and the agent's responses appear in the main area</li>
+</ol>
+<h2 id="renaming-a-conversation">Renaming a Conversation</h2>
+<p>By default, conversations are named with a timestamp (e.g., &quot;Chat 12/14/2024, 10:30 AM&quot;). You can give them more descriptive names.</p>
+<h3 id="to-rename">To Rename</h3>
+<ol>
+<li>Find the conversation in the sidebar</li>
+<li>Hover over the conversation to reveal the action icons</li>
+<li>Click the <strong>Settings</strong> button (gear icon ⚙️)</li>
+<li>In the dialog that appears, edit the <strong>Name</strong> field</li>
+<li>Click <strong>Update</strong> to save</li>
+</ol>
+<h3 id="naming-tips">Naming Tips</h3>
+<ul>
+<li>Use descriptive names like &quot;Q4 Sales Analysis&quot; or &quot;Code Review - Login Feature&quot;</li>
+<li>Include the project or topic for easy identification</li>
+<li>Add dates if you have ongoing conversations about the same topic</li>
+</ul>
+<h2 id="adding-metadata-to-conversations">Adding Metadata to Conversations</h2>
+<p>You can attach metadata (additional information) to conversations for organizational purposes.</p>
+<ol>
+<li>Click the <strong>Settings</strong> button (gear icon) on a conversation</li>
+<li>Find the <strong>Metadata</strong> field</li>
+<li>Enter valid JSON data, such as:</li>
+</ol>
+<pre><code class="lang-json">{
+  &quot;project&quot;: &quot;Marketing Campaign&quot;,
+  &quot;priority&quot;: &quot;high&quot;,
+  &quot;deadline&quot;: &quot;2024-01-15&quot;
+}
+</code></pre>
+<ol start="4">
+<li>Click <strong>Update</strong> to save</li>
+</ol>
+<blockquote>
+<p><strong>Note:</strong> Metadata must be valid JSON format. If you enter invalid JSON, you'll see an error message.</p>
+</blockquote>
+<h2 id="deleting-a-conversation">Deleting a Conversation</h2>
+<h3 id="using-the-delete-button">Using the Delete Button</h3>
+<ol>
+<li>Find the conversation in the sidebar</li>
+<li>Hover over the conversation to reveal the action icons</li>
+<li>Click the <strong>Delete</strong> button (trash icon 🗑️)</li>
+<li>A confirmation dialog appears: &quot;Do you want to delete the chat '[conversation name]'?&quot;</li>
+<li>Click <strong>Yes</strong> to confirm deletion</li>
+</ol>
+<h3 id="using-keyboard">Using Keyboard</h3>
+<ol>
+<li>Navigate to the conversation using Tab key</li>
+<li>Press <code>Delete</code> or <code>Backspace</code></li>
+<li>Confirm the deletion in the dialog</li>
+</ol>
+<blockquote>
+<p><strong>⚠️ Warning:</strong> Deleted conversations cannot be recovered. Make sure you no longer need the information before deleting.</p>
+</blockquote>
+<h2 id="switching-agents-within-conversations">Switching Agents Within Conversations</h2>
+<p>When you change agents:</p>
+<ol>
+<li>Click the agent selector dropdown in the top navigation</li>
+<li>Choose a different agent</li>
+<li>A new conversation starts automatically</li>
+<li>Your previous conversation with the other agent remains in the sidebar</li>
+</ol>
+<p>This behavior ensures each conversation maintains consistent context with a single agent.</p>
+<h2 id="conversation-features">Conversation Features</h2>
+<h3 id="context-retention">Context Retention</h3>
+<p>Agents remember previous messages in your conversation:</p>
+<ul>
+<li>Recent messages are included when generating responses</li>
+<li>This allows for follow-up questions and clarifications</li>
+<li>The number of messages retained depends on agent configuration</li>
+</ul>
+<h3 id="automatic-saving">Automatic Saving</h3>
+<ul>
+<li>Conversations save automatically as you chat</li>
+<li>You can close the browser and return later</li>
+<li>No &quot;save&quot; button is needed</li>
+</ul>
+<h3 id="session-persistence">Session Persistence</h3>
+<ul>
+<li>Conversations are tied to your user account</li>
+<li>Access your conversations from any device by logging in</li>
+<li>Conversations persist until you delete them</li>
+</ul>
+<h2 id="managing-many-conversations">Managing Many Conversations</h2>
+<p>If you have many conversations:</p>
+<h3 id="quick-navigation">Quick Navigation</h3>
+<ul>
+<li>Scroll through the sidebar to find conversations</li>
+<li>Click any conversation to open it immediately</li>
+<li>The current conversation remains highlighted</li>
+</ul>
+<h3 id="cleanup-strategy">Cleanup Strategy</h3>
+<ul>
+<li>Regularly delete conversations you no longer need</li>
+<li>Rename important conversations for easy identification</li>
+<li>Consider the conversation's purpose before deleting</li>
+</ul>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="conversation-wont-load">Conversation Won't Load</h3>
+<ul>
+<li>Wait for the loading spinner to complete</li>
+<li>Refresh the page (<code>F5</code> or <code>Ctrl + R</code>)</li>
+<li>Check your internet connection</li>
+</ul>
+<h3 id="messages-not-appearing">Messages Not Appearing</h3>
+<ul>
+<li>Scroll down to see newer messages</li>
+<li>Wait for the conversation to fully load</li>
+<li>The conversation may be empty if you haven't sent any messages yet</li>
+</ul>
+<h3 id="cannot-delete-conversation">Cannot Delete Conversation</h3>
+<ul>
+<li>Make sure you've confirmed the deletion dialog</li>
+<li>Check if you have a stable internet connection</li>
+<li>Try refreshing the page and attempting again</li>
+</ul>
+<h3 id="lost-a-conversation">Lost a Conversation</h3>
+<ul>
+<li>Conversations cannot be recovered once deleted</li>
+<li>Check if you're logged into the correct account</li>
+<li>The conversation may have been deleted from another device</li>
+</ul>
+<h3 id="new-conversation-created-unexpectedly">New Conversation Created Unexpectedly</h3>
+<p>This happens when:</p>
+<ul>
+<li>You switched agents during an active conversation</li>
+<li>The current agent was changed</li>
+<li>You clicked the + button</li>
+</ul>
+<p>Your previous conversation is still available in the sidebar.</p>
+<h3 id="rename-not-saving">Rename Not Saving</h3>
+<ul>
+<li>Make sure metadata (if provided) is valid JSON</li>
+<li>Check your internet connection</li>
+<li>Click the <strong>Update</strong> button (not just close the dialog)</li>
+</ul>
+<h2 id="keyboard-shortcuts">Keyboard Shortcuts</h2>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Keys</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Navigate sidebar</td>
+<td><code>Tab</code> through items</td>
+</tr>
+<tr>
+<td>Select conversation</td>
+<td><code>Enter</code> when focused</td>
+</tr>
+<tr>
+<td>Delete conversation</td>
+<td><code>Delete</code> or <code>Backspace</code> when focused</td>
+</tr>
+<tr>
+<td>Cancel dialog</td>
+<td><code>Escape</code></td>
+</tr>
+<tr>
+<td>Confirm action</td>
+<td><code>Enter</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="selecting-agent.html">Selecting an Agent</a> — Choose the right agent for your task</li>
+<li><a href="printing-conversations.html">Printing Conversations</a> — Save conversations as PDF or print</li>
+<li><a href="copying-prompts-results.html">Copying Messages</a> — Copy content from conversations</li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Directly calling the Management API | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Directly calling the Management API | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../toc.html">
+      <meta name="docfx:tocrel" content="../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/development/calling-apis/directly-calling-management-api.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../index.html">
+            <img id="logo" class="svg" src="../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="directly-calling-the-management-api">Directly calling the Management API</h1>
+
+<p>This guide provides steps for importing and configuring the Postman collection for the FoundationaLLM Management API. The Management API is used to manage the FoundationaLLM system, including creating and managing agents, data pipelines, knowledge sources, and more. Once you configure the Postman collection, including authentication, follow the instructions in the Management Portal documentation to perform various operations using the Management API.</p>
+<h2 id="postman-collection">Postman collection</h2>
+<p>The ability to test the API endpoints of FoundationaLLM is a critical part of the development process. Postman is a tool that allows you to do just that. This document will walk you through the process of setting up Postman to work with FoundationaLLM.</p>
+<div class="TIP">
+<h5>Tip</h5>
+<p>To find the Management API URL for your deployment, you can retrieve it from your App Configuration resource in the portal by viewing the <code>FoundationaLLM:APIs:ManagementAPI:APIUrl</code> configuration value.</p>
+</div>
+<p>To see the API endpoints available in FoundationaLLM, you can get your Management API endpoint from your App Configuration resource in the portal and add <code>/swagger/</code> to the end of it. For example, if your Management API endpoint is <code>https://fllmaca729managementca.icelake-c554b849.eastus.azurecontainerapps.io</code>, then you would navigate to <code>https://fllmaca729managementca.icelake-c554b849.eastus.azurecontainerapps.io/swagger/</code> to see the API endpoints.</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>The example link above is for a <a href="../../deployment/deployment-quick-start.md">Quick Start deployment</a> of FoundationaLLM, which deploys the APIs to Azure Container Apps (ACA). If you are using the standard deployment that deploys the APIs to Azure Kubernetes Service (AKS), then you cannot currently access the Swagger UI for the APIs. However, you will be able to obtain the OpenAPI swagger.json file from the Management API endpoint by navigating to <code>https://{{AKS URL}}/management/swagger/v1/swagger.json</code>.</p>
+</div>
+<h3 id="install-postman">Install Postman</h3>
+<p>If you don't have Postman installed on your machine, visit the <a href="https://www.getpostman.com/">Postman website</a> and download the app. Once you have it installed, Create a Blank Workspace.</p>
+<h3 id="import-the-postman-collection">Import the Postman collection</h3>
+<ol>
+<li><p>First, select the button below to fork and import the Postman collection for the Management API.</p>
+<p><a href="https://app.getpostman.com/run-collection/269456-839af3bb-2841-40d7-bb24-6409e9ef835e?action=collection%2Ffork&amp;source=rip_markdown&amp;collection-url=entityId%3D269456-839af3bb-2841-40d7-bb24-6409e9ef835e%26entityType%3Dcollection%26workspaceId%3D0d6298a2-c3cd-4530-900c-030ed0ae6dfa"><img src="https://run.pstmn.io/button.svg" alt="Run In Postman" style="width: 128px; height: 32px;"></a></p>
+</li>
+<li><p>Select <strong>Fork Collection</strong> to create a fork and import the collection into your Postman workspace.</p>
+<p><img src="media/postman-fork-collection.png" alt="The Import button is highlighted."></p>
+</li>
+<li><p>Within the dialog that displays, enter your fork label, select the Postman workspace into which you want to create the fork, optionally check the <em>Watch original collection</em> checkbox to receive updates to the original collection, and then select <strong>Fork collection</strong>.</p>
+<p><img src="media/postman-fork-management-collection-form.png" alt="The Postman import dialog is highlighted."></p>
+</li>
+</ol>
+<p>You will now see the <strong>FoundationaLLM.Management.API</strong> collection in your Postman workspace.</p>
+<p><img src="media/postman-imported-management-collection.png" alt="The imported collection is displayed."></p>
+<h3 id="set-up-the-postman-environment-variables">Set up the Postman environment variables</h3>
+<p>The Postman collection you imported contains a number of API endpoints that you can use to test the Management API. However, before you can use these endpoints, you need to set up a Postman environment variables within your collection that contains the Management API URL and other variables. We will set up your authentication token in the next section.</p>
+<ol>
+<li><p>Select the <strong>FoundationaLLM.Management.API</strong> collection in the left-hand menu.</p>
+</li>
+<li><p>Select the <strong>Variables</strong> tab.</p>
+<p><img src="media/postman-management-variables-tab.png" alt="The Variables tab is highlighted."></p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>The <code>Initial value</code> column is the value that will be used when you first import the collection. The <code>Current value</code> column is the value that will be used when you run the collection. If you change the <code>Current value</code> column, the <code>Initial value</code> column will not be updated. For the steps that follow, you will be updating the <code>Current value</code> column.</p>
+</div>
+</li>
+<li><p>Update the <code>baseUrl</code> variable <code>Current value</code> with the Management API URL for your deployment.</p>
+<p><img src="media/postman-management-api-url-variable.png" alt="The Management API URL variable is highlighted."></p>
+</li>
+<li><p>Update the <code>instanceId</code> variable <code>Current value</code> with the instance ID of your FoundationaLLM deployment. You can find the instance ID in the <code>FoundationaLLM:Instance:Id</code> Azure App Configuration property.</p>
+<p><img src="media/postman-instance-id-variable.png" alt="The instance ID variable is highlighted."></p>
+</li>
+<li><p>Fill out the <code>tenantId</code>, <code>appClientId</code>, and <code>appScope</code> <strong>Current value</strong> settings for your <strong>Management Client</strong> Entra ID app registration (<a href="../../deployment/authentication/management-authentication-setup-entra.md#register-the-client-application-in-the-microsoft-entra-id-admin-center">setup instructions</a>). Use the list below the screenshot to find the values.</p>
+<p><img src="media/postman-management-auth-variables.png" alt="The Management API auth variables are highlighted."></p>
+<ul>
+<li><strong>tenantId</strong>: The tenant ID of your Management Client (Management Portal) Entra ID app. You can find this value in the <strong>Overview</strong> tab of your Entra ID app in the portal.</li>
+<li><strong>appClientId</strong>: The client ID of your Management Client Entra ID app. You can find this value in the <strong>Overview</strong> tab of your Entra ID app in the portal.</li>
+<li><strong>appScope</strong>: The scope of your Management Client Entra ID app. You can find this value in the <strong>Api Permissions</strong> section of your Entra ID app in the portal.</li>
+</ul>
+</li>
+<li><p>Select the <strong>Save</strong> button in the top right corner of the Variables pane to save your changes.</p>
+<p><img src="media/postman-management-save-button.png" alt="The Save button is highlighted."></p>
+</li>
+</ol>
+<h3 id="set-up-the-postman-authentication-token">Set up the Postman authentication token</h3>
+<h4 id="configure-the-postman-collection-authorization-token">Configure the Postman collection authorization token</h4>
+<p>Complete these steps to configure Postman to use the same token for all of the API calls in the collection.</p>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>If you previously configured the Microsoft Entra ID app registration for the Management Client (UI) application, you will need to update the <strong>Redirect URI</strong> to <code>https://oauth.pstmn.io/v1/callback</code> in order to use the Postman mobile app to get the token. You can do this by following the steps in the <a href="../../deployment/authentication/management-authentication-setup-entra.md#add-a-redirect-uri-to-the-client-application">Add a redirect URI to the client application</a> section of the authentication setup guide.</p>
+</div>
+<ol>
+<li><p>Select the <strong>Authorization</strong> tab within the <strong>FoundationaLLM.Management.API</strong> collection. You will see the <strong>Authorization</strong> tab at the collection level. This means that you can configure the token at the collection level and use it for all of the requests in the collection. Notice that the <strong>Token Name</strong> is <strong>FLLM Management Token</strong>. This will automatically be used by the requests in the collection.</p>
+<p><img src="media/postman-management-api-authentication.png" alt="The authentication form is displayed with the token name highlighted."></p>
+</li>
+</ol>
+<div class="NOTE">
+<h5>Note</h5>
+<p>All of the values are pre-filled and use the variables that you set up in the previous section. You do not need to change any values at this time.</p>
+</div>
+<p>Scroll down to the bottom of the page and click on <strong>Get New Access Token</strong>. This will open a new window in your browser and will ask you to login with your credentials.  Once you login, you will be asked to consent to the permissions that you specified in the <strong>Scope</strong> field.  Click on <strong>Accept</strong> to consent to the permissions.  You will then be redirected to the callback url that you specified in the <strong>Callback Url</strong> field.  This will close the browser window and will take you back to Postman. You should now see the token in the <strong>Authorization</strong> tab. Click on <strong>Use Token</strong> to use the token in the collection.</p>
+<p><img src="media/postman-use-management-token.png" alt="The Use Token button is highlighted."></p>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>Be sure to click the <strong>Save</strong> button in the top right corner of the Postman app to save your changes.</p>
+</div>
+<p>Now you are ready to make your first ManagementAPI request.</p>
+<p>Within the <strong>FoundationaLLM.Management.API</strong> collection, select the <strong>Get Agents</strong> GET request. When you select the <code>Authorization</code> tab, notice that the selected type is <code>Inherit auth from parent</code>. This means that the request will use the token that you configured at the collection level. Also notice that the <code>{{baseUrl}}</code> and <code>{{instanceId}}</code> variables is used in the <code>Request Url</code> field. This means that the request will use the Management API URL and Instance Id that you configured at the collection level. Select the <strong>Send</strong> button to send the request. Even if you do not have any agents sessions in your system, you should receive a successful response (200) from the Management API.</p>
+<p><img src="media/postman-agents-request.png" alt="The Sessions endpoint request and response are shown."></p>
+<p>Now you can use the same token to test any other request in the collection with ease.</p>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

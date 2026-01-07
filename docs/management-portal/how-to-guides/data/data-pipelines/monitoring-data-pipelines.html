@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Monitoring Data Pipelines | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Monitoring Data Pipelines | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/management-portal/how-to-guides/data/data-pipelines/monitoring-data-pipelines.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../../index.html">
+            <img id="logo" class="svg" src="../../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="monitoring-data-pipelines">Monitoring Data Pipelines</h1>
+
+<p>Learn how to monitor data pipeline execution, track processing status, and understand performance characteristics.</p>
+<h2 id="overview">Overview</h2>
+<p>Monitoring data pipelines helps you:</p>
+<ul>
+<li>Track processing progress in real-time</li>
+<li>Identify and diagnose failures quickly</li>
+<li>Understand processing performance and latency</li>
+<li>Plan capacity and scheduling optimization</li>
+<li>Measure the effectiveness of performance improvements</li>
+</ul>
+<h2 id="performance-and-latency">Performance and Latency</h2>
+<h3 id="understanding-processing-latency">Understanding Processing Latency</h3>
+<p>Data pipeline latency refers to the time between when data is submitted and when it becomes available for agent queries. FoundationaLLM optimizes this through:</p>
+<table>
+<thead>
+<tr>
+<th>Optimization</th>
+<th>Benefit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Parallel Stage Processing</strong></td>
+<td>Multiple stages can run concurrently where dependencies allow</td>
+</tr>
+<tr>
+<td><strong>Batch Processing</strong></td>
+<td>Documents are processed in optimized batches</td>
+</tr>
+<tr>
+<td><strong>Efficient Embedding</strong></td>
+<td>Text embedding uses optimized batch sizes</td>
+</tr>
+<tr>
+<td><strong>Incremental Indexing</strong></td>
+<td>Only changed content is reprocessed</td>
+</tr>
+</tbody>
+</table>
+<h3 id="factors-affecting-latency">Factors Affecting Latency</h3>
+<table>
+<thead>
+<tr>
+<th>Factor</th>
+<th>Impact</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Document Size</strong></td>
+<td>Larger documents take longer to process</td>
+<td>Split large documents</td>
+</tr>
+<tr>
+<td><strong>Document Count</strong></td>
+<td>More documents increase total time</td>
+<td>Use parallel processing</td>
+</tr>
+<tr>
+<td><strong>Embedding Model</strong></td>
+<td>Model complexity affects speed</td>
+<td>Balance quality vs. speed</td>
+</tr>
+<tr>
+<td><strong>Index Size</strong></td>
+<td>Large indexes may slow indexing</td>
+<td>Use index partitions</td>
+</tr>
+<tr>
+<td><strong>Network Latency</strong></td>
+<td>Remote services add overhead</td>
+<td>Use regional deployments</td>
+</tr>
+</tbody>
+</table>
+<h3 id="performance-configuration">Performance Configuration</h3>
+<p>To optimize pipeline performance:</p>
+<ol>
+<li><strong>Adjust Batch Sizes</strong>: Larger batches can improve throughput but increase memory usage</li>
+<li><strong>Configure Parallelism</strong>: Set appropriate concurrent processing limits</li>
+<li><strong>Tune Chunk Sizes</strong>: Balance between context quality and processing speed</li>
+<li><strong>Schedule Off-Peak</strong>: Run large pipelines during low-usage periods</li>
+</ol>
+<h2 id="monitoring-locations">Monitoring Locations</h2>
+<p>Pipeline monitoring is available in two places:</p>
+<ol>
+<li><strong>Data Pipelines</strong> - View pipeline configurations and status</li>
+<li><strong>Data Pipeline Runs</strong> - View detailed execution history</li>
+</ol>
+<h2 id="pipeline-status-indicators">Pipeline Status Indicators</h2>
+<h3 id="in-the-pipelines-list">In the Pipelines List</h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Active</strong></td>
+<td>Whether the pipeline is enabled</td>
+</tr>
+<tr>
+<td><strong>Last Run</strong></td>
+<td>Most recent execution status (if shown)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="in-pipeline-runs">In Pipeline Runs</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Running</strong></td>
+<td>Currently processing data</td>
+</tr>
+<tr>
+<td><strong>Completed</strong></td>
+<td>Finished successfully</td>
+</tr>
+<tr>
+<td><strong>Failed</strong></td>
+<td>Encountered an error</td>
+</tr>
+<tr>
+<td><strong>Cancelled</strong></td>
+<td>Manually stopped</td>
+</tr>
+</tbody>
+</table>
+<h2 id="real-time-monitoring">Real-Time Monitoring</h2>
+<h3 id="watching-active-runs">Watching Active Runs</h3>
+<ol>
+<li>Navigate to <strong>Data Pipeline Runs</strong></li>
+<li>Filter by <strong>Status: Running</strong></li>
+<li>Use the refresh button to update status</li>
+<li>Watch for completion or failures</li>
+</ol>
+<h3 id="progress-tracking">Progress Tracking</h3>
+<blockquote>
+<p><strong>TODO</strong>: Document real-time progress indicators if available, such as:</p>
+<ul>
+<li>Items processed count</li>
+<li>Current stage indicator</li>
+<li>Estimated time remaining</li>
+<li>Processing rate metrics</li>
+</ul>
+</blockquote>
+<h2 id="run-details">Run Details</h2>
+<p>Click on a specific run to view detailed information:</p>
+<h3 id="execution-log">Execution Log</h3>
+<blockquote>
+<p><strong>TODO</strong>: Document the detailed execution log view, including:</p>
+<ul>
+<li>Stage-by-stage progress</li>
+<li>Timestamps for each step</li>
+<li>Items processed per stage</li>
+<li>Error messages and stack traces</li>
+</ul>
+</blockquote>
+<h3 id="performance-metrics">Performance Metrics</h3>
+<blockquote>
+<p><strong>TODO</strong>: Document available performance metrics:</p>
+<ul>
+<li>Total duration</li>
+<li>Time per stage</li>
+<li>Items per second</li>
+<li>Resource utilization</li>
+</ul>
+</blockquote>
+<h2 id="alerting-and-notifications">Alerting and Notifications</h2>
+<blockquote>
+<p><strong>TODO</strong>: Document alerting capabilities if available:</p>
+<ul>
+<li>Failure notifications</li>
+<li>Completion notifications</li>
+<li>Integration with Azure Monitor or other systems</li>
+</ul>
+</blockquote>
+<h2 id="historical-analysis">Historical Analysis</h2>
+<h3 id="viewing-trends">Viewing Trends</h3>
+<p>Use the Pipeline Runs page filters to analyze patterns:</p>
+<ol>
+<li>Filter to a specific pipeline</li>
+<li>Set a time range (e.g., Last 30 Days)</li>
+<li>Review success rates and durations</li>
+<li>Identify recurring issues</li>
+</ol>
+<h3 id="common-patterns">Common Patterns</h3>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Possible Cause</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Intermittent failures</td>
+<td>Network issues, resource contention</td>
+</tr>
+<tr>
+<td>Increasing duration</td>
+<td>Growing data volume, performance degradation</td>
+</tr>
+<tr>
+<td>Consistent failures</td>
+<td>Configuration error, permission issue</td>
+</tr>
+<tr>
+<td>Success after retry</td>
+<td>Transient errors, timeout issues</td>
+</tr>
+</tbody>
+</table>
+<h2 id="troubleshooting-from-monitoring">Troubleshooting from Monitoring</h2>
+<h3 id="identifying-issues">Identifying Issues</h3>
+<ol>
+<li><strong>Failed Status</strong>: Check error messages in run details</li>
+<li><strong>Long Duration</strong>: Review stage timing for bottlenecks</li>
+<li><strong>Repeated Failures</strong>: Look for patterns in failure timing/type</li>
+</ol>
+<h3 id="common-issues">Common Issues</h3>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Investigation Steps</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Connection failures</td>
+<td>Check data source configuration, network</td>
+</tr>
+<tr>
+<td>Timeout errors</td>
+<td>Increase timeout settings, reduce batch size</td>
+</tr>
+<tr>
+<td>Resource errors</td>
+<td>Check storage capacity, API quotas</td>
+</tr>
+<tr>
+<td>Data errors</td>
+<td>Review source data quality, parsing settings</td>
+</tr>
+</tbody>
+</table>
+<h2 id="best-practices">Best Practices</h2>
+<h3 id="regular-monitoring">Regular Monitoring</h3>
+<ul>
+<li>Check pipeline runs daily during initial setup</li>
+<li>Set up alerts for critical pipelines</li>
+<li>Review trends weekly or monthly</li>
+</ul>
+<h3 id="proactive-management">Proactive Management</h3>
+<ul>
+<li>Address warnings before they become failures</li>
+<li>Plan maintenance during low-activity periods</li>
+<li>Monitor storage and quota utilization</li>
+</ul>
+<h3 id="documentation">Documentation</h3>
+<ul>
+<li>Record common failure patterns and solutions</li>
+<li>Document expected processing times</li>
+<li>Track changes that affect performance</li>
+</ul>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="../data-pipeline-runs.html">Data Pipeline Runs</a></li>
+<li><a href="creating-data-pipelines.html">Creating Data Pipelines</a></li>
+<li><a href="invoking-data-pipelines.html">Invoking Data Pipelines</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

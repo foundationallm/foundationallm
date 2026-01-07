@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Agents and Workflows | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Agents and Workflows | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/management-portal/reference/concepts/agents-workflows.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="agents-and-workflows">Agents and Workflows</h1>
+
+<p>Agents are the core of FoundationaLLM, providing users with customized AI-powered conversational experiences based on their configuration. This reference documents the agent resource structure and workflow configuration options.</p>
+<h2 id="agent-resource-structure">Agent Resource Structure</h2>
+<p>An agent consists of several configuration sections:</p>
+<table>
+<thead>
+<tr>
+<th>Section</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>General</strong></td>
+<td>Basic information (name, description, welcome message)</td>
+</tr>
+<tr>
+<td><strong>Agent Configuration</strong></td>
+<td>Behavior settings (history, gatekeeper, cost center, expiration, portal displays)</td>
+</tr>
+<tr>
+<td><strong>User Portal Experience</strong></td>
+<td>Portal feature visibility settings</td>
+</tr>
+<tr>
+<td><strong>Workflow</strong></td>
+<td>Orchestration and model configuration</td>
+</tr>
+<tr>
+<td><strong>Tools</strong></td>
+<td>Tool capabilities (Code Interpreter, Knowledge Search, DALL-E)</td>
+</tr>
+<tr>
+<td><strong>Security</strong></td>
+<td>Access tokens and virtual security groups</td>
+</tr>
+</tbody>
+</table>
+<h2 id="agent-json-structure">Agent JSON Structure</h2>
+<pre><code class="lang-json">{
+  &quot;type&quot;: &quot;agent&quot;,
+  &quot;name&quot;: &quot;my-agent&quot;,
+  &quot;object_id&quot;: &quot;/instances/{instanceId}/providers/FoundationaLLM.Agent/agents/my-agent&quot;,
+  &quot;display_name&quot;: &quot;My Agent&quot;,
+  &quot;description&quot;: &quot;Agent description&quot;,
+  &quot;inline_context&quot;: false,
+  &quot;conversation_history_settings&quot;: {
+    &quot;enabled&quot;: true,
+    &quot;max_history&quot;: 5
+  },
+  &quot;gatekeeper_settings&quot;: {
+    &quot;use_system_setting&quot;: false,
+    &quot;options&quot;: [&quot;ContentSafety&quot;, &quot;Presidio&quot;]
+  },
+  &quot;orchestration_settings&quot;: {
+    &quot;agent_parameters&quot;: {}
+  },
+  &quot;workflow_object_id&quot;: &quot;/instances/{instanceId}/providers/FoundationaLLM.Agent/workflows/my-workflow&quot;,
+  &quot;tool_object_ids&quot;: [],
+  &quot;cost_center&quot;: &quot;&quot;,
+  &quot;expiration_date&quot;: null
+}
+</code></pre>
+<hr>
+<h2 id="workflow-types">Workflow Types</h2>
+<p>Workflows define how agents process requests and generate responses.</p>
+<h3 id="openaiassistants">OpenAIAssistants</h3>
+<p>Uses Azure OpenAI Assistants API for orchestration.</p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Code Interpreter</td>
+<td>Execute Python code for data analysis</td>
+</tr>
+<tr>
+<td>File Search</td>
+<td>Search through uploaded documents</td>
+</tr>
+<tr>
+<td>Function Calling</td>
+<td>Call external functions/tools</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Best For:</strong> Complex multi-step tasks, code execution, file analysis</p>
+<h3 id="langgraphreactagent">LangGraphReactAgent</h3>
+<p>Uses LangGraph for dynamic tool selection with ReAct pattern.</p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Dynamic Tool Selection</td>
+<td>Agent chooses tools based on context</td>
+</tr>
+<tr>
+<td>ReAct Pattern</td>
+<td>Reasoning + Acting loop</td>
+</tr>
+<tr>
+<td>Tool Orchestration</td>
+<td>Multiple tools in sequence</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Best For:</strong> Dynamic multi-tool scenarios, reasoning chains</p>
+<h3 id="externalagentworkflow">ExternalAgentWorkflow</h3>
+<p>Enables custom Python-based workflow implementations.</p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Custom Logic</td>
+<td>Implement any workflow pattern</td>
+</tr>
+<tr>
+<td>Plugin-Based</td>
+<td>Registered as workflow plugins</td>
+</tr>
+<tr>
+<td>Full Control</td>
+<td>Complete control over orchestration</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Best For:</strong> Custom business logic, specialized workflows</p>
+<hr>
+<h2 id="workflow-configuration">Workflow Configuration</h2>
+<h3 id="workflow-resource-structure">Workflow Resource Structure</h3>
+<pre><code class="lang-json">{
+  &quot;type&quot;: &quot;workflow&quot;,
+  &quot;name&quot;: &quot;my-workflow&quot;,
+  &quot;object_id&quot;: &quot;/instances/{instanceId}/providers/FoundationaLLM.Agent/workflows/my-workflow&quot;,
+  &quot;workflow_type&quot;: &quot;OpenAIAssistants&quot;,
+  &quot;workflow_host&quot;: &quot;LangChain&quot;,
+  &quot;package_name&quot;: &quot;FoundationaLLM.Workflow&quot;,
+  &quot;main_ai_model_object_id&quot;: &quot;/instances/{instanceId}/providers/FoundationaLLM.AIModel/aiModels/gpt-4o&quot;,
+  &quot;main_prompt_object_id&quot;: &quot;/instances/{instanceId}/providers/FoundationaLLM.Prompt/prompts/system-prompt&quot;,
+  &quot;ai_model_object_ids&quot;: {},
+  &quot;prompt_object_ids&quot;: {},
+  &quot;resource_object_ids&quot;: {}
+}
+</code></pre>
+<h3 id="key-workflow-settings">Key Workflow Settings</h3>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>workflow_type</code></td>
+<td>One of: <code>OpenAIAssistants</code>, <code>LangGraphReactAgent</code>, <code>ExternalAgentWorkflow</code></td>
+</tr>
+<tr>
+<td><code>workflow_host</code></td>
+<td>Currently <code>LangChain</code> for all workflows</td>
+</tr>
+<tr>
+<td><code>package_name</code></td>
+<td>Plugin package name for external workflows</td>
+</tr>
+<tr>
+<td><code>main_ai_model_object_id</code></td>
+<td>Primary model for generation</td>
+</tr>
+<tr>
+<td><code>main_prompt_object_id</code></td>
+<td>System prompt defining agent persona</td>
+</tr>
+<tr>
+<td><code>ai_model_object_ids</code></td>
+<td>Additional models by role</td>
+</tr>
+<tr>
+<td><code>prompt_object_ids</code></td>
+<td>Additional prompts by role</td>
+</tr>
+<tr>
+<td><code>resource_object_ids</code></td>
+<td>External resources (e.g., Azure AI Project)</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="agent-configuration-options">Agent Configuration Options</h2>
+<h3 id="conversation-history">Conversation History</h3>
+<p>Controls context retention across conversation turns.</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>enabled</code></td>
+<td>boolean</td>
+<td>Enable conversation history</td>
+</tr>
+<tr>
+<td><code>max_history</code></td>
+<td>integer</td>
+<td>Number of message pairs to retain (default: 5)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="gatekeeper">Gatekeeper</h3>
+<p>Controls content moderation and safety features.</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ContentSafety</code></td>
+<td>Azure Content Safety integration</td>
+</tr>
+<tr>
+<td><code>ContentSafetyPromptShield</code></td>
+<td>Azure Content Safety with prompt injection detection</td>
+</tr>
+<tr>
+<td><code>LakeraGuard</code></td>
+<td>Lakera Guard integration</td>
+</tr>
+<tr>
+<td><code>EnkryptGuardrails</code></td>
+<td>Enkrypt Guardrails integration</td>
+</tr>
+<tr>
+<td><code>Presidio</code></td>
+<td>Microsoft Presidio for PII detection</td>
+</tr>
+</tbody>
+</table>
+<h3 id="user-prompt-rewrite">User Prompt Rewrite</h3>
+<p>Enables query transformation for improved retrieval.</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>enabled</code></td>
+<td>boolean</td>
+<td>Enable prompt rewriting</td>
+</tr>
+<tr>
+<td><code>ai_model_object_id</code></td>
+<td>string</td>
+<td>Model for rewriting</td>
+</tr>
+<tr>
+<td><code>prompt_object_id</code></td>
+<td>string</td>
+<td>Prompt for rewriting instructions</td>
+</tr>
+</tbody>
+</table>
+<h3 id="semantic-cache">Semantic Cache</h3>
+<p>Caches responses for similar queries.</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>enabled</code></td>
+<td>boolean</td>
+<td>Enable semantic caching</td>
+</tr>
+<tr>
+<td><code>score_threshold</code></td>
+<td>float</td>
+<td>Similarity threshold (0-1)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="cost-center--expiration">Cost Center &amp; Expiration</h3>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cost_center</code></td>
+<td>string</td>
+<td>Cost allocation identifier</td>
+</tr>
+<tr>
+<td><code>expiration_date</code></td>
+<td>datetime</td>
+<td>Agent expiration date (null = no expiration)</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="user-portal-experience-settings">User Portal Experience Settings</h2>
+<p>Control what features are visible in the Chat User Portal.</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Show Token Usage</td>
+<td>Display token counts for requests/responses</td>
+</tr>
+<tr>
+<td>Show Prompt</td>
+<td>Allow users to view the compiled prompt</td>
+</tr>
+<tr>
+<td>Enable Rating</td>
+<td>Allow users to rate responses</td>
+</tr>
+<tr>
+<td>Enable File Upload</td>
+<td>Allow users to upload files</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="tool-configuration">Tool Configuration</h2>
+<h3 id="tool-resource-structure">Tool Resource Structure</h3>
+<pre><code class="lang-json">{
+  &quot;type&quot;: &quot;tool&quot;,
+  &quot;name&quot;: &quot;code-interpreter&quot;,
+  &quot;object_id&quot;: &quot;/instances/{instanceId}/providers/FoundationaLLM.Agent/tools/code-interpreter&quot;,
+  &quot;tool_type&quot;: &quot;code-interpreter&quot;,
+  &quot;description&quot;: &quot;Execute Python code&quot;,
+  &quot;ai_model_object_ids&quot;: {},
+  &quot;prompt_object_ids&quot;: {},
+  &quot;resource_object_ids&quot;: {},
+  &quot;properties&quot;: {}
+}
+</code></pre>
+<h3 id="built-in-tool-types">Built-in Tool Types</h3>
+<table>
+<thead>
+<tr>
+<th>Tool Type</th>
+<th>Description</th>
+<th>Configuration</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>code-interpreter</code></td>
+<td>Python code execution</td>
+<td>Conversation file scope</td>
+</tr>
+<tr>
+<td><code>knowledge-search</code></td>
+<td>Vector search through knowledge sources</td>
+<td>Indexing profile, data sources</td>
+</tr>
+<tr>
+<td><code>dalle-image-generation</code></td>
+<td>Generate images with DALL-E</td>
+<td>AI model with <code>main_model</code> role</td>
+</tr>
+</tbody>
+</table>
+<h3 id="tool-resource-mapping">Tool Resource Mapping</h3>
+<p>Tools can reference models, prompts, and resources by role:</p>
+<pre><code class="lang-json">{
+  &quot;ai_model_object_ids&quot;: {
+    &quot;main_model&quot;: &quot;/instances/.../aiModels/dalle-3&quot;
+  },
+  &quot;prompt_object_ids&quot;: {
+    &quot;tool_prompt&quot;: &quot;/instances/.../prompts/tool-instructions&quot;
+  },
+  &quot;resource_object_ids&quot;: {
+    &quot;indexing_profile&quot;: &quot;/instances/.../indexingProfiles/default&quot;
+  }
+}
+</code></pre>
+<hr>
+<h2 id="security-configuration">Security Configuration</h2>
+<h3 id="virtual-security-group-id">Virtual Security Group ID</h3>
+<p>Identifies the agent for external access scenarios.</p>
+<pre><code class="lang-json">{
+  &quot;virtual_security_group_id&quot;: &quot;aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee&quot;
+}
+</code></pre>
+<h3 id="agent-access-tokens">Agent Access Tokens</h3>
+<p>Enable unauthenticated access to specific agents. See <a href="agent-access-tokens.html">Agent Access Tokens</a> for details.</p>
+<hr>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="../../how-to-guides/agents/create-new-agent.html">Create New Agent</a></li>
+<li><a href="agent-access-tokens.html">Agent Access Tokens</a></li>
+<li><a href="prompts-resources.html">Prompts Resources</a></li>
+<li><a href="resource-management.html">Resource Management</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

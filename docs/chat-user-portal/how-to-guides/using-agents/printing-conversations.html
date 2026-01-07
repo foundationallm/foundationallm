@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Printing Conversations | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Printing Conversations | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/chat-user-portal/how-to-guides/using-agents/printing-conversations.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="printing-conversations">Printing Conversations</h1>
+
+<p>Create a printed copy or PDF of your conversation with an AI agent.</p>
+<h2 id="how-to-print-a-conversation">How to Print a Conversation</h2>
+<ol>
+<li>Open the conversation you want to print</li>
+<li>Look in the <strong>top navigation bar</strong>, to the right of the agent selector dropdown</li>
+<li>Click the <strong>Print button</strong> (it looks like a printer icon 🖨️)</li>
+<li>Your browser's print dialog will open</li>
+<li>Choose your printer or select <strong>Save as PDF</strong></li>
+<li>Click <strong>Print</strong> or <strong>Save</strong></li>
+</ol>
+<blockquote>
+<p><strong>Tip:</strong> The print button only appears when you have a conversation open. If you don't see it, make sure you've selected a chat session from the sidebar.</p>
+</blockquote>
+<h2 id="what-gets-printed">What Gets Printed</h2>
+<p>When you print a conversation, the output includes:</p>
+<p>✅ <strong>Included in printout:</strong></p>
+<ul>
+<li>All your messages (questions and prompts)</li>
+<li>All agent responses</li>
+<li>Message formatting (bold, italics, headers, lists)</li>
+<li>Tables</li>
+<li>Code blocks (with syntax highlighting colors preserved)</li>
+<li>Mathematical equations and formulas</li>
+<li>Timestamps showing when each message was sent</li>
+</ul>
+<p>❌ <strong>Not included in printout:</strong></p>
+<ul>
+<li>Navigation sidebar</li>
+<li>Agent selector dropdown</li>
+<li>Chat input box</li>
+<li>Copy, Rate, and View Prompt buttons</li>
+<li>File upload areas</li>
+<li>Any attached files (these need to be downloaded separately)</li>
+</ul>
+<h2 id="saving-as-pdf">Saving as PDF</h2>
+<p>Instead of printing to paper, you can save your conversation as a PDF file:</p>
+<ol>
+<li>Click the <strong>Print button</strong> in the navigation bar</li>
+<li>In the print dialog, look for the printer/destination selection</li>
+<li>Choose <strong>Save as PDF</strong>, <strong>Microsoft Print to PDF</strong>, or similar option</li>
+<li>Click <strong>Save</strong> or <strong>Print</strong></li>
+<li>Choose where to save the PDF file on your computer</li>
+<li>Click <strong>Save</strong></li>
+</ol>
+<h3 id="where-to-find-save-as-pdf">Where to Find &quot;Save as PDF&quot;</h3>
+<p>The option location varies by browser:</p>
+<table>
+<thead>
+<tr>
+<th>Browser</th>
+<th>Where to Find It</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Chrome</strong></td>
+<td>Destination dropdown → Select &quot;Save as PDF&quot;</td>
+</tr>
+<tr>
+<td><strong>Edge</strong></td>
+<td>Printer dropdown → Select &quot;Microsoft Print to PDF&quot; or &quot;Save as PDF&quot;</td>
+</tr>
+<tr>
+<td><strong>Firefox</strong></td>
+<td>Destination dropdown → Select &quot;Save to PDF&quot;</td>
+</tr>
+<tr>
+<td><strong>Safari</strong></td>
+<td>PDF dropdown (bottom-left) → Select &quot;Save as PDF&quot;</td>
+</tr>
+</tbody>
+</table>
+<h2 id="print-settings">Print Settings</h2>
+<p>Before printing, you can adjust settings in your browser's print dialog:</p>
+<h3 id="page-layout">Page Layout</h3>
+<ul>
+<li><strong>Portrait</strong> (default): Best for most conversations</li>
+<li><strong>Landscape</strong>: Useful if your conversation has wide tables or code blocks</li>
+</ul>
+<h3 id="margins">Margins</h3>
+<ul>
+<li><strong>Default/Normal</strong>: Recommended for most printouts</li>
+<li><strong>Minimum/None</strong>: Fits more content per page but may cut off edges</li>
+</ul>
+<h3 id="scale">Scale</h3>
+<ul>
+<li><strong>100%</strong> (default): Normal size</li>
+<li><strong>Fit to page</strong>: Shrinks content if needed to fit the page width</li>
+<li><strong>Custom</strong>: Adjust percentage manually</li>
+</ul>
+<h3 id="background-graphics">Background Graphics</h3>
+<ul>
+<li><strong>Enable this option</strong> to preserve message colors and code block backgrounds</li>
+<li>Usually labeled &quot;Background graphics&quot; or &quot;Print backgrounds&quot;</li>
+</ul>
+<blockquote>
+<p><strong>Important:</strong> Enable &quot;Background graphics&quot; or &quot;Print background colors&quot; to keep the visual distinction between your messages and agent responses.</p>
+</blockquote>
+<h2 id="tips-for-better-printouts">Tips for Better Printouts</h2>
+<h3 id="before-printing">Before Printing</h3>
+<ol>
+<li><strong>Scroll through the entire conversation</strong> first to ensure all messages have fully loaded</li>
+<li><strong>Long conversations</strong> will span multiple pages automatically</li>
+<li><strong>Code blocks</strong> print better in landscape orientation if they're wide</li>
+</ol>
+<h3 id="choosing-paper-size">Choosing Paper Size</h3>
+<ul>
+<li><strong>Letter (8.5&quot; × 11&quot;)</strong> or <strong>A4</strong>: Standard choice for most printouts</li>
+<li>Larger paper sizes work well for conversations with wide tables or code</li>
+</ul>
+<h3 id="for-professional-documents">For Professional Documents</h3>
+<p>If you're printing for a report or documentation:</p>
+<ol>
+<li>Save as PDF first</li>
+<li>Open the PDF and verify it looks correct</li>
+<li>Print from the PDF for consistent results</li>
+</ol>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="print-button-not-visible">Print Button Not Visible</h3>
+<ul>
+<li>Make sure you have a conversation open (not just the welcome screen)</li>
+<li>The button appears next to the agent dropdown in the top navigation bar</li>
+<li>Try refreshing the page if buttons aren't loading</li>
+</ul>
+<h3 id="colors-not-printing">Colors Not Printing</h3>
+<ol>
+<li>In the print dialog, look for <strong>Background graphics</strong> or <strong>Print backgrounds</strong></li>
+<li>Make sure this option is <strong>enabled/checked</strong></li>
+<li>Some printers default to black and white—check your printer settings</li>
+</ol>
+<h3 id="content-getting-cut-off">Content Getting Cut Off</h3>
+<ul>
+<li>Try <strong>Landscape</strong> orientation for wide content</li>
+<li>Reduce the <strong>Scale</strong> to 90% or 80%</li>
+<li>Use <strong>Minimum margins</strong> if available</li>
+<li>For code blocks, consider copying the code separately instead</li>
+</ul>
+<h3 id="pages-are-blank-or-missing-content">Pages Are Blank or Missing Content</h3>
+<ul>
+<li>Wait for the conversation to fully load before printing</li>
+<li>Scroll through the conversation to trigger loading of all messages</li>
+<li>Try refreshing the page and printing again</li>
+<li>Check if your browser is blocking pop-ups (the print dialog is a pop-up)</li>
+</ul>
+<h3 id="mathematical-equations-look-wrong">Mathematical Equations Look Wrong</h3>
+<p>Mathematical formulas should print correctly. If they appear broken:</p>
+<ul>
+<li>Try using Chrome or Edge for better equation rendering</li>
+<li>Save as PDF first, then print from the PDF</li>
+</ul>
+<h3 id="print-dialog-doesnt-open">Print Dialog Doesn't Open</h3>
+<ul>
+<li>Check if your browser is blocking pop-ups for this site</li>
+<li>Try the keyboard shortcut: <code>Ctrl + P</code> (Windows) or <code>Cmd + P</code> (Mac)</li>
+<li>Make sure you clicked the print button and not another icon</li>
+</ul>
+<h2 id="keyboard-shortcut">Keyboard Shortcut</h2>
+<p>You can also use your browser's built-in print shortcut:</p>
+<table>
+<thead>
+<tr>
+<th>Operating System</th>
+<th>Shortcut</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Windows</td>
+<td><code>Ctrl + P</code></td>
+</tr>
+<tr>
+<td>Mac</td>
+<td><code>Cmd + P</code></td>
+</tr>
+</tbody>
+</table>
+<p>This opens the same print dialog as clicking the print button.</p>
+<h2 id="alternatives-to-printing">Alternatives to Printing</h2>
+<p>If printing doesn't meet your needs, consider these options:</p>
+<table>
+<thead>
+<tr>
+<th>Need</th>
+<th>Alternative</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Share specific responses</td>
+<td>Use the <strong>Copy</strong> button on individual messages</td>
+</tr>
+<tr>
+<td>Save for later reference</td>
+<td>Save as <strong>PDF</strong> instead of printing</td>
+</tr>
+<tr>
+<td>Include in a document</td>
+<td>Copy messages and paste into Word or Google Docs</td>
+</tr>
+<tr>
+<td>Archive conversations</td>
+<td>Your conversations are automatically saved in the sidebar</td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="copying-prompts-results.html">Copying Messages</a> — Copy individual messages with formatting</li>
+<li><a href="managing-conversations.html">Managing Conversations</a> — Find and organize your saved conversations</li>
+<li><a href="downloading-files.html">Downloading Files</a> — Save files generated by agents</li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

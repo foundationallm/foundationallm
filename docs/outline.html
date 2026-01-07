@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>FoundationaLLM Documentation Outline | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="FoundationaLLM Documentation Outline | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../media/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/outline.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="foundationallm-documentation-outline">FoundationaLLM Documentation Outline</h1>
+
+<h2 id="overview-of-foundationallm">Overview of FoundationaLLM</h2>
+<ul>
+<li>Overview &amp; Introduction (from <code>index.md</code>)</li>
+<li>Architecture &amp; Concepts
+<ul>
+<li>Core Concepts (from <code>concepts/index.md</code>)
+<ul>
+<li>Authorization &amp; Security Principals</li>
+<li>Agents, Workflows, Tools</li>
+<li>Data Pipelines</li>
+<li>Plugins &amp; Plugin Packages</li>
+<li>Prompts &amp; Prompt Variables</li>
+<li>Quotas (API Raw Request Rate, Agent Request Rate)</li>
+<li>Resource Providers</li>
+<li>Chargeback</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Why FoundationaLLM?</li>
+<li>Where FoundationaLLM Fits</li>
+</ul>
+<h2 id="chat-user-portal">Chat User Portal</h2>
+<ul>
+<li>Overview
+<ul>
+<li>What is the Chat User Portal?</li>
+<li>Finding your User Portal URL</li>
+</ul>
+</li>
+<li>Quick Start
+<ul>
+<li>Quickstart Guide (from <code>setup-guides/quickstart.md</code>)</li>
+<li>Creating Your First Agent</li>
+</ul>
+</li>
+<li>How to Guides
+<ul>
+<li>Using Agents
+<ul>
+<li>Selecting an Agent</li>
+<li>Managing Available Agents</li>
+<li>Managing Conversations</li>
+<li>Configuring Accessibility</li>
+<li>Uploading Files to a Conversation</li>
+<li>Downloading Files from a Conversation</li>
+<li>Using the Code Interpreter Tool</li>
+<li>Using the Knowledge Tool</li>
+<li>Using other tools</li>
+<li>Monitoring Token Consumption</li>
+<li>Rating Agent Responses</li>
+<li>Copying Prompts &amp; Formatted Results
+<ul>
+<li>Dual-Format &quot;Copy Message&quot; (Markdown + Rich Text) Behavior</li>
+<li>Expected Formatting Output Rules and Limitations</li>
+</ul>
+</li>
+<li>Printing Conversations</li>
+<li>Viewing Agent Prompts</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="management-portal">Management Portal</h2>
+<ul>
+<li>Overview
+<ul>
+<li>What is the Management Portal?</li>
+<li>Management Portal Guide (from <code>setup-guides/management-ui/management-ui.md</code>)</li>
+<li>Finding your User Portal and Management Portal URLs</li>
+</ul>
+</li>
+<li>Quick Start
+<ul>
+<li>Tour of the Portal</li>
+<li>Creating a First Agent</li>
+</ul>
+</li>
+<li>How to Guides
+<ul>
+<li>Agents
+<ul>
+<li>Create New Agent
+<ul>
+<li>Create Model Agnostic Agent with Claude (from <code>how-to-guides/create-model-agnostic-agent-claude.md</code>)</li>
+<li>Create Model Agnostic Agent with GPT-4o (from <code>how-to-guides/create-model-agnostic-agent-gpt4o.md</code>)</li>
+</ul>
+</li>
+<li>All Agents</li>
+<li>My Agents</li>
+<li>Prompts</li>
+</ul>
+</li>
+<li>Data
+<ul>
+<li>Data Sources</li>
+<li>Data Pipelines
+<ul>
+<li>Creating Data Pipelines</li>
+<li>Invoking Data Pipelines</li>
+<li>Monitoring Data Pipelines (Progress/Status in Management Portal)</li>
+</ul>
+</li>
+<li>Data Pipeline Runs</li>
+<li>Knowledge Sources
+<ul>
+<li>Uploading Files from SharePoint Online</li>
+<li>Azure Data Lake as a Knowledge Source</li>
+<li>Private Storage for Custom Agent Owners</li>
+<li>Knowledge Graph Integration
+<ul>
+<li>Using a Knowledge Graph as a Knowledge Source</li>
+<li>Required Schema/Format Expectations</li>
+</ul>
+</li>
+<li>Image Description
+<ul>
+<li>Image-to-Text Description Capability</li>
+<li>Model Limits</li>
+<li>Supported Formats</li>
+<li>Usage Guidelines</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Models and Endpoints
+<ul>
+<li>AI Models</li>
+<li>API Endpoints</li>
+</ul>
+</li>
+<li>Security
+<ul>
+<li>Instance Access Control</li>
+</ul>
+</li>
+<li>FLLM Platform
+<ul>
+<li>Branding</li>
+<li>Configuration</li>
+<li>Deployment Information</li>
+</ul>
+</li>
+<li>Vectorization [DROP THIS ALL TOGETHER]
+<ul>
+<li>Vectorization Concepts (from <code>setup-guides/vectorization/vectorization-concepts.md</code>)</li>
+<li>Configuring Vectorization (from <code>setup-guides/vectorization/vectorization-configuration.md</code>)</li>
+<li>Managing Vectorization Profiles (from <code>setup-guides/vectorization/vectorization-profiles.md</code>)</li>
+<li>Triggering Vectorization (from <code>setup-guides/vectorization/vectorization-triggering.md</code>)</li>
+<li>Vectorization Pipelines
+<ul>
+<li>Reduced Vectorization Latency Improvements</li>
+<li>Configuration and Tuning Options</li>
+</ul>
+</li>
+<li>Monitoring and Troubleshooting Vectorization (from <code>setup-guides/vectorization/vectorization-monitoring-troubleshooting.md</code>)</li>
+</ul>
+</li>
+<li>Managing Plugins</li>
+<li>Configuring Quotas</li>
+<li>Reference
+<ul>
+<li>Concepts
+<ul>
+<li>Agents &amp; Agent Workflows (from <code>setup-guides/agents/agents_workflows.md</code>)</li>
+<li>Agent Access Tokens (from <code>setup-guides/agents/Agent_AccessToken.md</code>)</li>
+<li>Prompts &amp; Prompt Resources (from <code>setup-guides/agents/prompt-resource.md</code>)</li>
+<li>[OBSOLETE] Knowledge Management Agents (from <code>setup-guides/agents/knowledge-management-agent.md</code>)</li>
+<li>Resource Management (from <code>setup-guides/exposed-apis/resource-management/resource-management.md</code>)</li>
+<li>Data Pipelines</li>
+<li>Plugins &amp; Plugin Packages</li>
+<li>[OBSOLETE] Vectorization</li>
+<li>Quotas</li>
+</ul>
+</li>
+<li>Branding Customization (from <code>setup-guides/branding/index.md</code>)
+<ul>
+<li>Using App Configuration</li>
+<li>Using Management Portal</li>
+<li>Using REST API</li>
+</ul>
+</li>
+<li>Configuration Reference [C:\Repos\foundationallm\src\dotnet\Common\Constants\Data]</li>
+<li>Permissions &amp; Roles[C:\Repos\foundationallm\src\dotnet\Common\Constants\Data\AuthorizableActions.json]
+[C:\Repos\foundationallm\src\dotnet\Common\Constants\Data\RoleDefinitions.json]</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="apis--sdks">APIs &amp; SDKs</h2>
+<ul>
+<li>APIs
+<ul>
+<li>Core API
+<ul>
+<li>Core API Overview (from <code>setup-guides/exposed-apis/core-api.md</code>)</li>
+<li>Finding Core API URL</li>
+<li>Directly Calling Core API (from <code>development/calling-apis/directly-calling-core-api.md</code>)</li>
+<li>Standard Deployment Local API Access (from <code>development/calling-apis/standard-deployment-local-api-access.md</code>)</li>
+<li>Core API Reference (from <code>api/index.md</code> - .NET &amp; Python)</li>
+</ul>
+</li>
+<li>Management API
+<ul>
+<li>Management API Overview (from <code>setup-guides/exposed-apis/management-api.md</code>)</li>
+<li>Overview of Resource Providers [DOCS can be generated from the code C:\Repos\foundationallm\src\dotnet\Common\Constants\ResourceProviders metadata files]</li>
+<li>Directly Calling Management API (from <code>development/calling-apis/directly-calling-management-api.md</code>)</li>
+<li>Management API Reference</li>
+<li>Data Pipelines</li>
+</ul>
+</li>
+<li>[OBSOLETE] Vectorization API
+<ul>
+<li>Directly Calling Vectorization API (from <code>development/calling-apis/directly-calling-vectorization-api.md</code>)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>SDKs
+<ul>
+<li>.NET SDK (from <code>api/dotnet/index.md</code>)</li>
+<li>Python SDK (from <code>api/python/index.md</code>)</li>
+</ul>
+</li>
+</ul>
+<h2 id="platform-operations">Platform Operations</h2>
+<ul>
+<li>Deployment
+<ul>
+<li>Deployment Overview (from <code>deployment/index.md</code>)</li>
+<li>Quick Start Deployment (from <code>deployment/deployment-quick-start.md</code>)</li>
+<li>Standard Deployment (from <code>deployment/deployment-standard.md</code>)</li>
+<li>Deployment Configuration (from <code>deployment/deployment-configuration.md</code>)</li>
+<li>App Configuration Values (from <code>deployment/app-configuration-values.md</code>)</li>
+<li>Azure Resource Provider Requirements (from <code>deployment/azure-resource-providers-requirements.md</code>)</li>
+<li>Custom Domains (from <code>deployment/custom-domains.md</code>)</li>
+<li>Soft Delete (from <code>deployment/soft-delete.md</code>)</li>
+<li>Standard Deployment Manifest (from <code>deployment/standard/manifest.md</code>)</li>
+</ul>
+</li>
+<li>Security &amp; Permissions
+<ul>
+<li>Platform Security Features &amp; Best Practices (from <code>operations/security.md</code>)</li>
+<li>Authentication &amp; Authorization Setup (from <code>deployment/authentication-authorization/index.md</code>)
+<ul>
+<li>Pre-deployment Setup
+<ul>
+<li>Core Authentication Setup (Entra ID)</li>
+<li>Management Authentication Setup (Entra ID)</li>
+<li>Authorization Setup (Entra ID)</li>
+</ul>
+</li>
+<li>Post-deployment Setup
+<ul>
+<li>Core Authentication Post-deployment</li>
+<li>Management Authentication Post-deployment</li>
+<li>Authorization Post-deployment</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Role-Based Access Control (from <code>role-based-access-control/index.md</code>)
+<ul>
+<li>Role Definitions</li>
+<li>Role Assignments</li>
+<li>Scope</li>
+<li>Role Management</li>
+<li>Agent Role Assignments</li>
+</ul>
+</li>
+<li>Configure Access Control for Services (from <code>deployment/configure-access-control-for-services.md</code>)</li>
+<li>Graph API Permissions (from <code>operations/graph-api-permissions.md</code>)</li>
+<li>Network Security Groups (from <code>operations/network-security-groups.md</code>)</li>
+<li>Vulnerabilities: Identification, Communication, and Remediation (from <code>operations/vulnerabilities.md</code>)</li>
+</ul>
+</li>
+<li>Monitoring &amp; Troubleshooting
+<ul>
+<li>Accessing System Logs &amp; Audit Trails (from <code>operations/logs.md</code>)</li>
+<li>Troubleshooting &amp; Issue Reporting Guide (from <code>operations/troubleshooting.md</code>)</li>
+</ul>
+</li>
+<li>How to Guides
+<ul>
+<li>Updating Container Versions (from <code>operations/update.md</code>)</li>
+<li>Backups &amp; Data Resiliency (from <code>operations/backups.md</code>)</li>
+<li>Purging User Conversations (from <code>operations/purge-conversations.md</code>)</li>
+<li>Creating Release Notes (from <code>operations/release-notes.md</code>)</li>
+</ul>
+</li>
+</ul>
+<h2 id="additional-topics-to-integrate-or-keep-separate">Additional Topics (to integrate or keep separate)</h2>
+<h3 id="development--contributing">Development &amp; Contributing</h3>
+<ul>
+<li>Development Overview (from <code>development/index.md</code>)</li>
+<li>Development Approach &amp; DevOps Guidelines (from <code>development/development-approach.md</code>)</li>
+<li>Configure Local Development Environment (from <code>development/development-local.md</code>)</li>
+<li>Contributing to FoundationaLLM (from <code>development/contributing/index.md</code>)
+<ul>
+<li>Git Workflow</li>
+<li>Style Guide</li>
+<li>Bug Report Reproduction Guide</li>
+</ul>
+</li>
+</ul>
+<h3 id="reference-materials-root-level">Reference Materials (Root Level)</h3>
+<ul>
+<li>Agent Schemas (<code>schema.md</code> - at docs root)</li>
+<li>Documentation Generation (<code>documentation-generation.md</code> - at docs root)</li>
+</ul>
+<h2 id="release-notes-root-level">Release Notes (Root Level)</h2>
+<ul>
+<li>Release Notes (from <code>release-notes/</code>)
+<ul>
+<li>Breaking Changes</li>
+<li>Version-specific Release Notes</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p><strong>Note:</strong> Release notes are kept at the root level for easy discoverability.</p>
+</blockquote>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

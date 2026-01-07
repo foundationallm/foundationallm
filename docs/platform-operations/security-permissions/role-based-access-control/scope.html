@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Understanding Scope | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Understanding Scope | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/platform-operations/security-permissions/role-based-access-control/scope.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="understanding-scope">Understanding Scope</h1>
+
+<p>Scope defines where a role assignment applies, controlling which resources a principal can access.</p>
+<h2 id="scope-levels">Scope Levels</h2>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Instance</strong></td>
+<td>Entire FoundationaLLM deployment</td>
+<td>All agents, prompts, data sources</td>
+</tr>
+<tr>
+<td><strong>Resource</strong></td>
+<td>Specific resource</td>
+<td>Single agent</td>
+</tr>
+</tbody>
+</table>
+<h2 id="scope-hierarchy">Scope Hierarchy</h2>
+<pre><code>/instances/{instanceId}                           &lt;- Instance scope
+    /providers/{providerName}
+        /{resourceType}
+            /{resourceName}                       &lt;- Resource scope
+                /{subResourceType}
+                    /{subResourceName}            &lt;- Sub-resource scope
+</code></pre>
+<h2 id="scope-format">Scope Format</h2>
+<p>Scopes are resource identifiers following this pattern:</p>
+<pre><code>/instances/{instanceId}/providers/{providerName}/{resourceType}/{resourceName}
+</code></pre>
+<h3 id="components">Components</h3>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>instanceId</code></td>
+<td>Unique GUID of your FoundationaLLM deployment</td>
+</tr>
+<tr>
+<td><code>providerName</code></td>
+<td>Resource provider (e.g., <code>FoundationaLLM.Agent</code>)</td>
+</tr>
+<tr>
+<td><code>resourceType</code></td>
+<td>Type of resource (e.g., <code>agents</code>)</td>
+</tr>
+<tr>
+<td><code>resourceName</code></td>
+<td>Name of specific resource</td>
+</tr>
+</tbody>
+</table>
+<h2 id="scope-examples">Scope Examples</h2>
+<h3 id="instance-scope">Instance Scope</h3>
+<pre><code>/instances/11111111-1111-1111-1111-111111111111
+</code></pre>
+<p>Applies to all resources in the instance.</p>
+<h3 id="agent-scope">Agent Scope</h3>
+<pre><code>/instances/11111111-1111-1111-1111-111111111111/providers/FoundationaLLM.Agent/agents/sales-agent
+</code></pre>
+<p>Applies only to the <code>sales-agent</code> agent.</p>
+<h3 id="data-source-scope">Data Source Scope</h3>
+<pre><code>/instances/11111111-1111-1111-1111-111111111111/providers/FoundationaLLM.DataSource/dataSources/customer-data
+</code></pre>
+<p>Applies only to the <code>customer-data</code> data source.</p>
+<h3 id="prompt-scope">Prompt Scope</h3>
+<pre><code>/instances/11111111-1111-1111-1111-111111111111/providers/FoundationaLLM.Prompt/prompts/support-prompt
+</code></pre>
+<p>Applies only to the <code>support-prompt</code> prompt.</p>
+<h2 id="inheritance-rules">Inheritance Rules</h2>
+<table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Hierarchical</strong></td>
+<td>Child scopes inherit parent permissions</td>
+</tr>
+<tr>
+<td><strong>Additive</strong></td>
+<td>Lower scopes can add permissions</td>
+</tr>
+<tr>
+<td><strong>No Reduction</strong></td>
+<td>Cannot remove inherited permissions at lower levels</td>
+</tr>
+</tbody>
+</table>
+<h3 id="example">Example</h3>
+<table>
+<thead>
+<tr>
+<th>Assignment</th>
+<th>Scope</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Contributor @ Instance</td>
+<td><code>/instances/{id}</code></td>
+<td>Can manage all resources</td>
+</tr>
+<tr>
+<td>Reader @ Agent</td>
+<td><code>/instances/{id}/providers/.../agents/x</code></td>
+<td>Can read agent x</td>
+</tr>
+</tbody>
+</table>
+<p>A user with Contributor at instance level can manage agent x without needing the Reader assignment.</p>
+<h2 id="choosing-scope">Choosing Scope</h2>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Recommended Scope</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Platform administrators</td>
+<td>Instance</td>
+</tr>
+<tr>
+<td>Department access to specific agents</td>
+<td>Resource (agent)</td>
+</tr>
+<tr>
+<td>Data team managing data sources</td>
+<td>Resource (data sources)</td>
+</tr>
+<tr>
+<td>Read-only access to everything</td>
+<td>Instance</td>
+</tr>
+</tbody>
+</table>
+<h2 id="scope-in-the-portal">Scope in the Portal</h2>
+<h3 id="instance-access-control">Instance Access Control</h3>
+<ul>
+<li>Navigate to <strong>Security</strong> &gt; <strong>Instance Access Control</strong></li>
+<li>Assignments here apply to all resources</li>
+</ul>
+<h3 id="resource-access-control">Resource Access Control</h3>
+<ul>
+<li>Navigate to specific resource (e.g., Agent)</li>
+<li>Click <strong>Access Control</strong> button</li>
+<li>Assignments here apply only to that resource</li>
+</ul>
+<h3 id="viewing-scope">Viewing Scope</h3>
+<p>In role assignment lists, the <strong>Scope</strong> column shows:</p>
+<ul>
+<li><code>This resource</code> - Direct assignment on current resource</li>
+<li><code>Instance (inherited)</code> - Inherited from instance level</li>
+</ul>
+<h2 id="scope-best-practices">Scope Best Practices</h2>
+<table>
+<thead>
+<tr>
+<th>Practice</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Start Narrow</strong></td>
+<td>Grant at resource level when possible</td>
+</tr>
+<tr>
+<td><strong>Use Instance Sparingly</strong></td>
+<td>Only for true platform administrators</td>
+</tr>
+<tr>
+<td><strong>Group Resources</strong></td>
+<td>Consider organizational structure</td>
+</tr>
+<tr>
+<td><strong>Document Scope Decisions</strong></td>
+<td>Add descriptions explaining scope choice</td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="role-definitions.html">Role Definitions</a></li>
+<li><a href="role-assignments.html">Role Assignments</a></li>
+<li><a href="role-management.html">Role Management</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

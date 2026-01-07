@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Authorization API Post-Deployment Configuration | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Authorization API Post-Deployment Configuration | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/platform-operations/security-permissions/authentication-authorization/post-deployment/authorization-post.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../../index.html">
+            <img id="logo" class="svg" src="../../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="authorization-api-post-deployment-configuration">Authorization API Post-Deployment Configuration</h1>
+
+<p>Complete these steps after running <code>azd up</code> to finalize Authorization API configuration.</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li>Deployment completed successfully</li>
+<li>App Configuration access configured (see <a href="../pre-requisites.html">Prerequisites</a>)</li>
+<li>Authorization API app registration created (see <a href="../pre-deployment/authorization-setup.html">Pre-Deployment Setup</a>)</li>
+</ul>
+<h2 id="update-app-configuration-settings">Update App Configuration Settings</h2>
+<h3 id="step-1-access-app-configuration">Step 1: Access App Configuration</h3>
+<ol>
+<li>Sign in to <a href="https://portal.azure.com/">Azure Portal</a></li>
+<li>Navigate to your deployment resource group</li>
+<li>Select the <strong>App Configuration</strong> resource</li>
+<li>Select <strong>Configuration explorer</strong></li>
+</ol>
+<h3 id="step-2-update-authorization-scope">Step 2: Update Authorization Scope</h3>
+<ol>
+<li>Search for <code>authorization</code> in the filter</li>
+<li>Find <code>FoundationaLLM:APIs:AuthorizationAPI:APIScope</code></li>
+<li>Click <strong>Edit</strong></li>
+<li>Set value to: <code>api://FoundationaLLM-Authorization</code></li>
+<li>Click <strong>Apply</strong></li>
+</ol>
+<h2 id="verify-configuration">Verify Configuration</h2>
+<h3 id="check-app-configuration-values">Check App Configuration Values</h3>
+<p>Verify these authorization-related settings:</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Expected Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM:APIs:AuthorizationAPI:APIScope</code></td>
+<td><code>api://FoundationaLLM-Authorization</code></td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIs:AuthorizationAPI:APIUrl</code></td>
+<td>Your Authorization API URL</td>
+</tr>
+</tbody>
+</table>
+<h2 id="configure-initial-role-assignments">Configure Initial Role Assignments</h2>
+<p>After authorization is configured, set up initial RBAC:</p>
+<h3 id="assign-admin-role">Assign Admin Role</h3>
+<p>The deployment administrator needs the Owner role:</p>
+<ol>
+<li>Navigate to Management Portal</li>
+<li>Go to <strong>Security</strong> &gt; <strong>Role Assignments</strong></li>
+<li>Create assignment:
+<ul>
+<li><strong>Principal:</strong> Your admin user/group</li>
+<li><strong>Role:</strong> Owner</li>
+<li><strong>Scope:</strong> <code>/instances/{instanceId}</code></li>
+</ul>
+</li>
+</ol>
+<p>Or via Management API:</p>
+<pre><code class="lang-http">POST /instances/{instanceId}/providers/FoundationaLLM.Authorization/roleAssignments
+Content-Type: application/json
+Authorization: Bearer &lt;token&gt;
+
+{
+  &quot;name&quot;: &quot;admin-assignment&quot;,
+  &quot;principal_id&quot;: &quot;&lt;admin-object-id&gt;&quot;,
+  &quot;principal_type&quot;: &quot;User&quot;,
+  &quot;role_definition_id&quot;: &quot;/providers/FoundationaLLM.Authorization/roleDefinitions/1301f8d4-3bea-4880-945f-315dbd2ddb46&quot;,
+  &quot;scope&quot;: &quot;/instances/{instanceId}&quot;
+}
+</code></pre>
+<h3 id="verify-authorization">Verify Authorization</h3>
+<p>Test that authorization is working:</p>
+<ol>
+<li>Sign in to Management Portal</li>
+<li>Navigate to any resource</li>
+<li>Verify you can perform expected operations</li>
+</ol>
+<h2 id="run-ms-graph-roles-script">Run MS Graph Roles Script</h2>
+<p>The Authorization API requires MS Graph permissions for user lookups:</p>
+<pre><code class="lang-powershell">cd deploy/quick-start  # or deploy/standard
+../common/scripts/Set-FllmGraphRoles.ps1 -resourceGroupName &lt;resource-group&gt;
+</code></pre>
+<blockquote>
+<p><strong>Requirement:</strong> User running script must be <strong>Global Administrator</strong> or have <strong>Privileged Role Administrator</strong> role.</p>
+</blockquote>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Authorization denied</td>
+<td>Verify role assignments exist</td>
+</tr>
+<tr>
+<td>User lookup fails</td>
+<td>Run MS Graph roles script</td>
+</tr>
+<tr>
+<td>Invalid scope</td>
+<td>Check <code>APIScope</code> value in App Configuration</td>
+</tr>
+<tr>
+<td>403 Forbidden</td>
+<td>Verify user has appropriate role for action</td>
+</tr>
+</tbody>
+</table>
+<h3 id="check-authorization-api-logs">Check Authorization API Logs</h3>
+<p><strong>AKS:</strong></p>
+<pre><code class="lang-bash">kubectl logs deployment/authorization-api -n fllm --tail=100
+</code></pre>
+<h3 id="verify-role-assignments">Verify Role Assignments</h3>
+<p>Query existing assignments:</p>
+<pre><code class="lang-http">GET /instances/{instanceId}/providers/FoundationaLLM.Authorization/roleAssignments
+Authorization: Bearer &lt;token&gt;
+</code></pre>
+<h2 id="next-steps">Next Steps</h2>
+<ol>
+<li>Review <a href="../../role-based-access-control/role-definitions.html">Role Definitions</a></li>
+<li>Configure <a href="../../role-based-access-control/role-assignments.html">Role Assignments</a></li>
+<li>Set up <a href="../../role-based-access-control/agent-role-assignments.html">Agent-Level Permissions</a></li>
+</ol>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="../index.html">Authentication Setup Overview</a></li>
+<li><a href="../../role-based-access-control/index.html">Role-Based Access Control</a></li>
+<li><a href="../../../../management-portal/reference/permissions-roles.html">Permissions Reference</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

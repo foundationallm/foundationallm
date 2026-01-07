@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Uploading Files to a Conversation | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Uploading Files to a Conversation | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/chat-user-portal/how-to-guides/using-agents/uploading-files.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="uploading-files-to-a-conversation">Uploading Files to a Conversation</h1>
+
+<p>Share documents, images, and other files with agents for analysis and reference.</p>
+<h2 id="when-to-upload-files">When to Upload Files</h2>
+<p>Upload files when you want an agent to:</p>
+<ul>
+<li>Analyze data in spreadsheets or CSV files</li>
+<li>Answer questions about document content</li>
+<li>Process or transform data</li>
+<li>Generate visualizations from your data</li>
+<li>Extract information from images</li>
+<li>Reference specific files in responses</li>
+</ul>
+<blockquote>
+<p><strong>Note:</strong> Not all agents support file uploads. The upload feature only appears if the agent is configured to accept files.</p>
+</blockquote>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>Before uploading files:</p>
+<ul>
+<li><strong>Agent must support uploads</strong>: Check if the paperclip icon appears in the chat input</li>
+<li><strong>Supported file format</strong>: Your file must be in a format the agent can process</li>
+<li><strong>File size limits</strong>: Files must be within size limits set by your administrator</li>
+</ul>
+<h2 id="supported-file-types">Supported File Types</h2>
+<p>Common supported formats include:</p>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>File Types</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Documents</strong></td>
+<td>PDF, DOCX, DOC, TXT, MD, RTF</td>
+</tr>
+<tr>
+<td><strong>Spreadsheets</strong></td>
+<td>XLSX, XLS, CSV, TSV</td>
+</tr>
+<tr>
+<td><strong>Images</strong></td>
+<td>PNG, JPG, JPEG, GIF, BMP, TIFF</td>
+</tr>
+<tr>
+<td><strong>Code Files</strong></td>
+<td>PY, JS, TS, JSON, XML, HTML, CSS</td>
+</tr>
+<tr>
+<td><strong>Archives</strong></td>
+<td>ZIP, TAR</td>
+</tr>
+<tr>
+<td><strong>Presentations</strong></td>
+<td>PPTX, PPT</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Note:</strong> Supported types vary by agent configuration. Some agents may support additional formats or have restrictions.</p>
+</blockquote>
+<h2 id="how-to-upload-files">How to Upload Files</h2>
+<h3 id="step-1-open-the-upload-panel">Step 1: Open the Upload Panel</h3>
+<ol>
+<li>Look for the <strong>paperclip icon</strong> (📎) to the left of the message input box</li>
+<li>Click the paperclip to open the file upload panel</li>
+<li>A badge on the icon shows how many files are currently attached</li>
+</ol>
+<h3 id="step-2-select-files">Step 2: Select Files</h3>
+<p>You have two options:</p>
+<h4 id="from-your-computer">From Your Computer</h4>
+<ol>
+<li>Click <strong>Select file from Computer</strong></li>
+<li>Browse to find your file</li>
+<li>Select one or more files</li>
+<li>Click <strong>Open</strong></li>
+</ol>
+<h4 id="from-onedrive-if-available">From OneDrive (If Available)</h4>
+<ol>
+<li>If you see <strong>Connect to OneDrive</strong>, click it first</li>
+<li>Authorize access to your OneDrive</li>
+<li>Click <strong>Select file from OneDrive</strong></li>
+<li>Browse and select files from your OneDrive</li>
+<li>The OneDrive picker shows your available files</li>
+</ol>
+<h3 id="step-3-review-selected-files">Step 3: Review Selected Files</h3>
+<p>Before uploading, selected files appear in the panel with:</p>
+<table>
+<thead>
+<tr>
+<th>Information</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>File name</strong></td>
+<td>The name of your file</td>
+</tr>
+<tr>
+<td><strong>File size</strong></td>
+<td>Size displayed for local files</td>
+</tr>
+<tr>
+<td><strong>Source badge</strong></td>
+<td>&quot;Local Computer&quot; or &quot;OneDrive Work/School&quot;</td>
+</tr>
+<tr>
+<td><strong>Status badge</strong></td>
+<td>&quot;Pending&quot; (not yet uploaded)</td>
+</tr>
+<tr>
+<td><strong>Remove button</strong></td>
+<td>X button to remove the file</td>
+</tr>
+</tbody>
+</table>
+<h3 id="step-4-upload-the-files">Step 4: Upload the Files</h3>
+<ol>
+<li>Review your selected files</li>
+<li>Click the <strong>Upload</strong> button</li>
+<li>A progress bar shows upload status</li>
+<li>Wait for &quot;Uploaded&quot; badges to appear</li>
+<li>Successfully uploaded files show a green &quot;Uploaded&quot; badge</li>
+</ol>
+<h3 id="step-5-close-the-panel">Step 5: Close the Panel</h3>
+<ol>
+<li>Click <strong>Close</strong> to close the upload panel</li>
+<li>The paperclip badge shows your total attached files</li>
+<li>Send a message to start working with the files</li>
+</ol>
+<h2 id="managing-uploaded-files">Managing Uploaded Files</h2>
+<h3 id="viewing-attached-files">Viewing Attached Files</h3>
+<ul>
+<li>Click the paperclip icon to see all files for the current conversation</li>
+<li>Files are listed with their status and source</li>
+</ul>
+<h3 id="removing-files">Removing Files</h3>
+<p>To remove a file before sending a message:</p>
+<ol>
+<li>Open the upload panel (click paperclip)</li>
+<li>Find the file you want to remove</li>
+<li>Click the <strong>X</strong> button next to the file</li>
+<li>Confirm removal if prompted</li>
+</ol>
+<h3 id="file-persistence">File Persistence</h3>
+<ul>
+<li>Uploaded files are attached to the current conversation</li>
+<li>They remain available throughout the conversation</li>
+<li>Starting a new conversation clears the attachment list</li>
+</ul>
+<h2 id="onedrive-integration">OneDrive Integration</h2>
+<p>If your organization has enabled OneDrive integration:</p>
+<h3 id="connecting-onedrive">Connecting OneDrive</h3>
+<ol>
+<li>Click <strong>Connect to OneDrive</strong> in the upload panel</li>
+<li>Sign in with your work or school account</li>
+<li>Grant necessary permissions</li>
+<li>Once connected, you'll see <strong>Select file from OneDrive</strong></li>
+</ol>
+<h3 id="selecting-from-onedrive">Selecting from OneDrive</h3>
+<ol>
+<li>Click <strong>Select file from OneDrive</strong></li>
+<li>A file picker opens showing your OneDrive contents</li>
+<li>Navigate to find your file</li>
+<li>Select one or more files</li>
+<li>Confirm your selection</li>
+</ol>
+<h3 id="disconnecting-onedrive">Disconnecting OneDrive</h3>
+<ol>
+<li>Open the upload panel</li>
+<li>Click <strong>Disconnect OneDrive</strong></li>
+<li>Your OneDrive access is revoked</li>
+<li>You can reconnect anytime</li>
+</ol>
+<h2 id="after-uploading">After Uploading</h2>
+<p>Once files are uploaded:</p>
+<h3 id="referencing-files">Referencing Files</h3>
+<ul>
+<li>Simply mention the file in your message</li>
+<li>Ask questions about the content</li>
+<li>Request analysis or processing</li>
+</ul>
+<h3 id="example-prompts">Example Prompts</h3>
+<ul>
+<li>&quot;Analyze the sales data in the uploaded spreadsheet&quot;</li>
+<li>&quot;Summarize the key points from the uploaded document&quot;</li>
+<li>&quot;What trends do you see in this CSV file?&quot;</li>
+<li>&quot;Extract all email addresses from the uploaded text file&quot;</li>
+<li>&quot;Create a chart from the data I uploaded&quot;</li>
+</ul>
+<h3 id="how-agents-use-files">How Agents Use Files</h3>
+<p>Agents process uploaded files by:</p>
+<ol>
+<li>Extracting text and data content</li>
+<li>Making the content available for reference</li>
+<li>Using the information to answer your questions</li>
+<li>Potentially generating new files based on your data</li>
+</ol>
+<h2 id="file-size-limits">File Size Limits</h2>
+<p>Limits vary by configuration:</p>
+<table>
+<thead>
+<tr>
+<th>Consideration</th>
+<th>Typical Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Per-file limit</strong></td>
+<td>Usually 10-50 MB per file</td>
+</tr>
+<tr>
+<td><strong>Total per message</strong></td>
+<td>Often limited to 10 files</td>
+</tr>
+<tr>
+<td><strong>Large files</strong></td>
+<td>May take longer to process</td>
+</tr>
+</tbody>
+</table>
+<p>Check with your administrator for specific limits in your environment.</p>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="paperclip-icon-not-showing">Paperclip Icon Not Showing</h3>
+<ul>
+<li>The current agent doesn't support file uploads</li>
+<li>Try selecting a different agent</li>
+<li>Contact your administrator if you need upload capability</li>
+</ul>
+<h3 id="upload-fails">Upload Fails</h3>
+<ul>
+<li>Check that the file is within size limits</li>
+<li>Verify the file format is supported</li>
+<li>Try a different file to isolate the issue</li>
+<li>Check your internet connection</li>
+</ul>
+<h3 id="file-format-not-accepted">File Format Not Accepted</h3>
+<ul>
+<li>Convert the file to a supported format</li>
+<li>PDF is widely supported for documents</li>
+<li>CSV works well for data files</li>
+<li>PNG or JPEG for images</li>
+</ul>
+<h3 id="onedrive-connection-issues">OneDrive Connection Issues</h3>
+<ul>
+<li>Ensure you have a work/school OneDrive account</li>
+<li>Check that your organization allows OneDrive integration</li>
+<li>Try disconnecting and reconnecting</li>
+<li>Clear browser cache and try again</li>
+</ul>
+<h3 id="file-not-being-referenced">File Not Being Referenced</h3>
+<p>If the agent doesn't seem to see your file:</p>
+<ul>
+<li>Make sure the upload completed (shows &quot;Uploaded&quot; badge)</li>
+<li>Reference the file specifically in your message</li>
+<li>Upload may need to complete before sending your question</li>
+<li>Try asking &quot;What files do I have uploaded?&quot;</li>
+</ul>
+<h3 id="progress-bar-stuck">Progress Bar Stuck</h3>
+<ul>
+<li>Check your internet connection</li>
+<li>Wait a moment — large files take time</li>
+<li>If stuck for a long time, refresh the page and try again</li>
+<li>Very large files may timeout</li>
+</ul>
+<h3 id="files-missing-after-refresh">Files Missing After Refresh</h3>
+<ul>
+<li>Uploaded files are tied to the current conversation</li>
+<li>Switching agents clears attachments</li>
+<li>Re-upload files if needed after refreshing</li>
+</ul>
+<h2 id="tips-for-better-results">Tips for Better Results</h2>
+<h3 id="prepare-your-files">Prepare Your Files</h3>
+<ul>
+<li>Remove unnecessary data from spreadsheets</li>
+<li>Use clear column headers</li>
+<li>Ensure text is readable (not scanned images of text)</li>
+<li>Smaller, focused files process faster</li>
+</ul>
+<h3 id="be-specific-in-your-questions">Be Specific in Your Questions</h3>
+<ul>
+<li>Reference the file by name if you have multiple</li>
+<li>Specify what analysis or output you want</li>
+<li>Ask about specific columns, sections, or data</li>
+</ul>
+<h3 id="multiple-files">Multiple Files</h3>
+<ul>
+<li>Upload related files together</li>
+<li>Mention how files relate to each other</li>
+<li>Consider combining data into one file if appropriate</li>
+</ul>
+<h3 id="sensitive-data">Sensitive Data</h3>
+<ul>
+<li>Be mindful of what data you upload</li>
+<li>Uploaded files are processed by AI systems</li>
+<li>Follow your organization's data handling policies</li>
+</ul>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="downloading-files.html">Downloading Files from a Conversation</a> — Save files agents generate</li>
+<li><a href="using-code-interpreter.html">Using the Code Interpreter Tool</a> — Analyze uploaded data</li>
+<li><a href="using-knowledge-tool.html">Using the Knowledge Tool</a> — Search uploaded documents</li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

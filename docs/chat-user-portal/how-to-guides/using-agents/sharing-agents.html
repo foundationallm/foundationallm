@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Sharing Agents with Others | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Sharing Agents with Others | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/chat-user-portal/how-to-guides/using-agents/sharing-agents.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="sharing-agents-with-others">Sharing Agents with Others</h1>
+
+<p>Learn how to share custom agents with colleagues and manage agent access permissions.</p>
+<h2 id="overview">Overview</h2>
+<p>When you create a custom agent, you can share it with others in your organization. The sharing model defines who can access your agent and what they can do with it.</p>
+<h2 id="sharing-model-roles">Sharing Model Roles</h2>
+<p>FoundationaLLM uses a three-tier sharing model for agents:</p>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Can Use</th>
+<th>Can Edit</th>
+<th>Can Share</th>
+<th>Can Delete</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Owner</strong></td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><strong>Collaborator</strong></td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+<td>❌</td>
+</tr>
+<tr>
+<td><strong>User</strong></td>
+<td>✅</td>
+<td>❌</td>
+<td>❌</td>
+<td>❌</td>
+</tr>
+</tbody>
+</table>
+<h3 id="owner">Owner</h3>
+<p>Owners have full control over the agent:</p>
+<ul>
+<li><strong>Use the agent</strong> in conversations</li>
+<li><strong>Edit</strong> all agent settings and configuration</li>
+<li><strong>Share</strong> the agent with others (assign any role)</li>
+<li><strong>Delete</strong> the agent permanently</li>
+<li><strong>Transfer ownership</strong> to another user</li>
+</ul>
+<p>When you create an agent, you automatically become its Owner.</p>
+<h3 id="collaborator">Collaborator</h3>
+<p>Collaborators can help maintain and improve the agent:</p>
+<ul>
+<li><strong>Use the agent</strong> in conversations</li>
+<li><strong>Edit</strong> agent settings (prompts, tools, configuration)</li>
+<li><strong>Share</strong> the agent with others (assign User or Collaborator role)</li>
+<li>Cannot delete the agent</li>
+<li>Cannot remove the Owner's access</li>
+</ul>
+<p>Collaborators are ideal for team members who help maintain the agent but shouldn't have full control.</p>
+<h3 id="user">User</h3>
+<p>Users can interact with the agent but cannot modify it:</p>
+<ul>
+<li><strong>Use the agent</strong> in conversations</li>
+<li>Cannot edit any settings</li>
+<li>Cannot share with others</li>
+<li>Cannot delete the agent</li>
+</ul>
+<p>Users are ideal for end users who simply need to use the agent.</p>
+<h2 id="sharing-an-agent">Sharing an Agent</h2>
+<h3 id="accessing-share-settings">Accessing Share Settings</h3>
+<ol>
+<li>Open the agent for editing (if you have Owner or Collaborator access)</li>
+<li>Look for the <strong>Share</strong> or <strong>Access Control</strong> button</li>
+<li>The sharing panel opens</li>
+</ol>
+<h3 id="adding-users">Adding Users</h3>
+<ol>
+<li>In the sharing panel, click <strong>Add User</strong> or <strong>Add Role Assignment</strong></li>
+<li>Search for the user by name or email</li>
+<li>Select the user from the results</li>
+<li>Choose a role: <strong>Owner</strong>, <strong>Collaborator</strong>, or <strong>User</strong></li>
+<li>Click <strong>Add</strong> or <strong>Save</strong></li>
+</ol>
+<h3 id="removing-users">Removing Users</h3>
+<ol>
+<li>Open the sharing panel</li>
+<li>Find the user in the list</li>
+<li>Click the <strong>Remove</strong> button next to their name</li>
+<li>Confirm the removal</li>
+</ol>
+<blockquote>
+<p><strong>Note:</strong> You cannot remove the last Owner. Transfer ownership first if needed.</p>
+</blockquote>
+<h3 id="changing-roles">Changing Roles</h3>
+<ol>
+<li>Open the sharing panel</li>
+<li>Find the user whose role you want to change</li>
+<li>Click on their current role</li>
+<li>Select the new role from the dropdown</li>
+<li>Save changes</li>
+</ol>
+<h2 id="sharing-best-practices">Sharing Best Practices</h2>
+<h3 id="team-collaboration">Team Collaboration</h3>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Recommended Approach</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Small team maintaining an agent</td>
+<td>Make all team members Collaborators</td>
+</tr>
+<tr>
+<td>Department-wide agent</td>
+<td>Owners maintain, department members are Users</td>
+</tr>
+<tr>
+<td>Cross-team project</td>
+<td>Project leads as Collaborators, team members as Users</td>
+</tr>
+</tbody>
+</table>
+<h3 id="access-principles">Access Principles</h3>
+<ul>
+<li><strong>Least Privilege</strong>: Grant the minimum role needed</li>
+<li><strong>Multiple Owners</strong>: Consider having 2-3 Owners for important agents</li>
+<li><strong>Regular Review</strong>: Periodically audit who has access</li>
+<li><strong>Clear Ownership</strong>: Ensure someone is responsible for each agent</li>
+</ul>
+<h2 id="who-can-see-shared-agents">Who Can See Shared Agents</h2>
+<h3 id="visibility-rules">Visibility Rules</h3>
+<p>Shared agents appear in the agent selector for users with access:</p>
+<ol>
+<li>Users see agents where they have any role (Owner, Collaborator, or User)</li>
+<li>Agents appear in the dropdown alongside other available agents</li>
+<li>Users can enable/disable shared agents in Settings</li>
+</ol>
+<h3 id="organization-policies">Organization Policies</h3>
+<p>Your administrator may configure:</p>
+<ul>
+<li>Whether self-service agents are visible to others by default</li>
+<li>Required approval for sharing agents widely</li>
+<li>Limits on the number of users an agent can be shared with</li>
+</ul>
+<h2 id="managing-received-shares">Managing Received Shares</h2>
+<h3 id="viewing-your-shared-agents">Viewing Your Shared Agents</h3>
+<ol>
+<li>Open <strong>Settings</strong> &gt; <strong>Agents</strong> tab</li>
+<li>View the list of available agents</li>
+<li>Shared agents show your role (Owner, Collaborator, or User)</li>
+</ol>
+<h3 id="removing-yourself-from-a-shared-agent">Removing Yourself from a Shared Agent</h3>
+<ol>
+<li>Open <strong>Settings</strong> &gt; <strong>Agents</strong> tab</li>
+<li>Find the shared agent</li>
+<li>Disable the agent using the checkbox</li>
+</ol>
+<blockquote>
+<p><strong>Note:</strong> This hides the agent from your view but doesn't remove your access. The Owner can still see you have access.</p>
+</blockquote>
+<h2 id="ownership-transfer">Ownership Transfer</h2>
+<h3 id="when-to-transfer-ownership">When to Transfer Ownership</h3>
+<ul>
+<li>Original creator leaving the organization</li>
+<li>Changing team responsibilities</li>
+<li>Consolidating agent management</li>
+</ul>
+<h3 id="how-to-transfer-ownership">How to Transfer Ownership</h3>
+<ol>
+<li>Open the agent sharing settings (as current Owner)</li>
+<li>Add the new Owner with the <strong>Owner</strong> role</li>
+<li>The new user now has full control</li>
+<li>Optionally, change your role to Collaborator or remove yourself</li>
+</ol>
+<h2 id="notifications">Notifications</h2>
+<blockquote>
+<p><strong>TODO</strong>: Document notification behavior for sharing events (when users are notified of being added to/removed from agents).</p>
+</blockquote>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="cant-share-agent">Can't Share Agent</h3>
+<ul>
+<li>Verify you have Owner or Collaborator role</li>
+<li>Check that sharing features are enabled for your organization</li>
+<li>Ensure the user exists in your organization's directory</li>
+</ul>
+<h3 id="user-cant-see-shared-agent">User Can't See Shared Agent</h3>
+<ul>
+<li>Verify the user was added correctly</li>
+<li>Check if the agent is Active (not expired)</li>
+<li>The user may need to enable the agent in their Settings</li>
+</ul>
+<h3 id="cant-remove-user">Can't Remove User</h3>
+<ul>
+<li>You may not have permission (check your role)</li>
+<li>Cannot remove the last Owner</li>
+<li>System accounts may have protected access</li>
+</ul>
+<h3 id="cant-change-roles">Can't Change Roles</h3>
+<ul>
+<li>Only Owners can assign Owner role</li>
+<li>Collaborators can only assign User or Collaborator roles</li>
+<li>Some role changes may require approval</li>
+</ul>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="creating-editing-agents.html">Creating and Editing Custom Agents</a> — Create your own agents</li>
+<li><a href="managing-available-agents.html">Managing Available Agents</a> — Control which agents you see</li>
+<li><a href="selecting-agent.html">Selecting an Agent</a> — Choose an agent for conversations</li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

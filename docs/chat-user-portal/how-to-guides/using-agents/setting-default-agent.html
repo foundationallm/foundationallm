@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Setting a Default Agent | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Setting a Default Agent | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/chat-user-portal/how-to-guides/using-agents/setting-default-agent.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="setting-a-default-agent">Setting a Default Agent</h1>
+
+<p>Learn how to set a default agent that's automatically selected for new conversations.</p>
+<h2 id="overview">Overview</h2>
+<p>The default agent is the AI assistant that's automatically selected when you start a new conversation. Setting a default agent saves time if you primarily use one agent for your work.</p>
+<h2 id="how-default-agents-work">How Default Agents Work</h2>
+<h3 id="system-default-vs-personal-default">System Default vs. Personal Default</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Set By</th>
+<th>Applies To</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>System Default</strong></td>
+<td>Administrators</td>
+<td>All users (unless they choose differently)</td>
+</tr>
+<tr>
+<td><strong>Personal Default</strong></td>
+<td>You</td>
+<td>Only your account</td>
+</tr>
+</tbody>
+</table>
+<h3 id="precedence">Precedence</h3>
+<ol>
+<li>Your personal default (if set) takes priority</li>
+<li>Otherwise, the system default is used</li>
+<li>If no defaults are set, the first available agent is selected</li>
+</ol>
+<h2 id="setting-your-default-agent">Setting Your Default Agent</h2>
+<h3 id="from-settings">From Settings</h3>
+<ol>
+<li>Click the <strong>Settings</strong> button (gear icon ⚙️) in the bottom-left corner of the sidebar</li>
+<li>Click the <strong>Agents</strong> tab</li>
+<li>Find the agent you want as your default</li>
+<li>Click the <strong>Set as Default</strong> option (if available)</li>
+<li>A confirmation appears</li>
+</ol>
+<h3 id="visual-indicators">Visual Indicators</h3>
+<ul>
+<li>The current default agent shows a <strong>Default</strong> badge or star icon</li>
+<li>When you change the default, the badge moves to the new selection</li>
+</ul>
+<h2 id="who-can-set-defaults">Who Can Set Defaults</h2>
+<h3 id="personal-default">Personal Default</h3>
+<p>Most users can set their own default agent from the agents they have access to.</p>
+<h3 id="system-default-organization-wide">System Default (Organization-Wide)</h3>
+<p>Setting the system-wide default requires:</p>
+<ul>
+<li>Access to the Management Portal</li>
+<li>The <strong>User Access Administrator</strong> role</li>
+<li>Navigate to <strong>All Agents</strong> and use the <strong>Set Default</strong> action</li>
+</ul>
+<h2 id="when-the-default-agent-is-used">When the Default Agent is Used</h2>
+<p>The default agent is automatically selected when:</p>
+<ul>
+<li>You open the User Portal for a new session</li>
+<li>You create a new conversation</li>
+<li>You don't explicitly select a different agent</li>
+</ul>
+<p>The default agent is <strong>not</strong> used when:</p>
+<ul>
+<li>You switch agents during a conversation (the new agent becomes active)</li>
+<li>You select a different agent from the dropdown</li>
+<li>You return to an existing conversation (which uses its original agent)</li>
+</ul>
+<h2 id="changing-the-default-agent">Changing the Default Agent</h2>
+<h3 id="switching-your-default">Switching Your Default</h3>
+<ol>
+<li>Go to <strong>Settings</strong> &gt; <strong>Agents</strong></li>
+<li>Find the new agent you want as default</li>
+<li>Click <strong>Set as Default</strong></li>
+<li>The previous default is cleared automatically</li>
+</ol>
+<h3 id="clearing-the-default">Clearing the Default</h3>
+<p>To stop having a personal default:</p>
+<blockquote>
+<p><strong>Note:</strong> Some configurations may not allow clearing the default. In this case, simply choose a different agent as your default.</p>
+</blockquote>
+<h2 id="best-practices">Best Practices</h2>
+<h3 id="choosing-a-good-default">Choosing a Good Default</h3>
+<table>
+<thead>
+<tr>
+<th>Use Case</th>
+<th>Recommended Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>General office work</td>
+<td>A versatile, general-purpose agent</td>
+</tr>
+<tr>
+<td>Specialized role</td>
+<td>An agent matching your primary job function</td>
+</tr>
+<tr>
+<td>Frequent task</td>
+<td>The agent you use most often</td>
+</tr>
+</tbody>
+</table>
+<h3 id="when-not-to-use-default">When Not to Use Default</h3>
+<p>Consider not relying heavily on the default if:</p>
+<ul>
+<li>You frequently need different agents for different tasks</li>
+<li>Your work varies significantly day-to-day</li>
+<li>You're evaluating multiple agents</li>
+</ul>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="cant-set-default">Can't Set Default</h3>
+<ul>
+<li>Verify you have access to the agent</li>
+<li>Check if your organization allows personal defaults</li>
+<li>The agent may need to be enabled first</li>
+</ul>
+<h3 id="default-not-being-used">Default Not Being Used</h3>
+<ul>
+<li>Clear your browser cache</li>
+<li>Check if you have a conversation already open with a different agent</li>
+<li>Verify the agent is still active and available</li>
+</ul>
+<h3 id="default-changed-unexpectedly">Default Changed Unexpectedly</h3>
+<ul>
+<li>An administrator may have changed the system default</li>
+<li>The previous default agent may have been disabled or deleted</li>
+<li>Check your Settings to confirm your current default</li>
+</ul>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="selecting-agent.html">Selecting an Agent</a> — Manually choose an agent</li>
+<li><a href="managing-available-agents.html">Managing Available Agents</a> — Control your agent catalog</li>
+<li><a href="creating-editing-agents.html">Creating and Editing Custom Agents</a> — Create your own agents</li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

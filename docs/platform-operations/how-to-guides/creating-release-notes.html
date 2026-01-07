@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Creating Release Notes | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Creating Release Notes | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../toc.html">
+      <meta name="docfx:tocrel" content="../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/platform-operations/how-to-guides/creating-release-notes.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../index.html">
+            <img id="logo" class="svg" src="../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="creating-release-notes">Creating Release Notes</h1>
+
+<p>This guide provides the process for creating release notes for FoundationaLLM updates.</p>
+<h2 id="overview">Overview</h2>
+<p>Release notes communicate changes to end-users, stakeholders, and operations teams. Well-structured notes help with:</p>
+<ul>
+<li>Understanding what's new or changed</li>
+<li>Planning upgrade timing</li>
+<li>Identifying breaking changes</li>
+<li>Tracking project evolution</li>
+</ul>
+<h2 id="release-notes-structure">Release Notes Structure</h2>
+<h3 id="standard-format">Standard Format</h3>
+<pre><code class="lang-markdown"># Release X.Y.Z
+
+**Release Date:** YYYY-MM-DD
+
+## Highlights
+- Major feature or change summary
+
+## New Features
+- Feature 1 description (#issue-number)
+- Feature 2 description (#issue-number)
+
+## Enhancements
+- Enhancement 1 description (#issue-number)
+
+## Bug Fixes
+- Fix 1 description (#issue-number)
+
+## Breaking Changes
+- Description of breaking change
+- Migration steps
+
+## Deprecations
+- Feature being deprecated
+- Removal timeline
+
+## Security Updates
+- Security-related fixes
+
+## Known Issues
+- Outstanding issues
+
+## Upgrade Instructions
+- Steps to upgrade
+</code></pre>
+<h2 id="process">Process</h2>
+<h3 id="1-define-release-scope">1. Define Release Scope</h3>
+<ul>
+<li>Review the milestone or sprint scope</li>
+<li>Identify all changes included</li>
+<li>Confirm release version number</li>
+</ul>
+<h3 id="2-gather-changes-from-version-control">2. Gather Changes from Version Control</h3>
+<p><strong>Using GitHub:</strong></p>
+<pre><code class="lang-bash"># List commits since last release
+git log v0.8.3..HEAD --oneline
+
+# List merged PRs
+gh pr list --state merged --base main --json number,title
+</code></pre>
+<p><strong>Using GitHub Web:</strong></p>
+<ol>
+<li>Navigate to repository</li>
+<li>Go to <strong>Pull requests</strong> &gt; <strong>Closed</strong></li>
+<li>Filter by milestone or date range</li>
+</ol>
+<h3 id="3-categorize-changes">3. Categorize Changes</h3>
+<p>Group changes into standard categories:</p>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>New Features</strong></td>
+<td>New functionality</td>
+</tr>
+<tr>
+<td><strong>Enhancements</strong></td>
+<td>Improvements to existing features</td>
+</tr>
+<tr>
+<td><strong>Bug Fixes</strong></td>
+<td>Resolved issues</td>
+</tr>
+<tr>
+<td><strong>Breaking Changes</strong></td>
+<td>Changes requiring user action</td>
+</tr>
+<tr>
+<td><strong>Deprecations</strong></td>
+<td>Features being phased out</td>
+</tr>
+<tr>
+<td><strong>Security Updates</strong></td>
+<td>Security-related changes</td>
+</tr>
+</tbody>
+</table>
+<h3 id="4-write-clear-descriptions">4. Write Clear Descriptions</h3>
+<p><strong>Good Example:</strong></p>
+<pre><code class="lang-markdown">- Add support for GPT-4o model deployment in agents (#1234)
+- Fix conversation history not persisting after browser refresh (#1235)
+</code></pre>
+<p><strong>Poor Example:</strong></p>
+<pre><code class="lang-markdown">- Updated stuff
+- Fixed bug
+</code></pre>
+<h3 id="5-document-breaking-changes">5. Document Breaking Changes</h3>
+<p>For each breaking change:</p>
+<ol>
+<li>Describe what changed</li>
+<li>Explain the impact</li>
+<li>Provide migration steps</li>
+<li>Note any automated migration</li>
+</ol>
+<pre><code class="lang-markdown">## Breaking Changes
+
+### Agent Configuration Format Change
+
+The agent configuration schema has changed:
+
+**Before (v0.8.x):**
+```json
+{
+  &quot;workflow&quot;: &quot;langchain&quot;
+}
+</code></pre>
+<p><strong>After (v0.9.x):</strong></p>
+<pre><code class="lang-json">{
+  &quot;workflow_object_id&quot;: &quot;/instances/{id}/providers/FoundationaLLM.Agent/workflows/langchain&quot;
+}
+</code></pre>
+<p><strong>Migration:</strong> Run the upgrade script <code>Migrate-AgentConfig.ps1</code> before deploying v0.9.x.</p>
+<pre><code>
+### 6. Include Upgrade Instructions
+
+Provide clear upgrade steps:
+
+```markdown
+## Upgrade Instructions
+
+### From v0.8.x to v0.9.x
+
+1. Backup your deployment
+2. Run pre-migration script
+3. Update container images
+4. Run post-migration script
+5. Verify functionality
+
+See [Upgrade Guide](./upgrade-guide.md) for detailed steps.
+</code></pre>
+<h3 id="7-review-process">7. Review Process</h3>
+<ol>
+<li><strong>Self-review</strong> - Check for accuracy and completeness</li>
+<li><strong>Technical review</strong> - Have developers verify changes</li>
+<li><strong>Stakeholder review</strong> - Get product owner approval</li>
+<li><strong>Edit</strong> - Incorporate feedback</li>
+</ol>
+<h3 id="8-publish">8. Publish</h3>
+<p><strong>GitHub Release:</strong></p>
+<ol>
+<li>Navigate to repository &gt; <strong>Releases</strong></li>
+<li>Click <strong>Draft a new release</strong></li>
+<li>Select or create tag (e.g., <code>v0.9.0</code>)</li>
+<li>Enter release title</li>
+<li>Paste release notes</li>
+<li>Attach any artifacts</li>
+<li>Click <strong>Publish release</strong></li>
+</ol>
+<h2 id="templates">Templates</h2>
+<h3 id="minor-release-template">Minor Release Template</h3>
+<pre><code class="lang-markdown"># Release X.Y.0
+
+**Release Date:** YYYY-MM-DD
+
+## Highlights
+- [Main feature or theme of this release]
+
+## New Features
+- 
+
+## Enhancements
+- 
+
+## Bug Fixes
+- 
+
+## Upgrade Instructions
+1. Pull latest container images
+2. Update App Configuration (if needed)
+3. Verify deployment
+
+See [Upgrade Guide](link) for details.
+</code></pre>
+<h3 id="patch-release-template">Patch Release Template</h3>
+<pre><code class="lang-markdown"># Release X.Y.Z
+
+**Release Date:** YYYY-MM-DD
+
+This is a patch release containing bug fixes.
+
+## Bug Fixes
+- 
+
+## Upgrade Instructions
+Update container images to tag `X.Y.Z`.
+</code></pre>
+<h2 id="best-practices">Best Practices</h2>
+<table>
+<thead>
+<tr>
+<th>Practice</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Be Specific</strong></td>
+<td>Include issue numbers and specific descriptions</td>
+</tr>
+<tr>
+<td><strong>User Focus</strong></td>
+<td>Write from the user's perspective</td>
+</tr>
+<tr>
+<td><strong>Consistent Format</strong></td>
+<td>Use the same structure for all releases</td>
+</tr>
+<tr>
+<td><strong>Link Documentation</strong></td>
+<td>Reference detailed docs where appropriate</td>
+</tr>
+<tr>
+<td><strong>Test Instructions</strong></td>
+<td>Verify upgrade steps work</td>
+</tr>
+</tbody>
+</table>
+<h2 id="automation">Automation</h2>
+<p>Consider automating release note generation:</p>
+<pre><code class="lang-yaml"># Example GitHub Action
+name: Generate Release Notes
+on:
+  release:
+    types: [created]
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generate notes
+        run: |
+          gh api repos/${{ github.repository }}/releases/generate-notes \
+            -f tag_name=${{ github.ref_name }} \
+            -f previous_tag_name=$(git describe --tags --abbrev=0 HEAD^)
+</code></pre>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="updating-container-versions.html">Updating Container Versions</a></li>
+<li><a href="https://github.com/foundationallm/foundationallm/releases">GitHub Releases</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

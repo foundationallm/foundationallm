@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>API and Token Limits | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="API and Token Limits | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/management-portal/reference/concepts/api-limits.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="api-and-token-limits">API and Token Limits</h1>
+
+<p>Reference documentation for API rate limits, token usage limits, and quota enforcement in FoundationaLLM.</p>
+<h2 id="overview">Overview</h2>
+<p>FoundationaLLM enforces various limits to ensure fair usage, protect system stability, and manage costs. Understanding these limits helps you build applications that work reliably within the platform's constraints.</p>
+<h2 id="types-of-limits">Types of Limits</h2>
+<table>
+<thead>
+<tr>
+<th>Limit Type</th>
+<th>Purpose</th>
+<th>Scope</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>API Rate Limits</strong></td>
+<td>Prevent excessive API calls</td>
+<td>Per user or global</td>
+</tr>
+<tr>
+<td><strong>Token Usage Limits</strong></td>
+<td>Control model consumption</td>
+<td>Per request/agent/user</td>
+</tr>
+<tr>
+<td><strong>Quota Limits</strong></td>
+<td>Manage resource allocation</td>
+<td>Per agent or platform</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="api-rate-limits">API Rate Limits</h2>
+<h3 id="overview-1">Overview</h3>
+<p>API rate limits restrict how many requests can be made within a time window. When limits are exceeded, the API returns a 429 (Too Many Requests) response.</p>
+<h3 id="rate-limit-structure">Rate Limit Structure</h3>
+<p>Rate limits are defined by:</p>
+<ul>
+<li><strong>Metric Limit</strong>: Maximum number of requests</li>
+<li><strong>Time Window</strong>: Period over which requests are counted (typically 60 seconds)</li>
+<li><strong>Lockout Duration</strong>: How long you're blocked after exceeding limits</li>
+<li><strong>Partition</strong>: Whether limits apply globally, per user, or per agent</li>
+</ul>
+<h3 id="common-rate-limits">Common Rate Limits</h3>
+<table>
+<thead>
+<tr>
+<th>Controller</th>
+<th>Typical Limit</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Completions</strong></td>
+<td>100/minute/user</td>
+<td>Chat completion requests</td>
+</tr>
+<tr>
+<td><strong>CompletionsStatus</strong></td>
+<td>500/minute/user</td>
+<td>Polling for async completion status</td>
+</tr>
+<tr>
+<td><strong>Sessions</strong></td>
+<td>60/minute/user</td>
+<td>Session management operations</td>
+</tr>
+<tr>
+<td><strong>Files</strong></td>
+<td>30/minute/user</td>
+<td>File upload operations</td>
+</tr>
+</tbody>
+</table>
+<h3 id="rate-limit-response">Rate Limit Response</h3>
+<p>When you exceed a rate limit:</p>
+<pre><code class="lang-json">{
+  &quot;quota_exceeded&quot;: true,
+  &quot;quota_name&quot;: &quot;CoreAPICompletionsRateLimit&quot;,
+  &quot;retry_after_seconds&quot;: 60,
+  &quot;message&quot;: &quot;Rate limit exceeded. Try again later.&quot;
+}
+</code></pre>
+<h3 id="best-practices">Best Practices</h3>
+<ol>
+<li><strong>Implement retry logic</strong> with exponential backoff</li>
+<li><strong>Monitor 429 responses</strong> in your application</li>
+<li><strong>Use async endpoints</strong> for long operations to reduce polling</li>
+<li><strong>Cache responses</strong> where appropriate</li>
+</ol>
+<hr>
+<h2 id="token-usage-limits">Token Usage Limits</h2>
+<h3 id="what-are-tokens">What Are Tokens?</h3>
+<p>Tokens are the units AI models use to process text:</p>
+<ul>
+<li>~1 token ≈ 4 characters in English</li>
+<li>~1 token ≈ ¾ of a word</li>
+<li>100 tokens ≈ 75 words</li>
+</ul>
+<h3 id="token-counting">Token Counting</h3>
+<p>Each completion request consumes tokens in three categories:</p>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Prompt Tokens</strong></td>
+<td>Tokens in your input (system prompt + user message + context)</td>
+</tr>
+<tr>
+<td><strong>Completion Tokens</strong></td>
+<td>Tokens in the model's response</td>
+</tr>
+<tr>
+<td><strong>Total Tokens</strong></td>
+<td>Sum of prompt and completion tokens</td>
+</tr>
+</tbody>
+</table>
+<h3 id="per-request-token-limits">Per-Request Token Limits</h3>
+<p>The <code>max_new_tokens</code> parameter limits response length:</p>
+<pre><code class="lang-json">{
+  &quot;user_prompt&quot;: &quot;Explain quantum computing&quot;,
+  &quot;settings&quot;: {
+    &quot;model_parameters&quot;: {
+      &quot;max_new_tokens&quot;: 2000
+    }
+  }
+}
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Typical Range</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>max_new_tokens</code></td>
+<td>1-4000+</td>
+<td>Model-dependent</td>
+</tr>
+</tbody>
+</table>
+<h3 id="model-context-limits">Model Context Limits</h3>
+<p>Different models have different context window sizes:</p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Context Window</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GPT-4</td>
+<td>8K-128K tokens</td>
+<td>Varies by deployment</td>
+</tr>
+<tr>
+<td>GPT-4o</td>
+<td>128K tokens</td>
+<td>Large context support</td>
+</tr>
+<tr>
+<td>GPT-3.5-turbo</td>
+<td>4K-16K tokens</td>
+<td>Varies by version</td>
+</tr>
+<tr>
+<td>Claude 3</td>
+<td>200K tokens</td>
+<td>Extended context</td>
+</tr>
+</tbody>
+</table>
+<p>If your request exceeds the context window, the API returns an error.</p>
+<h3 id="token-limit-errors">Token Limit Errors</h3>
+<p>When token limits are exceeded:</p>
+<pre><code class="lang-json">{
+  &quot;error&quot;: {
+    &quot;code&quot;: &quot;TokenLimitExceeded&quot;,
+    &quot;message&quot;: &quot;Request exceeds maximum token limit for this model.&quot;
+  }
+}
+</code></pre>
+<hr>
+<h2 id="api-key-limits">API Key Limits</h2>
+<h3 id="agent-access-token-limits">Agent Access Token Limits</h3>
+<p>Agent Access Tokens have configurable constraints:</p>
+<table>
+<thead>
+<tr>
+<th>Limit</th>
+<th>Description</th>
+<th>Configuration</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Expiration</strong></td>
+<td>Token validity period</td>
+<td>Set at creation time</td>
+</tr>
+<tr>
+<td><strong>Agent Scope</strong></td>
+<td>Which agent(s) can be accessed</td>
+<td>Bound to single agent</td>
+</tr>
+<tr>
+<td><strong>Permission Scope</strong></td>
+<td>What actions are allowed</td>
+<td>Defined by role assignments</td>
+</tr>
+</tbody>
+</table>
+<h3 id="creating-tokens-with-appropriate-limits">Creating Tokens with Appropriate Limits</h3>
+<p>When creating Agent Access Tokens:</p>
+<ol>
+<li>Set appropriate expiration dates (shorter = more secure)</li>
+<li>Limit scope to necessary agents only</li>
+<li>Review and rotate tokens periodically</li>
+</ol>
+<hr>
+<h2 id="quota-configuration">Quota Configuration</h2>
+<h3 id="quota-definition-structure">Quota Definition Structure</h3>
+<p>Quotas are defined with these properties:</p>
+<pre><code class="lang-json">{
+  &quot;name&quot;: &quot;CoreAPICompletionsRateLimit&quot;,
+  &quot;description&quot;: &quot;100 requests per minute per user&quot;,
+  &quot;context&quot;: &quot;CoreAPI:Completions&quot;,
+  &quot;type&quot;: &quot;RawRequestRateLimit&quot;,
+  &quot;metric_partition&quot;: &quot;UserPrincipalName&quot;,
+  &quot;metric_limit&quot;: 100,
+  &quot;metric_window_seconds&quot;: 60,
+  &quot;lockout_duration_seconds&quot;: 60,
+  &quot;distributed_enforcement&quot;: false
+}
+</code></pre>
+<h3 id="quota-types">Quota Types</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>RawRequestRateLimit</code></td>
+<td>Limits total API requests</td>
+</tr>
+<tr>
+<td><code>AgentRequestRateLimit</code></td>
+<td>Limits requests to specific agents</td>
+</tr>
+</tbody>
+</table>
+<h3 id="partition-strategies">Partition Strategies</h3>
+<table>
+<thead>
+<tr>
+<th>Partition</th>
+<th>Description</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>None</code></td>
+<td>Global limit for all users</td>
+<td>System protection</td>
+</tr>
+<tr>
+<td><code>UserPrincipalName</code></td>
+<td>Per-user limits</td>
+<td>Standard user access</td>
+</tr>
+<tr>
+<td><code>UserIdentifier</code></td>
+<td>Per-identity limits</td>
+<td>Service accounts</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="agent-specific-limits">Agent-Specific Limits</h2>
+<h3 id="per-agent-rate-limits">Per-Agent Rate Limits</h3>
+<p>Specific agents can have individual rate limits:</p>
+<pre><code class="lang-json">{
+  &quot;name&quot;: &quot;KnowledgeAgentRateLimit&quot;,
+  &quot;context&quot;: &quot;CoreAPI:Completions:knowledge-agent&quot;,
+  &quot;type&quot;: &quot;AgentRequestRateLimit&quot;,
+  &quot;metric_partition&quot;: &quot;UserPrincipalName&quot;,
+  &quot;metric_limit&quot;: 50,
+  &quot;metric_window_seconds&quot;: 60
+}
+</code></pre>
+<h3 id="agent-token-configuration">Agent Token Configuration</h3>
+<p>Agents can be configured with:</p>
+<ul>
+<li>Maximum response tokens</li>
+<li>Temperature constraints</li>
+<li>Context window usage limits</li>
+</ul>
+<hr>
+<h2 id="monitoring-and-managing-limits">Monitoring and Managing Limits</h2>
+<h3 id="viewing-current-usage">Viewing Current Usage</h3>
+<p>Users can monitor token consumption in the User Portal:</p>
+<ol>
+<li>Enable <strong>Show Message Tokens</strong> in agent configuration</li>
+<li>Token counts appear on each message</li>
+<li>Review consumption patterns over time</li>
+</ol>
+<h3 id="administrator-monitoring">Administrator Monitoring</h3>
+<p>Administrators can:</p>
+<ul>
+<li>Review quota definitions in storage</li>
+<li>Monitor API logs for 429 responses</li>
+<li>Adjust quotas based on usage patterns</li>
+</ul>
+<h3 id="adjusting-limits">Adjusting Limits</h3>
+<p>To modify quota limits:</p>
+<ol>
+<li>Access the quota configuration in the main storage account</li>
+<li>Edit the <code>quota-store.json</code> file in the <code>quota</code> container</li>
+<li>Update metric limits, windows, or partitions</li>
+<li>Changes take effect on next API service restart</li>
+</ol>
+<hr>
+<h2 id="limit-recommendations">Limit Recommendations</h2>
+<h3 id="for-developers">For Developers</h3>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Recommendation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Interactive chat</td>
+<td>Use default limits, implement retry</td>
+</tr>
+<tr>
+<td>Batch processing</td>
+<td>Implement rate limiting in your code</td>
+</tr>
+<tr>
+<td>High-volume API</td>
+<td>Request quota increase from admin</td>
+</tr>
+<tr>
+<td>Long operations</td>
+<td>Use async endpoints</td>
+</tr>
+</tbody>
+</table>
+<h3 id="for-administrators">For Administrators</h3>
+<table>
+<thead>
+<tr>
+<th>Goal</th>
+<th>Configuration</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Prevent abuse</td>
+<td>Set per-user limits with lockouts</td>
+</tr>
+<tr>
+<td>Protect critical agents</td>
+<td>Add agent-specific rate limits</td>
+</tr>
+<tr>
+<td>Allow high-volume integrations</td>
+<td>Consider higher limits for service accounts</td>
+</tr>
+<tr>
+<td>Cost management</td>
+<td>Monitor and set token-based quotas</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="error-handling-examples">Error Handling Examples</h2>
+<h3 id="handling-rate-limits-python">Handling Rate Limits (Python)</h3>
+<pre><code class="lang-python">import time
+import requests
+
+def call_api_with_retry(url, headers, data, max_retries=3):
+    for attempt in range(max_retries):
+        response = requests.post(url, headers=headers, json=data)
+        
+        if response.status_code == 429:
+            retry_after = response.json().get('retry_after_seconds', 60)
+            print(f&quot;Rate limited. Waiting {retry_after} seconds...&quot;)
+            time.sleep(retry_after)
+            continue
+            
+        return response
+    
+    raise Exception(&quot;Max retries exceeded&quot;)
+</code></pre>
+<h3 id="handling-token-limits">Handling Token Limits</h3>
+<pre><code class="lang-python">def truncate_to_token_limit(text, max_tokens=4000):
+    # Approximate: 4 chars per token
+    max_chars = max_tokens * 4
+    if len(text) &gt; max_chars:
+        return text[:max_chars] + &quot;...&quot;
+    return text
+</code></pre>
+<hr>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="quotas.html">Quotas Reference</a> — Detailed quota configuration</li>
+<li><a href="../../../apis-sdks/apis/core-api/api-reference.html">Core API Reference</a> — API endpoint details</li>
+<li><a href="../../../chat-user-portal/how-to-guides/using-agents/monitoring-tokens.html">Monitoring Token Consumption</a> — User token monitoring</li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

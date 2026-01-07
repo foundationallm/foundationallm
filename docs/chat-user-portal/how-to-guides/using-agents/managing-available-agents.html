@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Managing Available Agents | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Managing Available Agents | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/chat-user-portal/how-to-guides/using-agents/managing-available-agents.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="managing-available-agents">Managing Available Agents</h1>
+
+<p>Control which agents appear in your agent selector and learn how to access agent settings.</p>
+<h2 id="understanding-the-agent-catalog">Understanding the Agent Catalog</h2>
+<p>The <strong>agent catalog</strong> is the collection of all agents available to you. Think of it as your personal library of AI assistants. Each user's catalog may be different based on their permissions and organization settings.</p>
+<h3 id="what-determines-your-agent-catalog">What Determines Your Agent Catalog</h3>
+<p>The agents you see in the Chat User Portal depend on several factors:</p>
+<ol>
+<li><strong>Organization publishing</strong>: Administrators publish agents for general use</li>
+<li><strong>Access permissions</strong>: Your role determines which agents you can access</li>
+<li><strong>Shared agents</strong>: Colleagues may share custom agents with you</li>
+<li><strong>Your own agents</strong>: Agents you create (if self-service is enabled)</li>
+<li><strong>Your preferences</strong>: You can enable or disable agents you have access to</li>
+<li><strong>Featured agents</strong>: Some agents are highlighted as featured and cannot be disabled</li>
+</ol>
+<h3 id="how-agents-appear-in-the-dropdown">How Agents Appear in the Dropdown</h3>
+<p>When you click the agent selector in the navigation bar:</p>
+<ol>
+<li><strong>Featured agents</strong> appear first, grouped at the top</li>
+<li><strong>Other enabled agents</strong> appear below in alphabetical order</li>
+<li>Only agents you've enabled in Settings appear in the dropdown</li>
+<li>Your most recently used agents may be prioritized</li>
+</ol>
+<h2 id="user-portal-vs-management-portal">User Portal vs. Management Portal</h2>
+<p>Agent management happens in different places depending on your role:</p>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>User Portal</th>
+<th>Management Portal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Select an agent to use</td>
+<td>✅</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Enable/disable agents for yourself</td>
+<td>✅</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Create self-service agents</td>
+<td>✅ (if enabled)</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Edit your custom agents</td>
+<td>✅ (if enabled)</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Configure enterprise agents</td>
+<td>❌</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Manage all organization agents</td>
+<td>❌</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Set up data sources and pipelines</td>
+<td>❌</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Configure agent access control</td>
+<td>❌</td>
+<td>✅</td>
+</tr>
+</tbody>
+</table>
+<p><strong>User Portal</strong> is designed for end users who want to:</p>
+<ul>
+<li>Use agents in conversations</li>
+<li>Manage which agents appear in their personal agent selector</li>
+<li>Create and edit their own custom agents (if self-service is enabled)</li>
+</ul>
+<p><strong>Management Portal</strong> is designed for administrators who need to:</p>
+<ul>
+<li>Create and configure enterprise-wide agents</li>
+<li>Manage agent permissions and access control</li>
+<li>Set up knowledge sources and data pipelines</li>
+<li>Configure platform-wide settings</li>
+</ul>
+<h2 id="accessing-agent-settings">Accessing Agent Settings</h2>
+<ol>
+<li>Click the <strong>Settings</strong> button (gear icon ⚙️) in the bottom-left corner of the sidebar</li>
+<li>The <strong>Agents</strong> tab opens by default</li>
+<li>View your available agents in the table</li>
+</ol>
+<h2 id="the-agents-table">The Agents Table</h2>
+<p>The agent settings table shows:</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Name</strong></td>
+<td>The display name of the agent</td>
+</tr>
+<tr>
+<td><strong>Enabled</strong></td>
+<td>Checkbox showing if the agent appears in your selector</td>
+</tr>
+<tr>
+<td><strong>Edit</strong></td>
+<td>Edit button (if you have permission to modify the agent)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="enabling-and-disabling-agents">Enabling and Disabling Agents</h2>
+<h3 id="to-enable-an-agent">To Enable an Agent</h3>
+<ol>
+<li>Find the agent in the table</li>
+<li>Click the checkbox in the <strong>Enabled</strong> column</li>
+<li>A checkmark (✓) appears and the agent is now available in your agent selector</li>
+<li>A confirmation toast appears: &quot;Agent is now enabled&quot;</li>
+</ol>
+<h3 id="to-disable-an-agent">To Disable an Agent</h3>
+<ol>
+<li>Find the agent in the table</li>
+<li>Click the checked checkbox in the <strong>Enabled</strong> column</li>
+<li>The checkmark disappears and the agent is removed from your selector</li>
+<li>A confirmation toast appears: &quot;Agent is now disabled&quot;</li>
+</ol>
+<h3 id="agents-you-cannot-disable">Agents You Cannot Disable</h3>
+<p>Some agents cannot be disabled:</p>
+<ul>
+<li><strong>Currently active agent</strong>: You cannot disable the agent you're currently using in a conversation</li>
+<li><strong>Pinned featured agents</strong>: Administrators may require certain agents to always be available</li>
+</ul>
+<p>These agents show a grayed-out checkbox that cannot be changed.</p>
+<h2 id="finding-agents">Finding Agents</h2>
+<h3 id="using-search">Using Search</h3>
+<ol>
+<li>Find the <strong>Search agents by name</strong> field above the table</li>
+<li>Type part of the agent's name</li>
+<li>The list filters to show matching agents</li>
+<li>Clear the search to show all agents again</li>
+</ol>
+<h3 id="filtering-by-status">Filtering by Status</h3>
+<ol>
+<li>Check the <strong>Show enabled agents only</strong> checkbox</li>
+<li>The table shows only agents you've enabled</li>
+<li>Uncheck to show all available agents</li>
+</ol>
+<h2 id="understanding-agent-status">Understanding Agent Status</h2>
+<table>
+<thead>
+<tr>
+<th>Visual Indicator</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>✓ Checkmark (blue)</td>
+<td>Agent is enabled and available</td>
+</tr>
+<tr>
+<td>Empty checkbox</td>
+<td>Agent is disabled and hidden from selector</td>
+</tr>
+<tr>
+<td>Grayed checkbox</td>
+<td>Agent cannot be disabled (featured or in use)</td>
+</tr>
+<tr>
+<td>Edit icon (blue)</td>
+<td>You can edit this agent</td>
+</tr>
+<tr>
+<td>Edit icon (gray)</td>
+<td>You can view but not edit this agent</td>
+</tr>
+</tbody>
+</table>
+<h2 id="requesting-access-to-more-agents">Requesting Access to More Agents</h2>
+<p>If you need access to agents not in your list:</p>
+<ol>
+<li>Look for the <strong>Request permission to manage agents</strong> link at the bottom of the Settings dialog</li>
+<li>Click the link to open your organization's access request process</li>
+<li>Follow your organization's procedure to request additional agent access</li>
+</ol>
+<blockquote>
+<p><strong>Note:</strong> This link only appears if your administrator has configured an access request URL.</p>
+</blockquote>
+<h2 id="editing-agents-if-permitted">Editing Agents (If Permitted)</h2>
+<p>If you have agent contributor permissions:</p>
+<ol>
+<li>Find the agent in the table</li>
+<li>Click the <strong>Edit</strong> button (pencil icon)</li>
+<li>You'll be taken to the agent editing page</li>
+<li>Make your changes</li>
+<li>Save when finished</li>
+</ol>
+<blockquote>
+<p><strong>Note:</strong> The Edit button appears only if the Agent Self-Service feature is enabled for your organization.</p>
+</blockquote>
+<h2 id="managing-agents-page">Managing Agents Page</h2>
+<p>For more advanced agent management:</p>
+<ol>
+<li>Open the Settings dialog</li>
+<li>Look for the <strong>Manage Agents</strong> link at the bottom</li>
+<li>Click to open the full agent management page</li>
+</ol>
+<p>This page provides:</p>
+<ul>
+<li>Detailed agent information</li>
+<li>Agent creation (if permitted)</li>
+<li>Full editing capabilities</li>
+<li>File management for agent knowledge bases</li>
+</ul>
+<h2 id="tips-for-organizing-your-agents">Tips for Organizing Your Agents</h2>
+<h3 id="keep-your-list-focused">Keep Your List Focused</h3>
+<ul>
+<li>Enable only the agents you use regularly</li>
+<li>Disable agents for projects you've completed</li>
+<li>This makes finding the right agent faster</li>
+</ul>
+<h3 id="use-descriptive-names-when-searching">Use Descriptive Names When Searching</h3>
+<ul>
+<li>Search by keywords that describe what the agent does</li>
+<li>Agent names often include their purpose (e.g., &quot;Sales Report Generator&quot;)</li>
+</ul>
+<h3 id="check-for-new-agents-regularly">Check for New Agents Regularly</h3>
+<ul>
+<li>Administrators may add new agents over time</li>
+<li>Periodically review disabled agents to see if new ones are available</li>
+</ul>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="agent-list-is-empty">Agent List is Empty</h3>
+<ul>
+<li>Wait a moment — agents are still loading</li>
+<li>Refresh the page if the loading spinner persists</li>
+<li>Check with your administrator if no agents appear</li>
+</ul>
+<h3 id="cannot-enabledisable-an-agent">Cannot Enable/Disable an Agent</h3>
+<ul>
+<li>The agent may be pinned by administrators</li>
+<li>You may be currently using the agent</li>
+<li>Switch to a different agent, then try again</li>
+</ul>
+<h3 id="changes-not-saving">Changes Not Saving</h3>
+<ul>
+<li>Ensure you have a stable internet connection</li>
+<li>Try refreshing the page and making the change again</li>
+<li>Check if you're seeing any error messages</li>
+</ul>
+<h3 id="edit-button-is-grayed-out">Edit Button is Grayed Out</h3>
+<ul>
+<li>You may not have permission to edit this agent</li>
+<li>The agent may be read-only</li>
+<li>Contact your administrator for editing access</li>
+</ul>
+<h3 id="search-returns-no-results">Search Returns No Results</h3>
+<ul>
+<li>Check your spelling</li>
+<li>Try a partial name or different keywords</li>
+<li>Clear the search to see all agents</li>
+</ul>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="selecting-agent.html">Selecting an Agent</a> — Choose an agent for your conversation</li>
+<li><a href="managing-conversations.html">Managing Conversations</a> — Work with your chat sessions</li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

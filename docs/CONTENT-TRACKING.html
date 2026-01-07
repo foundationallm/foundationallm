@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Content Tracking for Documentation Reorganization | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Content Tracking for Documentation Reorganization | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../media/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/CONTENT-TRACKING.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="content-tracking-for-documentation-reorganization">Content Tracking for Documentation Reorganization</h1>
+
+<p>This document tracks all content affected by the documentation reorganization for review purposes.</p>
+<h2 id="quick-stats">Quick Stats</h2>
+<ul>
+<li><strong>Total Existing Files</strong>: 82 markdown files</li>
+<li><strong>Files to Move</strong>: 65</li>
+<li><strong>Files to Archive (Obsolete)</strong>: 8</li>
+<li><strong>Files with Partial Extraction</strong>: 4</li>
+<li><strong>New Stubs to Create</strong>: 52</li>
+<li><strong>Files Staying in Place</strong>: 5</li>
+</ul>
+<hr>
+<h2 id="-content-moved-full-file-moves">✅ Content Moved (Full File Moves)</h2>
+<p>These files are moved completely to their new location. Links and references may need updating.</p>
+<h3 id="deployment--platform-operations">Deployment → Platform Operations</h3>
+<table>
+<thead>
+<tr>
+<th>Original Path</th>
+<th>New Path</th>
+<th>Review Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>deployment/index.md</code></td>
+<td><code>platform-operations/deployment/index.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>deployment/deployment-quick-start.md</code></td>
+<td><code>platform-operations/deployment/deployment-quick-start.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>deployment/deployment-standard.md</code></td>
+<td><code>platform-operations/deployment/deployment-standard.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>deployment/deployment-configuration.md</code></td>
+<td><code>platform-operations/deployment/deployment-configuration.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>deployment/app-configuration-values.md</code></td>
+<td><code>platform-operations/deployment/app-configuration-values.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>deployment/azure-resource-providers-requirements.md</code></td>
+<td><code>platform-operations/deployment/azure-resource-providers-requirements.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>deployment/custom-domains.md</code></td>
+<td><code>platform-operations/deployment/custom-domains.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>deployment/soft-delete.md</code></td>
+<td><code>platform-operations/deployment/soft-delete.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>deployment/standard/manifest.md</code></td>
+<td><code>platform-operations/deployment/standard-manifest.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>deployment/configure-access-control-for-services.md</code></td>
+<td><code>platform-operations/security-permissions/configure-access-control-services.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+</tbody>
+</table>
+<h3 id="authenticationauthorization--platform-operations">Authentication/Authorization → Platform Operations</h3>
+<table>
+<thead>
+<tr>
+<th>Original Path</th>
+<th>New Path</th>
+<th>Review Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>deployment/authentication-authorization/index.md</code></td>
+<td><code>platform-operations/security-permissions/authentication-authorization/index.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>deployment/authentication-authorization/core-authentication-setup-entra.md</code></td>
+<td><code>platform-operations/security-permissions/authentication-authorization/pre-deployment/core-authentication-setup.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>deployment/authentication-authorization/management-authentication-setup-entra.md</code></td>
+<td><code>platform-operations/security-permissions/authentication-authorization/pre-deployment/management-authentication-setup.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>deployment/authentication-authorization/authorization-setup-entra.md</code></td>
+<td><code>platform-operations/security-permissions/authentication-authorization/pre-deployment/authorization-setup.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>deployment/authentication-authorization/post-core-deployment.md</code></td>
+<td><code>platform-operations/security-permissions/authentication-authorization/post-deployment/core-authentication-post.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>deployment/authentication-authorization/post-management-deployment.md</code></td>
+<td><code>platform-operations/security-permissions/authentication-authorization/post-deployment/management-authentication-post.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>deployment/authentication-authorization/post-authorization-deployment.md</code></td>
+<td><code>platform-operations/security-permissions/authentication-authorization/post-deployment/authorization-post.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+</tbody>
+</table>
+<h3 id="operations--platform-operations">Operations → Platform Operations</h3>
+<table>
+<thead>
+<tr>
+<th>Original Path</th>
+<th>New Path</th>
+<th>Review Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>operations/security.md</code></td>
+<td><code>platform-operations/security-permissions/platform-security.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>operations/graph-api-permissions.md</code></td>
+<td><code>platform-operations/security-permissions/graph-api-permissions.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>operations/network-security-groups.md</code></td>
+<td><code>platform-operations/security-permissions/network-security-groups.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>operations/vulnerabilities.md</code></td>
+<td><code>platform-operations/security-permissions/vulnerabilities.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>operations/logs.md</code></td>
+<td><code>platform-operations/monitoring-troubleshooting/logs.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>operations/troubleshooting.md</code></td>
+<td><code>platform-operations/monitoring-troubleshooting/troubleshooting.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>operations/update.md</code></td>
+<td><code>platform-operations/how-to-guides/updating-container-versions.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>operations/backups.md</code></td>
+<td><code>platform-operations/how-to-guides/backups.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>operations/purge-conversations.md</code></td>
+<td><code>platform-operations/how-to-guides/purge-conversations.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>operations/release-notes.md</code></td>
+<td><code>platform-operations/how-to-guides/creating-release-notes.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+</tbody>
+</table>
+<h3 id="rbac--platform-operations">RBAC → Platform Operations</h3>
+<table>
+<thead>
+<tr>
+<th>Original Path</th>
+<th>New Path</th>
+<th>Review Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>role-based-access-control/index.md</code></td>
+<td><code>platform-operations/security-permissions/role-based-access-control/index.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>role-based-access-control/role-definitions.md</code></td>
+<td><code>platform-operations/security-permissions/role-based-access-control/role-definitions.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>role-based-access-control/role-assignments.md</code></td>
+<td><code>platform-operations/security-permissions/role-based-access-control/role-assignments.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>role-based-access-control/scope.md</code></td>
+<td><code>platform-operations/security-permissions/role-based-access-control/scope.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>role-based-access-control/role-management.md</code></td>
+<td><code>platform-operations/security-permissions/role-based-access-control/role-management.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>role-based-access-control/agent-role-assignments.md</code></td>
+<td><code>platform-operations/security-permissions/role-based-access-control/agent-role-assignments.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+</tbody>
+</table>
+<h3 id="setup-guides--various-sections">Setup Guides → Various Sections</h3>
+<table>
+<thead>
+<tr>
+<th>Original Path</th>
+<th>New Path</th>
+<th>Review Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>setup-guides/quickstart.md</code></td>
+<td><code>chat-user-portal/quick-start/quickstart.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>setup-guides/management-ui/management-ui.md</code></td>
+<td><code>management-portal/index.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>setup-guides/agents/agents_workflows.md</code></td>
+<td><code>management-portal/reference/concepts/agents-workflows.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>setup-guides/agents/Agent_AccessToken.md</code></td>
+<td><code>management-portal/reference/concepts/agent-access-tokens.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>setup-guides/agents/prompt-resource.md</code></td>
+<td><code>management-portal/reference/concepts/prompts-resources.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>setup-guides/exposed-apis/core-api.md</code></td>
+<td><code>apis-sdks/apis/core-api/index.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>setup-guides/exposed-apis/management-api.md</code></td>
+<td><code>apis-sdks/apis/management-api/index.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>setup-guides/exposed-apis/resource-management/resource-management.md</code></td>
+<td><code>management-portal/reference/concepts/resource-management.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>setup-guides/branding/index.md</code></td>
+<td><code>management-portal/reference/branding/index.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>setup-guides/branding/branding-app-configuration.md</code></td>
+<td><code>management-portal/reference/branding/using-app-configuration.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>setup-guides/branding/branding-management-portal.md</code></td>
+<td><code>management-portal/reference/branding/using-management-portal.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+</tbody>
+</table>
+<h3 id="how-to-guides--management-portal">How-To Guides → Management Portal</h3>
+<table>
+<thead>
+<tr>
+<th>Original Path</th>
+<th>New Path</th>
+<th>Review Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>how-to-guides/create-model-agnostic-agent-claude.md</code></td>
+<td><code>management-portal/how-to-guides/agents/create-model-agnostic-agent-claude.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>how-to-guides/create-model-agnostic-agent-gpt4o.md</code></td>
+<td><code>management-portal/how-to-guides/agents/create-model-agnostic-agent-gpt4o.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+</tbody>
+</table>
+<h3 id="development--apissdks--development">Development → APIs/SDKs + Development</h3>
+<table>
+<thead>
+<tr>
+<th>Original Path</th>
+<th>New Path</th>
+<th>Review Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>development/index.md</code></td>
+<td><code>development/index.md</code></td>
+<td>⬜ Pending (structure same)</td>
+</tr>
+<tr>
+<td><code>development/development-approach.md</code></td>
+<td><code>development/development-approach.md</code></td>
+<td>⬜ Pending (structure same)</td>
+</tr>
+<tr>
+<td><code>development/development-local.md</code></td>
+<td><code>development/development-local.md</code></td>
+<td>⬜ Pending (structure same)</td>
+</tr>
+<tr>
+<td><code>development/calling-apis/directly-calling-core-api.md</code></td>
+<td><code>apis-sdks/apis/core-api/directly-calling-core-api.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>development/calling-apis/directly-calling-management-api.md</code></td>
+<td><code>apis-sdks/apis/management-api/directly-calling-management-api.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>development/calling-apis/standard-deployment-local-api-access.md</code></td>
+<td><code>apis-sdks/apis/core-api/standard-deployment-local-api-access.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>development/contributing/index.md</code></td>
+<td><code>development/contributing/index.md</code></td>
+<td>⬜ Pending (structure same)</td>
+</tr>
+<tr>
+<td><code>development/contributing/git-workflow.md</code></td>
+<td><code>development/contributing/git-workflow.md</code></td>
+<td>⬜ Pending (structure same)</td>
+</tr>
+<tr>
+<td><code>development/contributing/style-guide.md</code></td>
+<td><code>development/contributing/style-guide.md</code></td>
+<td>⬜ Pending (structure same)</td>
+</tr>
+<tr>
+<td><code>development/contributing/repro.md</code></td>
+<td><code>development/contributing/bug-report-reproduction.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+</tbody>
+</table>
+<h3 id="api-documentation--apissdks">API Documentation → APIs/SDKs</h3>
+<table>
+<thead>
+<tr>
+<th>Original Path</th>
+<th>New Path</th>
+<th>Review Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>api/index.md</code></td>
+<td><code>apis-sdks/apis/core-api/api-reference.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>api/dotnet/index.md</code></td>
+<td><code>apis-sdks/sdks/dotnet/index.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>api/python/index.md</code></td>
+<td><code>apis-sdks/sdks/python/index.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+</tbody>
+</table>
+<h3 id="concepts--management-portal-reference">Concepts → Management Portal Reference</h3>
+<table>
+<thead>
+<tr>
+<th>Original Path</th>
+<th>New Path</th>
+<th>Review Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>concepts/data-pipeline/data-pipeline.md</code></td>
+<td><code>management-portal/reference/concepts/data-pipelines.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>concepts/plugin/plugin.md</code></td>
+<td><code>management-portal/reference/concepts/plugins-packages.md</code> (merged)</td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>concepts/plugin/plugin-package.md</code></td>
+<td><code>management-portal/reference/concepts/plugins-packages.md</code> (merged)</td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>concepts/quota/quota-definition.md</code></td>
+<td><code>management-portal/reference/concepts/quotas.md</code> (merged)</td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>concepts/quota/agent-request-rate.md</code></td>
+<td><code>management-portal/reference/concepts/quotas.md</code> (merged)</td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>concepts/quota/api-raw-request-rate.md</code></td>
+<td><code>management-portal/reference/concepts/quotas.md</code> (merged)</td>
+<td>⬜ Pending</td>
+</tr>
+</tbody>
+</table>
+<h3 id="reference-materials--reference">Reference Materials → Reference</h3>
+<table>
+<thead>
+<tr>
+<th>Original Path</th>
+<th>New Path</th>
+<th>Review Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>schema.md</code></td>
+<td><code>reference/agent-schemas.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>documentation-generation.md</code></td>
+<td><code>reference/documentation-generation.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>release-notes/breaking-changes.md</code></td>
+<td><code>reference/release-notes/breaking-changes.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>release-notes/release_notes_0.9.7.md</code></td>
+<td><code>reference/release-notes/release_notes_0.9.7.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+</tbody>
+</table>
+<h3 id="root-level--overview">Root Level → Overview</h3>
+<table>
+<thead>
+<tr>
+<th>Original Path</th>
+<th>New Path</th>
+<th>Review Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>index.md</code></td>
+<td><code>overview/index.md</code></td>
+<td>⬜ Pending</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-content-requiring-partial-extraction">📋 Content Requiring Partial Extraction</h2>
+<p>These files have content that needs to be extracted to new files while keeping some content in place.</p>
+<table>
+<thead>
+<tr>
+<th>Source File</th>
+<th>Content to Extract</th>
+<th>Destination File</th>
+<th>Review Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>index.md</code></td>
+<td>&quot;Why is FoundationaLLM Needed?&quot; section + &quot;Where can FoundationaLLM fill the need?&quot; section</td>
+<td><code>overview/why-foundationallm.md</code></td>
+<td>⬜ Needs Review</td>
+</tr>
+<tr>
+<td><code>concepts/index.md</code></td>
+<td>Architecture mindmap and core concepts overview</td>
+<td><code>overview/architecture-concepts.md</code></td>
+<td>⬜ Needs Review</td>
+</tr>
+<tr>
+<td><code>setup-guides/quickstart.md</code></td>
+<td>&quot;Find your Core API URL&quot; section</td>
+<td><code>apis-sdks/apis/core-api/finding-core-api-url.md</code></td>
+<td>⬜ Needs Review</td>
+</tr>
+<tr>
+<td><code>setup-guides/management-ui/management-ui.md</code></td>
+<td>Agent creation tutorial section</td>
+<td><code>management-portal/how-to-guides/agents/create-new-agent.md</code></td>
+<td>⬜ Needs Review</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-content-archived-obsolete">🗄️ Content Archived (Obsolete)</h2>
+<p>These files are marked as obsolete per the outline and should be moved to an archive folder.</p>
+<table>
+<thead>
+<tr>
+<th>Original Path</th>
+<th>Archive Path</th>
+<th>Reason</th>
+<th>Review Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>setup-guides/vectorization/index.md</code></td>
+<td><code>archive/vectorization/index.md</code></td>
+<td>Vectorization section dropped</td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>setup-guides/vectorization/vectorization-concepts.md</code></td>
+<td><code>archive/vectorization/vectorization-concepts.md</code></td>
+<td>Vectorization section dropped</td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>setup-guides/vectorization/vectorization-configuration.md</code></td>
+<td><code>archive/vectorization/vectorization-configuration.md</code></td>
+<td>Vectorization section dropped</td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>setup-guides/vectorization/vectorization-profiles.md</code></td>
+<td><code>archive/vectorization/vectorization-profiles.md</code></td>
+<td>Vectorization section dropped</td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>setup-guides/vectorization/vectorization-triggering.md</code></td>
+<td><code>archive/vectorization/vectorization-triggering.md</code></td>
+<td>Vectorization section dropped</td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>setup-guides/vectorization/vectorization-monitoring-troubleshooting.md</code></td>
+<td><code>archive/vectorization/vectorization-monitoring-troubleshooting.md</code></td>
+<td>Vectorization section dropped</td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>setup-guides/agents/knowledge-management-agent.md</code></td>
+<td><code>archive/knowledge-management-agent.md</code></td>
+<td>Marked [OBSOLETE] in outline</td>
+<td>⬜ Pending</td>
+</tr>
+<tr>
+<td><code>development/calling-apis/directly-calling-vectorization-api.md</code></td>
+<td><code>archive/directly-calling-vectorization-api.md</code></td>
+<td>Vectorization API marked [OBSOLETE]</td>
+<td>⬜ Pending</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-new-content-required-stubs-to-create">✨ New Content Required (Stubs to Create)</h2>
+<p>These are new files that need to be created as stubs for future content.</p>
+<h3 id="chat-user-portal---how-to-guides">Chat User Portal - How-To Guides</h3>
+<table>
+<thead>
+<tr>
+<th>File Path</th>
+<th>Description</th>
+<th>Priority</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>chat-user-portal/index.md</code></td>
+<td>Chat User Portal overview</td>
+<td>High</td>
+</tr>
+<tr>
+<td><code>chat-user-portal/quick-start/creating-first-agent.md</code></td>
+<td>Creating first agent guide</td>
+<td>High</td>
+</tr>
+<tr>
+<td><code>chat-user-portal/how-to-guides/using-agents/selecting-agent.md</code></td>
+<td>How to select an agent</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td><code>chat-user-portal/how-to-guides/using-agents/managing-available-agents.md</code></td>
+<td>Managing available agents</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td><code>chat-user-portal/how-to-guides/using-agents/managing-conversations.md</code></td>
+<td>Managing conversations</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td><code>chat-user-portal/how-to-guides/using-agents/configuring-accessibility.md</code></td>
+<td>Accessibility configuration</td>
+<td>Low</td>
+</tr>
+<tr>
+<td><code>chat-user-portal/how-to-guides/using-agents/uploading-files.md</code></td>
+<td>Uploading files to conversation</td>
+<td>High</td>
+</tr>
+<tr>
+<td><code>chat-user-portal/how-to-guides/using-agents/downloading-files.md</code></td>
+<td>Downloading files from conversation</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td><code>chat-user-portal/how-to-guides/using-agents/using-code-interpreter.md</code></td>
+<td>Using code interpreter tool</td>
+<td>High</td>
+</tr>
+<tr>
+<td><code>chat-user-portal/how-to-guides/using-agents/using-knowledge-tool.md</code></td>
+<td>Using knowledge tool</td>
+<td>High</td>
+</tr>
+<tr>
+<td><code>chat-user-portal/how-to-guides/using-agents/using-other-tools.md</code></td>
+<td>Using other tools</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td><code>chat-user-portal/how-to-guides/using-agents/monitoring-tokens.md</code></td>
+<td>Monitoring token consumption</td>
+<td>Low</td>
+</tr>
+<tr>
+<td><code>chat-user-portal/how-to-guides/using-agents/rating-responses.md</code></td>
+<td>Rating agent responses</td>
+<td>Low</td>
+</tr>
+<tr>
+<td><code>chat-user-portal/how-to-guides/using-agents/copying-prompts-results.md</code></td>
+<td>Copying prompts &amp; formatted results</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td><code>chat-user-portal/how-to-guides/using-agents/printing-conversations.md</code></td>
+<td>Printing conversations</td>
+<td>Low</td>
+</tr>
+<tr>
+<td><code>chat-user-portal/how-to-guides/using-agents/viewing-agent-prompts.md</code></td>
+<td>Viewing agent prompts</td>
+<td>Low</td>
+</tr>
+</tbody>
+</table>
+<h3 id="management-portal---how-to-guides">Management Portal - How-To Guides</h3>
+<table>
+<thead>
+<tr>
+<th>File Path</th>
+<th>Description</th>
+<th>Priority</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>management-portal/quick-start/portal-tour.md</code></td>
+<td>Tour of the portal</td>
+<td>High</td>
+</tr>
+<tr>
+<td><code>management-portal/quick-start/creating-first-agent.md</code></td>
+<td>Creating first agent</td>
+<td>High</td>
+</tr>
+<tr>
+<td><code>management-portal/how-to-guides/agents/create-new-agent.md</code></td>
+<td>Create new agent guide</td>
+<td>High</td>
+</tr>
+<tr>
+<td><code>management-portal/how-to-guides/agents/all-agents.md</code></td>
+<td>All agents view</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td><code>management-portal/how-to-guides/agents/my-agents.md</code></td>
+<td>My agents view</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td><code>management-portal/how-to-guides/agents/prompts.md</code></td>
+<td>Managing prompts</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td><code>management-portal/how-to-guides/data/data-sources.md</code></td>
+<td>Data sources guide</td>
+<td>High</td>
+</tr>
+<tr>
+<td><code>management-portal/how-to-guides/data/data-pipelines/creating-data-pipelines.md</code></td>
+<td>Creating data pipelines</td>
+<td>High</td>
+</tr>
+<tr>
+<td><code>management-portal/how-to-guides/data/data-pipelines/invoking-data-pipelines.md</code></td>
+<td>Invoking data pipelines</td>
+<td>High</td>
+</tr>
+<tr>
+<td><code>management-portal/how-to-guides/data/data-pipelines/monitoring-data-pipelines.md</code></td>
+<td>Monitoring data pipelines</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td><code>management-portal/how-to-guides/data/data-pipeline-runs.md</code></td>
+<td>Data pipeline runs</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td><code>management-portal/how-to-guides/data/knowledge-sources/sharepoint-online.md</code></td>
+<td>SharePoint Online source</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td><code>management-portal/how-to-guides/data/knowledge-sources/azure-data-lake.md</code></td>
+<td>Azure Data Lake source</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td><code>management-portal/how-to-guides/data/knowledge-sources/private-storage.md</code></td>
+<td>Private storage for agents</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td><code>management-portal/how-to-guides/data/knowledge-sources/knowledge-graph-integration.md</code></td>
+<td>Knowledge graph integration</td>
+<td>Low</td>
+</tr>
+<tr>
+<td><code>management-portal/how-to-guides/data/knowledge-sources/image-description.md</code></td>
+<td>Image-to-text description</td>
+<td>Low</td>
+</tr>
+<tr>
+<td><code>management-portal/how-to-guides/models-endpoints/ai-models.md</code></td>
+<td>Managing AI models</td>
+<td>High</td>
+</tr>
+<tr>
+<td><code>management-portal/how-to-guides/models-endpoints/api-endpoints.md</code></td>
+<td>Managing API endpoints</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td><code>management-portal/how-to-guides/security/instance-access-control.md</code></td>
+<td>Instance access control</td>
+<td>High</td>
+</tr>
+<tr>
+<td><code>management-portal/how-to-guides/fllm-platform/branding.md</code></td>
+<td>Branding configuration</td>
+<td>Low</td>
+</tr>
+<tr>
+<td><code>management-portal/how-to-guides/fllm-platform/configuration.md</code></td>
+<td>Platform configuration</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td><code>management-portal/how-to-guides/fllm-platform/deployment-information.md</code></td>
+<td>Deployment information</td>
+<td>Low</td>
+</tr>
+<tr>
+<td><code>management-portal/how-to-guides/managing-plugins.md</code></td>
+<td>Managing plugins</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td><code>management-portal/how-to-guides/configuring-quotas.md</code></td>
+<td>Configuring quotas</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
+<h3 id="management-portal---reference">Management Portal - Reference</h3>
+<table>
+<thead>
+<tr>
+<th>File Path</th>
+<th>Description</th>
+<th>Priority</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>management-portal/reference/branding/using-rest-api.md</code></td>
+<td>Branding via REST API</td>
+<td>Low</td>
+</tr>
+<tr>
+<td><code>management-portal/reference/configuration-reference.md</code></td>
+<td>Configuration reference (from code)</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td><code>management-portal/reference/permissions-roles.md</code></td>
+<td>Permissions &amp; roles reference</td>
+<td>High</td>
+</tr>
+</tbody>
+</table>
+<h3 id="apis--sdks">APIs &amp; SDKs</h3>
+<table>
+<thead>
+<tr>
+<th>File Path</th>
+<th>Description</th>
+<th>Priority</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>apis-sdks/apis/core-api/finding-core-api-url.md</code></td>
+<td>Finding Core API URL</td>
+<td>High</td>
+</tr>
+<tr>
+<td><code>apis-sdks/apis/management-api/resource-providers-overview.md</code></td>
+<td>Resource providers overview</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td><code>apis-sdks/apis/management-api/api-reference.md</code></td>
+<td>Management API reference</td>
+<td>High</td>
+</tr>
+<tr>
+<td><code>apis-sdks/apis/management-api/data-pipelines.md</code></td>
+<td>Data pipelines API</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
+<h3 id="reference">Reference</h3>
+<table>
+<thead>
+<tr>
+<th>File Path</th>
+<th>Description</th>
+<th>Priority</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>reference/release-notes/index.md</code></td>
+<td>Release notes index</td>
+<td>Low</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-files-staying-in-place">📁 Files Staying in Place</h2>
+<p>These files are not moving but may need link updates.</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Reason</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>concepts/index.md</code></td>
+<td>Core concepts hub (content extracted but file stays)</td>
+</tr>
+<tr>
+<td><code>concepts/prompt/prompt-variable.md</code></td>
+<td>Referenced by concepts</td>
+</tr>
+<tr>
+<td><code>docfx.json</code></td>
+<td>Configuration file</td>
+</tr>
+<tr>
+<td><code>.gitignore</code></td>
+<td>Git configuration</td>
+</tr>
+<tr>
+<td><code>.ignore</code></td>
+<td>Search ignore</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-links-requiring-update">🔗 Links Requiring Update</h2>
+<p>After reorganization, these link patterns need to be updated throughout the documentation:</p>
+<table>
+<thead>
+<tr>
+<th>Old Pattern</th>
+<th>New Pattern</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>../deployment/</code></td>
+<td><code>../platform-operations/deployment/</code></td>
+</tr>
+<tr>
+<td><code>../operations/</code></td>
+<td><code>../platform-operations/</code> (distributed)</td>
+</tr>
+<tr>
+<td><code>../setup-guides/agents/</code></td>
+<td><code>../management-portal/reference/concepts/</code></td>
+</tr>
+<tr>
+<td><code>../setup-guides/vectorization/</code></td>
+<td><code>../archive/vectorization/</code></td>
+</tr>
+<tr>
+<td><code>../role-based-access-control/</code></td>
+<td><code>../platform-operations/security-permissions/role-based-access-control/</code></td>
+</tr>
+<tr>
+<td><code>../development/calling-apis/</code></td>
+<td><code>../apis-sdks/apis/</code></td>
+</tr>
+<tr>
+<td><code>../api/</code></td>
+<td><code>../apis-sdks/</code></td>
+</tr>
+<tr>
+<td><code>../how-to-guides/</code></td>
+<td><code>../management-portal/how-to-guides/agents/</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-review-checklist">📝 Review Checklist</h2>
+<p>Use this checklist when reviewing each section:</p>
+<ul>
+<li>[ ] All files moved to correct location</li>
+<li>[ ] Media files moved/updated</li>
+<li>[ ] Internal links updated</li>
+<li>[ ] Cross-references verified</li>
+<li>[ ] Frontmatter/metadata updated (if applicable)</li>
+<li>[ ] TOC entry added</li>
+<li>[ ] Build tested (docfx)</li>
+<li>[ ] Content accurate and up-to-date</li>
+</ul>
+<hr>
+<h2 id="progress-tracking">Progress Tracking</h2>
+<table>
+<thead>
+<tr>
+<th>Section</th>
+<th>Files Moved</th>
+<th>Links Updated</th>
+<th>Reviewed</th>
+<th>Complete</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Overview</td>
+<td>⬜</td>
+<td>⬜</td>
+<td>⬜</td>
+<td>⬜</td>
+</tr>
+<tr>
+<td>Chat User Portal</td>
+<td>⬜</td>
+<td>⬜</td>
+<td>⬜</td>
+<td>⬜</td>
+</tr>
+<tr>
+<td>Management Portal</td>
+<td>⬜</td>
+<td>⬜</td>
+<td>⬜</td>
+<td>⬜</td>
+</tr>
+<tr>
+<td>APIs &amp; SDKs</td>
+<td>⬜</td>
+<td>⬜</td>
+<td>⬜</td>
+<td>⬜</td>
+</tr>
+<tr>
+<td>Platform Operations</td>
+<td>⬜</td>
+<td>⬜</td>
+<td>⬜</td>
+<td>⬜</td>
+</tr>
+<tr>
+<td>Development</td>
+<td>⬜</td>
+<td>⬜</td>
+<td>⬜</td>
+<td>⬜</td>
+</tr>
+<tr>
+<td>Reference</td>
+<td>⬜</td>
+<td>⬜</td>
+<td>⬜</td>
+<td>⬜</td>
+</tr>
+<tr>
+<td>Archive</td>
+<td>⬜</td>
+<td>⬜</td>
+<td>⬜</td>
+<td>⬜</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="reorganization-status-completed">Reorganization Status: COMPLETED</h2>
+<p>The documentation reorganization has been executed. All phases are complete:</p>
+<ul>
+<li>✅ Phase 1: Created new folder structure</li>
+<li>✅ Phase 2: Moved existing files to new locations</li>
+<li>✅ Phase 3: Extracted partial content to new files</li>
+<li>✅ Phase 4: Created stub files for new content (52 stubs)</li>
+<li>✅ Phase 5: Archived obsolete content (vectorization, knowledge-management-agent)</li>
+<li>✅ Phase 6: Merged files (plugins, quotas)</li>
+<li>✅ Phase 7: Updated toc.yml for new structure</li>
+</ul>
+<p><strong>Total files in new structure: 119 markdown files</strong></p>
+<hr>
+<h2 id="cleanup-status-completed">Cleanup Status: COMPLETED</h2>
+<p>Legacy folders have been cleaned up and archived:</p>
+<ul>
+<li>✅ Migrated <code>concepts/index.md</code> → <code>management-portal/reference/concepts/index.md</code></li>
+<li>✅ Migrated <code>concepts/prompt/prompt-variable.md</code> → <code>management-portal/reference/concepts/prompt-variables.md</code></li>
+<li>✅ Archived <code>api/</code> → <code>archive/api/</code></li>
+<li>✅ Archived <code>concepts/</code> → <code>archive/concepts/</code></li>
+<li>✅ Archived <code>deployment/</code> → <code>archive/deployment/</code></li>
+<li>✅ Archived <code>how-to-guides/</code> → <code>archive/how-to-guides/</code></li>
+<li>✅ Archived <code>operations/</code> → <code>archive/operations/</code></li>
+<li>✅ Archived <code>role-based-access-control/</code> → <code>archive/role-based-access-control/</code></li>
+<li>✅ Archived <code>setup-guides/</code> → <code>archive/setup-guides/</code></li>
+<li>✅ Kept <code>release-notes/</code> at root level (top-level section)</li>
+<li>✅ Updated <code>archive/README.md</code> with all archived content</li>
+</ul>
+<hr>
+<p><em>Reorganization Completed: December 14, 2025</em>
+<em>Cleanup Completed: December 14, 2025</em>
+<em>Plan Version: 1.1</em></p>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

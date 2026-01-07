@@ -1,0 +1,3079 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>History of breaking changes | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="History of breaking changes | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../media/favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="../../toc.html">
+      <meta name="docfx:tocrel" content="../toc.html">
+      
+      <meta name="docfx:rel" content="../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/release-notes/breaking-changes.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="history-of-breaking-changes">History of breaking changes</h1>
+
+<div class="NOTE">
+<h5>Note</h5>
+<p>This section is for changes that are not yet released but will affect future releases.</p>
+</div>
+<h2 id="starting-from-097">Starting from 0.9.7</h2>
+<h3 id="configuration-changes">Configuration changes</h3>
+<p>The<code>FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AllowedUploadFileExtensions</code> configuration entry has been removed and was replaced by the <code>FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:AllowedFileExtensions</code> configuration entry.</p>
+<p>The following configuration entries have changed their default values:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>New value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:AllowedFileExtensions</code></td>
+<td><code>c, cpp, cs, css, html, java, js, json, jsonl, md, php, py, rb, sh, tex, ts, txt, xml, yaml, yml, gif, jpeg, jpg, png, wav, pdf, docx, pptx, xlsx, csv, zip, tar, doc, ppt, xls</code></td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchContextFileExtensions</code></td>
+<td><code>c, cpp, cs, css, html, java, js, json, jsonl, md, php, py, rb, sh, tex, ts, txt, xml, yaml, yml, gif, jpeg, jpg, png, wav</code></td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchContextFileMaxSizeBytes</code></td>
+<td><code>{&quot;c, cpp, cs, css, html, java, js, json, jsonl, md, php, py, rb, sh, tex, ts, txt, xml, yaml, yml&quot;: 1048576, &quot;gif, jpeg, jpg, png, wav&quot;:20971520}</code></td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchFileExtensions</code></td>
+<td><code>c, cpp, cs, css, html, java, js, json, jsonl, md, php, py, rb, sh, tex, ts, txt, xml, yaml, yml, gif, jpeg, jpg, png, wav, pdf, docx, pptx</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="starting-from-097-rc487">Starting from 0.9.7-rc487</h2>
+<h3 id="artifact-changes">Artifact changes</h3>
+<p>The new data pipeline <code>ShieldedFileContent</code> is available.</p>
+<h3 id="role-assignment-changes">Role assignment changes</h3>
+<p>The following role assignments must be added to the Context API's Managed Identity:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Target</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Data Pipelines Execution Manager</code></td>
+<td>FoundationaLLM</td>
+<td>FoundationaLLM instance.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="starting-from-097-rc477">Starting from 0.9.7-rc477</h2>
+<h3 id="artifact-changes-1">Artifact changes</h3>
+<p>A new workflow resource must be added to support the <code>LangChainAgentWorkflow</code>. Ensure the reference is added to <code>_resource-references.json</code> as well.</p>
+<pre><code class="lang-json">{
+    &quot;type&quot;: &quot;langchain-agent-workflow&quot;,
+    &quot;name&quot;: &quot;LangChainAgentWorkflow&quot;,
+    &quot;object_id&quot;: &quot;/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Agent/workflows/LangChainAgentWorkflow&quot;,
+    &quot;display_name&quot;: &quot;LangChainAgentWorkflow&quot;,
+    &quot;description&quot;: &quot;LangChain Agent workflow&quot;,
+    &quot;cost_center&quot;: null,
+    &quot;properties&quot;: null,
+    &quot;created_on&quot;: &quot;2025-11-16T00:00:00+00:00&quot;,
+    &quot;updated_on&quot;: &quot;0001-01-01T00:00:00+00:00&quot;,
+    &quot;created_by&quot;: &quot;SYSTEM&quot;,
+    &quot;updated_by&quot;: null,
+    &quot;deleted&quot;: false,
+    &quot;expiration_date&quot;: null
+}
+</code></pre>
+<h2 id="starting-from-097-rc472">Starting from 0.9.7-rc472</h2>
+<h3 id="configuration-changes-1">Configuration changes</h3>
+<p>A new feature flag named <code>FoundationaLLM.Agent.SelfService</code> has been added. This flag enables or disables the self-service capabilities for agents in the FoundationaLLM User Portal and the Core API. The default value is <code>true</code>.</p>
+<h2 id="starting-from-097-rc470">Starting from 0.9.7-rc470</h2>
+<h3 id="schema-changes">Schema changes</h3>
+<p>The <code>FoundationaLLM.Agent</code> resource provider schema is updated to version 2. The schema changes are as follows:</p>
+<ul>
+<li>The agent type <code>knowledge-management</code> is replaced with <code>generic-agent</code>.</li>
+<li>The agent workflow type <code>external-agent-workflow</code> is replaced with <code>generic-agent-workflow</code>.</li>
+</ul>
+<h3 id="artifact-changes-2">Artifact changes</h3>
+<p>A new workflow resource must be added to support the <code>GenericAgentWorkflow</code>. Ensure the reference is added to <code>_resource-references.json</code> as well.</p>
+<pre><code class="lang-json">{
+    &quot;type&quot;: &quot;generic-agent-workflow&quot;,
+    &quot;name&quot;: &quot;GenericAgentWorkflow&quot;,
+    &quot;object_id&quot;: &quot;/instances/{instanceId}/providers/FoundationaLLM.Agent/workflows/GenericAgentWorkflow&quot;,
+    &quot;display_name&quot;: &quot;Generic Agent Workflow&quot;,
+    &quot;description&quot;: &quot;Generic Agent Workflow&quot;,
+    &quot;cost_center&quot;: null,
+    &quot;properties&quot;: null,
+    &quot;created_on&quot;: &quot;2025-11-01T12:00:00+00:00&quot;,
+    &quot;updated_on&quot;: &quot;0001-01-01T00:00:00+00:00&quot;,
+    &quot;created_by&quot;: &quot;SYSTEM&quot;,
+    &quot;updated_by&quot;: null,
+    &quot;deleted&quot;: false,
+    &quot;expiration_date&quot;: null
+}
+</code></pre>
+<h2 id="starting-from-097-rc422">Starting from 0.9.7-rc422</h2>
+<p>The managed identity of Core API must have the <code>Data Pipelines Execution Manager</code> role assigned on the FoundationaLLM instance.</p>
+<h2 id="starting-from-097-rc388">Starting from 0.9.7-rc388</h2>
+<p>The <code>external-modules-python</code> container from the main storage account is obsolete and must be deleted.</p>
+<h2 id="starting-from-097-rc382">Starting from 0.9.7-rc382</h2>
+<p>Python packages must be built using the build version.</p>
+<p>Python packages must be deployed via the FoundationaLLM.Core PowerShell module.</p>
+<h2 id="starting-from-097-rc376">Starting from 0.9.7-rc376</h2>
+<h3 id="configuration-changes-2">Configuration changes</h3>
+<p>The following App Configuration value have been added:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Default value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM:UserPortal:Configuration:AgentManagementPermissionRequestUrl</code></td>
+<td>N/A</td>
+<td>The URL to request agent management permissions.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:UserPortal:Configuration:FeaturedAgentNames</code></td>
+<td>N/A</td>
+<td>The comma-separated list of featured agent names.</td>
+</tr>
+</tbody>
+</table>
+<p>The following configuration values are obsolete and must be removed:</p>
+<ul>
+<li><code>FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Modules</code></li>
+<li><code>FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:RootStorageContainer</code></li>
+</ul>
+<h3 id="permissions-changes">Permissions changes</h3>
+<p>All User Portal users must have read permission on the <code>/instances/&lt;instance_id_&gt;/providers/FoundationaLLM.Configuration/appConfigurationSets/UserPortal</code> scope.</p>
+<p><code>AllAgentsVirtualSecurityGroup</code> (<code>5bb493a2-5909-4771-93ba-d83b7b5a1de9</code>) must have read permission on the <code>/instances/&lt;instance_id_&gt;/providers/FoundationaLLM.Configuration/appConfigurationSets/UserPortal</code> scope.</p>
+<p>All Management Portal users must have read permissions on the <code>/instances/&lt;instance_id_&gt;/providers/FoundationaLLM.Configuration/appConfigurationSets/ManagementPortal</code> scope.</p>
+<h2 id="starting-from-097-rc365">Starting from 0.9.7-rc365</h2>
+<h3 id="configuration-changes-3">Configuration changes</h3>
+<p>The following App Configuration value have been added:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Default value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM:IdentityManagement:MicrosoftGraph:RetrieveOnPremisesAccountName</code></td>
+<td><code>false</code></td>
+<td>Indicates whether on-premises account names are retrieved by the Microsoft Graph API.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="starting-from-097-up-to-rc364">Starting from 0.9.7 (up to rc364)</h2>
+<h3 id="configuration-changes-4">Configuration changes</h3>
+<p>The value of the <code>FoundationaLLM:Events:Profiles:DataPipelineAPI</code> configuration entry is changed to:</p>
+<pre><code class="lang-json">{
+	&quot;EventProcessingCycleSeconds&quot;: 5,
+	&quot;Topics&quot;: [
+		{
+			&quot;Name&quot;: &quot;resource-providers&quot;,
+			&quot;SubscriptionPrefix&quot;: &quot;rp-dp&quot;
+		}
+	]
+}
+</code></pre>
+<p>The <code>FoundationaLLM:APIEndpoints:CoreAPI:Configuration:CompletionResponsePollingIntervalSeconds</code> configuration entry is replaced by the <code>FoundationaLLM:APIEndpoints:CoreAPI:Configuration:CompletionResponsePollingIntervalMilliseconds</code> configuration entry. The default value is now <code>100</code> milliseconds instead of <code>1</code> second. This change is made to improve the responsiveness of the completion response polling mechanism.</p>
+<p>The values of the <code>FoundationaLLM:APIEndpoints:ContextAPI:Configuration:KnowledgeGraphService:Embedding</code> configuration value (listed below as a newly added value) must be configured with a content type of <code>application/json</code> and must have the following structure:</p>
+<pre><code class="lang-json">{
+    &quot;EmbeddingAPIEndpointConfigurationObjectId&quot;: &quot;/instances/&lt;instance_id&gt;/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/AzureOpenAI&quot;,
+    &quot;ModelDeployments&quot;: {
+        &quot;text-embedding-3-large&quot;: &quot;embeddings-3-large&quot;
+    }
+}
+</code></pre>
+<p>where:</p>
+<ul>
+<li><code>&lt;instance_id&gt;</code> is the identifier of the FoundationaLLM instance.</li>
+<li>It is assumed that the <code>AzureOpenAI</code> API endpoint configuration is already created. If not, <code>AzureOpenAI</code> must be replaced with the name of the API endpoint configuration that is used for embeddings.</li>
+<li>It is assumed that a model deployment named <code>embeddings-3-large</code> is already created in the Azure OpenAI service for the <code>text-embedding-3-large</code> embedding model. If not, it must be replaced with the name of the model deployment that is used for embeddings with the <code>text-embedding-3-large</code> embedding model.</li>
+</ul>
+<p>The following App Configuration value have been added:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Default value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM:ResourceProviders:Context:Storage:AccountName</code></td>
+<td><code>&lt;storage_account_name&gt;</code></td>
+<td>The name of the storage account used by the FoundationaLLM Context resource provider.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:ResourceProviders:Context:Storage:AuthenticationType</code></td>
+<td><code>AzureIdentity</code></td>
+<td>The type of authentication used by the FoundationaLLM Context resource provider to connect to the storage account.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:ContextAPI:Configuration:KnowledgeService:Embedding</code></td>
+<td><code>{&quot;EmbeddingAPIEndpointConfigurationObjectId&quot;: null, &quot;ModelDeployments&quot;: {}}</code></td>
+<td>The embedding configuration used by the FoundationaLLM Context API Knowledge service. This configuration value must have a content type of <code>application/json</code>.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:ContextAPI:Configuration:KnowledgeService:Storage:AccountName</code></td>
+<td><code>&lt;storage_account_name&gt;</code></td>
+<td>The name of the dedicated storage account used by the FoundationaLLM Context API Knowledge service. This must be the same storage account as the one used by the FoundationaLLM Context API.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:ContextAPI:Configuration:KnowledgeService:Storage:AuthenticationType</code></td>
+<td><code>AzureIdentity</code></td>
+<td>The type of authentication used by the FoundationaLLM Context API Knowledge service to connect to the dedicated storage account.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:GatewayAPI:Configuration:TokenRateLimitMultiplier</code></td>
+<td><code>0.8</code></td>
+<td>The multiplier used to calculate the token rate limit for the Gateway API. This value is used to ensure that the rate limit is not exceeded and accounts for the possible differences in tokenization between the Gateway API and the deployed model(s).</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchFileExtensions</code></td>
+<td><code>c, cpp, cs, css, doc, docx, html, java, js, json, md, pdf, php, pptx, py, rb, sh, tex, ts, txt, gif, jpeg, jpg, png</code></td>
+<td>The comma-separated list file extensions that are processed as sources for knowledge search.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchContextFileExtensions</code></td>
+<td><code>c, cs, cpp, css, html, java, js, json, jsonl, md, php, py, rb, sh, ts, tex, txt, gif, jpeg, jpg, png</code></td>
+<td>The comma-separated list of file extensions that indicate files that can be directly used in the context of a completion request.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:KnowledgeSearchContextFileMaxSizeBytes</code></td>
+<td><code>{&quot;c,cs,cpp,html,java,js,json,jsonl,md,php,py,rb,sh,ts,tex,txt&quot;: 25000, &quot;gif,jpeg,jpg,png&quot;:500000}</code></td>
+<td>The dictionary of lists of extensions of files that can be directly used in the context of a completion request and their associated maximum file sizes.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:DataPipeline:State:CosmosDB:Containers</code></td>
+<td><code>DataPipelines</code></td>
+<td>The names of the Azure Cosmos DB containers used by the Data Pipeline State service.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:DataPipeline:State:CosmosDB:Database</code></td>
+<td><code>database</code></td>
+<td>The Azure Cosmos DB database name used by the Data Pipeline State service.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:DataPipeline:State:CosmosDB:Endpoint</code></td>
+<td><code>&lt;cosmos_db_endpoint&gt;</code></td>
+<td>The endpoint URL of the Azure Cosmos DB used by the Data Pipeline State service.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:DataPipeline:State:Storage:AccountName</code></td>
+<td><code>&lt;storage_account_name&gt;</code></td>
+<td>The name of the dedicated storage account used by the FoundationaLLM Data Pipeline State service. This must be the same storage account as the one used by the FoundationaLLM Context API.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:DataPipeline:State:Storage:AuthenticationType</code></td>
+<td><code>AzureIdentity</code></td>
+<td>The type of authentication used by the FoundationaLLM Data Pipeline State service to connect to the dedicated storage account.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration:Storage:AccountName</code></td>
+<td><code>&lt;storage_account_name&gt;</code></td>
+<td>The name of the dedicated storage account used by the FoundationaLLM Data Pipeline API.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration:Storage:AuthenticationType</code></td>
+<td><code>AzureIdentity</code></td>
+<td>The type of authentication used by the FoundationaLLM Data Pipeline API to connect to the dedicated storage account.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration:FrontendWorkerQueue</code></td>
+<td><code>frontend-worker</code></td>
+<td>The queue used to submit data pipeline work items for the Data Pipeline Frontend Worker service.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:DataPipelineAPI:Configuration:BackendWorkerQueue</code></td>
+<td><code>backend-worker</code></td>
+<td>The queue used to submit data pipeline work items for the Data Pipeline Backend Worker service.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Configuration:Storage:AccountName</code></td>
+<td><code>&lt;storage_account_name&gt;</code></td>
+<td>The name of the dedicated storage account used by the FoundationaLLM Data Pipeline Frontend Worker service.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Configuration:Storage:AuthenticationType</code></td>
+<td><code>AzureIdentity</code></td>
+<td>The type of authentication used by the FoundationaLLM Data Pipeline Frontend Worker service to connect to the dedicated storage account.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Configuration:Queue</code></td>
+<td><code>frontend-worker</code></td>
+<td>The queue used to process data pipeline work items by the Data Pipeline Frontend Worker service.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Configuration:ParallelProcessorsCount</code></td>
+<td>10</td>
+<td>The number of parallel processors of data pipeline run work items used by the Data Pipeline Frontend Worker service.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Configuration:Storage:AccountName</code></td>
+<td><code>&lt;storage_account_name&gt;</code></td>
+<td>The name of the dedicated storage account used by the FoundationaLLM Data Pipeline Backend Worker service.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Configuration:Storage:AuthenticationType</code></td>
+<td><code>AzureIdentity</code></td>
+<td>The type of authentication used by the FoundationaLLM Data Pipeline Backend Worker service to connect to the dedicated storage account.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Configuration:Queue</code></td>
+<td><code>frontend-worker</code></td>
+<td>The queue used to process data pipeline work items by the Data Pipeline Backend Worker service.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Configuration:ParallelProcessorsCount</code></td>
+<td>10</td>
+<td>The number of parallel processors of data pipeline run work items used by the Data Pipeline Backend Worker service.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Events:Profiles:ContextAPI</code></td>
+<td><code>{&quot;EventProcessingCycleSeconds&quot;:60,&quot;Topics&quot;:[{&quot;Name&quot;: &quot;resource-providers&quot;, &quot;SubscriptionPrefix&quot;: &quot;rp-context&quot;}]}</code></td>
+<td>The event processing settings for the Context API.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Events:Profiles:DataPipelineAPI</code></td>
+<td><code>{&quot;EventProcessingCycleSeconds&quot;:60,&quot;Topics&quot;:[]}</code></td>
+<td>The event processing settings for the Data Pipeline API.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Events:Profiles:DataPipelineFrontendWorker</code></td>
+<td><code>{&quot;EventProcessingCycleSeconds&quot;:60,&quot;Topics&quot;:[]}</code></td>
+<td>The event processing settings for the Data Pipeline Frontend Worker service.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Events:Profiles:DataPipelineBackendWorker</code></td>
+<td><code>{&quot;EventProcessingCycleSeconds&quot;:60,&quot;Topics&quot;:[]}</code></td>
+<td>The event processing settings for the Data Pipeline Backend Worker service.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:ResourceProviders:Vector:Storage:AccountName</code></td>
+<td><code>&lt;storage_account_name&gt;</code></td>
+<td>The name of the storage account used by the FoundationaLLM Vector resource provider.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:ResourceProviders:Vector:Storage:AuthenticationType</code></td>
+<td><code>AzureIdentity</code></td>
+<td>The type of authentication used by the FoundationaLLM Vector resource provider to connect to the storage account.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:ResourceProviders:Plugin:Storage:AccountName</code></td>
+<td><code>&lt;storage_account_name&gt;</code></td>
+<td>The name of the storage account used by the FoundationaLLM Plugin resource provider.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:ResourceProviders:Plugin:Storage:AuthenticationType</code></td>
+<td><code>AzureIdentity</code></td>
+<td>The type of authentication used by the FoundationaLLM Plugin resource provider to connect to the storage account.</td>
+</tr>
+</tbody>
+</table>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>A new Azure Cosmos DB container named <code>DataPipelines</code> must be created with a parition key of <code>/run_id</code> and an autoscale transactional throughput of maximum 4000 RU/s.</p>
+</div>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>A new <code>APIEndpointConfiguration</code> artifact named <code>DataPipelineAPI</code> must be created and saved to a file named <code>DataPipelineAPI.json</code>. The file must be created in the <code>FoundationaLLM.Configuration</code> resource provider folder of the FoundationaLLM storage account. The file must contain the following content:</p>
+</div>
+<pre><code class="lang-json">{
+  &quot;type&quot;: &quot;api-endpoint&quot;,
+  &quot;name&quot;: &quot;DataPipelineAPI&quot;,
+  &quot;object_id&quot;: &quot;/instances/&lt;instance_id&gt;/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/DataPipelineAPI&quot;,
+  &quot;display_name&quot;: null,
+  &quot;description&quot;: null,
+  &quot;cost_center&quot;: null,
+  &quot;category&quot;: &quot;General&quot;,
+  &quot;subcategory&quot;: null,
+  &quot;authentication_type&quot;: &quot;APIKey&quot;,
+  &quot;url&quot;: &quot;&lt;deployed_api_endpoint&gt;&quot;,
+  &quot;status_endpoint&quot;: &quot;/instances/&lt;instance_id&gt;/status&quot;,
+  &quot;url_exceptions&quot;: [],
+  &quot;authentication_parameters&quot;: {
+    &quot;api_key_configuration_name&quot;: &quot;FoundationaLLM:APIEndpoints:DataPipelineAPI:Essentials:APIKey&quot;,
+    &quot;api_key_header_name&quot;: &quot;X-API-KEY&quot;
+  },
+  &quot;timeout_seconds&quot;: 2400,
+  &quot;retry_strategy_name&quot;: &quot;ExponentialBackoff&quot;,
+  &quot;provider&quot;: null,
+  &quot;api_version&quot;: null,
+  &quot;operation_type&quot;: null,
+  &quot;properties&quot;: null,
+  &quot;created_on&quot;: &quot;0001-01-01T00:00:00-05:00&quot;,
+  &quot;updated_on&quot;: &quot;2025-02-25T11:10:55.3458874-05:00&quot;,
+  &quot;created_by&quot;: null,
+  &quot;updated_by&quot;: &quot;ciprian@foundationaLLM.ai&quot;,
+  &quot;deleted&quot;: false,
+  &quot;expiration_date&quot;: null
+}
+</code></pre>
+<blockquote>
+<p>where <code>&lt;deployed_api_endpoint&gt;</code> is the endpoint of the Data Pipeline API.</p>
+<p>Also, a new entry must be added to the <code>_resource-references.json</code> file from the <code>FoundationaLLM.Configuration</code> resource provider folder with the following content:</p>
+</blockquote>
+<pre><code class="lang-json">{
+    &quot;Name&quot;: &quot;DataPipelineAPI&quot;,
+    &quot;Filename&quot;: &quot;/FoundationaLLM.Configuration/DataPipelineAPI.json&quot;,
+    &quot;Type&quot;: &quot;api-endpoint&quot;,
+    &quot;Deleted&quot;: false
+}
+</code></pre>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>Two new storage queues must be created in the FoundationaLLM storage account:</p>
+<ul>
+<li><code>frontend-worker</code> - used by the Data Pipeline Frontend Worker to process requests.</li>
+<li><code>backend-worker</code> - used by the Data Pipeline Backend Worker to process requests.</li>
+</ul>
+<p>The previous queues <code>extract</code>, <code>partition</code>, <code>embed</code>, and <code>index</code> are now deprecated. For each existing FoundationaLLM deployment, they should be removed as soon as it is confirmed that the previous version of vectorization process is no longer used.</p>
+</div>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>A new container with the name of the FoundationaLLM instance identifier must be created in the FoundationaLLM main storage account. The container will be used by the Data Pipeline API and the Data Pipeline Frontend/Backend Worker to store data pipeline work items.</p>
+</div>
+<h3 id="role-assignment-changes-1">Role assignment changes</h3>
+<p>The following role assignments must be added to the Management API's Managed Identity:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Target</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Data Pipelines Execution Manager</code></td>
+<td>FoundationaLLM</td>
+<td>FoundationaLLM instance.</td>
+</tr>
+</tbody>
+</table>
+<p>The following role assignments must be added to the Context API's Managed Identity:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Target</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Reader</code></td>
+<td>FoundationaLLM</td>
+<td>FoundationaLLM instance.</td>
+</tr>
+<tr>
+<td><code>App Configuration Data Reader</code></td>
+<td>Azure</td>
+<td>Azure App Configuration service.</td>
+</tr>
+<tr>
+<td><code>Key Vault Secrets User</code></td>
+<td>Azure</td>
+<td>Azure Key Vault service.</td>
+</tr>
+<tr>
+<td><code>Storage Blob Data Contributor</code></td>
+<td>Azure</td>
+<td>Storage account used by the FoundationaLLM Context API.</td>
+</tr>
+<tr>
+<td><code>Storage Blob Data Contributor</code></td>
+<td>Azure</td>
+<td>Main FoundationaLLM storage account.</td>
+</tr>
+<tr>
+<td><code>Azure ContainerApps Session Executor</code></td>
+<td>Azure</td>
+<td>Azure Container Apps Dynamic Sessions used by the FoundationaLLM Context API.</td>
+</tr>
+<tr>
+<td><code>Azure ContainerApps Session Executor</code></td>
+<td>Azure</td>
+<td>Azure Container Apps Custom Container used by the FoundationaLLM Context API.</td>
+</tr>
+<tr>
+<td><code>EventGrid Contributor</code></td>
+<td>Azure</td>
+<td>Azure EventGrid Namespace used by the FoundationaLLM Data Pipeline API.</td>
+</tr>
+<tr>
+<td><code>Search Index Data Reader</code></td>
+<td>Azure</td>
+<td>Azure AI Search service used by the FoundationaLLM instance.</td>
+</tr>
+</tbody>
+</table>
+<p>The following role assignments must be added to the Orchestrations API's Managed Identity:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Target</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Data Pipelines Execution Manager</code></td>
+<td>FoundationaLLM</td>
+<td>FoundationaLLM instance.</td>
+</tr>
+</tbody>
+</table>
+<p>The following role assignments must be added to the Data Pipeline API's Managed Identity:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Target</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>App Configuration Data Reader</code></td>
+<td>Azure</td>
+<td>Azure App Configuration service.</td>
+</tr>
+<tr>
+<td><code>Key Vault Secrets User</code></td>
+<td>Azure</td>
+<td>Azure Key Vault service.</td>
+</tr>
+<tr>
+<td><code>Key Vault Certificate User</code></td>
+<td>Azure</td>
+<td>Azure Key Vault service.</td>
+</tr>
+<tr>
+<td><code>Storage Blob Data Contributor</code></td>
+<td>Azure</td>
+<td>Main FoundationaLLM storage account.</td>
+</tr>
+<tr>
+<td><code>Storage Blob Data Contributor</code></td>
+<td>Azure</td>
+<td>Storage account used by the FoundationaLLM Context API.</td>
+</tr>
+<tr>
+<td><code>Cosmos DB Built-in Data Contributor</code></td>
+<td>Azure</td>
+<td>Azure Cosmos DB account used by the FoundationaLLM Data Pipeline API.</td>
+</tr>
+<tr>
+<td><code>Storage Queue Data Message Sender</code></td>
+<td>Azure</td>
+<td>Storage account used by the FoundationaLLM Data Pipeline API.</td>
+</tr>
+<tr>
+<td><code>EventGrid Contributor</code></td>
+<td>Azure</td>
+<td>Azure EventGrid Namespace used by the FoundationaLLM Data Pipeline API.</td>
+</tr>
+<tr>
+<td><code>Data Pipelines Execution Manager</code></td>
+<td>FoundationaLLM</td>
+<td>FoundationaLLM instance.</td>
+</tr>
+<tr>
+<td><code>Reader</code></td>
+<td>FoundationaLLM</td>
+<td>FoundationaLLM instance.</td>
+</tr>
+</tbody>
+</table>
+<p>The following role assignments must be added to the Data Pipeline Frontend Worker's Managed Identity:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Target</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>App Configuration Data Reader</code></td>
+<td>Azure</td>
+<td>Azure App Configuration service.</td>
+</tr>
+<tr>
+<td><code>Key Vault Secrets User</code></td>
+<td>Azure</td>
+<td>Azure Key Vault service.</td>
+</tr>
+<tr>
+<td><code>Key Vault Certificate User</code></td>
+<td>Azure</td>
+<td>Azure Key Vault service.</td>
+</tr>
+<tr>
+<td><code>Storage Blob Data Contributor</code></td>
+<td>Azure</td>
+<td>Main FoundationaLLM storage account.</td>
+</tr>
+<tr>
+<td><code>Storage Blob Data Contributor</code></td>
+<td>Azure</td>
+<td>Storage account used by the FoundationaLLM Context API.</td>
+</tr>
+<tr>
+<td><code>Cosmos DB Built-in Data Contributor</code></td>
+<td>Azure</td>
+<td>Azure Cosmos DB account used by the FoundationaLLM Data Pipeline Frontend Worker.</td>
+</tr>
+<tr>
+<td><code>Storage Queue Data Contributor</code></td>
+<td>Azure</td>
+<td>Storage account used by the FoundationaLLM Data Pipeline Frontend Worker.</td>
+</tr>
+<tr>
+<td><code>EventGrid Contributor</code></td>
+<td>Azure</td>
+<td>Azure EventGrid Namespace used by the FoundationaLLM Data Pipeline Frontend Worker.</td>
+</tr>
+<tr>
+<td><code>Search Service Contributor</code></td>
+<td>Azure</td>
+<td>Azure AI Search service used by the FoundationaLLM instance.</td>
+</tr>
+<tr>
+<td><code>Search Index Data Contributor</code></td>
+<td>Azure</td>
+<td>Azure AI Search service used by the FoundationaLLM instance.</td>
+</tr>
+<tr>
+<td><code>Data Pipelines Execution Manager</code></td>
+<td>FoundationaLLM</td>
+<td>FoundationaLLM instance.</td>
+</tr>
+<tr>
+<td><code>Reader</code></td>
+<td>FoundationaLLM</td>
+<td>FoundationaLLM instance.</td>
+</tr>
+</tbody>
+</table>
+<p>The following role assignments must be added to the Data Pipeline Backend Worker's Managed Identity:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Target</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>App Configuration Data Reader</code></td>
+<td>Azure</td>
+<td>Azure App Configuration service.</td>
+</tr>
+<tr>
+<td><code>Key Vault Secrets User</code></td>
+<td>Azure</td>
+<td>Azure Key Vault service.</td>
+</tr>
+<tr>
+<td><code>Key Vault Certificate User</code></td>
+<td>Azure</td>
+<td>Azure Key Vault service.</td>
+</tr>
+<tr>
+<td><code>Storage Blob Data Contributor</code></td>
+<td>Azure</td>
+<td>Main FoundationaLLM storage account.</td>
+</tr>
+<tr>
+<td><code>Storage Blob Data Contributor</code></td>
+<td>Azure</td>
+<td>Storage account used by the FoundationaLLM Context API.</td>
+</tr>
+<tr>
+<td><code>Cosmos DB Built-in Data Contributor</code></td>
+<td>Azure</td>
+<td>Azure Cosmos DB account used by the FoundationaLLM Data Pipeline Backend Worker.</td>
+</tr>
+<tr>
+<td><code>Storage Queue Data Contributor</code></td>
+<td>Azure</td>
+<td>Storage account used by the FoundationaLLM Data Pipeline Backend Worker.</td>
+</tr>
+<tr>
+<td><code>EventGrid Contributor</code></td>
+<td>Azure</td>
+<td>Azure EventGrid Namespace used by the FoundationaLLM Data Pipeline Backend Worker.</td>
+</tr>
+<tr>
+<td><code>Search Service Contributor</code></td>
+<td>Azure</td>
+<td>Azure AI Search service used by the FoundationaLLM instance.</td>
+</tr>
+<tr>
+<td><code>Search Index Data Contributor</code></td>
+<td>Azure</td>
+<td>Azure AI Search service used by the FoundationaLLM instance.</td>
+</tr>
+<tr>
+<td><code>Data Pipelines Execution Manager</code></td>
+<td>FoundationaLLM</td>
+<td>FoundationaLLM instance.</td>
+</tr>
+<tr>
+<td><code>Reader</code></td>
+<td>FoundationaLLM</td>
+<td>FoundationaLLM instance.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="new-resource-providers">New resource providers</h3>
+<p><strong>FoundationaLLM.Vector</strong></p>
+<p>The <code>FoundationaLLM.Vector</code> resource provider has been added.
+A new folder named <code>FoundationaLLM.Vector</code> must be created in the FoundationaLLM storage account under the <code>resource-provider</code> container.
+The folder must contain the following files:</p>
+<ul>
+<li><code>_resource-references.json</code> - the resource references file.</li>
+<li><code>ConversationFiles.json</code> - the resource file for the <code>ConversationFiles</code> vector database resource.</li>
+</ul>
+<p>The content of the <code>resource-references.json</code> file is as follows:</p>
+<pre><code class="lang-json">{
+	&quot;ResourceReferences&quot;: [
+		{
+			&quot;Name&quot;: &quot;ConversationFiles&quot;,
+			&quot;Filename&quot;: &quot;/FoundationaLLM.Vector/ConversationFiles.json&quot;,
+			&quot;Type&quot;: &quot;vector-database&quot;,
+			&quot;Deleted&quot;: false
+		}
+	],
+	&quot;DefaultResourceName&quot;: null
+}
+</code></pre>
+<p>The content of the <code>ConversationFiles.json</code> file is as follows:</p>
+<pre><code class="lang-json">{
+  &quot;type&quot;: &quot;vector-database&quot;,
+  &quot;name&quot;: &quot;ConversationFiles&quot;,
+  &quot;object_id&quot;: &quot;/instances/{instanceId}/providers/FoundationaLLM.Vector/vectorDatabases/ConversationFiles&quot;,
+  &quot;display_name&quot;: &quot;Conversation files vectorization&quot;,
+  &quot;description&quot;: &quot;The vector database that used by default when processing files that are uploaded in conversations.&quot;,
+  &quot;cost_center&quot;: null,
+  &quot;database_type&quot;: &quot;AzureAISearch&quot;,
+  &quot;database_name&quot;: &quot;conversation-files&quot;,
+  &quot;embedding_property_name&quot;: &quot;Embedding&quot;,
+  &quot;content_property_name&quot;: &quot;Text&quot;,
+  &quot;vector_store_id_property_name&quot;: &quot;VectorStoreId&quot;,
+  &quot;metadata_property_name&quot;: &quot;Metadata&quot;,
+  &quot;api_endpoint_configuration_object_id&quot;: &quot;/instances/{instanceId}/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/AzureAISearch&quot;,
+  &quot;properties&quot;: null,
+  &quot;created_on&quot;: &quot;2025-05-20T13:57:58.9770592+00:00&quot;,
+  &quot;updated_on&quot;: &quot;0001-01-01T00:00:00+00:00&quot;,
+  &quot;created_by&quot;: &quot;SYSTEM&quot;,
+  &quot;updated_by&quot;: null,
+  &quot;deleted&quot;: false,
+  &quot;expiration_date&quot;: null
+}
+</code></pre>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>The configuration entries for the <code>FoundationaLLM.Vector</code> resource provider are specified above, in the <code>Configuration changes</code> section.</p>
+</div>
+<p><strong>FoundationaLLM.Plugin</strong></p>
+<p>The <code>FoundationaLLM.Plugin</code> resource provider has been added.
+A new folder named <code>FoundationaLLM.Plugin</code> must be created in the FoundationaLLM storage account under the <code>resource-provider</code> container.</p>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>The configuration entries for the <code>FoundationaLLM.Plugin</code> resource provider are specified above, in the <code>Configuration changes</code> section.</p>
+</div>
+<h2 id="starting-from-097-beta147">Starting from 0.9.7-beta147</h2>
+<p>The following App Configuration value has been added:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Default value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM:ResourceProviders:AzureAI:Storage:AccountName</code></td>
+<td>The name of the deployment storage account.</td>
+<td>The name of the Azure Blob Storage account used by the FoundationaLLM.AzureAI resource provider.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:ResourceProviders:AzureAI:Storage:AuthenticationType</code></td>
+<td><code>AzureIdentity</code></td>
+<td>The authentication type used by the FoundationaLLM.AzureAI resource provider to connect to the storage account.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="policy-assignment-changes">Policy assignment changes</h3>
+<p>The <code>FLLM-Users</code> will need an entry in the <code>policy-assignments</code> file for <code>agentConversationMappings</code> and <code>agentFileMappings</code> resources in the <code>FoundationaLLM.AzureAI</code> resource provider.</p>
+<pre><code class="lang-json">{
+    &quot;name&quot;: &quot;87e6fd6e-ddd3-4054-b382-d7f0fa190aa9&quot;,
+    &quot;type&quot;: &quot;FoundationaLLM.Authorization/policyAssignments&quot;,
+    &quot;object_id&quot;: &quot;/providers/FoundationaLLM.Authorization/policyAssignments/87e6fd6e-ddd3-4054-b382-d7f0fa190aa9&quot;,
+    &quot;description&quot;: &quot;Ownership on agent conversation mapping resources managed by the FoundationaLLM.AzureAI resource provider.&quot;,
+    &quot;policy_definition_id&quot;: &quot;/providers/FoundationaLLM.Authorization/policyDefinitions/00000000-0000-0000-0001-000000000001&quot;,
+    &quot;principal_id&quot;: &quot;c54871ba-1fa1-439a-9e86-30d74dfe4a4a&quot;,
+    &quot;principal_type&quot;: &quot;Group&quot;,
+    &quot;scope&quot;: &quot;/instances/{instanceId}/providers/FoundationaLLM.AzureAI/agentConversationMappings&quot;,
+    &quot;created_on&quot;: &quot;2025-01-14T17:58:19.5954014Z&quot;,
+    &quot;updated_on&quot;: &quot;2025-01-14T17:58:19.5954014Z&quot;,
+    &quot;created_by&quot;: &quot;SYSTEM&quot;,
+    &quot;updated_by&quot;: &quot;SYSTEM&quot;
+},
+{
+    &quot;name&quot;: &quot;0e7684d2-e8b9-40ba-88b4-3f358f93afa3&quot;,
+    &quot;type&quot;: &quot;FoundationaLLM.Authorization/policyAssignments&quot;,
+    &quot;object_id&quot;: &quot;/providers/FoundationaLLM.Authorization/policyAssignments/0e7684d2-e8b9-40ba-88b4-3f358f93afa3&quot;,
+    &quot;description&quot;: &quot;Ownership on agent file mapping resources managed by the FoundationaLLM.AzureAI resource provider.&quot;,
+    &quot;policy_definition_id&quot;: &quot;/providers/FoundationaLLM.Authorization/policyDefinitions/00000000-0000-0000-0001-000000000001&quot;,
+    &quot;principal_id&quot;: &quot;c54871ba-1fa1-439a-9e86-30d74dfe4a4a&quot;,
+    &quot;principal_type&quot;: &quot;Group&quot;,
+    &quot;scope&quot;: &quot;/instances/{instanceId}/providers/FoundationaLLM.AzureAI/agentFileMappings&quot;,
+    &quot;created_on&quot;: &quot;2025-01-14T17:58:19.5954014Z&quot;,
+    &quot;updated_on&quot;: &quot;2025-01-14T17:58:19.5954014Z&quot;,
+    &quot;created_by&quot;: &quot;SYSTEM&quot;,
+    &quot;updated_by&quot;: &quot;SYSTEM&quot;
+}
+</code></pre>
+<h2 id="starting-from-097-beta139">Starting from 0.9.7-beta139</h2>
+<h3 id="configuration-changes-5">Configuration changes</h3>
+<p>The following App Configuration value have been added:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Default value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:GatewayAPI:Configuration:AzureAIAgentServiceMaxVectorizationTimeSeconds</code></td>
+<td><code>120</code></td>
+<td>The maximum time in seconds allowed for an Azure AI Agent Service vectorization process to complete.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AzureAIAgentsFileSearchExensions</code></td>
+<td><code>c, cpp, cs, css, doc, docx, html, java, js, json, md, pdf, php, pptx, py, rb, sh, tex, ts, txt</code></td>
+<td>The comma-separated list file extensions that are supported by the Azure AI Agent Service file search tool.</td>
+</tr>
+</tbody>
+</table>
+<p>The following App Configuration value have been removed as they are no longer needed:</p>
+<ol>
+<li>ResourceProviders:AzureOpenAI:Storage:AuthenticationType</li>
+<li>ResourceProviders:AzureOpenAI:Storage:AccountName</li>
+</ol>
+<p>A new workflow resource must be added to support the AzureAIAgentServiceWorkflow. Ensure the reference is added to <code>_resource-references.json</code> as well.</p>
+<pre><code class="lang-json">{
+    &quot;type&quot;: &quot;azure-ai-agent-service-workflow&quot;,
+    &quot;name&quot;: &quot;AzureAIAgentServiceWorkflow&quot;,
+    &quot;object_id&quot;: &quot;/instances/{instanceId}/providers/FoundationaLLM.Agent/workflows/AzureAIAgentServiceWorkflow&quot;,
+    &quot;display_name&quot;: &quot;AzureAIAgentServiceWorkflow&quot;,
+    &quot;description&quot;: &quot;Azure AI Agent Service Workflow&quot;,
+    &quot;cost_center&quot;: null,
+    &quot;properties&quot;: null,
+    &quot;created_on&quot;: &quot;2024-11-08T10:08:27.1953263+00:00&quot;,
+    &quot;updated_on&quot;: &quot;0001-01-01T00:00:00+00:00&quot;,
+    &quot;created_by&quot;: &quot;SYSTEM&quot;,
+    &quot;updated_by&quot;: null,
+    &quot;deleted&quot;: false,
+    &quot;expiration_date&quot;: null
+}
+</code></pre>
+<h2 id="starting-from-097-beta138">Starting from 0.9.7-beta138</h2>
+<h3 id="configuration-changes-6">Configuration changes</h3>
+<p>The <code>FoundationaLLM:Code:CodeExecution:AzureContainerAppsDynamicSessions</code> configuration setting has been replaced by the following configuration settings:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Content Type</th>
+<th>Description</th>
+<th>Default value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM:Code:CodeExecution:AzureContainerAppsDynamicSessions:CodeInterpreter</code></td>
+<td><code>application/json</code></td>
+<td>The settings for the Azure Container Apps Dynamic Sessions code interpreter.</td>
+<td><code>{ &quot;Endpoints&quot;: { &quot;Python&quot;: [], &quot;CSharp&quot;: []} }</code></td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Code:CodeExecution:AzureContainerAppsDynamicSessions:CustomContainer</code></td>
+<td><code>application/json</code></td>
+<td>The settings for the Azure Container Apps Dynamic Sessions custom container.</td>
+<td><code>{ &quot;Endpoints&quot;: { &quot;Python&quot;: [], &quot;CSharp&quot;: []} }</code></td>
+</tr>
+</tbody>
+</table>
+<p>FoundationaLLM now supports Azure AI Inference APIs accessible to the agent using the LangChain workflow host. This functionality expects an Azure AI Service resource. Authentication is accomplished support is via Azure Identity (Entra) or API Key. If using Azure Identity, ensure the LangChain managed identity has <code>Cognitive Services User</code> role on the Azure AI Service resource (may be inherited). Within the project defined in AI Foundry, ensure the LangChain managed identity has the <code>Azure AI Developer</code> role. If using API Key, ensure the API Key is securely stored in the key vault and exposed via an Application Configuration value. When defining the API Endpoint Configuration, add the authentication parameter <code>api_key_configuration_name</code> with the name of the Application Configuration key.</p>
+<h3 id="code-sessions">Code sessions</h3>
+<p>The tool property <code>foundationallm_aca_code_execution_enabled</code> has been renamed to <code>code_session_required</code>. The property indicates whether the tool requires a code session during its execution. If the property is set to <code>true</code>, the following additional properties must be set:</p>
+<ul>
+<li><code>code_session_endpoint_provider</code>: Supported values are <code>AzureContainerAppsCodeInterpreter</code> (indicates that the code session is provided by the Azure Container Apps Dynamic Sessions code interpreter) and <code>AzureContainerAppsCustomContainer</code> (indicates that the code session is provided by the Azure Container Apps Dynamic Sessions custom container).</li>
+<li><code>code_session_language</code>: Supported values are <code>Python</code> and <code>CSharp</code>.</li>
+</ul>
+<p>Tools that require a code session should expect the following properties to be injected:</p>
+<ul>
+<li><code>code_session_endpoint</code> (instead of the previous <code>foundationallm_aca_code_execution_session_id</code>)</li>
+<li><code>code_session_id</code> (instead of the previous <code>foundationallm_aca_code_execution_session_id</code>)</li>
+</ul>
+<h2 id="starting-from-097-beta128">Starting from 0.9.7-beta128</h2>
+<h3 id="configuration-changes-7">Configuration changes</h3>
+<p>Agent Workflow configuration now has a <code>class_name</code> field. This is the underlying implementation class of the workflow. This is not a breaking change, as in previous versions the <code>name</code> field contained the class name and if the <code>class_name</code> field is empty, it will default to the <code>name</code> field. However, it is recommended to set the <code>class_name</code> field to the implementation class name.</p>
+<h2 id="starting-from-097-beta112">Starting from 0.9.7-beta112</h2>
+<h3 id="configuration-changes-8">Configuration changes</h3>
+<p>Added the following App Configuration value:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Default value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:DataPipelineAPI:Essentials:APIKey</code></td>
+<td>Points to <code>foundationallm-apiendpoints-datapipelineapi-apikey</code></td>
+<td>KeyVault reference value pointing to the specified secret.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:DataPipelineAPI:Essentials:AppInsightsConnectionString</code></td>
+<td>Points to <code>foundationallm-appinsights-connectionstring</code></td>
+<td>KeyVault reference value pointing to the specified secret.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Essentials:APIKey</code></td>
+<td>Points to <code>foundationallm-apiendpoints-datapipelinefrontendworker-apikey</code></td>
+<td>KeyVault reference value pointing to the specified secret.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:DataPipelineFrontendWorker:Essentials:AppInsightsConnectionString</code></td>
+<td>Points to <code>foundationallm-appinsights-connectionstring</code></td>
+<td>KeyVault reference value pointing to the specified secret.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Essentials:APIKey</code></td>
+<td>Points to <code>foundationallm-apiendpoints-datapipelinebackendworker-apikey</code></td>
+<td>KeyVault reference value pointing to the specified secret.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:DataPipelineBackendWorker:Essentials:AppInsightsConnectionString</code></td>
+<td>Points to <code>foundationallm-appinsights-connectionstring</code></td>
+<td>KeyVault reference value pointing to the specified secret.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:ContextAPI:Essentials:APIKey</code></td>
+<td>Points to <code>foundationallm-apiendpoints-contextapi-apikey</code></td>
+<td>KeyVault reference value pointing to the specified secret.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:ContextAPI:Essentials:AppInsightsConnectionString</code></td>
+<td>Points to <code>foundationallm-appinsights-connectionstring</code></td>
+<td>KeyVault reference value pointing to the specified secret.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:Storage:AccountName</code></td>
+<td><code>&lt;context_api_file_storage_account_name&gt;</code></td>
+<td>The name of the dedicated storage account used by the FoundationaLLM Context API file service.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:Storage:AuthenticationType</code></td>
+<td><code>AzureIdentity</code></td>
+<td>The type of authentication used by the FoundationaLLM Context API file service to connect to the dedicated storage account.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:CosmosDB:Endpoint</code></td>
+<td><code>&lt;cosmos_db_endpoint&gt;</code></td>
+<td>The endpoint URL of the Azure Cosmos DB.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:CosmosDB:Database</code></td>
+<td><code>database</code></td>
+<td>The Azure Cosmos DB database name.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:ContextAPI:Configuration:FileService:CosmosDB:Containers</code></td>
+<td><code>Context</code></td>
+<td>The list of Azure CosmosDB containers used by the Context API file service.</td>
+</tr>
+</tbody>
+</table>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>A dedicated storage account for the FoundationaLLM Context API must be created. The account should be isolated in a dedicated resource group and permissions should only be granted to the FoundationaLLM Context API managed identity. The account should be configured the same way the main FoundationaLLM storage account is.
+A new storage container with a name equal to the FoundationaLLM instance identifier must be created in the storage account.</p>
+</div>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>A new Azure Cosmos DB container named <code>Context</code> must be created with a parition key of <code>/upn</code> and an autoscale transactional throughput of maximum 4000 RU/s.</p>
+</div>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>A new Azure Container Apps Session Pool must be created with in the same resource groups as the Context API storage account. Network egress should be disabled.
+The <code>FoundationaLLM:Code:CodeExecution:AzureContainerAppsDynamicSessions</code> must be set to the following value:</p>
+<pre><code class="lang-json">{&quot;DynamicSessionsEndpoints&quot;: [
+   &quot;&lt;session_pool_endpoint&gt;&quot;
+]}
+</code></pre>
+<p>where <code>&lt;session_pool_endpoint&gt;</code> is the endpoint of the Azure Container Apps Session Pool.</p>
+</div>
+<h3 id="role-assignment-changes-2">Role assignment changes</h3>
+<p>The following role assignments must be added to the Context API's Managed Identity:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Target</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>App Configuration Data Reader</code></td>
+<td>Azure App Configuration service.</td>
+</tr>
+<tr>
+<td><code>Key Vault Secrets User</code></td>
+<td>Azure Key Vault service.</td>
+</tr>
+<tr>
+<td><code>Storage Blob Data Contributor</code></td>
+<td>Dedicated storage account used by the FoundationaLLM Context API.</td>
+</tr>
+<tr>
+<td><code>Cosmos DB Built-in Data Contributor</code></td>
+<td>Azure Cosmos DB account used by the FoundationaLLM Context API.</td>
+</tr>
+<tr>
+<td><code>Azure ContainerApps Session Executor</code></td>
+<td>Azure Container Apps Session Pool.</td>
+</tr>
+</tbody>
+</table>
+<p>The following role assignments must be added to the LangChain API's Managed Identity:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Target</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Azure ContainerApps Session Executor</code></td>
+<td>Azure Container Apps Session Pool.</td>
+</tr>
+</tbody>
+</table>
+<p>The following role assignments must be added to the Semantic Kernel API's Managed Identity:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Target</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Azure ContainerApps Session Executor</code></td>
+<td>Azure Container Apps Session Pool.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="starting-from-097-beta107">Starting from 0.9.7-beta107</h2>
+<p>For External Agent Workflows, the workflow invokation now includes conversation file history. The complete file history is passed regardless of conversation history settings.</p>
+<p>The signature is now as follows:</p>
+<pre><code class="lang-python">async def invoke_async(self,
+                       operation_id: str,
+                       user_prompt: str,
+                       user_prompt_rewrite: Optional[str],
+                       message_history: List[MessageHistoryItem],
+                       file_history: List[FileHistoryItem])-&gt; CompletionResponse:
+</code></pre>
+<h2 id="starting-from-097-beta106">Starting from 0.9.7-beta106</h2>
+<p>For External Agent Workflows, the invocation of the workflow now sends the completion request MessageHistoryItem list vs the translated LangChain BaseMessage construct. This way workflows have more control on how to handle the message history of a conversation.</p>
+<h2 id="starting-from-097-beta105">Starting from 0.9.7-beta105</h2>
+<h3 id="configuration-changes-9">Configuration changes</h3>
+<p>The <code>FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentTool</code> definition now contains a <code>ClassName</code> property. This should be set to the implementation class name of the tool. The <code>Name</code> property of the tool is what will be used for uniqueness in the case multipe tools of the same type/class are used in the same agent.</p>
+<blockquote>
+<p><strong>Note</strong>: This is not a breaking change as if the <code>ClassName</code> property is not set, the <code>Name</code> property will be used as the class name which is the existing pattern. However, it is recommended to set the <code>ClassName</code> property to adhere to the new pattern.</p>
+</blockquote>
+<p>Agent configuration <code>tools</code> property is impacted as follows:</p>
+<p>Old pattern sample:</p>
+<pre><code class="lang-json">{
+      &quot;name&quot;: &quot;DALLEImageGeneration&quot;,
+      &quot;description&quot;: &quot;Generates an image based on a prompt.&quot;,
+      &quot;package_name&quot;: &quot;FoundationaLLM&quot;,
+      &quot;resource_object_ids&quot;: {
+        &quot;/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.AIModel/aiModels/DALLE3Model&quot;: {
+          &quot;object_id&quot;: &quot;/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.AIModel/aiModels/DALLE3Model&quot;,
+          &quot;properties&quot;: {
+            &quot;object_role&quot;: &quot;main_model&quot;,
+            &quot;model_parameters&quot;: {}
+          }
+        }
+      },
+      &quot;properties&quot;: {}
+    }
+</code></pre>
+<p>New pattern:</p>
+<pre><code class="lang-json">{
+      &quot;name&quot;: &quot;DALLETool1&quot;,
+      &quot;description&quot;: &quot;Generates an image based on a prompt.&quot;,
+      &quot;package_name&quot;: &quot;FoundationaLLM&quot;,
+      &quot;class_name&quot;: &quot;DALLEImageGenerationTool&quot;,
+      &quot;resource_object_ids&quot;: {
+        &quot;/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.AIModel/aiModels/DALLE3Model&quot;: {
+          &quot;object_id&quot;: &quot;/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.AIModel/aiModels/DALLE3Model&quot;,
+          &quot;properties&quot;: {
+            &quot;object_role&quot;: &quot;main_model&quot;,
+            &quot;model_parameters&quot;: {}
+          }
+        }
+      },
+      &quot;properties&quot;: {}
+    }
+</code></pre>
+<h2 id="starting-from-097-beta103">Starting from 0.9.7-beta103</h2>
+<h3 id="configuration-changes-10">Configuration changes</h3>
+<p>Added the following App Configuration value:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Default value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM:Quota:Storage:AccountName</code></td>
+<td><code>&lt;storage_account_name&gt;</code></td>
+<td>Provides the storage account used by the FoundationaLLM quota management service.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Quota:Storage:AuthenticationType</code></td>
+<td><code>AzureIdentity</code></td>
+<td>Indicates the authentication type used by the FoundationaLLM quota management service to connect to the storage account.</td>
+</tr>
+</tbody>
+</table>
+<p>A new container named <code>quota</code> must be created in the default storage account.</p>
+<p>The quota definitions are stored in the <code>quota</code> container in a file named <code>quota-store.json</code>. If the file does not exist, the file is automatically created. The file contains a list of quota definitions with the following structure:</p>
+<pre><code class="lang-json">{
+	&quot;name&quot;: &quot;TestAPI01CompletionsUPNRawRequestRateLimit&quot;,
+	&quot;description&quot;: &quot;Defines a per UPN raw request rate limit on the TestAPI01 Completions controller.&quot;,
+	&quot;context&quot;: &quot;TestAPI01:Completions&quot;,
+	&quot;type&quot;: &quot;RawRequestRateLimit&quot;,
+	&quot;metric_partition&quot;: &quot;UserPrincipalName&quot;,
+	&quot;metric_limit&quot;: 120,
+	&quot;metric_window_seconds&quot;: 60,
+	&quot;lockout_duration_seconds&quot;: 60,
+	&quot;distributed_enforcement&quot;: false
+}
+</code></pre>
+<p>The following table provides details about the quota definition properties:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>The name of the quota definition.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>A description of the quota definition.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>context</code></td>
+<td>The context of the quota definition.</td>
+<td>The format of the context is <code>&lt;service_name&gt;:&lt;controller_name&gt;</code> or <code>&lt;service_name&gt;:&lt;controller_name&gt;:&lt;agent_name&gt;</code>. Currently the following contexts can be used: <code>CoreAPI:Completions</code>, <code>CoreAPI:Completions:&lt;agent_name&gt;</code> where <code>&lt;agent_name&gt;</code> must be a valid agent name.</td>
+</tr>
+<tr>
+<td><code>type</code></td>
+<td>The type of the quota enforcement applied.</td>
+<td>The following types are supported: <code>RawRequestRateLimit</code> and <code>AgentRequestRateLimit</code>. <code>RawRequestRateLimt</code> defines the quota metric to be raw API requests and requires a context of <code>&lt;service_name&gt;:&lt;controller_name&gt;</code>. <code>AgentRequestRateLimit</code> defines the quota metric to be agent completion requests and requires a context of <code>&lt;service_name&gt;:&lt;controller_name&gt;:&lt;agent_name&gt;</code>.</td>
+</tr>
+<tr>
+<td><code>metric_partition</code></td>
+<td>The metric partition used to enforce the quota.</td>
+<td>The following partitions are supported: <code>None</code> (the metric is not partitioned) <code>UserPrincipalName</code> (the metric is partitioned by user principal name) and <code>UserIdentifier</code> (the metric is partitioned by user identifier).</td>
+</tr>
+<tr>
+<td><code>metric_limit</code></td>
+<td>The limit of the metric.</td>
+<td>The limit is enforced over the <code>metric_window_seconds</code>. In the example above, a maximum number of 120 raw API requests are allowed per user principal name in a 60-second window.</td>
+</tr>
+<tr>
+<td><code>metric_window_seconds</code></td>
+<td>The time window in seconds over which the limit is enforced.</td>
+<td>In the example above, a maximum number of 120 raw API requests are allowed per user principal name in a 60-second window.</td>
+</tr>
+<tr>
+<td><code>lockout_duration_seconds</code></td>
+<td>The duration in seconds for which the caller is locked out after exceeding the quota.</td>
+<td>The lockout duration is applied after the user exceeds the quota limit. The user is locked out for the specified duration before the quota is reset.</td>
+</tr>
+<tr>
+<td><code>distributed_enforcement</code></td>
+<td>Indicates whether the quota is enforced across multiple instances of the same API.</td>
+<td>If <code>true</code>, the quota is enforced across multiple instances. If <code>false</code>, the quota is enforced on a single instance. Currently, only <code>false</code> is supported.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="starting-from-097-beta101">Starting from 0.9.7-beta101</h2>
+<h3 id="configuration-changes-11">Configuration changes</h3>
+<p>Added the following App Configuration value:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Default value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM:ResourceProviders:DataPipeline:Storage:AccountName</code></td>
+<td><code>&lt;storage_account_name&gt;</code></td>
+<td>Provides the storage account used by the FoundationaLLM.DataPipeline resource provider.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:ResourceProviders:DataPipeline:Storage:AuthenticationType</code></td>
+<td><code>AzureIdentity</code></td>
+<td>Indicates the authentication type used by the FoundationaLLM.DataPipeline resource provider to connect to the storage account.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:ResourceProviders:Plugin:Storage:AccountName</code></td>
+<td><code>&lt;storage_account_name&gt;</code></td>
+<td>Provides the storage account used by the FoundationaLLM.Plugin resource provider.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:ResourceProviders:Plugin:Storage:AuthenticationType</code></td>
+<td><code>AzureIdentity</code></td>
+<td>Indicates the authentication type used by the FoundationaLLM.Plugin resource provider to connect to the storage account.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="management-api">Management API</h3>
+<p>The <code>POST /instances/{instanceId}/providers/{resourceProvider}/{resourcePath}</code> endpoint now supports providing a <code>resource</code> form data key in the request body. This key is used to provide the serialized resource FoundationaLLM resource when a file upload is performed using a <code>form-data</code> request body.</p>
+<p>The call to <code>POST /instances/{instanceId}/providers/FoundationaLLM.Plugin/pluginPackages/Dotnet-FoundationaLLMDataPipelinePlugins</code> expects a <code>form-data</code> request body with the following keys:</p>
+<ul>
+<li><code>file</code> (of type file) - the plugin package file to upload.</li>
+<li><code>resource</code> (of type text) - the serialized plugin package FoundationaLLM resource.</li>
+</ul>
+<h2 id="starting-with-097-beta100">Starting with 0.9.7-beta100</h2>
+<h3 id="configuration-changes-12">Configuration changes</h3>
+<h2 id="app-configuration-settings">App configuration settings</h2>
+<p>The value of the <code>FoundationaLLM:Events:Profiles:CoreAPI</code> must be updated to include the <code>api-statistics</code> topic. The updated value is as follows:</p>
+<pre><code class="lang-json">{
+    &quot;EventProcessingCycleSeconds&quot;: 5,
+    &quot;Topics&quot;: [
+        {
+            &quot;Name&quot;: &quot;resource-providers&quot;,
+            &quot;SubscriptionPrefix&quot;: &quot;rp-core&quot;
+        },
+        {
+            &quot;Name&quot;: &quot;api-statistics&quot;,
+            &quot;SubscriptionPrefix&quot;: &quot;as-core&quot;
+        }
+    ]
+}
+</code></pre>
+<h2 id="starting-with-094-rc100">Starting with 0.9.4-rc100</h2>
+<h3 id="configuration-changes-13">Configuration changes</h3>
+<h2 id="app-configuration-settings-1">App configuration settings</h2>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>The App Config setting <code>FoundationaLLM:Instance:EnableResourceProvidersCache</code> is obsolete and should be removed from the App Config settings.</p>
+</div>
+<p>The following App Config properties make cache settings for the resource providers configurable:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+<th>Default Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM:ResourceProvidersCache:EnableCache</code></td>
+<td>Indicates whether resource providers should cache resources or not.</td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:ResourceProvidersCache:AbsoluteCacheExpirationSeconds</code></td>
+<td>Absolute cache expiration in seconds.</td>
+<td>300</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:ResourceProvidersCache:SlidingCacheExpirationSeconds</code></td>
+<td>Sets how many seconds the cache entry can be inactive (e.g. not accessed) before it will be removed. This will not extend the entry lifetime beyond the absolute expiration (if set).</td>
+<td>120</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:ResourceProvidersCache:CacheSizeLimit</code></td>
+<td>The maximum number of items that can be stored in the cache.</td>
+<td>10000</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:ResourceProvidersCache:CacheExpirationScanFrequencySeconds</code></td>
+<td>Gets or sets the minimum length of time between successive scans for expired items in seconds.</td>
+<td>30</td>
+</tr>
+</tbody>
+</table>
+<h2 id="starting-with-093">Starting with 0.9.3</h2>
+<p>This version introduces the concept of a well-known virtual security group (<code>AllAgentsVirtualSecurityGroup</code>) that is used by agents using Agent Access Token authentication and have their own virtual security group defined. Assign the following PBAC and RBAC roles to the <code>AllAgentsVirtualSecurityGroup</code> (replace the tokens denoted by <code>{{...}}</code> with the actual values):</p>
+<h3 id="pbac-changes">PBAC changes</h3>
+<pre><code class="lang-json">{
+    &quot;name&quot;: &quot;{{pbacConversationsOwnerGuid}}&quot;,
+    &quot;type&quot;: &quot;FoundationaLLM.Authorization/policyAssignments&quot;,
+    &quot;object_id&quot;: &quot;/providers/FoundationaLLM.Authorization/policyAssignments/{{pbacConversationsOwnerGuid}}&quot;,
+    &quot;description&quot;: &quot;Ownership on conversation resources for AllAgentsVirtualSecurityGroup by the FoundationaLLM.Conversation resource provider.&quot;,
+    &quot;policy_definition_id&quot;: &quot;/providers/FoundationaLLM.Authorization/policyDefinitions/00000000-0000-0000-0001-000000000001&quot;,
+    &quot;principal_id&quot;: &quot;5bb493a2-5909-4771-93ba-d83b7b5a1de9&quot;,
+    &quot;principal_type&quot;: &quot;Group&quot;,
+    &quot;scope&quot;: &quot;/instances/{{instanceId}}/providers/FoundationaLLM.Conversation/conversations&quot;,
+    &quot;created_on&quot;: &quot;{{deployTime}}&quot;,
+    &quot;updated_on&quot;: &quot;{{deployTime}}&quot;,
+    &quot;created_by&quot;: &quot;SYSTEM&quot;,
+    &quot;updated_by&quot;: &quot;SYSTEM&quot;
+},
+{
+    &quot;name&quot;: &quot;{{pbacConversationMappingsGuid}}&quot;,
+    &quot;type&quot;: &quot;FoundationaLLM.Authorization/policyAssignments&quot;,
+    &quot;object_id&quot;: &quot;/providers/FoundationaLLM.Authorization/policyAssignments/{{pbacConversationMappingsGuid}}&quot;,
+    &quot;description&quot;: &quot;Ownership on conversation mapping resources for AllAgentsVirtualSecurityGroup managed by the FoundationaLLM.AzureOpenAI resource provider.&quot;,
+    &quot;policy_definition_id&quot;: &quot;/providers/FoundationaLLM.Authorization/policyDefinitions/00000000-0000-0000-0001-000000000001&quot;,
+    &quot;principal_id&quot;: &quot;5bb493a2-5909-4771-93ba-d83b7b5a1de9&quot;,
+    &quot;principal_type&quot;: &quot;Group&quot;,
+    &quot;scope&quot;: &quot;/instances/{{instanceId}}/providers/FoundationaLLM.AzureOpenAI/conversationMappings&quot;,
+    &quot;created_on&quot;: &quot;{{deployTime}}&quot;,
+    &quot;updated_on&quot;: &quot;{{deployTime}}&quot;,
+    &quot;created_by&quot;: &quot;SYSTEM&quot;,
+    &quot;updated_by&quot;: &quot;SYSTEM&quot;
+},
+{
+    &quot;name&quot;: &quot;{{pbacAttachmentsOwnerGuid}}&quot;,
+    &quot;type&quot;: &quot;FoundationaLLM.Authorization/policyAssignments&quot;,
+    &quot;object_id&quot;: &quot;/providers/FoundationaLLM.Authorization/policyAssignments/{{pbacAttachmentsOwnerGuid}}&quot;,
+    &quot;description&quot;: &quot;Ownership on attachment resources for AllAgentsVirtualSecurityGroup managed by the FoundationaLLM.Attachment resource provider.&quot;,
+    &quot;policy_definition_id&quot;: &quot;/providers/FoundationaLLM.Authorization/policyDefinitions/00000000-0000-0000-0001-000000000001&quot;,
+    &quot;principal_id&quot;: &quot;5bb493a2-5909-4771-93ba-d83b7b5a1de9&quot;,
+    &quot;principal_type&quot;: &quot;Group&quot;,
+    &quot;scope&quot;: &quot;/instances/{{instanceId}}/providers/FoundationaLLM.Attachment/attachments&quot;,
+    &quot;created_on&quot;: &quot;{{deployTime}}&quot;,
+    &quot;updated_on&quot;: &quot;{{deployTime}}&quot;,
+    &quot;created_by&quot;: &quot;SYSTEM&quot;,
+    &quot;updated_by&quot;: &quot;SYSTEM&quot;
+},
+{
+    &quot;name&quot;: &quot;{{pbacFileMappingsGuid}}&quot;,
+    &quot;type&quot;: &quot;FoundationaLLM.Authorization/policyAssignments&quot;,
+    &quot;object_id&quot;: &quot;/providers/FoundationaLLM.Authorization/policyAssignments/{{pbacFileMappingsGuid}}&quot;,
+    &quot;description&quot;: &quot;Ownership on file mapping resources for AllAgentsVirtualSecurityGroup managed by the FoundationaLLM.AzureOpenAI resource provider.&quot;,
+    &quot;policy_definition_id&quot;: &quot;/providers/FoundationaLLM.Authorization/policyDefinitions/00000000-0000-0000-0001-000000000001&quot;,
+    &quot;principal_id&quot;: &quot;5bb493a2-5909-4771-93ba-d83b7b5a1de9&quot;,
+    &quot;principal_type&quot;: &quot;Group&quot;,
+    &quot;scope&quot;: &quot;/instances/{{instanceId}}/providers/FoundationaLLM.AzureOpenAI/fileMappings&quot;,
+    &quot;created_on&quot;: &quot;{{deployTime}}&quot;,
+    &quot;updated_on&quot;: &quot;{{deployTime}}&quot;,
+    &quot;created_by&quot;: &quot;SYSTEM&quot;,
+    &quot;updated_by&quot;: &quot;SYSTEM&quot;
+}
+</code></pre>
+<h3 id="rbac-changes">RBAC changes</h3>
+<pre><code class="lang-json">{
+    &quot;type&quot;: &quot;FoundationaLLM.Authorization/roleAssignments&quot;,
+    &quot;name&quot;: &quot;{{openAiAssistantsReaderGuid}}&quot;,
+    &quot;object_id&quot;: &quot;/providers/FoundationaLLM.Authorization/roleAssignments/{{openAiAssistantsReaderGuid}}&quot;,
+    &quot;display_name&quot;: null,
+    &quot;description&quot;: &quot;Read Access for OpenAIAssistants for the AllAgentsVirtualSecurityGroup group.&quot;,
+    &quot;cost_center&quot;: null,
+    &quot;role_definition_id&quot;: &quot;/providers/FoundationaLLM.Authorization/roleDefinitions/00a53e72-f66e-4c03-8f81-7e885fd2eb35&quot;,
+    &quot;principal_id&quot;: &quot;5bb493a2-5909-4771-93ba-d83b7b5a1de9&quot;,
+    &quot;principal_type&quot;: &quot;Group&quot;,
+    &quot;scope&quot;: &quot;/instances/{{instanceId}}/providers/FoundationaLLM.Agent/workflows/OpenAIAssistants&quot;,
+    &quot;properties&quot;: null,
+    &quot;created_on&quot;: &quot;{{deployTime}}&quot;,
+    &quot;updated_on&quot;: &quot;{{deployTime}}&quot;,
+    &quot;created_by&quot;: null,
+    &quot;updated_by&quot;: null,
+    &quot;deleted&quot;: false,
+    &quot;expiration_date&quot;: null
+},
+{
+    &quot;type&quot;: &quot;FoundationaLLM.Authorization/roleAssignments&quot;,
+    &quot;name&quot;: &quot;{{langGraphReactAgentReaderGuid}}&quot;,
+    &quot;object_id&quot;: &quot;/providers/FoundationaLLM.Authorization/roleAssignments/{{langGraphReactAgentReaderGuid}}&quot;,
+    &quot;display_name&quot;: null,
+    &quot;description&quot;: &quot;Read Access for LangGraphReactAgent for the AllAgentsVirtualSecurityGroup group.&quot;,
+    &quot;cost_center&quot;: null,
+    &quot;role_definition_id&quot;: &quot;/providers/FoundationaLLM.Authorization/roleDefinitions/00a53e72-f66e-4c03-8f81-7e885fd2eb35&quot;,
+    &quot;principal_id&quot;: &quot;5bb493a2-5909-4771-93ba-d83b7b5a1de9&quot;,
+    &quot;principal_type&quot;: &quot;Group&quot;,
+    &quot;scope&quot;: &quot;/instances/{{instanceId}}/providers/FoundationaLLM.Agent/workflows/LangGraphReactAgent&quot;,
+    &quot;properties&quot;: null,
+    &quot;created_on&quot;: &quot;{{deployTime}}&quot;,
+    &quot;updated_on&quot;: &quot;{{deployTime}}&quot;,
+    &quot;created_by&quot;: null,
+    &quot;updated_by&quot;: null,
+    &quot;deleted&quot;: false,
+    &quot;expiration_date&quot;: null
+},
+{
+    &quot;type&quot;: &quot;FoundationaLLM.Authorization/roleAssignments&quot;,
+    &quot;name&quot;: &quot;{{attachmentContributorGuid2}}&quot;,
+    &quot;object_id&quot;: &quot;/providers/FoundationaLLM.Authorization/roleAssignments/{{attachmentContributorGuid2}}&quot;,
+    &quot;display_name&quot;: null,
+    &quot;description&quot;: &quot;Attachment contributor role for AllAgentsVirtualSecurityGroup group.&quot;,
+    &quot;cost_center&quot;: null,
+    &quot;role_definition_id&quot;: &quot;/providers/FoundationaLLM.Authorization/roleDefinitions/8e77fb6a-7a78-43e1-b628-d9e2285fe25a&quot;,
+    &quot;principal_id&quot;: &quot;5bb493a2-5909-4771-93ba-d83b7b5a1de9&quot;,
+    &quot;principal_type&quot;: &quot;Group&quot;,
+    &quot;scope&quot;: &quot;/instances/{{instanceId}}&quot;,
+    &quot;properties&quot;: null,
+    &quot;created_on&quot;: &quot;{{deployTime}}&quot;,
+    &quot;updated_on&quot;: &quot;{{deployTime}}&quot;,
+    &quot;created_by&quot;: null,
+    &quot;updated_by&quot;: null,
+    &quot;deleted&quot;: false,
+    &quot;expiration_date&quot;: null
+},
+{
+    &quot;type&quot;: &quot;FoundationaLLM.Authorization/roleAssignments&quot;,
+    &quot;name&quot;: &quot;{{conversationContributorGuid2}}&quot;,
+    &quot;object_id&quot;: &quot;/providers/FoundationaLLM.Authorization/roleAssignments/{{conversationContributorGuid2}}&quot;,
+    &quot;display_name&quot;: null,
+    &quot;description&quot;: &quot;Conversation contributor role for AllAgentsVirtualSecurityGroup group.&quot;,
+    &quot;cost_center&quot;: null,
+    &quot;role_definition_id&quot;: &quot;/providers/FoundationaLLM.Authorization/roleDefinitions/d0d21b90-5317-499a-9208-3a6cb71b84f9&quot;,
+    &quot;principal_id&quot;: &quot;5bb493a2-5909-4771-93ba-d83b7b5a1de9&quot;,
+    &quot;principal_type&quot;: &quot;Group&quot;,
+    &quot;scope&quot;: &quot;/instances/{{instanceId}}&quot;,
+    &quot;properties&quot;: null,
+    &quot;created_on&quot;: &quot;{{deployTime}}&quot;,
+    &quot;updated_on&quot;: &quot;{{deployTime}}&quot;,
+    &quot;created_by&quot;: null,
+    &quot;updated_by&quot;: null,
+    &quot;deleted&quot;: false,
+    &quot;expiration_date&quot;: null
+},
+{
+    &quot;type&quot;: &quot;FoundationaLLM.Authorization/roleAssignments&quot;,
+    &quot;name&quot;: &quot;{{configReadAccessGuid3}}&quot;,
+    &quot;object_id&quot;: &quot;/providers/FoundationaLLM.Authorization/roleAssignments/{{configReadAccessGuid3}}&quot;,
+    &quot;display_name&quot;: null,
+    &quot;description&quot;: &quot;Read Access for configuration for the AllAgentsVirtualSecurityGroup group.&quot;,
+    &quot;cost_center&quot;: null,
+    &quot;role_definition_id&quot;: &quot;/providers/FoundationaLLM.Authorization/roleDefinitions/00a53e72-f66e-4c03-8f81-7e885fd2eb35&quot;,
+    &quot;principal_id&quot;: &quot;5bb493a2-5909-4771-93ba-d83b7b5a1de9&quot;,
+    &quot;principal_type&quot;: &quot;Group&quot;,
+    &quot;scope&quot;: &quot;/instances/{{instanceId}}/providers/FoundationaLLM.Configuration/appConfigurations/FoundationaLLM:APIEndpoints:CoreAPI:Configuration:MaxUploadsPerMessage&quot;,
+    &quot;properties&quot;: null,
+    &quot;created_on&quot;: &quot;{{deployTime}}&quot;,
+    &quot;updated_on&quot;: &quot;{{deployTime}}&quot;,
+    &quot;created_by&quot;: null,
+    &quot;updated_by&quot;: null,
+    &quot;deleted&quot;: false,
+    &quot;expiration_date&quot;: null
+},
+{
+    &quot;type&quot;: &quot;FoundationaLLM.Authorization/roleAssignments&quot;,
+    &quot;name&quot;: &quot;{{configReadAccessGuid4}}&quot;,
+    &quot;object_id&quot;: &quot;/providers/FoundationaLLM.Authorization/roleAssignments/{{configReadAccessGuid4}}&quot;,
+    &quot;display_name&quot;: null,
+    &quot;description&quot;: &quot;Read Access for configuration for the AllAgentsVirtualSecurityGroup group.&quot;,
+    &quot;cost_center&quot;: null,
+    &quot;role_definition_id&quot;: &quot;/providers/FoundationaLLM.Authorization/roleDefinitions/00a53e72-f66e-4c03-8f81-7e885fd2eb35&quot;,
+    &quot;principal_id&quot;: &quot;5bb493a2-5909-4771-93ba-d83b7b5a1de9&quot;,
+    &quot;principal_type&quot;: &quot;Group&quot;,
+    &quot;scope&quot;: &quot;/instances/{{instanceId}}/providers/FoundationaLLM.Configuration/appConfigurations/FoundationaLLM:APIEndpoints:CoreAPI:Configuration:CompletionResponsePollingIntervalSeconds&quot;,
+    &quot;properties&quot;: null,
+    &quot;created_on&quot;: &quot;{{deployTime}}&quot;,
+    &quot;updated_on&quot;: &quot;{{deployTime}}&quot;,
+    &quot;created_by&quot;: null,
+    &quot;updated_by&quot;: null,
+    &quot;deleted&quot;: false,
+    &quot;expiration_date&quot;: null
+},
+{
+    &quot;type&quot;: &quot;FoundationaLLM.Authorization/roleAssignments&quot;,
+    &quot;name&quot;: &quot;{{externalAgentWorkflowReaderGuid}}&quot;,
+    &quot;object_id&quot;: &quot;/providers/FoundationaLLM.Authorization/roleAssignments/{{externalAgentWorkflowReaderGuid}}&quot;,
+    &quot;display_name&quot;: null,
+    &quot;description&quot;: &quot;Read Access for ExternalAgentWorkflow for the AllAgentsVirtualSecurityGroup group.&quot;,
+    &quot;cost_center&quot;: null,
+    &quot;role_definition_id&quot;: &quot;/providers/FoundationaLLM.Authorization/roleDefinitions/00a53e72-f66e-4c03-8f81-7e885fd2eb35&quot;,
+    &quot;principal_id&quot;: &quot;5bb493a2-5909-4771-93ba-d83b7b5a1de9&quot;,
+    &quot;principal_type&quot;: &quot;Group&quot;,
+    &quot;scope&quot;: &quot;/instances/{{instanceId}}/providers/FoundationaLLM.Agent/workflows/ExternalAgentWorkflow&quot;,
+    &quot;properties&quot;: null,
+    &quot;created_on&quot;: &quot;{{deployTime}}&quot;,
+    &quot;updated_on&quot;: &quot;{{deployTime}}&quot;,
+    &quot;created_by&quot;: null,
+    &quot;updated_by&quot;: null,
+    &quot;deleted&quot;: false,
+    &quot;expiration_date&quot;: null
+},
+{
+    &quot;type&quot;: &quot;FoundationaLLM.Authorization/roleAssignments&quot;,
+    &quot;name&quot;: &quot;{{langChainExpressionLanguageReaderGuid}}&quot;,
+    &quot;object_id&quot;: &quot;/providers/FoundationaLLM.Authorization/roleAssignments/{{langChainExpressionLanguageReaderGuid}}&quot;,
+    &quot;display_name&quot;: null,
+    &quot;description&quot;: &quot;Read Access for LangChainExpressionLanguage for the AllAgentsVirtualSecurityGroup group.&quot;,
+    &quot;cost_center&quot;: null,
+    &quot;role_definition_id&quot;: &quot;/providers/FoundationaLLM.Authorization/roleDefinitions/00a53e72-f66e-4c03-8f81-7e885fd2eb35&quot;,
+    &quot;principal_id&quot;: &quot;5bb493a2-5909-4771-93ba-d83b7b5a1de9&quot;,
+    &quot;principal_type&quot;: &quot;Group&quot;,
+    &quot;scope&quot;: &quot;/instances/{{instanceId}}/providers/FoundationaLLM.Agent/workflows/LangChainExpressionLanguage&quot;,
+    &quot;properties&quot;: null,
+    &quot;created_on&quot;: &quot;{{deployTime}}&quot;,
+    &quot;updated_on&quot;: &quot;{{deployTime}}&quot;,
+    &quot;created_by&quot;: null,
+    &quot;updated_by&quot;: null,
+    &quot;deleted&quot;: false,
+    &quot;expiration_date&quot;: null
+},
+{
+    &quot;type&quot;: &quot;FoundationaLLM.Authorization/roleAssignments&quot;,
+    &quot;name&quot;: &quot;{{openAIAssistantsFileSearchReaderGuid}}&quot;,
+    &quot;object_id&quot;: &quot;/providers/FoundationaLLM.Authorization/roleAssignments/{{openAIAssistantsFileSearchReaderGuid}}&quot;,
+    &quot;display_name&quot;: null,
+    &quot;description&quot;: &quot;Read Access for OpenAIAssistantsFileSearch for the AllAgentsVirtualSecurityGroup group.&quot;,
+    &quot;cost_center&quot;: null,
+    &quot;role_definition_id&quot;: &quot;/providers/FoundationaLLM.Authorization/roleDefinitions/00a53e72-f66e-4c03-8f81-7e885fd2eb35&quot;,
+    &quot;principal_id&quot;: &quot;5bb493a2-5909-4771-93ba-d83b7b5a1de9&quot;,
+    &quot;principal_type&quot;: &quot;Group&quot;,
+    &quot;scope&quot;: &quot;/instances/{{instanceId}}/providers/FoundationaLLM.Agent/tools/OpenAIAssistantsFileSearch&quot;,
+    &quot;properties&quot;: null,
+    &quot;created_on&quot;: &quot;{{deployTime}}&quot;,
+    &quot;updated_on&quot;: &quot;{{deployTime}}&quot;,
+    &quot;created_by&quot;: null,
+    &quot;updated_by&quot;: null,
+    &quot;deleted&quot;: false,
+    &quot;expiration_date&quot;: null
+},
+{
+    &quot;type&quot;: &quot;FoundationaLLM.Authorization/roleAssignments&quot;,
+    &quot;name&quot;: &quot;{{openAIAssistantsCodeInterpreterReaderGuid}}&quot;,
+    &quot;object_id&quot;: &quot;/providers/FoundationaLLM.Authorization/roleAssignments/{{openAIAssistantsCodeInterpreterReaderGuid}}&quot;,
+    &quot;display_name&quot;: null,
+    &quot;description&quot;: &quot;Read Access for OpenAIAssistantsCodeInterpreter for the AllAgentsVirtualSecurityGroup group.&quot;,
+    &quot;cost_center&quot;: null,
+    &quot;role_definition_id&quot;: &quot;/providers/FoundationaLLM.Authorization/roleDefinitions/00a53e72-f66e-4c03-8f81-7e885fd2eb35&quot;,
+    &quot;principal_id&quot;: &quot;5bb493a2-5909-4771-93ba-d83b7b5a1de9&quot;,
+    &quot;principal_type&quot;: &quot;Group&quot;,
+    &quot;scope&quot;: &quot;/instances/{{instanceId}}/providers/FoundationaLLM.Agent/tools/OpenAIAssistantsCodeInterpreter&quot;,
+    &quot;properties&quot;: null,
+    &quot;created_on&quot;: &quot;{{deployTime}}&quot;,
+    &quot;updated_on&quot;: &quot;{{deployTime}}&quot;,
+    &quot;created_by&quot;: null,
+    &quot;updated_by&quot;: null,
+    &quot;deleted&quot;: false,
+    &quot;expiration_date&quot;: null
+},
+{
+    &quot;type&quot;: &quot;FoundationaLLM.Authorization/roleAssignments&quot;,
+    &quot;name&quot;: &quot;{{dalleImageGenerationReaderGuid}}&quot;,
+    &quot;object_id&quot;: &quot;/providers/FoundationaLLM.Authorization/roleAssignments/{{dalleImageGenerationReaderGuid}}&quot;,
+    &quot;display_name&quot;: null,
+    &quot;description&quot;: &quot;Read Access for DALLEImageGeneration for the AllAgentsVirtualSecurityGroup group.&quot;,
+    &quot;cost_center&quot;: null,
+    &quot;role_definition_id&quot;: &quot;/providers/FoundationaLLM.Authorization/roleDefinitions/00a53e72-f66e-4c03-8f81-7e885fd2eb35&quot;,
+    &quot;principal_id&quot;: &quot;5bb493a2-5909-4771-93ba-d83b7b5a1de9&quot;,
+    &quot;principal_type&quot;: &quot;Group&quot;,
+    &quot;scope&quot;: &quot;/instances/{{instanceId}}/providers/FoundationaLLM.Agent/tools/DALLEImageGeneration&quot;,
+    &quot;properties&quot;: null,
+    &quot;created_on&quot;: &quot;{{deployTime}}&quot;,
+    &quot;updated_on&quot;: &quot;{{deployTime}}&quot;,
+    &quot;created_by&quot;: null,
+    &quot;updated_by&quot;: null,
+    &quot;deleted&quot;: false,
+    &quot;expiration_date&quot;: null
+},
+{
+    &quot;type&quot;: &quot;FoundationaLLM.Authorization/roleAssignments&quot;,
+    &quot;name&quot;: &quot;{{foundationaLLMContentSearchToolReaderGuid}}&quot;,
+    &quot;object_id&quot;: &quot;/providers/FoundationaLLM.Authorization/roleAssignments/{{foundationaLLMContentSearchToolReaderGuid}}&quot;,
+    &quot;display_name&quot;: null,
+    &quot;description&quot;: &quot;Read Access for FoundationaLLMContentSearchTool for the AllAgentsVirtualSecurityGroup group.&quot;,
+    &quot;cost_center&quot;: null,
+    &quot;role_definition_id&quot;: &quot;/providers/FoundationaLLM.Authorization/roleDefinitions/00a53e72-f66e-4c03-8f81-7e885fd2eb35&quot;,
+    &quot;principal_id&quot;: &quot;5bb493a2-5909-4771-93ba-d83b7b5a1de9&quot;,
+    &quot;principal_type&quot;: &quot;Group&quot;,
+    &quot;scope&quot;: &quot;/instances/{{instanceId}}/providers/FoundationaLLM.Agent/tools/FoundationaLLMContentSearchTool&quot;,
+    &quot;properties&quot;: null,
+    &quot;created_on&quot;: &quot;{{deployTime}}&quot;,
+    &quot;updated_on&quot;: &quot;{{deployTime}}&quot;,
+    &quot;created_by&quot;: null,
+    &quot;updated_by&quot;: null,
+    &quot;deleted&quot;: false,
+    &quot;expiration_date&quot;: null
+}
+</code></pre>
+<h2 id="starting-with-093-rc016">Starting with 0.9.3-rc016</h2>
+<h3 id="configuration-resource-provider">Configuration Resource Provider</h3>
+<p>The <code>APIEnpointConfiguration</code> class has been updated to change the previous <code>StatusUrl</code> property to <code>StatusEndpoint</code>, which is a relative path to the status endpoint. By extension, the related JSON files now have a <code>status_endpoint</code> property that contains the relative path. Here is the OrchestrationAPI JSON template as an example of this change:</p>
+<pre><code class="lang-json">{
+    &quot;type&quot;: &quot;api-endpoint&quot;,
+    &quot;name&quot;: &quot;OrchestrationAPI&quot;,
+    &quot;object_id&quot;: &quot;/instances/{{instanceId}}/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/OrchestrationAPI&quot;,
+    &quot;display_name&quot;: null,
+    &quot;description&quot;: null,
+    &quot;cost_center&quot;: null,
+    &quot;category&quot;: &quot;General&quot;,
+    &quot;authentication_type&quot;: &quot;APIKey&quot;,
+    &quot;authentication_parameters&quot;: {
+        &quot;api_key_configuration_name&quot;: &quot;FoundationaLLM:APIEndpoints:OrchestrationAPI:Essentials:APIKey&quot;,
+        &quot;api_key_header_name&quot;: &quot;X-API-KEY&quot;
+    },
+    &quot;url&quot;: &quot;http://orchestration-api.{{serviceNamespaceName}}.svc.cluster.local&quot;,
+    &quot;status_endpoint&quot;: &quot;/instances/{{instanceId}}/status&quot;,
+    &quot;url_exceptions&quot;: [],
+    &quot;timeout_seconds&quot;: 2400,
+    &quot;retry_strategy_name&quot;: &quot;ExponentialBackoff&quot;,
+    &quot;created_on&quot;: &quot;0001-01-01T00:00:00+00:00&quot;,
+    &quot;updated_on&quot;: &quot;0001-01-01T00:00:00+00:00&quot;,
+    &quot;created_by&quot;: null,
+    &quot;updated_by&quot;: &quot;SYSTEM&quot;,
+    &quot;deleted&quot;: false
+}
+</code></pre>
+<p>The status path is used by the Management Portal's Deployment Information page to show the status of each of the APIs. This path is also used by the <code>/Orchestration/Services/LangChainService</code> and <code>/Orchestration/Services/SemanticKernelService</code> classes to check the status of the respective APIs.</p>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>All files within the <code>/resource-provider/FoundationaLLM.Configuration</code> directory must be updated to change the name of the <code>status_url</code> field to <code>status_endpoint</code> and change the value to a relative path as needed.</p>
+</div>
+<h3 id="vectorization-resource-provider-changes">Vectorization resource provider changes</h3>
+<p>Vectorization indexing and partitioning profile settings dictionary keys are now persisted as snake case (ex. <code>IndexName</code> becomes <code>index_name</code>).</p>
+<h3 id="agent-resource-provider-changes">Agent resource provider changes</h3>
+<h4 id="deployment-notes">Deployment notes</h4>
+<ol>
+<li>Ensure the feature flag is enabled for <code>FoundationaLLM.Agent.PrivateStore</code> if using the private store feature on OpenAI Assistants workflow agents is desired.</li>
+<li>Open existing <code>OpenAIAssistantsWorkflow</code> agents in the Management portal and select <code>Save</code> to populate the global vector store in the OpenAI service for the assistant.</li>
+</ol>
+<h4 id="agent-file-resources">Agent file resources</h4>
+<p>The agent file references are now stored in a new Cosmos DB container, while the file contents are stored in the storage account.
+Here are the configuration parameters for the required Cosmos DB container:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Name</td>
+<td><code>Agents</code></td>
+</tr>
+<tr>
+<td>Maximum RU/s</td>
+<td>4000</td>
+</tr>
+<tr>
+<td>Hierarchical Partition key</td>
+<td><code>/instanceId</code> + <code>/agentName</code></td>
+</tr>
+</tbody>
+</table>
+<p>As a result of the migration, the newly created <code>Agents</code> container will initially contain only ony type of times: <code>AgentFileReference</code>.</p>
+<p>This is an example of such item:</p>
+<pre><code class="lang-json">{
+    &quot;instanceId&quot;: &quot;8ac6074c-bdde-43cb-a140-ec0002d96d2b&quot;,
+    &quot;agentName&quot;: &quot;TestAgentFiles1&quot;,
+    &quot;originalFilename&quot;: &quot;curious_cat_story.pdf&quot;,
+    &quot;contentType&quot;: &quot;application/pdf&quot;,
+    &quot;size&quot;: 2433,
+    &quot;upn&quot;: &quot;andrei@foundationaLLM.ai&quot;,
+    &quot;id&quot;: &quot;af-0285ddb8-a5b8-48b0-8248-bd0ad2f123bf&quot;,
+    &quot;objectId&quot;: &quot;/instances/8ac6074c-bdde-43cb-a140-ec0002d96d2b/providers/FoundationaLLM.Agent/agents/TestAgentFiles1/agentFiles/af-0285ddb8-a5b8-48b0-8248-bd0ad2f123bf&quot;,
+    &quot;name&quot;: &quot;af-0285ddb8-a5b8-48b0-8248-bd0ad2f123bf&quot;,
+    &quot;filename&quot;: &quot;/FoundationaLLM.Agent/8ac6074c-bdde-43cb-a140-ec0002d96d2b/TestAgentFiles1/private-file-store/af-0285ddb8-a5b8-48b0-8248-bd0ad2f123bf.pdf&quot;,
+    &quot;type&quot;: &quot;agent-file&quot;,
+    &quot;deleted&quot;: false,
+    &quot;_rid&quot;: &quot;ie9IAMu0+b0EAAAAAAAAAA==&quot;,
+    &quot;_self&quot;: &quot;dbs/ie9IAA==/colls/ie9IAMu0+b0=/docs/ie9IAMu0+b0EAAAAAAAAAA==/&quot;,
+    &quot;_etag&quot;: &quot;\&quot;37012abc-0000-0200-0000-67afaa800000\&quot;&quot;,
+    &quot;_attachments&quot;: &quot;attachments/&quot;,
+    &quot;_ts&quot;: 1739565696
+}
+</code></pre>
+<p>The <code>agent-file</code> type has been removed and the references are no longer saved in the agent reference store <code>_resource-references.json</code>.</p>
+<h3 id="tools">Tools</h3>
+<p>In the agent resource provider storage folder (<code>resource-provider/FoundationaLLM.Agent</code>), add a <code>tool</code> resource reference entry (<code>_resource_references.json</code>) as well as configuration file for the following tools: <code>OpenAIAssistantsFileSearch</code>, <code>OpenAIAssistantsCodeInterpreter</code>, <code>DALLEImageGeneration</code>, and <code>FoundationaLLMContentSearchTool</code>.</p>
+<p>Reference example:</p>
+<pre><code class="lang-json">{
+    &quot;Name&quot;: &quot;OpenAIAssistantsFileSearch&quot;,
+    &quot;Filename&quot;: &quot;/FoundationaLLM.Agent/OpenAIAssistantsFileSearch.json&quot;,
+    &quot;Type&quot;: &quot;tool&quot;,
+    &quot;Deleted&quot;: false
+}
+</code></pre>
+<p>File example:</p>
+<pre><code class="lang-json">{
+  &quot;type&quot;: &quot;tool&quot;,
+  &quot;name&quot;: &quot;OpenAIAssistantsFileSearch&quot;,
+  &quot;object_id&quot;: &quot;/instances/{{instanceId}}/providers/FoundationaLLM.Agent/tools/OpenAIAssistantsFileSearch&quot;,
+  &quot;display_name&quot;: &quot;OpenAIAssistantsFileSearch&quot;,
+  &quot;description&quot;: &quot;OpenAIAssistantsFileSearch&quot;,
+  &quot;cost_center&quot;: null,
+  &quot;properties&quot;: null,
+  &quot;created_on&quot;: &quot;2025-01-10T08:22:34.2682433+00:00&quot;,
+  &quot;updated_on&quot;: &quot;0001-01-01T00:00:00+00:00&quot;,
+  &quot;created_by&quot;: &quot;dev@foundationaLLM.ai&quot;,
+  &quot;updated_by&quot;: null,
+  &quot;deleted&quot;: false,
+  &quot;expiration_date&quot;: null
+}
+</code></pre>
+<h2 id="starting-with-093-rc010">Starting with 0.9.3-rc010</h2>
+<h3 id="resource-provider-cache-warm-up">Resource provider cache warm-up</h3>
+<p>Resource providers now support a cache warm-up mechanism. This mechanism allows the cache to be pre-populated with the resource provider data before the service starts processing requests. This feature is useful when the service is deployed in a cold environment and needs to be warmed up before it can handle requests.</p>
+<p>The cache warm-up mechanism is enabled when a file named <code>_cache_warmup.json</code> exists in the blob storage location associated with the resource provider. Here is an example of such a file:</p>
+<pre><code class="lang-json">[
+	{
+		&quot;ServiceName&quot;: &quot;OrchestrationAPI&quot;,
+		&quot;Description&quot;: &quot;Resources required by: service principal x, service principal y.&quot;,
+		&quot;ResourceObjectIds&quot;: [
+			&quot;/instances/73fad442-.../providers/FoundationaLLM.Configuration/apiEndpointConfigurations/GatewayAPI&quot;,
+			&quot;/instances/73fad442-.../providers/FoundationaLLM.Configuration/apiEndpointConfigurations/AzureAISearch&quot;,
+			&quot;/instances/73fad442-.../providers/FoundationaLLM.Configuration/apiEndpointConfigurations/LangChainAPI&quot;,
+			&quot;/instances/73fad442-.../providers/FoundationaLLM.Configuration/apiEndpointConfigurations/StateAPI&quot;
+		],
+		&quot;SecurityPrincipalIds&quot;: [
+			&quot;4150c6b3-...&quot;,
+			&quot;949195b1-...&quot;
+		]
+	},
+	{
+		&quot;ServiceName&quot;: &quot;OrchestrationAPI&quot;,
+		&quot;Description&quot;: &quot;Resources required by: service principal x, service principal y, service principal z.&quot;,
+		&quot;ResourceObjectIds&quot;: [
+			&quot;/instances/73fad442-.../providers/FoundationaLLM.Configuration/apiEndpointConfigurations/AzureOpenAI&quot;
+		],
+		&quot;SecurityPrincipalIds&quot;: [
+			&quot;4150c6b3-...&quot;,
+			&quot;949195b1-...&quot;,
+			&quot;d6a6317a-...&quot;
+		]
+	}
+]
+</code></pre>
+<p>The configuration contains an array of objects, each representing a cache warm-up configuration. Each object contains the following properties:</p>
+<ul>
+<li><p><code>ServiceName</code> - The name of the service that the cache warm-up configuration is for.</p>
+</li>
+<li><p><code>Description</code> - A description of the cache warm-up configuration.</p>
+</li>
+<li><p><code>ResourceObjectIds</code> - The list of resource object identifiers that will be pre-loaded into the resource provider cache.</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>The resource object identifiers must be specific to the resource provider.</p>
+</div>
+</li>
+<li><p><code>SecurityPrincipalIds</code> - The list of security principal identifiers that will be used to authenticate the cache warm-up requests.</p>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>As a result of the cache warm-up process, the client authorization cache will be populated with all combinations of security principal and resource object identifiers that exist in the cache warm-up configuration. Make sure the two lists only contain the necessary values to avoid a long startup time for the resource provider.</p>
+</div>
+</li>
+</ul>
+<h2 id="starting-with-093-rc002">Starting with 0.9.3-rc002</h2>
+<h2 id="app-configuration-settings-2">App configuration settings</h2>
+<p>The following App Config properties make cache settings for the <code>AuthorizationServiceClientCacheService</code> configurable:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+<th>Default Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:EnableCache</code></td>
+<td>Indicates whether calls to the Authorization API should be cached or not.</td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:AbsoluteCacheExpirationSeconds</code></td>
+<td>Absolute cache expiration in seconds.</td>
+<td>300</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:SlidingCacheExpirationSeconds</code></td>
+<td>Sets how many seconds the cache entry can be inactive (e.g. not accessed) before it will be removed. This will not extend the entry lifetime beyond the absolute expiration (if set).</td>
+<td>120</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:CacheSizeLimit</code></td>
+<td>The maximum number of items that can be stored in the cache.</td>
+<td>10000</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:CacheExpirationScanFrequencySeconds</code></td>
+<td>Gets or sets the minimum length of time between successive scans for expired items in seconds.</td>
+<td>30</td>
+</tr>
+</tbody>
+</table>
+<h2 id="starting-with-092-rc005">Starting with 0.9.2-rc005</h2>
+<h3 id="agent-configuration-changes">Agent configuration changes</h3>
+<p>Starting with this version, all agents MUST transition to the agent workflow configuraiton approach.</p>
+<p>The following agent properties are no longer supported and should be deleted as part of upgrading to this version:</p>
+<ul>
+<li><code>OrchestrationSettings</code> - fully replaced by the agent worflow settings.</li>
+<li><code>PromptObjectId</code> - replaced by the agent workflow resource object identifier with an <code>object_role</code> of <code>main_prompt</code>.</li>
+<li><code>AIModelObjectId</code> - replaced by the agent workflow resource object identifier with an <code>object_role</code> of <code>main_model</code>.</li>
+<li><code>Capabilities</code> - removed. The equivalent of having Azure OpenAI Assistants capabilities is having an agent workflow with the type <code>azure-openai-assistants-workflow</code>.</li>
+<li><code>Azure.OpenAI.Assistant.Id</code> property in <code>properties</code> - replaced by the <code>assistant_id</code> property of an agent workflow witht the type <code>azure-openai-assistants-workflow</code>.</li>
+</ul>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>If the <code>Azure.OpenAI.Assistant.Id</code> property is set in the agent properties, it's value must be copied to the <code>assistant_id</code> property of the agent workflow.</p>
+</div>
+<p>Here is an example of a fully configured worfklow section for an agent:</p>
+<pre><code class="lang-json">{
+    &quot;type&quot;: &quot;azure-openai-assistants-workflow&quot;,
+		&quot;name&quot;: &quot;OpenAIAssistants&quot;,
+		&quot;package_name&quot;: &quot;FoundationaLLM&quot;,
+    &quot;assistant_id&quot;: &quot;asst_...&quot;,
+    &quot;resource_object_ids&quot;: {
+        &quot;/instances/.../providers/FoundationaLLM.Agent/workflows/OpenAIAssistants&quot;: {
+            &quot;object_id&quot;: &quot;/instances/.../providers/FoundationaLLM.Agent/workflows/OpenAIAssistants&quot;,
+            &quot;properties&quot;: {}
+        },
+        &quot;/instances/.../providers/FoundationaLLM.AIModel/aiModels/GPT4oMiniCompletionAIModel&quot; : {
+            &quot;object_id&quot;: &quot;/instances/.../providers/FoundationaLLM.AIModel/aiModels/GPT4oMiniCompletionAIModel&quot;,
+            &quot;properties&quot;: {
+                &quot;object_role&quot;: &quot;main_model&quot;,
+                &quot;model_parameters&quot;: {}
+            }
+        },
+        &quot;/instances/.../providers/FoundationaLLM.Prompt/prompts/FoundationaLLM-mini&quot;: {
+            &quot;object_id&quot;: &quot;/instances/.../providers/FoundationaLLM.Prompt/prompts/FoundationaLLM-mini&quot;,
+            &quot;properties&quot;: {
+                &quot;object_role&quot;: &quot;main_prompt&quot;
+            }
+        }
+    }
+}
+</code></pre>
+<h2 id="starting-from-091">Starting from 0.9.1</h2>
+<h3 id="app-configuration-settings-3">App configuration settings</h3>
+<p>To support the event grid infrastructure, the following new App Configuration settings are required.</p>
+<pre><code class="lang-json">[
+	{
+		&quot;key&quot;: &quot;FoundationaLLM:Events:Profiles:CoreAPI&quot;,
+		&quot;label&quot;: null,
+		&quot;value&quot;: &quot;{\&quot;EventProcessingCycleSeconds\&quot;: 5,\&quot;Topics\&quot;: [{\&quot;Name\&quot;: \&quot;resource-providers\&quot;,\&quot;SubscriptionPrefix\&quot;: \&quot;rp-core\&quot;}]}&quot;,
+		&quot;content_type&quot;: &quot;application/json&quot;,
+		&quot;tags&quot;: {}
+	},
+	{
+		&quot;key&quot;: &quot;FoundationaLLM:Events:Profiles:GatekeeperAPI&quot;,
+		&quot;label&quot;: null,
+		&quot;value&quot;: &quot;{\&quot;EventProcessingCycleSeconds\&quot;:60,\&quot;Topics\&quot;:[]}&quot;,
+		&quot;content_type&quot;: &quot;application/json&quot;,
+		&quot;tags&quot;: {}
+	},
+	{
+		&quot;key&quot;: &quot;FoundationaLLM:Events:Profiles:GatewayAPI&quot;,
+		&quot;label&quot;: null,
+		&quot;value&quot;: &quot;{\&quot;EventProcessingCycleSeconds\&quot;: 5,\&quot;Topics\&quot;: [{\&quot;Name\&quot;: \&quot;resource-providers\&quot;,\&quot;SubscriptionPrefix\&quot;: \&quot;rp-gateway\&quot;}]}&quot;,
+		&quot;content_type&quot;: &quot;application/json&quot;,
+		&quot;tags&quot;: {}
+	},
+	{
+		&quot;key&quot;: &quot;FoundationaLLM:Events:Profiles:ManagementAPI&quot;,
+		&quot;label&quot;: null,
+		&quot;value&quot;: &quot;{\&quot;EventProcessingCycleSeconds\&quot;: 5,\&quot;Topics\&quot;: [{\&quot;Name\&quot;: \&quot;resource-providers\&quot;,\&quot;SubscriptionPrefix\&quot;: \&quot;rp-management\&quot;}]}&quot;,
+		&quot;content_type&quot;: &quot;application/json&quot;,
+		&quot;tags&quot;: {}
+	},
+	{
+		&quot;key&quot;: &quot;FoundationaLLM:Events:Profiles:OrchestrationAPI&quot;,
+		&quot;label&quot;: null,
+		&quot;value&quot;: &quot;{\&quot;EventProcessingCycleSeconds\&quot;: 5,\&quot;Topics\&quot;: [{\&quot;Name\&quot;: \&quot;resource-providers\&quot;,\&quot;SubscriptionPrefix\&quot;: \&quot;rp-orch\&quot;}]}&quot;,
+		&quot;content_type&quot;: &quot;application/json&quot;,
+		&quot;tags&quot;: {}
+	},
+	{
+		&quot;key&quot;: &quot;FoundationaLLM:Events:Profiles:VectorizationAPI&quot;,
+		&quot;label&quot;: null,
+		&quot;value&quot;: &quot;{\&quot;EventProcessingCycleSeconds\&quot;:60,\&quot;Topics\&quot;:[]}&quot;,
+		&quot;content_type&quot;: &quot;application/json&quot;,
+		&quot;tags&quot;: {}
+	},
+	{
+		&quot;key&quot;: &quot;FoundationaLLM:Events:Profiles:VectorizationWorker&quot;,
+		&quot;label&quot;: null,
+		&quot;value&quot;: &quot;{\&quot;EventProcessingCycleSeconds\&quot;:60,\&quot;Topics\&quot;:[]}&quot;,
+		&quot;content_type&quot;: &quot;application/json&quot;,
+		&quot;tags&quot;: {}
+	}
+]
+</code></pre>
+<blockquote>
+<p>Note: The event grid system topics need to be removed.</p>
+</blockquote>
+<p>The following topic needs to be created in the event grid namespace, must have a <code>resource-providers</code> topic with a publisher type of <code>Custom</code> and an input schema of <code>Cloud Events v1.0</code>.</p>
+<h3 id="configuration-changes-14">Configuration changes</h3>
+<p>Added the following App Configuration value:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Default value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM:UserPortal:Authentication:Entra:TimeoutInMinutes</code></td>
+<td><code>60</code></td>
+<td>The timeout in minutes for a user's auth token in the User Portal.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:UserPortal:Configuration:ShowFileUpload</code></td>
+<td><code>true</code></td>
+<td>Global setting to determine if file upload is allowed on chat messages.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="starting-with-091-rc117">Starting with 0.9.1-rc117</h2>
+<h3 id="agent-configuration-changes-1">Agent configuration changes</h3>
+<pre><code class="lang-json">&quot;text_rewrite_settings&quot;: {
+    &quot;user_prompt_rewrite_enabled&quot; : true,
+    &quot;user_prompt_rewrite_settings&quot;: {
+        &quot;user_prompt_rewrite_ai_model_object_id&quot;: &quot;/instances/73fad442-f614-4510-811f-414cb3a3d34b/providers/FoundationaLLM.AIModel/aiModels/GPT4oCompletionAIModel&quot;,
+        &quot;user_prompt_rewrite_prompt_object_id&quot;: &quot;/instances/73fad442-f614-4510-811f-414cb3a3d34b/providers/FoundationaLLM.Prompt/prompts/FoundationaLLM-v2-Rewrite&quot;,
+        &quot;user_prompts_window_size&quot;: 1
+    }
+},
+&quot;cache_settings&quot;: {
+    &quot;semantic_cache_enabled&quot;: true,
+    &quot;semantic_cache_settings&quot;: {
+        &quot;embedding_ai_model_object_id&quot;: &quot;/instances/73fad442-f614-4510-811f-414cb3a3d34b/providers/FoundationaLLM.AIModel/aiModels/DefaultEmbeddingAIModel&quot;,
+        &quot;embedding_dimensions&quot;: 2048,
+        &quot;minimum_similarity_threshold&quot;: 0.975
+    }
+},
+</code></pre>
+<h3 id="semantic-cache">Semantic cache</h3>
+<p>Enable vector search in the Cosmos DB database using the following CLI command:</p>
+<pre><code class="lang-cli">az cosmosdb update --resource-group &lt;resource-group-name&gt; --name &lt;account-name&gt; --capabilities EnableNoSQLVectorSearch
+</code></pre>
+<p>Create the <code>CompletionsCache</code> container in the Cosmos DB database with the following properties:</p>
+<ul>
+<li><strong>Container id</strong>: <code>CompletionsCache</code></li>
+<li><strong>Partition key</strong>: <code>/operationId</code></li>
+<li><strong>Container Vector Policy</strong>: a policy with the following properties:
+<ul>
+<li><strong>Path</strong>: <code>/userPromptEmbedding</code></li>
+<li><strong>Data type</strong>: <code>float32</code></li>
+<li><strong>Distance function</strong>: <code>Cosine</code></li>
+<li><strong>Dimensions</strong>: 2048</li>
+<li><strong>Index type</strong>: <code>diskANN</code> (leave the default values)</li>
+</ul>
+</li>
+</ul>
+<p>After the container is created, set the <code>Time to Live</code> property on the container to 300 seconds.</p>
+<h2 id="starting-with-091-rc105">Starting with 0.9.1-rc105</h2>
+<h3 id="configuration-changes-15">Configuration changes</h3>
+<p>The following new App Configuration settings are required:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Default value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM:PythonSDK:Logging:LogLevel:Azure</code></td>
+<td><code>Warning</code></td>
+<td>Provides the default level of logging for Azure modules in the Python SDK.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="agent-workflow-configuration-changes">Agent workflow configuration changes</h3>
+<p>Agent resource configuration files that have a <code>workflow</code> property now requires a <code>name</code> and <code>package_name</code> property. This is to support loading external workflows via plugins. For internal workflows, the <code>package_name</code> should be set to <code>FoundationaLLM</code>. Example below truncated for brevity.</p>
+<pre><code class="lang-json">{
+    &quot;workflow&quot;: {
+        &quot;type&quot;: &quot;langgraph-react-agent-workflow&quot;,
+        &quot;name&quot;: &quot;LangGraphReactAgent&quot;,
+        &quot;package_name&quot;: &quot;FoundationaLLM&quot;,
+        &quot;workflow_host&quot;: &quot;LangChain&quot;,
+        &quot;graph_recursion_limit&quot;: 10,
+        &quot;resource_object_ids&quot;: {}
+    }
+}
+</code></pre>
+<p>A new <code>Workflow</code> resource must be added to the <code>FoundationaLLM.Agent</code> resource provider:</p>
+<pre><code class="lang-json">{
+  &quot;type&quot;: &quot;external-agent-workflow&quot;,
+  &quot;name&quot;: &quot;ExternalAgentWorkflow&quot;,
+  &quot;object_id&quot;: &quot;/instances/&lt;instance_id&gt;/providers/FoundationaLLM.Agent/workflows/ExternalAgentWorkflow&quot;,
+  &quot;display_name&quot;: &quot;ExternalAgentWorkflow&quot;,
+  &quot;description&quot;: &quot;External Agent workflow&quot;,
+  &quot;cost_center&quot;: null,
+  &quot;properties&quot;: null,
+  &quot;created_on&quot;: &quot;2024-11-13T18:12:07.0223039+00:00&quot;,
+  &quot;updated_on&quot;: &quot;0001-01-01T00:00:00+00:00&quot;,
+  &quot;created_by&quot;: &quot;dev@foundationaLLM.ai&quot;,
+  &quot;updated_by&quot;: null,
+  &quot;deleted&quot;: false,
+  &quot;expiration_date&quot;: null
+}
+</code></pre>
+<h2 id="starting-with-091-rc102">Starting with 0.9.1-rc102</h2>
+<h3 id="configuration-changes-16">Configuration changes</h3>
+<p>The following new App Configuration settings are required:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Default value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:OrchestrationAPI:Configuration:CompletionRequestsStorage:AccountName</code></td>
+<td><code>&lt;main_storage_account_name&gt;</code></td>
+<td>Provides the storage account used by the Orchestration API to persist completion requests.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:OrchestrationAPI:Configuration:CompletionRequestsStorage:AuthenticationType</code></td>
+<td><code>AzureIdentity</code></td>
+<td>Indicates that managed identity authentication should be used to access the storage account.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:OrchestrationAPI:Configuration:CompletionRequestsStorage:ContainerName</code></td>
+<td><code>orchestration-completion-requests</code></td>
+<td>Provides the storage container name used by the Orchestration API to persist completion requests. Should always be <code>orchestration-completion-requests</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="user-profile-changes">User profile changes</h3>
+<p>A new flag named <code>persistOrchestrationCompletionRequests</code> is added to the user profile. This flag is used to determine whether the user's completion requests should be persisted in the storage account. The default value is <code>false</code>.</p>
+<p>Sample configuration:</p>
+<pre><code class="lang-json">&quot;flags&quot;: {
+        &quot;oneDriveWorkSchoolEnabled&quot;: true,
+        &quot;persistOrchestrationCompletionRequests&quot;: true
+    },
+</code></pre>
+<h2 id="starting-with-091-rc101">Starting with 0.9.1-rc101</h2>
+<h3 id="configuration-changes-17">Configuration changes</h3>
+<p>The following new App Configuration settings are required:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Default value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM:Code:CodeExecution:AzureContainerAppsDynamicSessions</code></td>
+<td><code>{&quot;DynamicSessionsEndpoints&quot;: []}</code></td>
+<td>Provides the configuration for the Azure Container Apps Dynamic Sessions code execution service. <code>DynamicSessionsEnpoints</code> is a list of Dynamic Sessions endpoints that are used to run code execution sessions. Must contain at least one value.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="agent-tool-configuration-changes">Agent tool configuration changes</h3>
+<p>Each agent tool should have an entry in the <code>properties</code> dictionary named <code>foundationallm_aca_code_execution_enabled</code> (<code>true</code> or <code>false</code>) to indicate whether the tool requires code execution sessions based on the the Azure Container Apps Dynamic Sessions service.</p>
+<h3 id="prompt-definition-changes">Prompt definition changes</h3>
+<p>Prompt prefixes and suffixes support FoundationaLLM variables for dynamic replacement at runtime. The variable format is <code>{{foundationallm:variable_name[:format]}}</code> where</p>
+<ul>
+<li><code>variable_name</code> is the name of the well-known variable.</li>
+<li><code>format</code> is the optional formatting applied to the value of the variable.</li>
+</ul>
+<p>The following variables are supported:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Value</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>current_datetime_utc</code></td>
+<td>The current UTC date and time.</td>
+<td><code>The current date is {{foundationallm:current_datetime_utc:dddd, MMMM dd, yyyy}}. This looks great.</code> -&gt; <code>The current date is Sunday, December 15, 2024. This looks great.</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="starting-with-090">Starting with 0.9.0</h2>
+<h3 id="configuration-changes-18">Configuration changes</h3>
+<p>The following new App Configuration settings are required:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Default value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM:PythonSDK:Logging:LogLevel:Default</code></td>
+<td><code>Information</code></td>
+<td><code>-</code></td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:PythonSDK:Logging:EnableConsoleLogging</code></td>
+<td><code>false</code></td>
+<td><code>-</code></td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:RequireScopes</code></td>
+<td><code>true</code></td>
+<td>Indicates whether a scope claim (scp) is required for authorization. Set to <code>false</code> to allow authentication from an external proxy API.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:CoreAPI:Configuration:Entra:AllowACLAuthorization</code></td>
+<td><code>false</code></td>
+<td>Indicates whether tokens that do not have either of the &quot;scp&quot; or &quot;roles&quot; claims are accepted (True means they are accepted). Set to <code>true</code> to allow authentication from an external proxy API.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Storage:AccountName</code></td>
+<td><code>-</code></td>
+<td><code>-</code></td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Storage:AuthenticationType</code></td>
+<td><code>-</code></td>
+<td><code>-</code></td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:RootStorageContainer</code></td>
+<td><code>-</code></td>
+<td><code>-</code></td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:ExternalModules:Modules</code></td>
+<td><code>-</code></td>
+<td><code>-</code></td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:LangChainAPI:Configuration:PollingIntervalSeconds</code></td>
+<td><code>1</code></td>
+<td>The interval in seconds at which the LangChain API will be polled for status.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:UserPortal:Configuration:ShowMessageRating</code></td>
+<td><code>true</code></td>
+<td>If <code>true</code>, rating options on agent messages will appear.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:UserPortal:Configuration:ShowLastConversationOnStartup</code></td>
+<td><code>false</code></td>
+<td>If <code>true</code>, the last conversation will be displayed when the user logs in. Otherwise, a new conversation placeholder appears on page load.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:UserPortal:Configuration:ShowMessageTokens</code></td>
+<td><code>true</code></td>
+<td>If <code>true</code>, the number of consumed tokens on agent and user messages will appear.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:UserPortal:Configuration:ShowViewPrompt</code></td>
+<td><code>true</code></td>
+<td>If <code>true</code>, the &quot;View Prompt&quot; button on agent messages will appear.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Instance:EnableResourceProvidersCache</code></td>
+<td><code>false</code></td>
+<td>If <code>true</code>, the caching of resource providers will be enabled.</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:AuthorizationAPI:Essentials:EnableCache</code></td>
+<td><code>false</code></td>
+<td>If <code>true</code>, the caching of authorization call results will be enabled.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="agent-tool-configuration-changes-1">Agent Tool configuration changes</h4>
+<p>Agent tools are now an array of AgentTool objects rather than a dictionary.</p>
+<p>When defining tools for an agent, each tool now requires a <code>package_name</code> property. This property is used to identify the package that contains the tool's implementation. If the tool is internal, the <code>package_name</code> should be set to <code>FoundationaLLM</code>, if the tool is external, the <code>package_name</code> should be set to the name of the external package.</p>
+<h4 id="security-related-changes">Security-related changes</h4>
+<p>The <strong>Authorization API</strong> now requires the ability to write to the Key Vault account contained within the auth resource group. Currently, the Authorization APIs managed identity is assigned to the <code>Key Vault Secrets User</code> role on the Key Vault account. This role assignment must be updated to include the <code>Key Vault Secrets Officer</code> role in addition to the user role.</p>
+<h4 id="renamed-classes">Renamed classes</h4>
+<p>The following classes have been renamed:</p>
+<table>
+<thead>
+<tr>
+<th>Original Class</th>
+<th>New Class</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM.Common.Models.Orchestration.Response.Citation</code></td>
+<td><code>FoundationaLLM.Common.Models.Orchestration.Response.ContentArtifact</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="api-endpoint-changes">API endpoint changes</h4>
+<p><strong>Core API</strong></p>
+<p>The <code>/instances/{instanceId}/sessions/{sessionId}/message/{id}/rate</code> endpoint has been updated to accept the rating in the message body, rather than as a query parameter. Send the following payload in the request body:</p>
+<pre><code class="lang-json">{
+  &quot;rating&quot;: true,
+  &quot;comments&quot;: &quot;string&quot;
+}
+</code></pre>
+<div class="NOTE">
+<h5>Note</h5>
+<p>Please note that both properties are nullable. Set them to null to clear out the rating and comments.</p>
+</div>
+<h2 id="starting-with-084">Starting with 0.8.4</h2>
+<h3 id="configuration-changes-19">Configuration changes</h3>
+<p>The following new App Configuration settings are required:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Default value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:ManagementAPI:Configuration:AllowedUploadFileExtensions</code></td>
+<td><code>c, cpp, cs, css, csv, doc, docx, gif, html, java, jpeg, jpg, js, json, md, pdf, php, png, pptx, py, rb, sh, tar, tex, ts, txt, xlsx, xml, zip</code></td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Branding:NoAgentsMessage</code></td>
+<td><code>No agents available. Please check with your system administrator for assistance.</code></td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Branding:DefaultAgentWelcomeMessage</code></td>
+<td><code>Start the conversation using the text box below.</code></td>
+</tr>
+</tbody>
+</table>
+<p>The following new App Configuration feature flags are required:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Default value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM.Agent.PrivateStore</code></td>
+<td><code>Not enabled</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="assistants-api-enabled-agents">Assistants API enabled Agent(s)</h3>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>Any existing agent that has the Assistants API enabled needs to be saved from the Management UI to update itself.</p>
+</div>
+<h3 id="resource-provider-changes">Resource provider changes</h3>
+<p><strong>FoundationaLLM.Authorization</strong></p>
+<p>The following entries need to be added to the policy store file:</p>
+<pre><code class="lang-json">{
+    &quot;name&quot;: &quot;GUID03&quot;,
+    &quot;type&quot;: &quot;FoundationaLLM.Authorization/policyAssignments&quot;,
+    &quot;object_id&quot;: &quot;/providers/FoundationaLLM.Authorization/policyAssignments/GUID03&quot;,
+    &quot;description&quot;: &quot;Ownership on conversation mapping resources managed by the FoundationaLLM.AzureOpenAI resource provider.&quot;,
+    &quot;policy_definition_id&quot;: &quot;/providers/FoundationaLLM.Authorization/policyDefinitions/00000000-0000-0000-0001-000000000001&quot;,
+    &quot;principal_id&quot;: &quot;SECURITY_GROUP_ID&quot;,
+    &quot;principal_type&quot;: &quot;Group&quot;,
+    &quot;scope&quot;: &quot;/instances/FOUNDATIONALLM_INSTANCEID/providers/FoundationaLLM.AzureOpenAI/conversationMappings&quot;,
+    &quot;created_on&quot;: &quot;DEPLOY_TIME&quot;,
+    &quot;updated_on&quot;: &quot;DEPLOY_TIME&quot;,
+    &quot;created_by&quot;: &quot;SYSTEM&quot;,
+    &quot;updated_by&quot;: &quot;SYSTEM&quot;
+},
+{
+    &quot;name&quot;: &quot;GUID04&quot;,
+    &quot;type&quot;: &quot;FoundationaLLM.Authorization/policyAssignments&quot;,
+    &quot;object_id&quot;: &quot;/providers/FoundationaLLM.Authorization/policyAssignments/GUID04&quot;,
+    &quot;description&quot;: &quot;Ownership on file mapping resources managed by the FoundationaLLM.AzureOpenAI resource provider.&quot;,
+    &quot;policy_definition_id&quot;: &quot;/providers/FoundationaLLM.Authorization/policyDefinitions/00000000-0000-0000-0001-000000000001&quot;,
+    &quot;principal_id&quot;: &quot;SECURITY_GROUP_ID&quot;,
+    &quot;principal_type&quot;: &quot;Group&quot;,
+    &quot;scope&quot;: &quot;/instances/FOUNDATIONALLM_INSTANCEID/providers/FoundationaLLM.AzureOpenAI/fileMappings&quot;,
+    &quot;created_on&quot;: &quot;DEPLOY_TIME&quot;,
+    &quot;updated_on&quot;: &quot;DEPLOY_TIME&quot;,
+    &quot;created_by&quot;: &quot;SYSTEM&quot;,
+    &quot;updated_by&quot;: &quot;SYSTEM&quot;
+}
+</code></pre>
+<p>The following placehoders need to be replaced with the actual values:</p>
+<ul>
+<li><code>SECURITY_GROUP_ID</code> - the ID of the security group that needs to be assigned to the policy</li>
+<li><code>FOUNDATIONALLM_INSTANCEID</code> - the ID of the FoundationaLLM instance</li>
+<li><code>DEPLOY_TIME</code> - the time when the policy was deployed</li>
+<li><code>GUID03</code> and <code>GUID04</code> - unique identifiers for the policy assignments</li>
+</ul>
+<p><strong>FoundationaLLM.AzureOpenAI</strong></p>
+<p>The assistant and file user context artifacts are now simplified and stored in a new Cosmos DB container. Here are the configuration parameters for the new Cosmos DB container:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Name</td>
+<td><code>ExternalResources</code></td>
+</tr>
+<tr>
+<td>Maximum RU/s</td>
+<td>1000</td>
+</tr>
+<tr>
+<td>Time to live</td>
+<td>Off</td>
+</tr>
+<tr>
+<td>Partition key</td>
+<td><code>/partitionKey</code></td>
+</tr>
+</tbody>
+</table>
+<p>Part of the upgrade to this version is to migrate the existing assistant and file user context artifacts to the new Cosmos DB container.
+Refer to the dedicated upgrade tool for instructions on how to perform this update.</p>
+<p>As a result of the migration, the newly created <code>ExternalResources</code> container will contain two types of items: <code>AzureOpenAIConversationMapping</code> and <code>AzureOpenAIFileMapping</code>.</p>
+<p>This is an example of an <code>AzureOpenAIConversationMapping</code> item:</p>
+<pre><code class="lang-json">{
+    &quot;conversationId&quot;: &quot;0e56a170-5355-...&quot;,
+    &quot;openAIAssistantsAssistantId&quot;: &quot;asst_kc...&quot;,
+    &quot;openAIAssistantsThreadId&quot;: &quot;thread_73...&quot;,
+    &quot;openAIAssistantsThreadCreatedOn&quot;: &quot;2024-10-14T17:57:10.510345+00:00&quot;,
+    &quot;openAIVectorStoreId&quot;: &quot;vs_X6...&quot;,
+    &quot;openAIVectorStoreCreatedOn&quot;: null,
+    &quot;type&quot;: &quot;AzureOpenAIConversationMapping&quot;,
+    &quot;id&quot;: &quot;0e56a170-5355-...&quot;,
+    &quot;partitionKey&quot;: &quot;...-73fad442-f614-4510-811f-414cb3a3d34b&quot;,
+    &quot;upn&quot;: &quot;jackthecat@foundationaLLM.ai&quot;,
+    &quot;instanceId&quot;: &quot;73fad442-f614-4510-811f-414cb3a3d34b&quot;,
+    &quot;openAIEndpoint&quot;: &quot;https://openai-....openai.azure.com/&quot;,
+    &quot;objectId&quot;: null,
+    &quot;displayName&quot;: null,
+    &quot;description&quot;: null,
+    &quot;costCenter&quot;: null,
+    &quot;properties&quot;: null,
+    &quot;createdOn&quot;: &quot;0001-01-01T00:00:00+00:00&quot;,
+    &quot;updatedOn&quot;: &quot;0001-01-01T00:00:00+00:00&quot;,
+    &quot;createdBy&quot;: null,
+    &quot;updatedBy&quot;: null,
+    &quot;deleted&quot;: false,
+    &quot;expirationDate&quot;: null,
+    &quot;name&quot;: &quot;0e56a170-5355-...&quot;,
+    &quot;_rid&quot;: &quot;J2BUAKktW41bAAAAAAAAAA==&quot;,
+    &quot;_self&quot;: &quot;dbs/J2BUAA==/colls/J2BUAKktW40=/docs/J2BUAKktW41bAAAAAAAAAA==/&quot;,
+    &quot;_etag&quot;: &quot;\&quot;8702b793-0000-0200-0000-672a60b90000\&quot;&quot;,
+    &quot;_attachments&quot;: &quot;attachments/&quot;,
+    &quot;_ts&quot;: 1730830521
+}
+</code></pre>
+<p>This is an example of an <code>AzureOpenAIFileMapping</code> item:</p>
+<pre><code class="lang-json">{
+    &quot;fileObjectId&quot;: &quot;/instances/73fad442-f614-4510-811f-414cb3a3d34b/providers/FoundationaLLM.Attachment/attachments/a-f8...&quot;,
+    &quot;originalFileName&quot;: &quot;some_file.csv&quot;,
+    &quot;fileContentType&quot;: &quot;text/csv&quot;,
+    &quot;fileRequiresVectorization&quot;: false,
+    &quot;openAIFileId&quot;: &quot;assistant-8G...&quot;,
+    &quot;openAIFileUploadedOn&quot;: &quot;2024-10-14T23:01:02.3075592+00:00&quot;,
+    &quot;openAIAssistantsFileGeneratedOn&quot;: null,
+    &quot;openAIVectorStoreId&quot;: null,
+    &quot;type&quot;: &quot;AzureOpenAIFileMapping&quot;,
+    &quot;id&quot;: &quot;assistant-8G...&quot;,
+    &quot;partitionKey&quot;: &quot;...-73fad442-f614-4510-811f-414cb3a3d34b&quot;,
+    &quot;upn&quot;: &quot;jackthecat@foundationaLLM.ai&quot;,
+    &quot;instanceId&quot;: &quot;73fad442-f614-4510-811f-414cb3a3d34b&quot;,
+    &quot;openAIEndpoint&quot;: &quot;https://openai-....openai.azure.com/&quot;,
+    &quot;objectId&quot;: null,
+    &quot;displayName&quot;: null,
+    &quot;description&quot;: null,
+    &quot;costCenter&quot;: null,
+    &quot;properties&quot;: null,
+    &quot;createdOn&quot;: &quot;0001-01-01T00:00:00+00:00&quot;,
+    &quot;updatedOn&quot;: &quot;0001-01-01T00:00:00+00:00&quot;,
+    &quot;createdBy&quot;: null,
+    &quot;updatedBy&quot;: null,
+    &quot;deleted&quot;: false,
+    &quot;expirationDate&quot;: null,
+    &quot;name&quot;: &quot;assistant-8G...&quot;,
+    &quot;_rid&quot;: &quot;J2BUAKktW40yAAAAAAAAAA==&quot;,
+    &quot;_self&quot;: &quot;dbs/J2BUAA==/colls/J2BUAKktW40=/docs/J2BUAKktW40yAAAAAAAAAA==/&quot;,
+    &quot;_etag&quot;: &quot;\&quot;87025e93-0000-0200-0000-672a60b70000\&quot;&quot;,
+    &quot;_attachments&quot;: &quot;attachments/&quot;,
+    &quot;_ts&quot;: 1730830519
+}
+</code></pre>
+<h3 id="cleanup-role-assignments">Cleanup role assignments</h3>
+<p>As a result of migrated resources from storage account to Cosmos DB, as well as the new <code>policy-assignments</code> mentioned above, the <code>role-assignments</code> store will have obsolete <code>Owner</code> role assignments on those objects. Please refer to the dedicated tool for instructions on how to perform this cleanup.</p>
+<p>The dedicated tool will cleanup role assignments for the following resources:</p>
+<ul>
+<li><code>FoundationaLLM.Attachment/attachments</code></li>
+<li><code>FoundationaLLM.AzureOpenAI/fileUserContexts</code></li>
+<li><code>FoundationaLLM.AzureOpenAI/assistantUserContexts</code></li>
+<li><code>FoundationaLLM.Conversation/conversations</code></li>
+</ul>
+<h3 id="configuration-changes-20">Configuration changes</h3>
+<h4 id="resource-provider-templates">Resource provider templates</h4>
+<p>The <code>AzureOpenAI.template.json</code> files within <code>deploy/quick-start/data/resource-provider/FoundationaLLM.Configuration</code> and <code>deploy/standard/data/resource-provider/FoundationaLLM.Configuration</code> have been updated to set the <code>category</code> field to the value <code>LLM</code>. This discriminator allows the Management Portal to filter the list of API endpoints by category and provide options to add AI Models to endpoints with the <code>LLM</code> category.</p>
+<p>The existing <code>category</code> property needs to be set to <code>LLM</code> on existing API endpoint configurations in the <code>FoundationaLLM.Configuration</code> resource provider that fit this description, including the <code>AzureOpenAI</code> endpoint configuration.</p>
+<h2 id="starting-with-083">Starting with 0.8.3</h2>
+<h3 id="resource-provider-changes-1">Resource provider changes</h3>
+<p>If a user/group is not assigned to the instance-level Contributor role, then they will not be able to create new Conversations or upload Attachments. To adjust their permissions, the following changes are required:</p>
+<p><strong>FoundationaLLM.Conversation</strong></p>
+<p>In addition to assigning users/groups to the <code>policy-assignments/&lt;instance_id&gt;-policy.json</code> file within the <code>FoundationaLLM.Authorization</code> resource provider to assign them to the Conversation policy, we must now add them to the new <strong>Conversation contributor role</strong> (<code>role_definition_id</code>: <code>d0d21b90-5317-499a-9208-3a6cb71b84f9</code>) within the <code>role-assignments/&lt;instance_id&gt;-role.json</code> file within the <code>FoundationaLLM.Authorization</code> resource provider if the user/group is not assigned to the Contributor role on the FoundationaLLM instance (<code>role_definition_id</code>: <code>a9f0020f-6e3a-49bf-8d1d-35fd53058edf</code>). Here is an example entry:</p>
+<pre><code class="lang-json">{
+    &quot;type&quot;: &quot;FoundationaLLM.Authorization/roleAssignments&quot;,
+    &quot;name&quot;: &quot;a40b15f1-75ce-4a40-a857-1093ac9adf4d&quot;,
+    &quot;object_id&quot;: &quot;/instances/0a1840df-71b6-496d-905a-145d93d827f3/providers/FoundationaLLM.Authorization/roleAssignments/a40b15f1-75ce-4a40-a857-1093ac9adf4d&quot;,
+    &quot;display_name&quot;: null,
+    &quot;description&quot;: &quot;Conversation contributor role for FLLM Users&quot;,
+    &quot;cost_center&quot;: null,
+    &quot;role_definition_id&quot;: &quot;/providers/FoundationaLLM.Authorization/roleDefinitions/d0d21b90-5317-499a-9208-3a6cb71b84f9&quot;,
+    &quot;principal_id&quot;: &quot;aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee&quot;,
+    &quot;principal_type&quot;: &quot;Group&quot;,
+    &quot;scope&quot;: &quot;/instances/0a1840df-71b6-496d-905a-145d93d827f3&quot;,
+    &quot;properties&quot;: null,
+    &quot;created_on&quot;: &quot;0001-01-01T00:00:00+00:00&quot;,
+    &quot;updated_on&quot;: &quot;0001-01-01T00:00:00+00:00&quot;,
+    &quot;created_by&quot;: null,
+    &quot;updated_by&quot;: null,
+    &quot;deleted&quot;: false,
+    &quot;expiration_date&quot;: null
+}
+</code></pre>
+<p><strong>FoundationaLLM.Attachment</strong></p>
+<p>In addition to assigning users/groups to the <code>policy-assignments/&lt;instance_id&gt;-policy.json</code> file within the <code>FoundationaLLM.Authorization</code> resource provider to assign them to the Attachment policy, we must now add them to the new <strong>Attachment contributor role</strong> (<code>role_definition_id</code>: <code>8e77fb6a-7a78-43e1-b628-d9e2285fe25a</code>) within the <code>role-assignments/&lt;instance_id&gt;-role.json</code> file within the <code>FoundationaLLM.Authorization</code> resource provider if the user/group is not assigned to the Contributor role on the FoundationaLLM instance (<code>role_definition_id</code>: <code>a9f0020f-6e3a-49bf-8d1d-35fd53058edf</code>). Here is an example entry:</p>
+<pre><code class="lang-json">{
+    &quot;type&quot;: &quot;FoundationaLLM.Authorization/roleAssignments&quot;,
+    &quot;name&quot;: &quot;891ca947-e648-46cf-a12a-774b52ded886&quot;,
+    &quot;object_id&quot;: &quot;/instances/0a1840df-71b6-496d-905a-145d93d827f3/providers/FoundationaLLM.Authorization/roleAssignments/891ca947-e648-46cf-a12a-774b52ded886&quot;,
+    &quot;display_name&quot;: null,
+    &quot;description&quot;: &quot;Attachment contributor role for FLLM Users&quot;,
+    &quot;cost_center&quot;: null,
+    &quot;role_definition_id&quot;: &quot;/providers/FoundationaLLM.Authorization/roleDefinitions/8e77fb6a-7a78-43e1-b628-d9e2285fe25a&quot;,
+    &quot;principal_id&quot;: &quot;aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee&quot;,
+    &quot;principal_type&quot;: &quot;Group&quot;,
+    &quot;scope&quot;: &quot;/instances/0a1840df-71b6-496d-905a-145d93d827f3&quot;,
+    &quot;properties&quot;: null,
+    &quot;created_on&quot;: &quot;0001-01-01T00:00:00+00:00&quot;,
+    &quot;updated_on&quot;: &quot;0001-01-01T00:00:00+00:00&quot;,
+    &quot;created_by&quot;: null,
+    &quot;updated_by&quot;: null,
+    &quot;deleted&quot;: false,
+    &quot;expiration_date&quot;: null
+}
+</code></pre>
+<h2 id="starting-with-082">Starting with 0.8.2</h2>
+<h3 id="configuration-changes-21">Configuration changes</h3>
+<p>The following settings are required:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Default value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AllowedUploadFileExtensions</code></td>
+<td><code>c, cpp, cs, css, csv, doc, docx, gif, html, java, jpeg, jpg, js, json, md, pdf, php, png, pptx, py, rb, sh, tar, tex, ts, txt, xlsx, xml, zip</code></td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:CoreAPI:Configuration:AzureOpenAIAssistantsFileSearchFileExtensions</code></td>
+<td><code>c, cpp, cs, css, doc, docx, html, java, js, json, md, pdf, php, pptx, py, rb, sh, tex, ts, txt</code></td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:CoreAPI:Configuration:MaxUploadsPerMessage</code></td>
+<td><code>{ &quot;value&quot;: 10, &quot;value_exceptions&quot;: [] }</code></td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:CoreAPI:Configuration:CompletionResponsePollingIntervalSeconds</code></td>
+<td><code>{ &quot;value&quot;: 5, &quot;value_exceptions&quot;: [] }</code></td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIEndpoints:GatewayAPI:Configuration:AzureOpenAIAssistantsMaxVectorizationTimeSeconds</code></td>
+<td><code>120</code></td>
+</tr>
+</tbody>
+</table>
+<div class="NOTE">
+<h5>Note</h5>
+<p>Here is an example of an override for the <code>MaxUploadsPerMessage</code> setting:</p>
+<pre><code class="lang-json">{
+  &quot;value&quot;: 10,
+  &quot;value_exceptions&quot;: [
+      {
+          &quot;user_principal_name&quot;: &quot;ciprian@solliance.net&quot;,
+          &quot;value&quot;: 5,
+          &quot;enabled&quot;: true
+      }
+  ]
+}
+</code></pre>
+</div>
+<div class="NOTE">
+<h5>Note</h5>
+<p>Here is an example of an override for the <code>CompletionResponsePollingIntervalSeconds</code> setting:</p>
+<pre><code class="lang-json">{
+  &quot;value&quot;: 5,
+  &quot;value_exceptions&quot;: [
+      {
+          &quot;user_principal_name&quot;: &quot;ciprian@solliance.net&quot;,
+          &quot;value&quot;: 3,
+          &quot;enabled&quot;: true
+      }
+  ]
+}
+
+</code></pre>
+</div>
+<p>The following settings are optional (they should not be set by default):</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Default value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM:Instance:IdentitySubstitutionSecurityPrincipalId</code></td>
+<td>&lt;security_principal_id&gt;</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Instance:IdentitySubstitutionUserPrincipalNamePattern</code></td>
+<td><code>^fllm_load_test_user_\d{5}_\d{3}@solliance\.net$</code></td>
+</tr>
+</tbody>
+</table>
+<div class="NOTE">
+<h5>Note</h5>
+<p>The <code>FoundationaLLM:Instance:IdentitySubstitutionSecurityPrincipalId</code> and <code>FoundationaLLM:Instance:IdentitySubstitutionUserPrincipalNamePattern</code> settings are used for load testing purposes only. If set, their values must be replaced with the appropriate values for the specific Entra ID tenant.</p>
+</div>
+<h3 id="resource-provider-changes-2">Resource provider changes</h3>
+<p>The following resource provider files must be renamed (if they already exist):</p>
+<table>
+<thead>
+<tr>
+<th>Location</th>
+<th>Old name</th>
+<th>New name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>resource-provider/FoundationaLLM.Agent</code></td>
+<td><code>_agent-references.json</code></td>
+<td><code>_resource-references.json</code></td>
+</tr>
+<tr>
+<td><code>resource-provider/FoundationaLLM.AIModel</code></td>
+<td><code>_ai-model-references.json</code></td>
+<td><code>_resource-references.json</code></td>
+</tr>
+<tr>
+<td><code>resource-provider/FoundationaLLM.Configuration</code></td>
+<td><code>_api-endpoint-references.json</code></td>
+<td><code>_resource-references.json</code></td>
+</tr>
+<tr>
+<td><code>resource-provider/FoundationaLLM.DataSource</code></td>
+<td><code>_data-source-references.json</code></td>
+<td><code>_resource-references.json</code></td>
+</tr>
+<tr>
+<td><code>resource-provider/FoundationaLLM.Prompt</code></td>
+<td><code>_prompt-references.json</code></td>
+<td><code>_resource-references.json</code></td>
+</tr>
+</tbody>
+</table>
+<div class="NOTE">
+<h5>Note</h5>
+<p>Within each of the renamed files, the <code>&lt;entity&gt;References</code> property must be renamed to <code>ResourceReferences</code>.</p>
+</div>
+<p><strong>FoundationaLLM.Agent</strong></p>
+<p>A new property can be added to agent definitions:</p>
+<pre><code class="lang-json">&quot;tools&quot;: {
+    &quot;dalle-image-generation&quot;: {
+        &quot;name&quot;: &quot;dalle-image-generation&quot;,
+        &quot;description&quot;: &quot;Generates an image based on a prompt.&quot;,
+        &quot;ai_model_object_ids&quot;: {
+            &quot;main_model&quot;: &quot;/instances/73fad442-f614-4510-811f-414cb3a3d34b/providers/FoundationaLLM.AIModel/aiModels/DALLE3&quot;
+        }
+    }
+}
+</code></pre>
+<p><strong>FoundationaLLM.Authorization</strong></p>
+<p>A new storage container named <code>policy-assignments</code> is required. The <code>FoundationaLLM.Authorization</code> resource provider will use this container to store policy assignments.</p>
+<p>Within the container, the <code>&lt;instance_id&gt;-policy.json</code> must be deployed with the default policy assignments. The template for the default policy assignments is available in <code>Common/Constants/Data/DefaultPolicyAssignments.json</code>.</p>
+<p><strong>FoundationaLLM.Conversation</strong></p>
+<p>When upgrading an existing FoundationaLLM instance, the items in the <code>Sessions</code> collection in Cosmos DB must be updated according to the following rules:</p>
+<pre><code>if Object is of type Session of KioskSession:
+    If the property DisplayName exists and is set to a non-empty string:
+        Don't touch the item
+    else:
+        Set DisplayName to the value of Name
+        Set Name to the value of SessionId
+else:
+    No action needed
+</code></pre>
+<p>Refer to the dedicated upgrade tool for instruction on how to perform this update.</p>
+<p><strong>FoundationaLLM.Configuration</strong></p>
+<p>The OneDrive (Work or School) integration requires the following API Endpoint Configuration entry in the storage account:</p>
+<p><code>FoundationaLLM.Configuration/OneDriveFileStoreConnector.json</code></p>
+<pre><code class="lang-json">{
+    &quot;type&quot;: &quot;api-endpoint&quot;,
+    &quot;name&quot;: &quot;OneDriveFileStoreConnector&quot;,
+    &quot;object_id&quot;: &quot;/instances/{{instance_id}}/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/OneDriveFileStoreConnector&quot;,
+    &quot;display_name&quot;: null,
+    &quot;description&quot;: null,
+    &quot;cost_center&quot;: null,
+    &quot;category&quot;: &quot;FileStoreConnector&quot;,
+    &quot;subcategory&quot;: &quot;OneDriveWorkSchool&quot;,
+    &quot;authentication_type&quot;: &quot;AzureIdentity&quot;,
+    &quot;authentication_parameters&quot;: {
+      &quot;scope&quot;: &quot;Files.Read.All&quot;
+    },
+    &quot;url&quot;: &quot;{{onedrive_base_url}}&quot;,
+    &quot;status_url&quot;: &quot;&quot;,
+    &quot;url_exceptions&quot;: [],
+    &quot;timeout_seconds&quot;: 2400,
+    &quot;retry_strategy_name&quot;: &quot;ExponentialBackoff&quot;,
+    &quot;created_on&quot;: &quot;0001-01-01T00:00:00+00:00&quot;,
+    &quot;updated_on&quot;: &quot;0001-01-01T00:00:00+00:00&quot;,
+    &quot;created_by&quot;: null,
+    &quot;updated_by&quot;: &quot;SYSTEM&quot;,
+    &quot;deleted&quot;: false
+  }
+</code></pre>
+<p>Update <code>FoundationaLLM.Configuration/_resource-references_.json</code> with the reference to the file above.</p>
+<pre><code class="lang-json">{
+	&quot;Name&quot;: &quot;OneDriveFileStoreConnector&quot;,
+	&quot;Filename&quot;: &quot;/FoundationaLLM.Configuration/OneDriveFileStoreConnector.json&quot;,
+	&quot;Type&quot;: &quot;api-endpoint&quot;,
+	&quot;Deleted&quot;: false
+}
+</code></pre>
+<p><strong>FoundationaLLM.Attachment</strong></p>
+<p>The Attachment resource provider now saves the attachment references to Cosmos DB, instead of Data Lake storage.
+A new Cosmos DB container must be created, named <code>Attachments</code>, with the following partition key: <code>/upn</code>.</p>
+<p>The following MSIs require a Cosmos DB role assigned:</p>
+<ol>
+<li>Gateway API</li>
+<li>Orchestration API</li>
+<li>Management API</li>
+</ol>
+<h3 id="long-running-operations">Long-Running Operations</h3>
+<p>The context for a long-running operation is now stored in Cosmos DB.
+A new Cosmos DB container must be created, named <code>Operations</code>, with a partition key <code>/id</code>.</p>
+<h2 id="starting-with-080">Starting with 0.8.0</h2>
+<p>Core API changes:</p>
+<ol>
+<li>All Core API endpoints have been moved to the <code>/instances/{instanceId}</code> path. For example, the <code>/status</code> endpoint is now <code>/instances/{instanceId}/status</code>.</li>
+<li>The <code>/orchestration/*</code> endpoints have been moved to <code>/instances/{instanceId}/completions/*</code>.
+<ol>
+<li>The previous <code>/orchestration/completions</code> endpoint is now <code>/instances/{instanceId}/completions</code>.</li>
+</ol>
+</li>
+<li>The <code>/sessions/{sessionId}/completion</code> endpoint has been moved to <code>/instances/{instanceId}/completions</code>. Instead of having the <code>sessionId</code> as a path parameter, it is now in the request body as part of the <code>CompletionRequest</code> payload.</li>
+<li><code>/sessions/{sessionId}/summarize-name</code> has been removed. In the future, the <code>/completions</code> endpoint will be used to generate summaries.</li>
+<li><code>OrchestrationRequest</code> and <code>CompletionRequest</code> have combined into a single <code>CompletionRequest</code> object.</li>
+<li><code>DirectionCompletionRequest</code> has been removed. Use <code>CompletionRequest</code> instead.</li>
+<li><code>Status</code> controllers <code>\status</code> action in the .NET API projects return value has renamed the <code>Instance</code> property to <code>InstanceName</code>.</li>
+<li>The <code>CompletionController.cs</code> file under <code>dotnet/CoreApi/controllers</code> has introduced the <code>Async-Completions</code> endpoint to handle asynchronous completions.</li>
+<li>With the introduction of <code>Async-Completions</code>, long running operations can now report on completion status based on <code>Pending</code>, <code>InProgress</code>, <code>Completed</code> and <code>Failed</code> states.</li>
+<li>Vectorization Embedding Profile introduces a required key in the <code>Settings</code> property named <code>model_name</code>. Every embedding request now flows through the Gateway API.</li>
+<li>Vectorization Indexing Profile introduces a required key <code>api_endpoint_configuration_object_id</code> in the <code>Settings</code> property.</li>
+<li>Retirement of <code>SemanticKernel</code> embedding type. All embedding requests now flow through the Gateway API.</li>
+</ol>
+<p>Gatekeeper API changes:</p>
+<ol>
+<li>All Gatekeeper API endpoints have been moved to the <code>/instances/{instanceId}</code> path. For example, the <code>/status</code> endpoint is now <code>/instances/{instanceId}/status</code>.</li>
+<li>The <code>/orchestration/*</code> endpoints have been moved to <code>/instances/{instanceId}/completions/*</code>.</li>
+</ol>
+<p>Orchestration API changes:</p>
+<ol>
+<li>All Gatekeeper API endpoints have been moved to the <code>/instances/{instanceId}</code> path. For example, the <code>/status</code> endpoint is now <code>/instances/{instanceId}/status</code>.</li>
+<li>The <code>/orchestration/*</code> endpoints have been moved to <code>/instances/{instanceId}/completions/*</code>.
+=======</li>
+</ol>
+<h3 id="new-apis">New APIs</h3>
+<p><strong>Gateway Adapter API</strong> - requires the following configuration settings:</p>
+<ul>
+<li><code>FoundationaLLM:APIs:GatewayAdapterAPI:APIUrl</code></li>
+<li><code>FoundationaLLM:APIs:GatewayAdapterAPI:APIKey</code> (mapped to the <code>foundationallm-apis-gatewayadapterapi-apikey</code> secret)</li>
+<li><code>FoundationaLLM:APIs:GatewayAdapterAPI:APIAppInsightsConnectionString</code> (mapped to the <code>foundationallm-app-insights-connection-string</code> secret)</li>
+<li></li>
+</ul>
+<p><strong>State API</strong> - requires the following configuration settings:</p>
+<ul>
+<li><code>FoundationaLLM:APIs:StateAPI:APIUrl</code></li>
+<li><code>FoundationaLLM:APIs:StateAPI:APIKey</code> (mapped to the <code>foundationallm-apis-stateapi-apikey</code> secret)</li>
+<li><code>FoundationaLLM:APIs:StateAPI:APIAppInsightsConnectionString</code> (mapped to the <code>foundationallm-app-insights-connection-string</code> secret)</li>
+</ul>
+<div class="NOTE">
+<h5>Note</h5>
+<p>These new APIs will be converted to use the new <code>APIEndpoint</code> artifacts.</p>
+</div>
+<h3 id="changes-in-app-registration-names">Changes in app registration names</h3>
+<table>
+<thead>
+<tr>
+<th>API Name</th>
+<th>Entra ID app registration name</th>
+<th>Application ID URI</th>
+<th>Scope name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Core API</td>
+<td><code>FoundationaLLM-Core-API</code></td>
+<td><code>api://FoundationaLLM-Core</code></td>
+<td><code>Data.Read</code></td>
+</tr>
+<tr>
+<td>Management API</td>
+<td><code>FoundationaLLM-Management-API</code></td>
+<td><code>api://FoundationaLLM-Management</code></td>
+<td><code>Data.Manage</code></td>
+</tr>
+<tr>
+<td>Authorization API</td>
+<td><code>FoundationaLLM-Authorization-API</code></td>
+<td><code>api://FoundationaLLM-Authorization</code></td>
+<td><code>Authorization.Manage</code></td>
+</tr>
+<tr>
+<td>User Portal</td>
+<td><code>FoundationaLLM-Core-Portal</code></td>
+<td><code>api://FoundationaLLM-Core-Portal</code></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Management Portal</td>
+<td><code>FoundationaLLM-Management-Portal</code></td>
+<td><code>api://FoundationaLLM-Management-Portal</code></td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table>
+<h3 id="changes-in-app-configuration-settings">Changes in app configuration settings</h3>
+<p>The <code>FoundationaLLM:APIs</code> and <code>FoundationaLLM:ExternalAPIs</code> configuration namespaces have been replaced with the <code>FoundationaLLM:APIEndpoints</code> configuration namespace.</p>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>All existing API registrations need to be updated to reflect these changes. The only two settings that will exist under <code>FoundationaLLM:APIEndpoints</code> are <code>APIKey</code> (for those API enpoints which use API key authentication) and <code>AppInsightsConnectionString</code>, all the other settings are now part of the <code>APIEndpoint</code> artifact managed by the <code>FoundationaLLM.Configuration</code> resource provider.
+This is an example for <code>CoreAPI</code>:</p>
+<ul>
+<li><code>FoundationaLLM:APIEndpoints:CoreAPI:APIKey</code></li>
+<li><code>FoundationaLLM:APIEndpoints:CoreAPI:AppInsightsConnectionString</code></li>
+</ul>
+</div>
+<p>The <code>FoundationaLLM:AzureAIStudio</code> configuration namespace expects an <code>APIEndpointConfigurationName</code> property instead of <code>BaseUrl</code>.</p>
+<p>A new configuration setting named <code>FoundationaLLM:Instance:SecurityGroupRetrievalStrategy</code> with a value of <code>IdentityManagementService</code> must exist in the app configuration. It will be added by default in new deployments.</p>
+<p>Two new configuration settings required by the new <code>FoundationaLLM.AzureOpenAI</code> resource provider:</p>
+<ul>
+<li><code>FoundationaLLM:ResourceProviders:AzureOpenAI:Storage:AuthenticationType</code></li>
+<li><code>FoundationaLLM:ResourceProviders:AzureOpenAI:Storage:AccountName</code></li>
+</ul>
+<h2 id="pre-080">Pre-0.8.0</h2>
+<ol>
+<li><p>Vectorization resource stores use a unique collection name, <code>Resources</code>. They also add a new top-level property named <code>DefaultResourceName</code>.</p>
+</li>
+<li><p>The items in the <code>index_references</code> collection have a property incorrectly named <code>type</code> which was renamed to <code>index_entry_id</code>.</p>
+</li>
+<li><p>New gateway API, requires the following app configurations:</p>
+<ul>
+<li><code>FoundationaLLM:APIs:GatewayAPI:APIUrl</code></li>
+<li><code>FoundationaLLM:APIs:GatewayAPI:APIKey</code> (with secret <code>foundationallm-apis-gatewayapi-apikey</code>)</li>
+<li><code>FoundationaLLM:APIs:GatewayAPI:AppInsightsConnectionString</code> (with secret <code>foundationallm-app-insights-connection-string</code>)</li>
+<li><code>FoundationaLLM:Gateway:AzureOpenAIAccounts</code></li>
+</ul>
+</li>
+<li><p>The <code>AgentFactory</code> and <code>AgentFactoryAPI</code> classes have been renamed to <code>Orchestration</code> and <code>OrchestrationAPI</code>, respectively. The following App Config settings need to be replaced in existing environments:</p>
+<ul>
+<li><code>FoundationaLLM:APIs:AgentFactoryAPI:APIKey</code> -&gt; <code>FoundationaLLM:APIs:OrchestrationAPI:APIKey</code></li>
+<li><code>FoundationaLLM:APIs:AgentFactoryAPI:APIUrl</code> -&gt; <code>FoundationaLLM:APIs:OrchestrationAPI:APIUrl</code></li>
+<li><code>FoundationaLLM:APIs:AgentFactoryAPI:AppInsightsConnectionString</code> -&gt; <code>FoundationaLLM:APIs:OrchestrationAPI:AppInsightsConnectionString</code></li>
+<li><code>FoundationaLLM:Events:AzureEventGridEventService:Profiles:AgentFactoryAPI</code> -&gt; <code>FoundationaLLM:Events:AzureEventGridEventService:Profiles:OrchestrationAPI</code></li>
+<li><code>FoundationaLLM:APIs:AgentFactoryAPI:ForceHttpsRedirection</code> -? <code>FoundationaLLM:APIs:OrchestrationAPI:ForceHttpsRedirection</code></li>
+</ul>
+</li>
+<li><p>The following Key Vault secrets need to be replaced in existing environments:</p>
+<ul>
+<li><code>foundationallm-apis-agentfactoryapi-apikey</code> -&gt; <code>foundationallm-apis-orchestrationapi-apikey</code></li>
+</ul>
+<p>There is an upgrade script available that migrates these settings and secrets to their new names.</p>
+</li>
+<li><p>The following App Config settings are no longer needed:</p>
+<ul>
+<li><code>FoundationaLLM:Vectorization:Queues:Embed:ConnectionString</code></li>
+<li><code>FoundationaLLM:Vectorization:Queues:Extract:ConnectionString</code></li>
+<li><code>FoundationaLLM:Vectorization:Queues:Index:ConnectionString</code></li>
+<li><code>FoundationaLLM:Vectorization:Queues:Partition:ConnectionString</code></li>
+</ul>
+</li>
+<li><p>The following Key Vault secret is no longer needed:</p>
+<ul>
+<li><code>foundationallm-vectorization-queues-connectionstring</code></li>
+</ul>
+</li>
+<li><p>The following App Config settings need to be added as key-values:</p>
+<ul>
+<li><code>FoundationaLLM:Vectorization:Queues:Embed:AccountName</code> (set to the name of the storage account that contains the vectorization queues - e.g., <code>stejahszxcubrpi</code>)</li>
+<li><code>FoundationaLLM:Vectorization:Queues:Extract:AccountName</code> (set to the name of the storage account that contains the vectorization queues - e.g., <code>stejahszxcubrpi</code>)</li>
+<li><code>FoundationaLLM:Vectorization:Queues:Index:AccountName</code> (set to the name of the storage account that contains the vectorization queues - e.g., <code>stejahszxcubrpi</code>)</li>
+<li><code>FoundationaLLM:Vectorization:Queues:Partition:AccountName</code> (set to the name of the storage account that contains the vectorization queues - e.g., <code>stejahszxcubrpi</code>)</li>
+</ul>
+</li>
+<li><p>The value for the App Config setting <code>FoundationaLLM:Events:AzureEventGridEventService:Profiles:OrchestrationAPI</code> should be set in the following format:</p>
+<pre><code class="lang-json">{
+    &quot;EventProcessingCycleSeconds&quot;: 20,
+    &quot;Topics&quot;: [
+        {
+            &quot;Name&quot;: &quot;storage&quot;,
+            &quot;SubscriptionPrefix&quot;: &quot;orch&quot;,
+            &quot;EventTypeProfiles&quot;: [
+                {
+                    &quot;EventType&quot;: &quot;Microsoft.Storage.BlobCreated&quot;,
+                    &quot;EventSets&quot;: [
+                        {
+                            &quot;Namespace&quot;: &quot;ResourceProvider.FoundationaLLM.Agent&quot;,
+                            &quot;Source&quot;: &quot;/subscriptions/0a03d4f9-c6e4-4ee1-87fb-e2005d2c213d/resourceGroups/rg-fllm-aca-050/providers/Microsoft.Storage/storageAccounts/stejahszxcubrpi&quot;,
+                            &quot;SubjectPrefix&quot;: &quot;/blobServices/default/containers/resource-provider/blobs/FoundationaLLM.Agent&quot;
+                        },
+                        {
+                            &quot;Namespace&quot;: &quot;ResourceProvider.FoundationaLLM.Vectorization&quot;,
+                            &quot;Source&quot;: &quot;/subscriptions/0a03d4f9-c6e4-4ee1-87fb-e2005d2c213d/resourceGroups/rg-fllm-aca-050/providers/Microsoft.Storage/storageAccounts/stejahszxcubrpi&quot;,
+                            &quot;SubjectPrefix&quot;: &quot;/blobServices/default/containers/resource-provider/blobs/FoundationaLLM.Vectorization&quot;
+                        },
+                        {
+                            &quot;Namespace&quot;: &quot;ResourceProvider.FoundationaLLM.Prompt&quot;,
+                            &quot;Source&quot;: &quot;/subscriptions/0a03d4f9-c6e4-4ee1-87fb-e2005d2c213d/resourceGroups/rg-fllm-aca-050/providers/Microsoft.Storage/storageAccounts/stejahszxcubrpi&quot;,
+                            &quot;SubjectPrefix&quot;: &quot;/blobServices/default/containers/resource-provider/blobs/FoundationaLLM.Prompt&quot;
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+</code></pre>
+</li>
+<li><p>Vectorization text embedding profiles require only two items in the <code>configuration_references</code> section: <code>DeploymentName</code> and <code>Endpoint</code>. Optionally, a <code>deployment_name</code> entry can be specified in the <code>settings</code> section to override the default value in <code>configuration_references.Endpoint</code>. Here is an example of the updated format for a text embedding profile:</p>
+<pre><code class="lang-json">{
+    &quot;type&quot;: &quot;text-embedding-profile&quot;,
+    &quot;name&quot;: &quot;AzureOpenAI_Embedding_BaselineGlobalMacro&quot;,
+    &quot;object_id&quot;: &quot;/instances/a6221c30-0bf2-4003-adb8-d3086bb2ad49/providers/FoundationaLLM.Vectorization/textEmbeddingProfiles/AzureOpenAI_Embedding_BaselineGlobalMacro&quot;,
+    &quot;display_name&quot;: null,
+    &quot;description&quot;: null,
+    &quot;text_embedding&quot;: &quot;SemanticKernelTextEmbedding&quot;,
+    &quot;settings&quot;: {
+        &quot;deployment_name&quot;: &quot;embeddings-3-large&quot;
+    },
+    &quot;configuration_references&quot;: {
+        &quot;DeploymentName&quot;: &quot;FoundationaLLM:Vectorization:SemanticKernelTextEmbeddingService:DeploymentName&quot;,
+        &quot;Endpoint&quot;: &quot;FoundationaLLM:Vectorization:SemanticKernelTextEmbeddingService:Endpoint&quot;
+    },
+    &quot;created_on&quot;: &quot;0001-01-01T00:00:00+00:00&quot;,
+    &quot;updated_on&quot;: &quot;0001-01-01T00:00:00+00:00&quot;,
+    &quot;created_by&quot;: null,
+    &quot;updated_by&quot;: null,
+    &quot;deleted&quot;: false
+}
+</code></pre>
+</li>
+<li><p>External orchestration APIs must be configured using the <code>FoundationaLLM:ExternalAPIs</code> configuration namespace. For example, the <code>BaselineTradingGlobalMacro</code> external API has the following configurations:</p>
+<ul>
+<li><code>FoundationaLLM:ExternalAPIs:BaselineTradingGlobalMacro:APIUrl</code></li>
+<li><code>FoundationaLLM:ExternalAPIs:BaselineTradingGlobalMacro:APIKey</code></li>
+</ul>
+</li>
+</ol>
+<div class="NOTE">
+<h5>Note</h5>
+<p>These entries do not need to be created as part of the deployment process.</p>
+</div>
+<ol start="12">
+<li><p>App Config key namespace that was previously <code>FoundationaLLM:Vectorization:ContentSources:*</code> has been moved to <code>FoundationaLLM:DataSources:*</code>. All existing keys need to be moved to the new namespace.</p>
+</li>
+<li><p>New app config entries required:</p>
+<ul>
+<li><code>FoundationaLLM:Attachment:ResourceProviderService:Storage:AuthenticationType</code></li>
+<li><code>FoundationaLLM:Attachment:ResourceProviderService:Storage:AccountName</code></li>
+</ul>
+</li>
+<li><p>App Config key namespace that was previously <code>FoundationaLLM:Vectorization:ContentSources:*</code> has been moved to <code>FoundationaLLM:DataSources:*</code>. All existing keys need to be moved to the new namespace.</p>
+</li>
+<li><p>The following App Config setting needs to be added/updated as key-values:</p>
+</li>
+</ol>
+<ul>
+<li>Add <code>FoundationaLLM:APIs:GatekeeperAPI:Configuration:EnableAzureContentSafetyPromptShield</code></li>
+<li>Add <code>FoundationaLLM:APIs:GatekeeperAPI:Configuration:EnableLakeraGuard</code></li>
+<li>Add <code>FoundationaLLM:APIs:GatekeeperAPI:Configuration:EnableEnkryptGuardrails</code></li>
+<li>Rename <code>FoundationaLLM:AzureContentSafety:APIKey</code> in <code>FoundationaLLM:APIs:Gatekeeper:AzureContentSafety:APIKey</code></li>
+<li>Rename <code>FoundationaLLM:AzureContentSafety:APIUrl</code> in <code>FoundationaLLM:APIs:Gatekeeper:AzureContentSafety:APIUrl</code></li>
+<li>Rename <code>FoundationaLLM:AzureContentSafety:HateSeverity</code> in <code>FoundationaLLM:APIs:Gatekeeper:AzureContentSafety:HateSeverity</code></li>
+<li>Rename <code>FoundationaLLM:AzureContentSafety:SelfHarmSeverity</code> in <code>FoundationaLLM:APIs:Gatekeeper:AzureContentSafety:SelfHarmSeverity</code></li>
+<li>Rename <code>FoundationaLLM:AzureContentSafety:SexualSeverity</code> in <code>FoundationaLLM:APIs:Gatekeeper:AzureContentSafety:SexualSeverity</code></li>
+<li>Rename <code>FoundationaLLM:AzureContentSafety:ViolenceSeverity</code> in <code>FoundationaLLM:APIs:Gatekeeper:AzureContentSafety:ViolenceSeverity</code></li>
+<li>Add <code>FoundationaLLM:APIs:Gatekeeper:LakeraGuard:APIKey</code></li>
+<li>Add <code>FoundationaLLM:APIs:Gatekeeper:LakeraGuard:APIUrl</code></li>
+<li>Add <code>FoundationaLLM:APIs:Gatekeeper:EnkryptGuardrails:APIKey</code></li>
+<li>Add <code>FoundationaLLM:APIs:Gatekeeper:EnkryptGuardrails:APIUrl</code></li>
+</ul>
+<ol start="16">
+<li><p>The following Key Vault secret is needed:</p>
+<ul>
+<li><code>lakera-guard-api-key</code></li>
+<li><code>enkrypt-guardrails-apikey</code></li>
+</ul>
+</li>
+</ol>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Configure local development environment | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Configure local development environment | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../media/favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="../../toc.html">
+      <meta name="docfx:tocrel" content="../toc.html">
+      
+      <meta name="docfx:rel" content="../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/development/development-local.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="configure-local-development-environment">Configure local development environment</h1>
+
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li>Environment variables:
+<ul>
+<li>Create a <em>system</em> environment variable for the Application Configuration Service connection string named <code>FoundationaLLM_AppConfig_ConnectionString</code>. This is used by the .NET projects.</li>
+<li>Create a <em>system</em> environment variable for the Application Configuration Service URI named <code>FOUNDATIONALLM_APP_CONFIGURATION_URI</code>. This is used by the Python projects.</li>
+<li>Create a <em>system</em> environment variable named <code>FOUNDATIONALLM_VERSION</code> and set it to the version of the FoundationaLLM deployment you are working with. This is used by the .NET projects to validate your environment configuration based on the version.</li>
+</ul>
+</li>
+</ul>
+<div class="TIP">
+<h5>Tip</h5>
+<p>You can view the FoundationaLLM release versions by viewing the <a href="https://github.com/foundationallm/foundationallm/branches/all?query=release">branches in the FoundationaLLM repository</a>. The format is <code>release/n.n.n</code>, where <code>n.n.n</code> is the version number. The <code>FOUNDATIONALLM_VERSION</code> environment variable should be set to the version number without the <code>release/</code> prefix (example: <code>0.4.0</code>).</p>
+</div>
+<ul>
+<li>Follow the instructions in <a href="../deployment/configure-access-control-for-services.md">Configure access control for services</a> to grant your user account access to the Azure App Configuration and Key Vault services. You may need an Azure admin to perform these steps on your behalf.</li>
+<li>Backend (APIs and worker services):
+<ul>
+<li>Visual Studio 2022 17.8 or later (required for passthrough Visual Studio authentication for the Docker container and .NET 8 support) with the <a href="https://learn.microsoft.com/visualstudio/python/installing-python-support-in-visual-studio?view=vs-2022">Python workload installed</a></li>
+<li><a href="https://dotnet.microsoft.com/download/dotnet">.NET 8 SDK</a> or greater</li>
+<li><a href="https://www.python.org/downloads/">Python 3.11</a> (learn more about <a href="https://learn.microsoft.com/visualstudio/python/managing-python-environments-in-visual-studio?view=vs-2022">Python environments in Visual Studio</a>)</li>
+<li>Docker Desktop (with WSL for Windows machines) (<a href="https://docs.docker.com/desktop/install/mac-install/">Mac install</a> or <a href="https://docs.docker.com/desktop/install/windows-install/">Windows install</a>)</li>
+<li>Azure CLI (<a href="https://learn.microsoft.com/cli/azure/install-azure-cli">v2.51.0 or greater</a>)</li>
+<li><a href="https://learn.microsoft.com/powershell/azure/install-azure-powershell">Microsoft Azure PowerShell</a></li>
+<li><a href="https://helm.sh/docs/intro/install/">Helm 3.11.1 or greater</a></li>
+</ul>
+</li>
+<li>Frontend (Vue.js (Nuxt) web app)
+<ul>
+<li><a href="https://code.visualstudio.com/Download">Visual Studio Code</a> (recommended for development)</li>
+<li><a href="https://nodejs.org/en/">Node.js</a> v18.0.0 or newer</li>
+<li><a href="https://www.npmjs.com/">NPM</a> v10.2.3 or newer</li>
+<li>Recommended way to install the latest version of NPM and node.js on Windows:
+<ul>
+<li>Install NVM from <a href="https://github.com/coreybutler/nvm-windows">https://github.com/coreybutler/nvm-windows</a></li>
+<li>Run nvm install latest</li>
+<li>Run nvm list (to see the versions of NPM/node.js available)</li>
+<li>Run nvm use latest (to use the latest available version)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="setup-rbac-permissions-when-running-locally">Setup RBAC permissions when running locally</h3>
+<p>When you run the solution locally, you will need to set role-based access control (RBAC) permissions on the Azure Cosmos DB account. You can do this by running the following command in the Azure Cloud Shell or Azure CLI:</p>
+<p>Assign yourself to the &quot;Cosmos DB Built-in Data Contributor&quot; role:</p>
+<pre><code class="lang-bash">az cosmosdb sql role assignment create --account-name YOUR_COSMOS_DB_ACCOUNT_NAME --resource-group YOUR_RESOURCE_GROUP_NAME --scope &quot;/&quot; --principal-id YOUR_AZURE_AD_PRINCIPAL_ID --role-definition-id 00000000-0000-0000-0000-000000000002
+</code></pre>
+<h2 id="ui">UI</h2>
+<h3 id="user-portal">User Portal</h3>
+<p>The <code>UserPortal</code> project is a Vue.js (Nuxt) project. To configure it to run locally, follow these steps:</p>
+<ol>
+<li>Open the <code>/src/ui/UserPortal</code> folder in Visual Studio Code.</li>
+<li>Copy the <code>.env.example</code> file in the root directory to a new file named <code>.env</code> and update the values:
+<ol>
+<li>The <code>APP_CONFIG_ENDPOINT</code> value should be the Connection String for the Azure App Configuration service. This should be the same value as the <code>FoundationaLLM_AppConfig_ConnectionString</code> environment variable.</li>
+<li>The <code>LOCAL_API_URL</code> should be the URL of the local Core API service (https://localhost:63279). <strong>Important:</strong> Only set this value if you wish to debug the entire solution locally and bypass the App Config service value for the CORE API URL. If you do not wish to debug the entire solution locally, leave this value empty or comment it out.</li>
+</ol>
+</li>
+</ol>
+<h3 id="management-portal">Management Portal</h3>
+<p>The <code>ManagementPortal</code> project is a Vue.js (Nuxt) project. To configure it to run locally, follow these steps:</p>
+<ol>
+<li>Open the <code>/src/ui/ManagementPortal</code> folder in Visual Studio Code.</li>
+<li>Copy the <code>.env.example</code> file in the root directory to a new file named <code>.env</code> and update the values:
+<ol>
+<li>The <code>APP_CONFIG_ENDPOINT</code> value should be the Connection String for the Azure App Configuration service. This should be the same value as the <code>FoundationaLLM_AppConfig_ConnectionString</code> environment variable.</li>
+<li>The <code>LOCAL_API_URL</code> should be the URL of the local Management API service (https://localhost:63267). <strong>Important:</strong> Only set this value if you wish to debug the entire solution locally and bypass the App Config service value for the MANAGEMENT API URL. If you do not wish to debug the entire solution locally, leave this value empty or comment it out.</li>
+</ol>
+</li>
+</ol>
+<h2 id="net-projects">.NET projects</h2>
+<h3 id="core-api">Core API</h3>
+<h4 id="core-api-app-settings">Core API app settings</h4>
+<blockquote>
+<p>Make sure the contents of the <code>appsettings.json</code> file has this structure and similar values:</p>
+</blockquote>
+<pre><code class="lang-json">{
+  &quot;DetailedErrors&quot;: true,
+  &quot;Logging&quot;: {
+    &quot;LogLevel&quot;: {
+      &quot;Default&quot;: &quot;Information&quot;,
+      &quot;Microsoft.AspNetCore&quot;: &quot;Warning&quot;
+    }
+  },
+  &quot;AllowedHosts&quot;: &quot;*&quot;,
+  &quot;FoundationaLLM&quot;: {
+    &quot;AppConfig&quot;: {
+      &quot;ConnectionString&quot;: &quot;&quot;
+    }
+  }
+}
+</code></pre>
+<blockquote>
+<p>Create the <code>appsettings.Development.json</code> file or update it with the following content and replace all <code>&lt;...&gt;</code> placeholders with the values from your deployment:</p>
+</blockquote>
+<pre><code class="lang-json">{  
+  &quot;FoundationaLLM&quot;: {
+    &quot;APIs&quot;: {
+      &quot;GatekeeperAPI&quot;: {
+        &quot;APIUrl&quot;: &quot;&lt;...&gt;&quot; // Default local value: https://localhost:7180/
+      },
+      ,
+      &quot;OrchestrationAPI&quot;: {
+        &quot;APIUrl&quot;: &quot;&lt;...&gt;&quot; // Default local value: &quot;https://localhost:7324/&quot;
+      }
+    }
+  }
+}
+</code></pre>
+<h3 id="coreworker">CoreWorker</h3>
+<p>The <code>CoreWorker</code> project is a .NET worker service that acts as the Cosmos DB change feed processor. When you debug it locally, it runs within a Docker container. Because of this, it is important to make sure the App Configuration service connection string is set in the <code>appsettings.Development.json</code> file. This is because the Docker container will not have access to the environment variable.</p>
+<h4 id="coreworker-app-settings">CoreWorker app settings</h4>
+<blockquote>
+<p>Make sure the contents of the <code>appsettings.json</code> file has this structure and similar values:</p>
+</blockquote>
+<pre><code class="lang-json">{
+  &quot;DetailedErrors&quot;: true,
+  &quot;Logging&quot;: {
+    &quot;LogLevel&quot;: {
+      &quot;Default&quot;: &quot;Information&quot;,
+      &quot;Microsoft.AspNetCore&quot;: &quot;Warning&quot;
+    }
+  },
+  &quot;FoundationaLLM&quot;: {
+    &quot;AppConfig&quot;: {
+      &quot;ConnectionString&quot;: &quot;&quot;
+    }
+  }
+}
+</code></pre>
+<blockquote>
+<p>Create the <code>appsettings.Development.json</code> file or update it with the following content and replace all <code>&lt;...&gt;</code> placeholders with the values from your deployment:</p>
+</blockquote>
+<pre><code class="lang-json">{  
+  &quot;FoundationaLLM&quot;: {
+    &quot;AppConfig&quot;: {
+      &quot;ConnectionString&quot;: &quot;&lt;...&gt;&quot;
+    }
+  }
+}
+</code></pre>
+<h3 id="gatekeeper-api">Gatekeeper API</h3>
+<h4 id="gatekeeper-api-app-settings">Gatekeeper API app settings</h4>
+<blockquote>
+<p>Make sure the contents of the <code>appsettings.json</code> file has this structure and similar values:</p>
+</blockquote>
+<pre><code class="lang-json">{
+  &quot;Logging&quot;: {
+    &quot;LogLevel&quot;: {
+      &quot;Default&quot;: &quot;Information&quot;,
+      &quot;Microsoft.AspNetCore&quot;: &quot;Warning&quot;
+    },
+    &quot;ApplicationInsights&quot;: {
+      &quot;LogLevel&quot;: {
+        &quot;Default&quot;: &quot;Information&quot;,
+        &quot;Microsoft.AspNetCore&quot;: &quot;Warning&quot;
+      }
+    }
+  },
+  &quot;AllowedHosts&quot;: &quot;*&quot;,
+  &quot;FoundationaLLM&quot;: {
+    &quot;AppConfig&quot;: {
+      &quot;ConnectionString&quot;: &quot;&quot;
+    }
+  }
+}
+</code></pre>
+<blockquote>
+<p>Create the <code>appsettings.Development.json</code> file or update it with the following content and replace all <code>&lt;...&gt;</code> placeholders with the values from your deployment:</p>
+</blockquote>
+<pre><code class="lang-json">{
+  &quot;FoundationaLLM&quot;: {
+    &quot;APIs&quot;: {
+      &quot;OrchestrationAPI&quot;: {
+        &quot;APIUrl&quot;: &quot;&lt;...&gt;&quot;  // Default local value: https://localhost:7324/
+      },
+      &quot;GatekeeperIntegrationAPI&quot;: {
+        &quot;APIUrl&quot;: &quot;&lt;...&gt;&quot;  // Default local value: http://localhost:8042/
+      }
+    }
+  }
+}
+</code></pre>
+<h3 id="orchestration-api">Orchestration API</h3>
+<h4 id="orchestration-api-app-settings">Orchestration API app settings</h4>
+<blockquote>
+<p>Make sure the contents of the <code>appsettings.json</code> file has this structure and similar values:</p>
+</blockquote>
+<pre><code class="lang-json">{
+  &quot;Logging&quot;: {
+    &quot;LogLevel&quot;: {
+      &quot;Default&quot;: &quot;Information&quot;,
+      &quot;Microsoft.AspNetCore&quot;: &quot;Warning&quot;
+    },
+    &quot;ApplicationInsights&quot;: {
+      &quot;LogLevel&quot;: {
+        &quot;Default&quot;: &quot;Information&quot;,
+        &quot;Microsoft.AspNetCore&quot;: &quot;Warning&quot;
+      }
+    }
+  },
+  &quot;AllowedHosts&quot;: &quot;*&quot;,
+  &quot;FoundationaLLM&quot;: {
+    &quot;AppConfig&quot;: {
+      &quot;ConnectionString&quot;: &quot;&quot;
+    }
+  }
+}
+</code></pre>
+<blockquote>
+<p>Create the <code>appsettings.Development.json</code> file or update it with the following content and replace all <code>&lt;...&gt;</code> placeholders with the values from your deployment:</p>
+</blockquote>
+<pre><code class="lang-json">{
+  &quot;FoundationaLLM&quot;: {
+    &quot;APIs&quot;: {
+      &quot;LangChainAPI&quot;: {
+        &quot;APIUrl&quot;: &quot;&lt;...&gt;&quot;  // Default local value: http://localhost:8765/
+      },
+      &quot;SemanticKernelAPI&quot;: {
+        &quot;APIUrl&quot;: &quot;&lt;...&gt;&quot;  // Default local value: https://localhost:7062/
+      },
+      &quot;AgentHubAPI&quot;: {
+        &quot;APIUrl&quot;: &quot;&lt;...&gt;&quot;  // Default local value: http://localhost:8742/
+      },
+      &quot;PromptHubAPI&quot;: {
+        &quot;APIUrl&quot;: &quot;&lt;...&gt;&quot;  // Default local value: http://localhost:8642/
+      },
+      &quot;DataSourceHubAPI&quot;: {
+        &quot;APIUrl&quot;: &quot;&lt;...&gt;&quot;  // Default local value: http://localhost:8842/
+      }
+    }
+  }
+}
+</code></pre>
+<h3 id="semantic-kernel-api">Semantic Kernel API</h3>
+<h4 id="semantic-kernel-api-app-settings">Semantic Kernel API app settings</h4>
+<blockquote>
+<p>Make sure the contents of the <code>appsettings.json</code> file has this structure and similar values:</p>
+</blockquote>
+<pre><code class="lang-json">{
+  &quot;Logging&quot;: {
+    &quot;LogLevel&quot;: {
+      &quot;Default&quot;: &quot;Information&quot;,
+      &quot;Microsoft.AspNetCore&quot;: &quot;Warning&quot;,
+      &quot;Microsoft.SemanticKernel&quot;: &quot;Error&quot;
+    },
+    &quot;ApplicationInsights&quot;: {
+      &quot;LogLevel&quot;: {
+        &quot;Default&quot;: &quot;Information&quot;,
+        &quot;Microsoft.AspNetCore&quot;: &quot;Warning&quot;,
+        &quot;Microsoft.SemanticKernel&quot;: &quot;Error&quot;
+      }
+    }
+  },
+  &quot;AllowedHosts&quot;: &quot;*&quot;,
+  &quot;FoundationaLLM&quot;: {
+    &quot;CognitiveSearch&quot;: {
+      &quot;IndexName&quot;: &quot;vector-index&quot;,
+      &quot;MaxVectorSearchResults&quot;: 10
+    },
+    &quot;OpenAI&quot;: {
+      &quot;CompletionsDeployment&quot;: &quot;completions&quot;,
+      &quot;CompletionsDeploymentMaxTokens&quot;: 8096,
+      &quot;EmbeddingsDeployment&quot;: &quot;embeddings&quot;,
+      &quot;EmbeddingsDeploymentMaxTokens&quot;: 8191,
+      &quot;ChatCompletionPromptName&quot;: &quot;RetailAssistant.Default&quot;,
+      &quot;ShortSummaryPromptName&quot;: &quot;Summarizer.TwoWords&quot;,
+      &quot;PromptOptimization&quot;: {
+        &quot;CompletionsMinTokens&quot;: 50,
+        &quot;CompletionsMaxTokens&quot;: 300,
+        &quot;SystemMaxTokens&quot;: 1500,
+        &quot;MemoryMinTokens&quot;: 1500,
+        &quot;MemoryMaxTokens&quot;: 3000,
+        &quot;MessagesMinTokens&quot;: 100,
+        &quot;MessagesMaxTokens&quot;: 3000
+      }
+    },
+    &quot;DurableSystemPrompt&quot;: {
+      &quot;BlobStorageContainer&quot;: &quot;prompts&quot;
+    },
+    &quot;CognitiveSearchMemorySource&quot;: {
+      &quot;IndexName&quot;: &quot;vector-index&quot;,
+      &quot;ConfigBlobStorageContainer&quot;: &quot;memory-source&quot;,
+      &quot;ConfigFilePath&quot;: &quot;ACSMemorySourceConfig.json&quot;
+    },
+    &quot;BlobStorageMemorySource&quot;: {
+      &quot;ConfigBlobStorageContainer&quot;: &quot;memory-source&quot;,
+      &quot;ConfigFilePath&quot;: &quot;BlobMemorySourceConfig.json&quot;
+    },
+    &quot;SemanticKernelOrchestration&quot;: {
+      &quot;APIKeySecretName&quot;: &quot;foundationallm-semantickernel-api-key&quot;
+    }
+  }
+}
+</code></pre>
+<blockquote>
+<p>Create the <code>appsettings.Development.json</code> file or update it with the following content and replace all <code>&lt;...&gt;</code> placeholders with the values from your deployment:</p>
+</blockquote>
+<pre><code class="lang-json">{
+  &quot;FoundationaLLM&quot;: {
+    &quot;CognitiveSearch&quot;: {
+      &quot;Endpoint&quot;: &quot;https://&lt;...&gt;-cog-search.search.windows.net&quot;,
+      &quot;Key&quot;: &quot;&lt;...&gt;&quot;
+    },
+    &quot;OpenAI&quot;: {
+      &quot;Endpoint&quot;: &quot;https://&lt;...&gt;-openai.openai.azure.com/&quot;,
+      &quot;Key&quot;: &quot;&lt;...&gt;&quot;
+    },
+    &quot;DurableSystemPrompt&quot;: {
+      &quot;BlobStorageConnection&quot;: &quot;&lt;...&gt;&quot;
+    },
+    &quot;CognitiveSearchMemorySource&quot;: {
+      &quot;Endpoint&quot;: &quot;https://&lt;...&gt;-cog-search.search.windows.net&quot;,
+      &quot;Key&quot;: &quot;&lt;...&gt;&quot;,
+      &quot;ConfigBlobStorageConnection&quot;: &quot;&lt;...&gt;&quot;
+    },
+    &quot;BlobStorageMemorySource&quot;: {
+      &quot;ConfigBlobStorageConnection&quot;: &quot;&lt;...&gt;&quot;
+    }
+  }
+}
+</code></pre>
+<h2 id="python-projects">Python projects</h2>
+<h3 id="python-environment-variables">Python Environment Variables</h3>
+<p>Create local environment variables named:</p>
+<ul>
+<li><code>FOUNDATIONALLM_APP_CONFIGURATION_URI</code>. The value should be the URI of the Azure App Configuration service and <em>not</em> the connection string. We use role-based access controls (RBAC) to access the Azure App Configuration service, so the connection string is not required.</li>
+<li><code>FOUNDATIONALLM_ENV</code>: This is required by the <code>OperationsManager</code> to disable the <code>verify</code> setting on requests. By setting the value to <code>dev</code>, it allows calls to the State API from LangChain and other Python-based APIs when running locally (<code>FOUNDATIONALLM_ENV</code> = <code>dev</code>) by disabling the check for a valid SSL cert on requests. This is only necessary when running the State API locally. Otherwise, the setting should be set to <code>prod</code>.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FOUNDATIONALLM_APP_CONFIGURATION_URI</td>
+<td>REDACTED</td>
+<td>Azure App Configuration URI</td>
+</tr>
+<tr>
+<td>FOUNDATIONALLM_ENV</td>
+<td><code>dev</code> or <code>prod</code></td>
+<td>Environment specification. Acceptable values are <code>dev</code> and <code>prod</code>. Defaults to <code>prod</code> if not set.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="running-the-solution-locally">Running the solution locally</h2>
+<h3 id="configure-and-run-the-backend-components">Configure and run the backend components</h3>
+<p>The backend components consist of the .NET projects and the Python projects. The .NET projects are all ASP.NET Core Web API projects. The Python projects are all FastAPI projects.</p>
+<ol>
+<li><p>Open the solution in Visual Studio 2022 17.6 or later. The solution file is located at <code>/src/FoundationaLLM.sln</code>.</p>
+</li>
+<li><p>Reference the API sections above to configure the app settings for each project. This primarily involves just creating the <code>appsettings.development.json</code> file for each of the .NET (located under the <code>dotnet</code> solution folder) API projects and adding the documented values within. For local development, use the <code>localhost</code> URLs for each of the API projects.</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>The <code>appsettings.development.json</code> files are excluded from source control. This is to prevent sensitive information from being committed to source control. You will need to create these files locally.</p>
+</div>
+<p><img src="media/appsettings-development-files.png" alt="The appsettings.development.json files are displayed in Solution Explorer within Visual Studio."></p>
+</li>
+<li><p>Expand the <code>python</code> solution folder.</p>
+<p><img src="media/vs-python-folder.png" alt="The Visual Studio python solution folder is expanded."></p>
+</li>
+<li><p>Expand the <code>AgentHubAPI</code> project, then expand the <code>Python Environments</code> folder underneath it. You will likely see a warning icon next to an environment named <code>env</code>. This is because the Python environment has not been created yet.</p>
+<p><img src="media/python-env-with-warning.png" alt="The Python Environments folder is displayed with a warning icon."></p>
+</li>
+<li><p>Right-click the <code>Python Environments</code> folder and select <code>Add Environment...</code>.</p>
+<p><img src="media/add-environment.png" alt="The Add Environment option is highlighted."></p>
+</li>
+<li><p>Ensure the <strong>Name</strong> field is set to <code>env</code> and the <strong>Version</strong> field is set to <code>Python 3.11</code> (or your latest version). Also make sure the <strong>Install packages from file</strong> field is set to the <code>requirements.txt</code> file for the project. This will install the required Python packages after creating the environment. Click <strong>Create</strong>.</p>
+<p><img src="media/add-python-environment-dialog.png" alt="The Add Environment dialog is displayed with the name and version fields set."></p>
+</li>
+<li><p>You should now see the <code>env</code> environment listed under the <code>Python Environments</code> folder. The warning icon should be gone.</p>
+<p><img src="media/python-env-without-warning.png" alt="The Python Environments folder is displayed with the env environment listed."></p>
+</li>
+<li><p>Complete steps 4-7 for the <code>DataSourceHubAPI</code>, <code>LangChainAPI</code>, <code>PromptHubAPI</code>, and <code>PythonSDK</code> projects. You may optionally complete these steps for the Python test projects as well.</p>
+</li>
+<li><p>Right-click the Solution in Visual Studio, then select <code>Configure Startup Projects...</code>.</p>
+<p><img src="media/configure-startup-projects.png" alt="The Configure Startup Projects option is highlighted."></p>
+</li>
+<li><p>Select the <code>Multiple startup projects</code> option, then set the <code>Action</code> for the following projects to <code>Start</code>. Click <strong>OK</strong>.</p>
+<ul>
+<li>OrchestrationAPI</li>
+<li>AgentHubAPI</li>
+<li>CoreAPI</li>
+<li>DataSourceHubAPI</li>
+<li>GatekeeperAPI</li>
+<li>GatekeeperIntegrationAPI</li>
+<li>LangChainAPI</li>
+<li>PromptHubAPI</li>
+<li>SemanticKernelAPI</li>
+<li>ManagementAPI</li>
+<li>VectorizationAPI</li>
+</ul>
+<p><img src="media/multiple-startup-projects.png" alt="The Multiple startup projects option is selected and the Action for the listed projects is set to Start."></p>
+</li>
+<li><p>Press <code>F5</code> to start debugging the solution. This will start all of the .NET projects and the Python projects. The Vue.js (Nuxt) web app will not be started by default. To start it, follow the steps below.</p>
+</li>
+</ol>
+<h3 id="configure-and-run-the-frontend-components">Configure and run the frontend components</h3>
+<p>The frontend components consist of the Vue.js (Nuxt) web apps.</p>
+<h4 id="run-the-user-portal">Run the User Portal</h4>
+<p>The <code>UserPortal</code> project is a Vue.js (Nuxt) project. To configure it to run locally, follow these steps</p>
+<ol>
+<li><p>Open the <code>/src/ui/UserPortal</code> folder in Visual Studio Code.</p>
+</li>
+<li><p>Open the <code>.env</code> file and update the <code>LOCAL_API_URL</code> value to the URL of the local Core API service (https://localhost:63279). <strong>Important:</strong> Only set this value if you wish to debug the entire solution locally and bypass the App Config service value for the CORE API URL. If you do not wish to debug the entire solution locally, leave this value empty or comment it out.</p>
+</li>
+<li><p>Open a terminal in Visual Studio Code and run the following commands:</p>
+<pre><code class="lang-bash">npm install
+npm run dev
+</code></pre>
+</li>
+<li><p>The web app should now be running at http://localhost:3000.</p>
+</li>
+</ol>
+<h4 id="run-the-management-portal">Run the Management Portal</h4>
+<p>The <code>ManagementPortal</code> project is a Vue.js (Nuxt) project. To configure it to run locally, follow these steps</p>
+<ol>
+<li><p>Open the <code>/src/ui/Management</code> folder in Visual Studio Code.</p>
+</li>
+<li><p>Open the <code>.env</code> file and update the <code>LOCAL_API_URL</code> value to the URL of the local Core API service (https://localhost:63267). <strong>Important:</strong> Only set this value if you wish to debug the entire solution locally and bypass the App Config service value for the MANAGEMENT API URL. If you do not wish to debug the entire solution locally, leave this value empty or comment it out.</p>
+</li>
+<li><p>Open a terminal in Visual Studio Code and run the following commands:</p>
+<pre><code class="lang-bash">npm install
+npm run dev
+</code></pre>
+</li>
+<li><p>The web app should now be running at http://localhost:3001.</p>
+</li>
+</ol>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

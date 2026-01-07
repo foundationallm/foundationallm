@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Creating Your First Agent | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Creating Your First Agent | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../toc.html">
+      <meta name="docfx:tocrel" content="../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/management-portal/quick-start/creating-first-agent.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../index.html">
+            <img id="logo" class="svg" src="../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="creating-your-first-agent">Creating Your First Agent</h1>
+
+<p>A step-by-step guide to creating your first AI agent using the Management Portal.</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>Before creating an agent, ensure:</p>
+<ul>
+<li>You have access to the Management Portal with appropriate permissions</li>
+<li>At least one AI model is configured (under <strong>Models and Endpoints &gt; AI Models</strong>)</li>
+<li>(Optional) Data sources are configured if your agent needs to access organizational data</li>
+</ul>
+<h2 id="overview-of-the-agent-creation-process">Overview of the Agent Creation Process</h2>
+<p>Creating an agent involves configuring several sections:</p>
+<ol>
+<li><strong>General Information</strong> - Name, description, and welcome message</li>
+<li><strong>Agent Configuration</strong> - Conversation history, gatekeeper, and display settings</li>
+<li><strong>Workflow</strong> - The AI workflow type and model settings</li>
+<li><strong>Tools</strong> - Additional capabilities like code interpreter or image generation</li>
+<li><strong>Security</strong> - Access tokens for API access (optional)</li>
+</ol>
+<h2 id="step-by-step-guide">Step-by-Step Guide</h2>
+<h3 id="step-1-navigate-to-create-new-agent">Step 1: Navigate to Create New Agent</h3>
+<ol>
+<li>In the Management Portal sidebar, click <strong>Create New Agent</strong> under the <strong>Agents</strong> section</li>
+<li>The agent creation form appears with all configuration sections</li>
+</ol>
+<h3 id="step-2-enter-general-information">Step 2: Enter General Information</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+<th>Requirements</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Agent Name</strong></td>
+<td>Unique identifier for the agent</td>
+<td>Letters, numbers, dashes, and underscores only. No spaces or special characters.</td>
+</tr>
+<tr>
+<td><strong>Agent Display Name</strong></td>
+<td>User-friendly name shown in the portal</td>
+<td>Any text. This is what users will see.</td>
+</tr>
+<tr>
+<td><strong>Description</strong></td>
+<td>Purpose of the agent</td>
+<td>Optional but recommended for discoverability</td>
+</tr>
+<tr>
+<td><strong>Welcome Message</strong></td>
+<td>Initial message shown to users</td>
+<td>Supports rich text formatting</td>
+</tr>
+</tbody>
+</table>
+<p>The agent name field validates in real-time:</p>
+<ul>
+<li>✔️ Green checkmark indicates the name is available</li>
+<li>❌ Red X indicates the name is invalid or already taken</li>
+</ul>
+<h3 id="step-3-configure-agent-behavior">Step 3: Configure Agent Behavior</h3>
+<h4 id="conversation-history">Conversation History</h4>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Enabled</strong></td>
+<td>No</td>
+<td>When enabled, the agent remembers previous messages in the conversation</td>
+</tr>
+<tr>
+<td><strong>Max Messages</strong></td>
+<td>5</td>
+<td>Number of previous messages to include in context</td>
+</tr>
+</tbody>
+</table>
+<p>Click the step item to expand and edit these settings. Toggle to <strong>Yes</strong> to enable conversation history, then set the maximum messages as needed.</p>
+<h4 id="gatekeeper">Gatekeeper</h4>
+<p>The gatekeeper provides content safety and data protection:</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Options</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Use system default</strong></td>
+<td>Yes/No</td>
+<td>Use instance-level gatekeeper settings</td>
+</tr>
+<tr>
+<td><strong>Content Safety</strong></td>
+<td>Azure Content Safety, Lakera Guard, Enkrypt Guardrails</td>
+<td>AI safety platform for content moderation</td>
+</tr>
+<tr>
+<td><strong>Data Protection</strong></td>
+<td>Microsoft Presidio</td>
+<td>PII detection and redaction</td>
+</tr>
+</tbody>
+</table>
+<p>If you disable &quot;Use system default,&quot; you can select specific content safety and data protection options.</p>
+<h4 id="user-prompt-rewrite">User Prompt Rewrite</h4>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Enabled</strong></td>
+<td>When enabled, rewrites user prompts before processing</td>
+</tr>
+<tr>
+<td><strong>Rewrite Model</strong></td>
+<td>AI model to use for rewriting</td>
+</tr>
+<tr>
+<td><strong>Rewrite Prompt</strong></td>
+<td>Prompt template for rewriting</td>
+</tr>
+<tr>
+<td><strong>Rewrite Window Size</strong></td>
+<td>Number of messages to consider (default: 3)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="semantic-cache">Semantic Cache</h4>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Enabled</strong></td>
+<td>When enabled, caches semantically similar responses</td>
+</tr>
+<tr>
+<td><strong>Model</strong></td>
+<td>Embedding model for similarity comparison</td>
+</tr>
+<tr>
+<td><strong>Embedding Dimensions</strong></td>
+<td>Vector dimensions (default: 2048)</td>
+</tr>
+<tr>
+<td><strong>Minimum Similarity Threshold</strong></td>
+<td>Similarity score required for cache hit (default: 0.97)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="cost-center-and-expiration">Cost Center and Expiration</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Cost Center</strong></td>
+<td>Assign to a department for cost tracking (optional)</td>
+</tr>
+<tr>
+<td><strong>Expiration Date</strong></td>
+<td>Date when the agent becomes inactive (optional)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="step-4-configure-user-portal-experience">Step 4: Configure User Portal Experience</h3>
+<p>These settings control what features are available to users in the Chat User Portal:</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Show Message Tokens</strong></td>
+<td>Yes</td>
+<td>Display token consumption for each message</td>
+</tr>
+<tr>
+<td><strong>Allow Rating</strong></td>
+<td>Yes</td>
+<td>Let users rate agent responses (thumbs up/down)</td>
+</tr>
+<tr>
+<td><strong>Show View Prompt</strong></td>
+<td>Yes</td>
+<td>Allow users to view the full completion prompt</td>
+</tr>
+<tr>
+<td><strong>Allow File Upload</strong></td>
+<td>No</td>
+<td>Enable file attachments in conversations</td>
+</tr>
+</tbody>
+</table>
+<h3 id="step-5-select-and-configure-workflow">Step 5: Select and Configure Workflow</h3>
+<ol>
+<li>Select a <strong>Workflow Type</strong> from the dropdown:</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Workflow Type</th>
+<th>Description</th>
+<th>Best For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>OpenAIAssistants</strong></td>
+<td>Azure OpenAI Assistants API with Code Interpreter, File Search, and Function Calling</td>
+<td>Complex tasks requiring code execution or file analysis</td>
+</tr>
+<tr>
+<td><strong>LangGraphReactAgent</strong></td>
+<td>LangGraph-based agent with dynamic tool selection</td>
+<td>Flexible agents that choose tools based on context</td>
+</tr>
+<tr>
+<td><strong>ExternalAgentWorkflow</strong></td>
+<td>Custom Python workflows registered with the platform</td>
+<td>Advanced custom logic</td>
+</tr>
+</tbody>
+</table>
+<ol start="2">
+<li><p>Click <strong>Configure Workflow</strong> to expand the workflow settings</p>
+</li>
+<li><p>Configure workflow details:</p>
+</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Workflow Name</strong></td>
+<td>Identifier for this workflow configuration</td>
+</tr>
+<tr>
+<td><strong>Workflow Package Name</strong></td>
+<td>Python package name (for custom workflows)</td>
+</tr>
+<tr>
+<td><strong>Workflow Class Name</strong></td>
+<td>Python class name (for custom workflows)</td>
+</tr>
+<tr>
+<td><strong>Workflow Host</strong></td>
+<td>Orchestration framework (typically LangChain)</td>
+</tr>
+<tr>
+<td><strong>Workflow Main Model</strong></td>
+<td>Primary AI model for the agent</td>
+</tr>
+<tr>
+<td><strong>Workflow Main Model Parameters</strong></td>
+<td>Model settings (temperature, max_tokens, etc.)</td>
+</tr>
+<tr>
+<td><strong>Main Workflow Prompt</strong></td>
+<td>System prompt defining the agent's persona and behavior</td>
+</tr>
+</tbody>
+</table>
+<p>Example system prompt:</p>
+<pre><code>You are a helpful assistant named [Agent Name] that helps users with [specific purpose]. 
+Provide concise, accurate answers. If you don't know something, say so clearly.
+</code></pre>
+<h3 id="step-6-add-tools-optional">Step 6: Add Tools (Optional)</h3>
+<p>Tools extend the agent's capabilities. Click <strong>Add New Tool</strong> to configure:</p>
+<table>
+<thead>
+<tr>
+<th>Tool Property</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Name</strong></td>
+<td>Tool identifier (must be unique)</td>
+</tr>
+<tr>
+<td><strong>Package Name</strong></td>
+<td>Python package containing the tool</td>
+</tr>
+<tr>
+<td><strong>Description</strong></td>
+<td>What the tool does (helps the AI decide when to use it)</td>
+</tr>
+<tr>
+<td><strong>Tool Resources</strong></td>
+<td>Additional resources the tool needs (models, data sources)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Common Tools:</strong></p>
+<ul>
+<li><strong>DALLEImageGeneration</strong> - Generate images using DALL-E</li>
+<li><strong>Code Interpreter</strong> - Execute Python code for analysis</li>
+<li><strong>Knowledge Search</strong> - Search configured knowledge sources</li>
+</ul>
+<blockquote>
+<p><strong>Note:</strong> For DALL-E image generation, the tool name must be exactly <code>DALLEImageGeneration</code> and requires an AI model with the <code>main_model</code> object role in Tool Resources.</p>
+</blockquote>
+<h3 id="step-7-create-the-agent">Step 7: Create the Agent</h3>
+<ol>
+<li>Review all settings</li>
+<li>Click <strong>Create Agent</strong> at the bottom of the page</li>
+<li>Wait for the creation process to complete</li>
+<li>Upon success, you'll see a confirmation message</li>
+</ol>
+<h2 id="testing-your-agent">Testing Your Agent</h2>
+<p>After creation:</p>
+<ol>
+<li>Open the <strong>Chat User Portal</strong></li>
+<li>Select your new agent from the agent dropdown</li>
+<li>Send a test message to verify it responds correctly</li>
+<li>Test any configured tools (file upload, code execution, etc.)</li>
+</ol>
+<h2 id="next-steps">Next Steps</h2>
+<ul>
+<li><a href="../how-to-guides/agents/create-new-agent.html">Detailed Agent Creation Guide</a> - In-depth configuration options</li>
+<li><a href="../how-to-guides/agents/prompts.html">Managing Prompts</a> - Create reusable prompt templates</li>
+<li><a href="../reference/concepts/agent-access-tokens.html">Agent Access Tokens</a> - Configure API access</li>
+<li><a href="../reference/concepts/agents-workflows.html">Agents &amp; Workflows Reference</a> - Technical details</li>
+</ul>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="agent-name-validation-fails">Agent Name Validation Fails</h3>
+<ul>
+<li>Ensure no spaces or special characters</li>
+<li>Check if the name is already in use</li>
+<li>Use only letters, numbers, dashes (-), and underscores (_)</li>
+</ul>
+<h3 id="workflow-model-not-available">Workflow Model Not Available</h3>
+<ul>
+<li>Verify AI models are configured under <strong>Models and Endpoints &gt; AI Models</strong></li>
+<li>Check that your account has access to the required models</li>
+</ul>
+<h3 id="agent-not-appearing-in-chat-portal">Agent Not Appearing in Chat Portal</h3>
+<ul>
+<li>Verify the agent was created successfully</li>
+<li>Check user permissions for the agent</li>
+<li>Ensure the agent hasn't expired (if expiration was set)</li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

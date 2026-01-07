@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Managing Plugins | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Managing Plugins | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../toc.html">
+      <meta name="docfx:tocrel" content="../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/management-portal/how-to-guides/managing-plugins.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../index.html">
+            <img id="logo" class="svg" src="../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="managing-plugins">Managing Plugins</h1>
+
+<p>Learn how to manage plugins and plugin packages to extend FoundationaLLM functionality.</p>
+<h2 id="overview">Overview</h2>
+<p>Plugins extend FoundationaLLM with custom capabilities:</p>
+<ul>
+<li><strong>Custom Workflows</strong>: Agent orchestration logic</li>
+<li><strong>Custom Tools</strong>: Specialized agent capabilities</li>
+<li><strong>Data Processing</strong>: Custom pipeline stages and extractors</li>
+</ul>
+<h2 id="plugin-architecture">Plugin Architecture</h2>
+<h3 id="plugin-types">Plugin Types</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Language</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Agent Workflow</strong></td>
+<td>Python</td>
+<td>Custom orchestration workflows</td>
+</tr>
+<tr>
+<td><strong>Agent Tool</strong></td>
+<td>Python</td>
+<td>Custom tools for agents</td>
+</tr>
+<tr>
+<td><strong>Data Source</strong></td>
+<td>.NET</td>
+<td>Custom data source connectors</td>
+</tr>
+<tr>
+<td><strong>Pipeline Stage</strong></td>
+<td>.NET</td>
+<td>Custom data pipeline processing</td>
+</tr>
+<tr>
+<td><strong>Text Extraction</strong></td>
+<td>.NET</td>
+<td>Custom content extraction</td>
+</tr>
+<tr>
+<td><strong>Text Partitioning</strong></td>
+<td>.NET</td>
+<td>Custom text chunking</td>
+</tr>
+</tbody>
+</table>
+<h3 id="plugin-packages">Plugin Packages</h3>
+<p>Plugins are distributed as packages:</p>
+<table>
+<thead>
+<tr>
+<th>Package Type</th>
+<th>Format</th>
+<th>Platform</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Python</strong></td>
+<td>ZIP (Wheel planned)</td>
+<td>Agent workflows and tools</td>
+</tr>
+<tr>
+<td><strong>.NET</strong></td>
+<td>NuGet</td>
+<td>Data pipeline components</td>
+</tr>
+</tbody>
+</table>
+<h2 id="managing-plugin-packages">Managing Plugin Packages</h2>
+<blockquote>
+<p><strong>TODO</strong>: Document the specific UI for plugin management in the Management Portal when available.</p>
+</blockquote>
+<h3 id="viewing-available-plugins">Viewing Available Plugins</h3>
+<ol>
+<li>Navigate to plugin management (if available in UI)</li>
+<li>View list of installed packages</li>
+<li>Check plugin status and versions</li>
+</ol>
+<h3 id="installing-plugin-packages">Installing Plugin Packages</h3>
+<ol>
+<li>Obtain the plugin package file</li>
+<li>Upload to the plugin storage location</li>
+<li>Configure package settings</li>
+<li>Enable the plugin</li>
+</ol>
+<h3 id="updating-plugins">Updating Plugins</h3>
+<ol>
+<li>Upload the new version</li>
+<li>Update configuration if needed</li>
+<li>Test with affected agents/pipelines</li>
+<li>Enable the updated version</li>
+</ol>
+<h3 id="removing-plugins">Removing Plugins</h3>
+<ol>
+<li>Verify no active resources use the plugin</li>
+<li>Disable the plugin</li>
+<li>Remove from storage</li>
+</ol>
+<h2 id="using-plugins-in-agents">Using Plugins in Agents</h2>
+<h3 id="workflow-plugins">Workflow Plugins</h3>
+<p>Reference in agent workflow configuration:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Workflow Package Name</strong></td>
+<td>Python package name</td>
+</tr>
+<tr>
+<td><strong>Workflow Class Name</strong></td>
+<td>Class implementing the workflow</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example:</strong></p>
+<ul>
+<li>Package: <code>foundationallm_agent_plugins</code></li>
+<li>Class: <code>FoundationaLLMFunctionCallingWorkflow</code></li>
+</ul>
+<h3 id="tool-plugins">Tool Plugins</h3>
+<p>Reference in agent tool configuration:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Tool Package Name</strong></td>
+<td>Python package name</td>
+</tr>
+<tr>
+<td><strong>Tool Class Name</strong></td>
+<td>Class implementing the tool</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Examples:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Package</th>
+<th>Class</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Code Interpreter</td>
+<td><code>foundationallm_agent_plugins</code></td>
+<td><code>FoundationaLLMCodeInterpreterTool</code></td>
+</tr>
+<tr>
+<td>Knowledge Tool</td>
+<td><code>foundationallm_agent_plugins</code></td>
+<td><code>FoundationaLLMKnowledgeTool</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="using-plugins-in-data-pipelines">Using Plugins in Data Pipelines</h2>
+<h3 id="data-source-plugins">Data Source Plugins</h3>
+<p>Configure when creating data sources:</p>
+<ol>
+<li>Select the data source type</li>
+<li>Choose the appropriate plugin</li>
+<li>Configure plugin parameters</li>
+</ol>
+<h3 id="pipeline-stage-plugins">Pipeline Stage Plugins</h3>
+<p>Configure in pipeline stage settings:</p>
+<ol>
+<li>Add a pipeline stage</li>
+<li>Select the stage plugin</li>
+<li>Configure stage parameters</li>
+</ol>
+<h3 id="text-processing-plugins">Text Processing Plugins</h3>
+<p>For content extraction and partitioning:</p>
+<table>
+<thead>
+<tr>
+<th>Plugin Type</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Text Extraction</strong></td>
+<td>Extract text from documents</td>
+</tr>
+<tr>
+<td><strong>Text Partitioning</strong></td>
+<td>Split text into chunks</td>
+</tr>
+<tr>
+<td><strong>Image Description</strong></td>
+<td>Generate text from images</td>
+</tr>
+</tbody>
+</table>
+<h2 id="built-in-plugins">Built-in Plugins</h2>
+<p>FoundationaLLM includes several built-in plugins:</p>
+<h3 id="agent-plugins-python">Agent Plugins (Python)</h3>
+<table>
+<thead>
+<tr>
+<th>Plugin</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLMFunctionCallingWorkflow</code></td>
+<td>Model agnostic function calling</td>
+</tr>
+<tr>
+<td><code>FoundationaLLMCodeInterpreterTool</code></td>
+<td>Python code execution</td>
+</tr>
+<tr>
+<td><code>FoundationaLLMKnowledgeTool</code></td>
+<td>Knowledge base search</td>
+</tr>
+</tbody>
+</table>
+<h3 id="data-pipeline-plugins-net">Data Pipeline Plugins (.NET)</h3>
+<blockquote>
+<p><strong>TODO</strong>: Document specific built-in .NET plugins for data pipelines.</p>
+</blockquote>
+<h2 id="custom-plugin-development">Custom Plugin Development</h2>
+<h3 id="python-plugins">Python Plugins</h3>
+<p>For agent workflows and tools:</p>
+<ol>
+<li>Implement the required interface</li>
+<li>Package as a Python wheel or ZIP</li>
+<li>Deploy to the plugin storage</li>
+<li>Reference in agent configuration</li>
+</ol>
+<h3 id="net-plugins">.NET Plugins</h3>
+<p>For data pipeline components:</p>
+<ol>
+<li>Implement the required interface</li>
+<li>Package as a NuGet package</li>
+<li>Deploy to the plugin storage</li>
+<li>Configure in pipeline settings</li>
+</ol>
+<blockquote>
+<p><strong>Note:</strong> See developer documentation for detailed plugin development guides.</p>
+</blockquote>
+<h2 id="plugin-configuration">Plugin Configuration</h2>
+<h3 id="environment-variables">Environment Variables</h3>
+<p>Some plugins use environment variables:</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PLUGIN_STORAGE_PATH</code></td>
+<td>Location of plugin packages</td>
+</tr>
+<tr>
+<td><code>PLUGIN_CONFIG_PATH</code></td>
+<td>Plugin configuration files</td>
+</tr>
+</tbody>
+</table>
+<h3 id="plugin-settings">Plugin Settings</h3>
+<p>Configure plugin-specific settings in:</p>
+<ul>
+<li>Agent configuration (workflow/tool parameters)</li>
+<li>Pipeline configuration (stage parameters)</li>
+<li>App Configuration (global settings)</li>
+</ul>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="plugin-not-loading">Plugin Not Loading</h3>
+<ul>
+<li>Verify package is in correct location</li>
+<li>Check package format is valid</li>
+<li>Review logs for loading errors</li>
+</ul>
+<h3 id="plugin-errors-in-execution">Plugin Errors in Execution</h3>
+<ul>
+<li>Check plugin dependencies are installed</li>
+<li>Verify configuration parameters</li>
+<li>Review agent/pipeline logs</li>
+</ul>
+<h3 id="version-conflicts">Version Conflicts</h3>
+<ul>
+<li>Check for dependency version conflicts</li>
+<li>Ensure compatible package versions</li>
+<li>Consider isolated environments</li>
+</ul>
+<h2 id="best-practices">Best Practices</h2>
+<h3 id="plugin-management">Plugin Management</h3>
+<ul>
+<li>Version plugins for traceability</li>
+<li>Test plugins in development before production</li>
+<li>Document plugin requirements and configuration</li>
+</ul>
+<h3 id="security">Security</h3>
+<ul>
+<li>Review plugin code before deployment</li>
+<li>Limit plugin permissions appropriately</li>
+<li>Monitor plugin activity</li>
+</ul>
+<h3 id="updates">Updates</h3>
+<ul>
+<li>Test updates in non-production first</li>
+<li>Have rollback plans</li>
+<li>Document changes</li>
+</ul>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="../reference/concepts/plugins-packages.html">Plugins &amp; Packages Reference</a></li>
+<li><a href="../reference/concepts/agents-workflows.html">Agents &amp; Workflows</a></li>
+<li><a href="data/data-pipelines/creating-data-pipelines.html">Creating Data Pipelines</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

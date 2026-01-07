@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Azure Resource Provider Requirements | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Azure Resource Provider Requirements | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../toc.html">
+      <meta name="docfx:tocrel" content="../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/platform-operations/deployment/azure-resource-providers-requirements.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../index.html">
+            <img id="logo" class="svg" src="../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="azure-resource-provider-requirements">Azure Resource Provider Requirements</h1>
+
+<p>FoundationaLLM requires specific Azure Resource Providers to be registered in your subscription before deployment.</p>
+<h2 id="overview">Overview</h2>
+<p>Azure Resource Providers enable specific Azure services. If a required provider is not registered, deployment will fail with a &quot;resource provider not registered&quot; error.</p>
+<h2 id="quick-start-deployment-requirements">Quick Start Deployment Requirements</h2>
+<p>The following providers are required for Quick Start (ACA) deployments:</p>
+<table>
+<thead>
+<tr>
+<th>Resource Provider</th>
+<th>Service</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>microsoft.alertsmanagement/smartDetectorAlertRules</code></td>
+<td>Smart detection alerts</td>
+</tr>
+<tr>
+<td><code>Microsoft.App/containerApps</code></td>
+<td>Container Apps</td>
+</tr>
+<tr>
+<td><code>Microsoft.App/managedEnvironments</code></td>
+<td>Container Apps environments</td>
+</tr>
+<tr>
+<td><code>Microsoft.AppConfiguration/configurationStores</code></td>
+<td>App Configuration</td>
+</tr>
+<tr>
+<td><code>Microsoft.CognitiveServices/accounts</code></td>
+<td>Azure OpenAI, Content Safety</td>
+</tr>
+<tr>
+<td><code>Microsoft.DocumentDB/databaseAccounts</code></td>
+<td>Cosmos DB</td>
+</tr>
+<tr>
+<td><code>Microsoft.EventGrid/namespaces</code></td>
+<td>Event Grid</td>
+</tr>
+<tr>
+<td><code>Microsoft.EventGrid/systemTopics</code></td>
+<td>Event Grid system topics</td>
+</tr>
+<tr>
+<td><code>Microsoft.Insights/components</code></td>
+<td>Application Insights</td>
+</tr>
+<tr>
+<td><code>Microsoft.KeyVault/vaults</code></td>
+<td>Key Vault</td>
+</tr>
+<tr>
+<td><code>Microsoft.ManagedIdentity/userAssignedIdentities</code></td>
+<td>Managed identities</td>
+</tr>
+<tr>
+<td><code>Microsoft.OperationalInsights/workspaces</code></td>
+<td>Log Analytics</td>
+</tr>
+<tr>
+<td><code>Microsoft.Portal/dashboards</code></td>
+<td>Azure dashboards</td>
+</tr>
+<tr>
+<td><code>Microsoft.Search/searchServices</code></td>
+<td>Azure AI Search</td>
+</tr>
+<tr>
+<td><code>Microsoft.Storage/storageAccounts</code></td>
+<td>Storage accounts</td>
+</tr>
+</tbody>
+</table>
+<h2 id="standard-deployment-requirements">Standard Deployment Requirements</h2>
+<p>The Standard (AKS) deployment requires additional providers:</p>
+<table>
+<thead>
+<tr>
+<th>Resource Provider</th>
+<th>Service</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>microsoft.alertsmanagement/smartDetectorAlertRules</code></td>
+<td>Smart detection alerts</td>
+</tr>
+<tr>
+<td><code>Microsoft.AppConfiguration/configurationStores</code></td>
+<td>App Configuration</td>
+</tr>
+<tr>
+<td><code>Microsoft.CognitiveServices/accounts</code></td>
+<td>Azure OpenAI, Content Safety</td>
+</tr>
+<tr>
+<td><code>Microsoft.Compute/virtualMachineScaleSets</code></td>
+<td>VM scale sets (AKS nodes)</td>
+</tr>
+<tr>
+<td><code>Microsoft.ContainerService/managedClusters</code></td>
+<td>AKS clusters</td>
+</tr>
+<tr>
+<td><code>Microsoft.DocumentDB/databaseAccounts</code></td>
+<td>Cosmos DB</td>
+</tr>
+<tr>
+<td><code>Microsoft.EventGrid/namespaces</code></td>
+<td>Event Grid</td>
+</tr>
+<tr>
+<td><code>Microsoft.EventGrid/systemTopics</code></td>
+<td>Event Grid system topics</td>
+</tr>
+<tr>
+<td><code>Microsoft.Insights/actiongroups</code></td>
+<td>Alert action groups</td>
+</tr>
+<tr>
+<td><code>Microsoft.Insights/components</code></td>
+<td>Application Insights</td>
+</tr>
+<tr>
+<td><code>Microsoft.Insights/metricalerts</code></td>
+<td>Metric alerts</td>
+</tr>
+<tr>
+<td><code>microsoft.insights/privateLinkScopes</code></td>
+<td>Private link for monitoring</td>
+</tr>
+<tr>
+<td><code>Microsoft.Insights/scheduledqueryrules</code></td>
+<td>Log query alerts</td>
+</tr>
+<tr>
+<td><code>Microsoft.KeyVault/vaults</code></td>
+<td>Key Vault</td>
+</tr>
+<tr>
+<td><code>Microsoft.ManagedIdentity/userAssignedIdentities</code></td>
+<td>Managed identities</td>
+</tr>
+<tr>
+<td><code>Microsoft.Network/loadBalancers</code></td>
+<td>Load balancers</td>
+</tr>
+<tr>
+<td><code>Microsoft.Network/networkInterfaces</code></td>
+<td>Network interfaces</td>
+</tr>
+<tr>
+<td><code>Microsoft.Network/networkSecurityGroups</code></td>
+<td>NSGs</td>
+</tr>
+<tr>
+<td><code>Microsoft.Network/privateEndpoints</code></td>
+<td>Private endpoints</td>
+</tr>
+<tr>
+<td><code>Microsoft.Network/publicIPAddresses</code></td>
+<td>Public IPs</td>
+</tr>
+<tr>
+<td><code>Microsoft.Network/virtualNetworks</code></td>
+<td>Virtual networks</td>
+</tr>
+<tr>
+<td><code>Microsoft.OperationalInsights/workspaces</code></td>
+<td>Log Analytics</td>
+</tr>
+<tr>
+<td><code>Microsoft.OperationsManagement/solutions</code></td>
+<td>Management solutions</td>
+</tr>
+<tr>
+<td><code>Microsoft.Search/searchServices</code></td>
+<td>Azure AI Search</td>
+</tr>
+<tr>
+<td><code>Microsoft.Storage/storageAccounts</code></td>
+<td>Storage accounts</td>
+</tr>
+</tbody>
+</table>
+<h2 id="checking-provider-registration">Checking Provider Registration</h2>
+<h3 id="azure-portal">Azure Portal</h3>
+<ol>
+<li>Navigate to your subscription</li>
+<li>Select <strong>Settings</strong> &gt; <strong>Resource providers</strong></li>
+<li>Search for the provider name</li>
+<li>Check the <strong>Status</strong> column</li>
+</ol>
+<h3 id="azure-cli">Azure CLI</h3>
+<pre><code class="lang-bash"># List all providers and their status
+az provider list --output table
+
+# Check specific provider
+az provider show --namespace Microsoft.App --query &quot;registrationState&quot;
+</code></pre>
+<h3 id="powershell">PowerShell</h3>
+<pre><code class="lang-powershell"># List all providers
+Get-AzResourceProvider | Select-Object ProviderNamespace, RegistrationState
+
+# Check specific provider
+(Get-AzResourceProvider -ProviderNamespace Microsoft.App).RegistrationState
+</code></pre>
+<h2 id="registering-providers">Registering Providers</h2>
+<h3 id="azure-portal-1">Azure Portal</h3>
+<ol>
+<li>Navigate to <strong>Subscription</strong> &gt; <strong>Resource providers</strong></li>
+<li>Search for the provider</li>
+<li>Select the provider</li>
+<li>Click <strong>Register</strong></li>
+</ol>
+<h3 id="azure-cli-1">Azure CLI</h3>
+<pre><code class="lang-bash"># Register a provider
+az provider register --namespace Microsoft.App
+
+# Wait for registration (may take several minutes)
+az provider show --namespace Microsoft.App --query &quot;registrationState&quot; --output tsv
+</code></pre>
+<h3 id="powershell-1">PowerShell</h3>
+<pre><code class="lang-powershell"># Register a provider
+Register-AzResourceProvider -ProviderNamespace Microsoft.App
+
+# Check status
+(Get-AzResourceProvider -ProviderNamespace Microsoft.App).RegistrationState
+</code></pre>
+<h2 id="bulk-registration-script">Bulk Registration Script</h2>
+<p>Register all required providers for Standard deployment:</p>
+<pre><code class="lang-powershell">$providers = @(
+    &quot;Microsoft.App&quot;,
+    &quot;Microsoft.AppConfiguration&quot;,
+    &quot;Microsoft.CognitiveServices&quot;,
+    &quot;Microsoft.Compute&quot;,
+    &quot;Microsoft.ContainerService&quot;,
+    &quot;Microsoft.DocumentDB&quot;,
+    &quot;Microsoft.EventGrid&quot;,
+    &quot;Microsoft.Insights&quot;,
+    &quot;Microsoft.KeyVault&quot;,
+    &quot;Microsoft.ManagedIdentity&quot;,
+    &quot;Microsoft.Network&quot;,
+    &quot;Microsoft.OperationalInsights&quot;,
+    &quot;Microsoft.OperationsManagement&quot;,
+    &quot;Microsoft.Search&quot;,
+    &quot;Microsoft.Storage&quot;
+)
+
+foreach ($provider in $providers) {
+    Write-Host &quot;Registering $provider...&quot;
+    Register-AzResourceProvider -ProviderNamespace $provider
+}
+
+# Wait and verify
+Start-Sleep -Seconds 30
+foreach ($provider in $providers) {
+    $status = (Get-AzResourceProvider -ProviderNamespace $provider).RegistrationState
+    Write-Host &quot;$provider : $status&quot;
+}
+</code></pre>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>&quot;Resource provider not registered&quot;</td>
+<td>Register the provider shown in error</td>
+</tr>
+<tr>
+<td>Registration stuck in &quot;Registering&quot;</td>
+<td>Wait up to 10 minutes, then retry</td>
+</tr>
+<tr>
+<td>&quot;Authorization failed&quot;</td>
+<td>Ensure you have Contributor role on subscription</td>
+</tr>
+<tr>
+<td>Provider not available</td>
+<td>Check if service is available in your region</td>
+</tr>
+</tbody>
+</table>
+<h2 id="required-permissions">Required Permissions</h2>
+<p>To register resource providers, you need:</p>
+<ul>
+<li><strong>Contributor</strong> or <strong>Owner</strong> role on the subscription, OR</li>
+<li>A custom role with <code>Microsoft.*/register/action</code> permission</li>
+</ul>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="deployment-quick-start.html">Quick Start Deployment</a></li>
+<li><a href="deployment-standard.html">Standard Deployment</a></li>
+<li><a href="../monitoring-troubleshooting/troubleshooting.html">Troubleshooting</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

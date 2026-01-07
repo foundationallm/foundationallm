@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Create a Model Agnostic Agent with GPT-4o | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Create a Model Agnostic Agent with GPT-4o | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/management-portal/how-to-guides/agents/create-model-agnostic-agent-gpt4o.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="create-a-model-agnostic-agent-with-gpt-4o">Create a Model Agnostic Agent with GPT-4o</h1>
+
+<p>This step-by-step guide walks you through creating a model agnostic agent using GPT-4o, with a code interpreter tool and a knowledge search tool for uploaded files.</p>
+<h2 id="overview">Overview</h2>
+<p>A model agnostic agent uses the <code>ExternalAgentWorkflow</code> pattern with the <code>FoundationaLLMFunctionCallingWorkflow</code> class. This architecture provides:</p>
+<ul>
+<li><strong>Code Interpreter</strong>: Execute Python code in isolated containers</li>
+<li><strong>Knowledge Search</strong>: Search and retrieve content from uploaded files</li>
+<li><strong>Flexible Routing</strong>: Dynamic tool selection based on user queries</li>
+</ul>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li>A GPT-4o model deployed and configured in your FoundationaLLM instance</li>
+<li>Azure Container Apps configured for code execution (for Code Interpreter)</li>
+<li>Access to the Management Portal with agent creation permissions</li>
+</ul>
+<h2 id="part-1-create-the-agent">Part 1: Create the Agent</h2>
+<ol>
+<li>Navigate to the <strong>Management Portal</strong></li>
+<li>Click <strong>Create New Agent</strong> in the sidebar</li>
+</ol>
+<h3 id="basic-configuration">Basic Configuration</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Agent Name</strong></td>
+<td>Your unique agent identifier (e.g., <code>gpt4o-maa-agent</code>)</td>
+</tr>
+<tr>
+<td><strong>Agent Display Name</strong></td>
+<td>User-friendly name (e.g., <code>GPT-4o Analysis Agent</code>)</td>
+</tr>
+<tr>
+<td><strong>Description</strong></td>
+<td>Purpose of the agent</td>
+</tr>
+</tbody>
+</table>
+<h3 id="user-portal-experience">User Portal Experience</h3>
+<p>Set <strong>&quot;Would you like to allow the user to upload files?&quot;</strong> to <strong>Yes</strong></p>
+<h3 id="workflow-configuration">Workflow Configuration</h3>
+<ol>
+<li>Select <strong>ExternalAgentWorkflow</strong> from the workflow dropdown</li>
+<li>Click <strong>Configure Workflow</strong></li>
+<li>Enter the following values:</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Workflow Name</strong></td>
+<td><code>MAA-Workflow</code></td>
+</tr>
+<tr>
+<td><strong>Workflow Package Name</strong></td>
+<td><code>foundationallm_agent_plugins</code></td>
+</tr>
+<tr>
+<td><strong>Workflow Class Name</strong></td>
+<td><code>FoundationaLLMFunctionCallingWorkflow</code></td>
+</tr>
+<tr>
+<td><strong>Workflow Host</strong></td>
+<td><code>LangChain</code></td>
+</tr>
+<tr>
+<td><strong>Workflow Main Model</strong></td>
+<td>Select your GPT-4o model</td>
+</tr>
+</tbody>
+</table>
+<ol start="4">
+<li><p>Add a model parameter:</p>
+<ul>
+<li>Click <strong>Add Property</strong></li>
+<li><strong>Property Key</strong>: <code>temperature</code></li>
+<li><strong>Property Type</strong>: <code>number</code></li>
+<li><strong>Property Value</strong>: <code>0.5</code></li>
+<li>Click <strong>Save</strong></li>
+</ul>
+</li>
+<li><p>For <strong>Main Workflow Prompt</strong>, use the prompt from:</p>
+<blockquote>
+<p><strong>TODO</strong>: Obtain the workflow main prompt content from the FoundationaLLM packages repository at: <a href="https://github.com/foundationallm/foundationallm-packages/blob/main/ModelAgnosticAgent/artifacts/Agent-Workflow-Main.txt">https://github.com/foundationallm/foundationallm-packages/blob/main/ModelAgnosticAgent/artifacts/Agent-Workflow-Main.txt</a></p>
+</blockquote>
+</li>
+</ol>
+<h2 id="part-2-create-the-workflow-prompts">Part 2: Create the Workflow Prompts</h2>
+<p>Open a new browser tab and navigate to <strong>Prompts</strong> in the Management Portal.</p>
+<blockquote>
+<p><strong>Note</strong>: Replace <code>Your-Agent-Name</code> with your actual agent name in all prompt names below.</p>
+</blockquote>
+<h3 id="create-workflow-files-prompt">Create Workflow-Files Prompt</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Prompt Name</strong></td>
+<td><code>Your-Agent-Name-Workflow-Files</code></td>
+</tr>
+<tr>
+<td><strong>Description</strong></td>
+<td>Provides instructions for identifying files relevant to the question</td>
+</tr>
+<tr>
+<td><strong>Category</strong></td>
+<td>Workflow</td>
+</tr>
+<tr>
+<td><strong>Prompt Prefix</strong></td>
+<td>See note below</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>TODO</strong>: Obtain prompt content from: <a href="https://github.com/foundationallm/foundationallm-packages/blob/main/ModelAgnosticAgent/artifacts/Agent-Workflow-Files.txt">https://github.com/foundationallm/foundationallm-packages/blob/main/ModelAgnosticAgent/artifacts/Agent-Workflow-Files.txt</a></p>
+</blockquote>
+<h3 id="create-workflow-final-prompt">Create Workflow-Final Prompt</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Prompt Name</strong></td>
+<td><code>Your-Agent-Name-Workflow-Final</code></td>
+</tr>
+<tr>
+<td><strong>Description</strong></td>
+<td>Instructions to build final response from tool results</td>
+</tr>
+<tr>
+<td><strong>Category</strong></td>
+<td>Workflow</td>
+</tr>
+<tr>
+<td><strong>Prompt Prefix</strong></td>
+<td>See note below</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>TODO</strong>: Obtain prompt content from: <a href="https://github.com/foundationallm/foundationallm-packages/blob/main/ModelAgnosticAgent/artifacts/Agent-Workflow-Final.txt">https://github.com/foundationallm/foundationallm-packages/blob/main/ModelAgnosticAgent/artifacts/Agent-Workflow-Final.txt</a></p>
+</blockquote>
+<h3 id="create-workflow-router-prompt">Create Workflow-Router Prompt</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Prompt Name</strong></td>
+<td><code>Your-Agent-Name-Workflow-Router</code></td>
+</tr>
+<tr>
+<td><strong>Description</strong></td>
+<td>Instructions for tool selection</td>
+</tr>
+<tr>
+<td><strong>Category</strong></td>
+<td>Workflow</td>
+</tr>
+<tr>
+<td><strong>Prompt Prefix</strong></td>
+<td>See note below</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>TODO</strong>: Obtain prompt content from: <a href="https://github.com/foundationallm/foundationallm-packages/blob/main/ModelAgnosticAgent/artifacts/Agent-Workflow-Router.txt">https://github.com/foundationallm/foundationallm-packages/blob/main/ModelAgnosticAgent/artifacts/Agent-Workflow-Router.txt</a></p>
+</blockquote>
+<h2 id="part-3-create-the-tool-prompts">Part 3: Create the Tool Prompts</h2>
+<h3 id="code-interpreter-prompts">Code Interpreter Prompts</h3>
+<p><strong>Tool-Code-Main:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Prompt Name</strong></td>
+<td><code>Your-Agent-Name-Tool-Code-Main</code></td>
+</tr>
+<tr>
+<td><strong>Description</strong></td>
+<td>Main instructions for the code interpreter tool</td>
+</tr>
+<tr>
+<td><strong>Category</strong></td>
+<td>Tool</td>
+</tr>
+<tr>
+<td><strong>Prompt Prefix</strong></td>
+<td>See note below</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>TODO</strong>: Obtain prompt content from: <a href="https://github.com/foundationallm/foundationallm-packages/blob/main/ModelAgnosticAgent/artifacts/Agent-Tool-Code-Main.txt">https://github.com/foundationallm/foundationallm-packages/blob/main/ModelAgnosticAgent/artifacts/Agent-Tool-Code-Main.txt</a></p>
+</blockquote>
+<p><strong>Tool-Code-Router:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Prompt Name</strong></td>
+<td><code>Your-Agent-Name-Tool-Code-Router</code></td>
+</tr>
+<tr>
+<td><strong>Description</strong></td>
+<td>Instructions for selecting the code interpreter tool</td>
+</tr>
+<tr>
+<td><strong>Category</strong></td>
+<td>Tool</td>
+</tr>
+<tr>
+<td><strong>Prompt Prefix</strong></td>
+<td>See note below</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>TODO</strong>: Obtain prompt content from: <a href="https://github.com/foundationallm/foundationallm-packages/blob/main/ModelAgnosticAgent/artifacts/Agent-Tool-Code-Router.txt">https://github.com/foundationallm/foundationallm-packages/blob/main/ModelAgnosticAgent/artifacts/Agent-Tool-Code-Router.txt</a></p>
+</blockquote>
+<h3 id="knowledge-tool-prompts">Knowledge Tool Prompts</h3>
+<p><strong>Tool-Knowledge-Main:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Prompt Name</strong></td>
+<td><code>Your-Agent-Name-Tool-Knowledge-Main</code></td>
+</tr>
+<tr>
+<td><strong>Description</strong></td>
+<td>Main instructions for the knowledge tool</td>
+</tr>
+<tr>
+<td><strong>Category</strong></td>
+<td>Tool</td>
+</tr>
+<tr>
+<td><strong>Prompt Prefix</strong></td>
+<td>See note below</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>TODO</strong>: Obtain prompt content from: <a href="https://github.com/foundationallm/foundationallm-packages/blob/main/ModelAgnosticAgent/artifacts/Agent-Tool-Knowledge-Main.txt">https://github.com/foundationallm/foundationallm-packages/blob/main/ModelAgnosticAgent/artifacts/Agent-Tool-Knowledge-Main.txt</a></p>
+</blockquote>
+<p><strong>Tool-Knowledge-Router:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Prompt Name</strong></td>
+<td><code>Your-Agent-Name-Tool-Knowledge-Router</code></td>
+</tr>
+<tr>
+<td><strong>Description</strong></td>
+<td>Instructions for selecting the knowledge tool</td>
+</tr>
+<tr>
+<td><strong>Category</strong></td>
+<td>Tool</td>
+</tr>
+<tr>
+<td><strong>Prompt Prefix</strong></td>
+<td>See note below</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>TODO</strong>: Obtain prompt content from: <a href="https://github.com/foundationallm/foundationallm-packages/blob/main/ModelAgnosticAgent/artifacts/Agent-Tool-Knowledge-Router.txt">https://github.com/foundationallm/foundationallm-packages/blob/main/ModelAgnosticAgent/artifacts/Agent-Tool-Knowledge-Router.txt</a></p>
+</blockquote>
+<h2 id="part-4-configure-workflow-resources">Part 4: Configure Workflow Resources</h2>
+<p>Return to your agent configuration and add workflow resources:</p>
+<h3 id="add-router-prompt-resource">Add Router Prompt Resource</h3>
+<ol>
+<li>Click <strong>Add Workflow Resource</strong></li>
+<li>Configure:
+<ul>
+<li><strong>Resource Type</strong>: Prompt</li>
+<li><strong>Resource</strong>: Select <code>Your-Agent-Name-Workflow-Router</code></li>
+<li><strong>Resource Role</strong>: <code>router_prompt</code></li>
+</ul>
+</li>
+<li>Click <strong>Save</strong></li>
+</ol>
+<h3 id="add-files-prompt-resource">Add Files Prompt Resource</h3>
+<ol>
+<li>Click <strong>Add Workflow Resource</strong></li>
+<li>Configure:
+<ul>
+<li><strong>Resource Type</strong>: Prompt</li>
+<li><strong>Resource</strong>: Select <code>Your-Agent-Name-Workflow-Files</code></li>
+<li><strong>Resource Role</strong>: <code>files_prompt</code></li>
+</ul>
+</li>
+<li>Click <strong>Save</strong></li>
+</ol>
+<h3 id="add-final-prompt-resource">Add Final Prompt Resource</h3>
+<ol>
+<li>Click <strong>Add Workflow Resource</strong></li>
+<li>Configure:
+<ul>
+<li><strong>Resource Type</strong>: Prompt</li>
+<li><strong>Resource</strong>: Select <code>Your-Agent-Name-Workflow-Final</code></li>
+<li><strong>Resource Role</strong>: <code>final_prompt</code></li>
+</ul>
+</li>
+<li>Click <strong>Save</strong></li>
+</ol>
+<h2 id="part-5-configure-the-code-interpreter-tool">Part 5: Configure the Code Interpreter Tool</h2>
+<ol>
+<li>In the <strong>Tools</strong> section, click <strong>Add New Tool</strong></li>
+</ol>
+<h3 id="basic-configuration-1">Basic Configuration</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Tool Name</strong></td>
+<td><code>Code-01</code> (must match prompts exactly)</td>
+</tr>
+<tr>
+<td><strong>Tool Description</strong></td>
+<td>Answers questions that require dynamic generation of code</td>
+</tr>
+<tr>
+<td><strong>Tool Package Name</strong></td>
+<td><code>foundationallm_agent_plugins</code></td>
+</tr>
+<tr>
+<td><strong>Tool Class Name</strong></td>
+<td><code>FoundationaLLMCodeInterpreterTool</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="add-tool-resources">Add Tool Resources</h3>
+<p><strong>Main Model:</strong></p>
+<ol>
+<li>Click <strong>Add Tool Resource</strong></li>
+<li>Select <strong>Resource Type</strong>: Model</li>
+<li>Select your GPT-4o model</li>
+<li><strong>Resource Role</strong>: <code>main_model</code></li>
+<li>Click <strong>Save</strong></li>
+<li>Expand the model resource and click <strong>Add Property</strong>:
+<ul>
+<li><strong>Property Key</strong>: <code>model_parameters</code></li>
+<li><strong>Property Type</strong>: Object / Array</li>
+<li><strong>Property Value</strong>: <code>{&quot;temperature&quot;: 0.2}</code></li>
+<li>Click <strong>Save</strong></li>
+</ul>
+</li>
+</ol>
+<p><strong>Main Prompt:</strong></p>
+<ol>
+<li>Click <strong>Add Tool Resource</strong></li>
+<li>Select <strong>Resource Type</strong>: Prompt</li>
+<li>Select <code>Your-Agent-Name-Tool-Code-Main</code></li>
+<li><strong>Resource Role</strong>: <code>main_prompt</code></li>
+<li>Click <strong>Save</strong></li>
+</ol>
+<p><strong>Router Prompt:</strong></p>
+<ol>
+<li>Click <strong>Add Tool Resource</strong></li>
+<li>Select <strong>Resource Type</strong>: Prompt</li>
+<li>Select <code>Your-Agent-Name-Tool-Code-Router</code></li>
+<li><strong>Resource Role</strong>: <code>router_prompt</code></li>
+<li>Click <strong>Save</strong></li>
+</ol>
+<h3 id="add-tool-properties">Add Tool Properties</h3>
+<p>Add these properties one at a time:</p>
+<table>
+<thead>
+<tr>
+<th>Property Key</th>
+<th>Property Type</th>
+<th>Property Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>code_session_required</code></td>
+<td>Boolean</td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>code_session_endpoint_provider</code></td>
+<td>String</td>
+<td><code>AzureContainerAppsCustomContainer</code></td>
+</tr>
+<tr>
+<td><code>code_session_language</code></td>
+<td>String</td>
+<td><code>Python</code></td>
+</tr>
+</tbody>
+</table>
+<p>Click <strong>Save</strong> in the Configure Tool dialog.</p>
+<h2 id="part-6-configure-the-knowledge-tool">Part 6: Configure the Knowledge Tool</h2>
+<ol>
+<li>Click <strong>Add New Tool</strong></li>
+</ol>
+<h3 id="basic-configuration-2">Basic Configuration</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Tool Name</strong></td>
+<td><code>Knowledge-Conversation-Files</code> (must match prompts exactly)</td>
+</tr>
+<tr>
+<td><strong>Tool Description</strong></td>
+<td>Retrieves content from files uploaded to conversations</td>
+</tr>
+<tr>
+<td><strong>Tool Package Name</strong></td>
+<td><code>foundationallm_agent_plugins</code></td>
+</tr>
+<tr>
+<td><strong>Tool Class Name</strong></td>
+<td><code>FoundationaLLMKnowledgeTool</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="add-tool-resources-1">Add Tool Resources</h3>
+<p><strong>Main Model:</strong></p>
+<ol>
+<li>Click <strong>Add Tool Resource</strong></li>
+<li>Select <strong>Resource Type</strong>: Model</li>
+<li>Select your GPT-4o model</li>
+<li><strong>Resource Role</strong>: <code>main_model</code></li>
+<li>Click <strong>Save</strong></li>
+</ol>
+<p><strong>Main Prompt:</strong></p>
+<ol>
+<li>Click <strong>Add Tool Resource</strong></li>
+<li>Select <strong>Resource Type</strong>: Prompt</li>
+<li>Select <code>Your-Agent-Name-Tool-Knowledge-Main</code></li>
+<li><strong>Resource Role</strong>: <code>main_prompt</code></li>
+<li>Click <strong>Save</strong></li>
+</ol>
+<p><strong>Router Prompt:</strong></p>
+<ol>
+<li>Click <strong>Add Tool Resource</strong></li>
+<li>Select <strong>Resource Type</strong>: Prompt</li>
+<li>Select <code>Your-Agent-Name-Tool-Knowledge-Router</code></li>
+<li><strong>Resource Role</strong>: <code>router_prompt</code></li>
+<li>Click <strong>Save</strong></li>
+</ol>
+<p><strong>Data Pipeline:</strong></p>
+<ol>
+<li>Click <strong>Add Tool Resource</strong></li>
+<li>Select <strong>Resource Type</strong>: Data Pipeline</li>
+<li>Select <code>DefaultFileUpload</code></li>
+<li><strong>Resource Role</strong>: <code>file_upload_data_pipeline</code></li>
+<li>Click <strong>Save</strong></li>
+</ol>
+<p><strong>Vector Database:</strong></p>
+<ol>
+<li>Click <strong>Add Tool Resource</strong></li>
+<li>Select <strong>Resource Type</strong>: Vector Database</li>
+<li>Select <code>ConversationFiles</code></li>
+<li><strong>Resource Role</strong>: <code>vector_database</code></li>
+<li>Click <strong>Save</strong></li>
+</ol>
+<h3 id="add-tool-properties-1">Add Tool Properties</h3>
+<table>
+<thead>
+<tr>
+<th>Property Key</th>
+<th>Property Type</th>
+<th>Property Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>embedding_model</code></td>
+<td>String</td>
+<td><code>text-embedding-3-large</code></td>
+</tr>
+<tr>
+<td><code>embedding_dimensions</code></td>
+<td>Number</td>
+<td><code>2048</code></td>
+</tr>
+</tbody>
+</table>
+<p>Click <strong>Save</strong> in the Configure Tool dialog.</p>
+<h2 id="part-7-create-the-agent">Part 7: Create the Agent</h2>
+<ol>
+<li>Review all configurations</li>
+<li>Click <strong>Create Agent</strong></li>
+<li>Wait for confirmation</li>
+</ol>
+<h2 id="testing-your-agent">Testing Your Agent</h2>
+<ol>
+<li>Open the <strong>Chat User Portal</strong></li>
+<li>Select your new agent</li>
+<li>Test the capabilities:</li>
+</ol>
+<h3 id="test-file-upload-and-knowledge-search">Test File Upload and Knowledge Search</h3>
+<ol>
+<li>Upload a document (PDF, Word, etc.)</li>
+<li>Ask questions about the document content</li>
+</ol>
+<h3 id="test-code-interpreter">Test Code Interpreter</h3>
+<ol>
+<li>Ask for data analysis or calculations</li>
+<li>Request charts or visualizations</li>
+<li>Ask for code generation</li>
+</ol>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="tool-not-being-selected">Tool Not Being Selected</h3>
+<ul>
+<li>Verify tool names match exactly: <code>Code-01</code> and <code>Knowledge-Conversation-Files</code></li>
+<li>Check that router prompts are correctly assigned</li>
+</ul>
+<h3 id="file-upload-not-working">File Upload Not Working</h3>
+<ul>
+<li>Ensure &quot;Allow File Upload&quot; is enabled in User Portal Experience</li>
+<li>Verify the <code>DefaultFileUpload</code> data pipeline exists</li>
+</ul>
+<h3 id="code-execution-failing">Code Execution Failing</h3>
+<ul>
+<li>Check Azure Container Apps custom container configuration</li>
+<li>Verify <code>code_session_endpoint_provider</code> is set correctly</li>
+</ul>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="create-model-agnostic-agent-claude.html">Create Model Agnostic Agent with Claude</a></li>
+<li><a href="prompts.html">Managing Prompts</a></li>
+<li><a href="../../reference/concepts/agents-workflows.html">Agents &amp; Workflows Reference</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Agent Access Token | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Agent Access Token | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/archive/setup-guides/agents/Agent_AccessToken.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="agent-access-token">Agent Access Token</h1>
+
+<p>To allow the flexibility of using an agent without requiring the user to be authenticated using Entra ID credentials, you can create an <strong>Agent Access Token</strong>. This is particularly useful for public applications that want to provide access to the agent without requiring users to log in with their Entra ID credentials.</p>
+<h2 id="how-to-create-an-agent-access-token">How to create an Agent Access Token</h2>
+<ol>
+<li><p>In the <strong>Security</strong> section of the agent configuration, click on the <strong>Create Access Token</strong> button to create a new access token.</p>
+<p><img src="media/agent_Workflow_6.png" alt="Create Access Token"></p>
+</li>
+<li><p>In the <strong>Create Access Token</strong> dialog, enter a description for the access token and an expiration date then click on the <strong>Create Access Token</strong> button.</p>
+<p><img src="media/agent_Workflow_7.png" alt="Create Access Token Dialog"></p>
+</li>
+<li><p>The access token will be created and displayed in a dialog, make sure to save it or copy it for future use.</p>
+<p><img src="media/agent_Workflow_8.png" alt="Access Token Created"></p>
+</li>
+</ol>
+<h2 id="assigning-permission-to-the-new-virtual-security-group-id-of-the-agent">Assigning permission to the new Virtual Security Group ID of the agent</h2>
+<ol>
+<li><p>Copy the GUID of the new Virtual Security Group ID of the agent.</p>
+<p><img src="media/agent_Workflow_9.png" alt="Copy the GUID of the new Virtual Security Group ID of the agent"></p>
+</li>
+<li><p>At the top of the page while editing the agent, click on the <strong>Access Control</strong>.</p>
+<p><img src="media/agent_Workflow_10.png" alt="Click on the Access Control"></p>
+</li>
+<li><p>In the <strong>Access Control</strong> page, click on the <strong>Add Role Assignment for this resource</strong> button.</p>
+</li>
+<li><p>Verify that the Scope is set to <code>providers/FoundationaLLM.Agent/agents/{agent_name}</code>.</p>
+</li>
+<li><p>Choose <strong>Group</strong> as the Prinicipal Type.</p>
+</li>
+<li><p>Paste the GUID of the new Virtual Security Group ID of the agent in the <strong>Principal ID</strong> field.</p>
+</li>
+<li><p>Choose <strong>Reader</strong> as the Role to assign.</p>
+<p><img src="media/agent_Workflow_11.png" alt="Add Role Assignment for this resource"></p>
+</li>
+</ol>
+<h2 id="accessing-the-agent-using-the-agent-access-token">Accessing the agent using the Agent Access Token</h2>
+<p>To share an example of how to use the Agent Access Token, we will use the API collection from <strong>POSTMAN</strong> that is publicly available and part of the FoundationaLLM documentation.</p>
+<p>There are two steps required to use the agent using the Agent Access Token in <strong>POSTMAN</strong> by accessing the <strong>FoundationaLLM.Core.API</strong> collection:</p>
+<ol>
+<li><p>Under <strong>sessions</strong>, pick the POST <strong>Creates a new Chat session with Agent Access Token</strong></p>
+</li>
+<li><p>Under <strong>completions</strong>, expand <strong>completion</strong> and pick POST <strong>Requests a completion with Agent Access Token</strong></p>
+<p><img src="media/agent_Workflow_12.png" alt="POSTMAN"></p>
+</li>
+</ol>
+<p>You have to start with the <strong>Creates a new Chat session with Agent Access Token</strong> request to create a new chat session as the request for completion requires a <strong>sessionId</strong>.</p>
+<ol>
+<li><p>Start by setting the <strong>Authorization</strong> type to <code>No Auth</code></p>
+<p><img src="media/agent_Workflow_13.png" alt="POSTMAN Authorization"></p>
+</li>
+<li><p>On the Headers tab, set a new key <strong>X-AGENT-ACCESS-TOKEN</strong> with the value of the Access Token that you were asked to save or copy previously</p>
+<p><img src="media/agent_Workflow_14.png" alt="POSTMAN Headers"></p>
+</li>
+<li><p>On the Body tab, enter a name for your chat conversation session in the <strong>name</strong> key in raw JSON format</p>
+<p><img src="media/agent_Workflow_15.png" alt="POSTMAN Body"></p>
+</li>
+<li><p>Click on the <strong>Send</strong> button to send the request and save the <strong>sessionId</strong> from the response as it will be needed in the next step.</p>
+</li>
+</ol>
+<p>The next step is to POST to the completion endpoint to get a response from the agent utilizing the sessionId received in the previous step.</p>
+<p>1- Set the <strong>Authorization</strong> type to <code>No Auth</code></p>
+<p><img src="media/agent_Workflow_16.png" alt="POSTMAN second Authorization"></p>
+<p>2- On the Headers tab, set a new key <strong>X-AGENT-ACCESS-TOKEN</strong> with the value of the Access Token that you were asked to save or copy previously</p>
+<p><img src="media/agent_Workflow_17.png" alt="POSTMAN second Headers"></p>
+<p>3- On the Body tab, enter the <strong>sessionId</strong> received in the previous POST in the <strong>sessionId</strong> key in raw JSON format</p>
+<p><img src="media/agent_Workflow_18.png" alt="POSTMAN second Body"></p>
+<p>4- Click on the <strong>Send</strong> button to send the request and receive a response from the agent explaining why the sky is blue.</p>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

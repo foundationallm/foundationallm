@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Updating container versions in the Standard Deployment | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Updating container versions in the Standard Deployment | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../toc.html">
+      <meta name="docfx:tocrel" content="../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/archive/operations/update.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../index.html">
+            <img id="logo" class="svg" src="../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="updating-container-versions-in-the-standard-deployment">Updating container versions in the Standard Deployment</h1>
+
+<p>The Standard Deployment uses the <code>foundationallm/deploy/scripts/Deploy-Images-Aks.ps1</code> script to deploy latest version of the FoundationaLLM images during initial setup.  However, you may want to update the images to a specific version.  This can be done by updating the values file and redeploying the images.</p>
+<h2 id="prerequisites">PREREQUISITES</h2>
+<ul>
+<li><p>Azure CLI set to the correct tenant/subscription context</p>
+</li>
+<li><p>AKS credentials located in the <code>.kube/config</code> directory</p>
+<p>To obtain AKS credentials, use the following Azure CLI command:</p>
+<pre><code class="lang-pwsh">az aks get-credentials --name &quot;[PREFIX]-aks&quot; --resource-group &quot;[DEPLOYMENT RESOURCE GROUP]&quot;
+</code></pre>
+</li>
+<li><p>Helm CLI</p>
+</li>
+</ul>
+<h2 id="description">DESCRIPTION</h2>
+<p>This script deploys multiple images on an AKS (Azure Kubernetes Service) cluster using Helm charts.
+It takes various parameters such as the release name, AKS name, resource group, tag, charts to deploy,
+values file, namespace, TLS/SSL environment, TLS host, TLS secret name, and autoscale option.</p>
+<h2 id="parameter-name">PARAMETER name</h2>
+<p>The release name for the deployment. Default is &quot;foundationallm&quot;.</p>
+<h2 id="parameter-aksname">PARAMETER aksName</h2>
+<p>The name of the AKS cluster.</p>
+<h2 id="parameter-resourcegroup">PARAMETER resourceGroup</h2>
+<p>The resource group of the AKS cluster.</p>
+<h2 id="parameter-tag">PARAMETER tag</h2>
+<p>The tag of the images to deploy. Default is &quot;latest&quot;.</p>
+<h2 id="parameter-charts">PARAMETER charts</h2>
+<p>The charts to deploy. Use &quot;<em>&quot; to deploy all charts. Default is &quot;</em>&quot;.</p>
+<h2 id="parameter-valuesfile">PARAMETER valuesFile</h2>
+<p>The path to the values file for Helm charts. Default is &quot;gvalues.yaml&quot;.</p>
+<h2 id="parameter-namespace">PARAMETER namespace</h2>
+<p>The namespace to deploy the charts. If empty, it uses the namespace specified in .kube/config.</p>
+<h2 id="parameter-tlsenv">PARAMETER tlsEnv</h2>
+<p>The TLS/SSL environment to enable. Valid values are &quot;prod&quot;, &quot;staging&quot;, &quot;none&quot;, and &quot;custom&quot;. Default is &quot;prod&quot;.</p>
+<h2 id="parameter-tlshost">PARAMETER tlsHost</h2>
+<p>The hostname of the AKS cluster. Required if tlsEnv is set to &quot;custom&quot;.</p>
+<h2 id="parameter-tlssecretname">PARAMETER tlsSecretName</h2>
+<p>The name of the TLS secret. Required if tlsEnv is set to &quot;custom&quot;.</p>
+<h2 id="parameter-autoscale">PARAMETER autoscale</h2>
+<p>Specifies whether to enable autoscaling for the core-job chart. Default is $false.</p>
+<h2 id="example">EXAMPLE</h2>
+<pre><code class="lang-powershell">Deploy-Images-Aks.ps1 `
+    -aksName &quot;myAKS&quot; `
+    -resourceGroup &quot;myResourceGroup&quot; `
+    -tag &quot;v1.0&quot; `
+    -charts &quot;core-api,core-job&quot; `
+    -valuesFile &quot;myvalues.yaml&quot; `
+    -namespace &quot;myNamespace&quot; `
+    -tlsEnv &quot;prod&quot; `
+    -tlsHost &quot;myaks.example.com&quot; `
+    -tlsSecretName &quot;myTLSSecret&quot; `
+    -autoscale $true
+</code></pre>
+<blockquote>
+<p><strong>Note:</strong> The script will NOT generate a <code>gvalues.yaml</code> file for you. If you do not have a <code>gvalues.yaml</code> file locally, use the Helm CLI to obtain it.</p>
+</blockquote>
+<pre><code class="lang-pwsh"># Get all releases (e.g., foundationallm-web)
+helm list
+# Write gvalues.yaml for release
+helm get values &quot;foundationallm-web&quot; --all &gt; gvalues.yaml
+</code></pre>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

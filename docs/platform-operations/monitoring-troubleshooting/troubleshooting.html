@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Troubleshooting Guide | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Troubleshooting Guide | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../toc.html">
+      <meta name="docfx:tocrel" content="../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/platform-operations/monitoring-troubleshooting/troubleshooting.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../index.html">
+            <img id="logo" class="svg" src="../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="troubleshooting-guide">Troubleshooting Guide</h1>
+
+<p>This guide provides structured approaches to diagnosing and resolving common issues in FoundationaLLM deployments.</p>
+<h2 id="quick-diagnostics">Quick Diagnostics</h2>
+<h3 id="health-check-commands">Health Check Commands</h3>
+<pre><code class="lang-powershell"># AKS deployment - check all pods
+kubectl get pods -n fllm
+
+# AKS deployment - check services
+kubectl get svc -n fllm
+
+# Quick Start - check container apps
+az containerapp list -g &lt;resource-group&gt; -o table
+</code></pre>
+<h3 id="expected-healthy-state">Expected Healthy State</h3>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>All pods</td>
+<td><code>Running</code></td>
+</tr>
+<tr>
+<td>All services</td>
+<td><code>Active</code></td>
+</tr>
+<tr>
+<td>All containers</td>
+<td><code>Running</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="common-issues">Common Issues</h2>
+<h3 id="1-authentication-failures">1. Authentication Failures</h3>
+<h4 id="symptoms">Symptoms</h4>
+<ul>
+<li>Unable to log in to portals</li>
+<li>&quot;Invalid token&quot; errors</li>
+<li>Redirect loops after login</li>
+</ul>
+<h4 id="diagnosis">Diagnosis</h4>
+<pre><code class="lang-kql">// Check Entra ID sign-in logs
+AADSignInLogs
+| where TimeGenerated &gt; ago(1h)
+| where ResultType != 0
+| project TimeGenerated, UserPrincipalName, AppDisplayName, ResultType, ResultDescription
+</code></pre>
+<h4 id="solutions">Solutions</h4>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Invalid redirect URI</strong></td>
+<td>Update redirect URIs in App Registration</td>
+</tr>
+<tr>
+<td><strong>Missing scopes</strong></td>
+<td>Configure API permissions</td>
+</tr>
+<tr>
+<td><strong>Client secret expired</strong></td>
+<td>Generate new secret, update Key Vault</td>
+</tr>
+<tr>
+<td><strong>Wrong tenant</strong></td>
+<td>Verify tenant ID in App Configuration</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Verify App Registration:</strong></p>
+<ol>
+<li>Open Azure Portal &gt; <strong>Microsoft Entra ID</strong> &gt; <strong>App registrations</strong></li>
+<li>Select the application</li>
+<li>Check <strong>Authentication</strong> &gt; <strong>Redirect URIs</strong></li>
+<li>Verify the URI matches your deployment URL + <code>/signin-oidc</code></li>
+</ol>
+<p>See <a href="../security-permissions/authentication-authorization/index.html">Authentication Setup</a> for detailed configuration.</p>
+<h3 id="2-missing-app-configuration-values">2. Missing App Configuration Values</h3>
+<h4 id="symptoms-1">Symptoms</h4>
+<ul>
+<li>Services fail to start</li>
+<li>Configuration-related errors in logs</li>
+<li>&quot;Key not found&quot; errors</li>
+</ul>
+<h4 id="diagnosis-1">Diagnosis</h4>
+<pre><code class="lang-powershell"># Check App Configuration
+az appconfig kv list --name &lt;app-config-name&gt; -o table
+
+# Check specific key
+az appconfig kv show --name &lt;app-config-name&gt; --key &quot;FoundationaLLM:Instance:Id&quot;
+</code></pre>
+<h4 id="solutions-1">Solutions</h4>
+<ol>
+<li><p><strong>Verify Key Vault References</strong></p>
+<pre><code class="lang-powershell"># Check Key Vault secret exists
+az keyvault secret show --vault-name &lt;vault-name&gt; --name &lt;secret-name&gt;
+</code></pre>
+</li>
+<li><p><strong>Check Managed Identity Permissions</strong></p>
+<ul>
+<li>App Configuration Reader on App Config</li>
+<li>Key Vault Secrets User on Key Vault</li>
+</ul>
+</li>
+<li><p><strong>Re-run Configuration Script</strong></p>
+<pre><code class="lang-powershell"># Quick Start
+cd deploy/quick-start
+../common/scripts/Set-AzdEnvEntra.ps1
+</code></pre>
+</li>
+</ol>
+<h3 id="3-container-crashes">3. Container Crashes</h3>
+<h4 id="symptoms-2">Symptoms</h4>
+<ul>
+<li>Pods in <code>CrashLoopBackOff</code> state</li>
+<li>Services intermittently unavailable</li>
+<li>Container restarts</li>
+</ul>
+<h4 id="diagnosis-2">Diagnosis</h4>
+<pre><code class="lang-powershell"># Get pod status
+kubectl get pods -n fllm
+
+# Describe failing pod
+kubectl describe pod &lt;pod-name&gt; -n fllm
+
+# Get logs from crashed container
+kubectl logs &lt;pod-name&gt; -n fllm --previous
+</code></pre>
+<pre><code class="lang-kql">// Query for container crashes
+ContainerAppConsoleLogs
+| where TimeGenerated &gt; ago(24h)
+| where Log contains &quot;exception&quot; or Log contains &quot;fatal&quot; or Log contains &quot;crash&quot;
+| project TimeGenerated, ContainerAppName, Log
+| order by TimeGenerated desc
+</code></pre>
+<h4 id="solutions-2">Solutions</h4>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Out of memory</strong></td>
+<td>Increase memory limits in Helm values</td>
+</tr>
+<tr>
+<td><strong>Missing config</strong></td>
+<td>Check environment variables and App Config</td>
+</tr>
+<tr>
+<td><strong>Dependency unavailable</strong></td>
+<td>Verify dependent services are running</td>
+</tr>
+<tr>
+<td><strong>Image pull error</strong></td>
+<td>Check registry access and image tag</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Check Resource Usage:</strong></p>
+<pre><code class="lang-powershell">kubectl top pods -n fllm
+</code></pre>
+<p><strong>Update Resource Limits:</strong></p>
+<pre><code class="lang-yaml"># In Helm values
+resources:
+  limits:
+    memory: &quot;2Gi&quot;
+    cpu: &quot;1000m&quot;
+  requests:
+    memory: &quot;1Gi&quot;
+    cpu: &quot;500m&quot;
+</code></pre>
+<h3 id="4-api-errors">4. API Errors</h3>
+<h4 id="symptoms-3">Symptoms</h4>
+<ul>
+<li>500 errors from APIs</li>
+<li>Timeout errors</li>
+<li>Incomplete responses</li>
+</ul>
+<h4 id="diagnosis-3">Diagnosis</h4>
+<pre><code class="lang-kql">// API error analysis
+AppRequests
+| where TimeGenerated &gt; ago(1h)
+| where Success == false
+| summarize count() by Name, ResultCode
+| order by count_ desc
+</code></pre>
+<pre><code class="lang-powershell"># Check API pod logs
+kubectl logs -n fllm deployment/core-api --tail=200
+</code></pre>
+<h4 id="solutions-3">Solutions</h4>
+<table>
+<thead>
+<tr>
+<th>Error Code</th>
+<th>Likely Cause</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>401</strong></td>
+<td>Authentication</td>
+<td>Check token and permissions</td>
+</tr>
+<tr>
+<td><strong>403</strong></td>
+<td>Authorization</td>
+<td>Verify RBAC roles</td>
+</tr>
+<tr>
+<td><strong>500</strong></td>
+<td>Server error</td>
+<td>Check logs for details</td>
+</tr>
+<tr>
+<td><strong>502</strong></td>
+<td>Bad gateway</td>
+<td>Check pod health</td>
+</tr>
+<tr>
+<td><strong>503</strong></td>
+<td>Service unavailable</td>
+<td>Check service endpoints</td>
+</tr>
+<tr>
+<td><strong>504</strong></td>
+<td>Timeout</td>
+<td>Check dependencies, increase timeout</td>
+</tr>
+</tbody>
+</table>
+<h3 id="5-azure-openai-errors">5. Azure OpenAI Errors</h3>
+<h4 id="symptoms-4">Symptoms</h4>
+<ul>
+<li>&quot;Model deployment not found&quot;</li>
+<li>Quota exceeded errors</li>
+<li>Timeout on completions</li>
+</ul>
+<h4 id="diagnosis-4">Diagnosis</h4>
+<pre><code class="lang-powershell"># Check OpenAI deployment
+az cognitiveservices account deployment list \
+  --name &lt;openai-account&gt; \
+  --resource-group &lt;resource-group&gt;
+
+# Check quota
+az cognitiveservices account show \
+  --name &lt;openai-account&gt; \
+  --resource-group &lt;resource-group&gt;
+</code></pre>
+<h4 id="solutions-4">Solutions</h4>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Deployment not found</strong></td>
+<td>Create model deployment in Azure Portal</td>
+</tr>
+<tr>
+<td><strong>Quota exceeded</strong></td>
+<td>Request quota increase or use different region</td>
+</tr>
+<tr>
+<td><strong>Wrong deployment name</strong></td>
+<td>Update App Configuration with correct name</td>
+</tr>
+<tr>
+<td><strong>Region unavailable</strong></td>
+<td>Check model availability by region</td>
+</tr>
+</tbody>
+</table>
+<h3 id="6-vector-search-issues">6. Vector Search Issues</h3>
+<h4 id="symptoms-5">Symptoms</h4>
+<ul>
+<li>No results from knowledge queries</li>
+<li>&quot;Index not found&quot; errors</li>
+<li>Slow search responses</li>
+</ul>
+<h4 id="diagnosis-5">Diagnosis</h4>
+<pre><code class="lang-powershell"># Check AI Search service
+az search service show --name &lt;search-service&gt; --resource-group &lt;resource-group&gt;
+
+# List indexes
+az search index list --service-name &lt;search-service&gt; --resource-group &lt;resource-group&gt;
+</code></pre>
+<h4 id="solutions-5">Solutions</h4>
+<ol>
+<li><strong>Verify Index Exists</strong> - Check in Azure Portal</li>
+<li><strong>Check Permissions</strong> - Managed Identity needs Search Index Data Reader</li>
+<li><strong>Re-run Indexing</strong> - Trigger data pipeline</li>
+</ol>
+<h3 id="7-network-connectivity">7. Network Connectivity</h3>
+<h4 id="symptoms-6">Symptoms</h4>
+<ul>
+<li>Services can't communicate</li>
+<li>DNS resolution failures</li>
+<li>Timeout between services</li>
+</ul>
+<h4 id="diagnosis-aks">Diagnosis (AKS)</h4>
+<pre><code class="lang-powershell"># Check service endpoints
+kubectl get endpoints -n fllm
+
+# Test DNS resolution
+kubectl run dns-test --image=busybox --rm -it --restart=Never -- nslookup core-api.fllm.svc.cluster.local
+
+# Check network policies
+kubectl get networkpolicies -n fllm
+</code></pre>
+<h4 id="solutions-6">Solutions</h4>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>No endpoints</strong></td>
+<td>Check pod selector labels</td>
+</tr>
+<tr>
+<td><strong>DNS failure</strong></td>
+<td>Restart CoreDNS pods</td>
+</tr>
+<tr>
+<td><strong>Network policy blocking</strong></td>
+<td>Review network policy rules</td>
+</tr>
+<tr>
+<td><strong>Private endpoint issues</strong></td>
+<td>Check NSG and private DNS zones</td>
+</tr>
+</tbody>
+</table>
+<h2 id="diagnostic-tools">Diagnostic Tools</h2>
+<h3 id="log-analytics-queries">Log Analytics Queries</h3>
+<p>Save these queries for quick access:</p>
+<pre><code class="lang-kql">// Error summary by service
+ContainerAppConsoleLogs
+| where TimeGenerated &gt; ago(24h)
+| where Log contains &quot;error&quot; or Log contains &quot;Error&quot;
+| summarize ErrorCount = count() by ContainerAppName
+| order by ErrorCount desc
+
+// Request latency percentiles
+AppRequests
+| where TimeGenerated &gt; ago(1h)
+| summarize 
+    p50 = percentile(DurationMs, 50),
+    p95 = percentile(DurationMs, 95),
+    p99 = percentile(DurationMs, 99)
+    by Name
+</code></pre>
+<h3 id="health-check-script">Health Check Script</h3>
+<pre><code class="lang-powershell"># Quick health check script
+$namespace = &quot;fllm&quot;
+
+Write-Host &quot;=== Pod Status ===&quot; -ForegroundColor Cyan
+kubectl get pods -n $namespace
+
+Write-Host &quot;`n=== Service Status ===&quot; -ForegroundColor Cyan
+kubectl get svc -n $namespace
+
+Write-Host &quot;`n=== Recent Events ===&quot; -ForegroundColor Cyan
+kubectl get events -n $namespace --sort-by='.lastTimestamp' | Select-Object -Last 10
+
+Write-Host &quot;`n=== Resource Usage ===&quot; -ForegroundColor Cyan
+kubectl top pods -n $namespace
+</code></pre>
+<h2 id="reporting-issues">Reporting Issues</h2>
+<p>If issues persist after troubleshooting:</p>
+<h3 id="1-check-existing-issues">1. Check Existing Issues</h3>
+<p>Search <a href="https://github.com/foundationallm/foundationallm/issues">GitHub Issues</a> for similar problems.</p>
+<h3 id="2-gather-information">2. Gather Information</h3>
+<p>Collect before opening an issue:</p>
+<ul>
+<li>Deployment type (Quick Start/Standard)</li>
+<li>Version/release tag</li>
+<li>Error messages and logs</li>
+<li>Steps to reproduce</li>
+<li>Configuration (sanitized)</li>
+</ul>
+<h3 id="3-open-github-issue">3. Open GitHub Issue</h3>
+<ol>
+<li>Navigate to <a href="https://github.com/foundationallm/foundationallm/issues">GitHub Issues</a></li>
+<li>Click <strong>New Issue</strong></li>
+<li>Select appropriate template</li>
+<li>Provide detailed information</li>
+<li>Add relevant labels</li>
+</ol>
+<h3 id="issue-template">Issue Template</h3>
+<pre><code class="lang-markdown">## Description
+Brief description of the issue
+
+## Environment
+- Deployment Type: [Quick Start / Standard]
+- Version: [e.g., 0.9.0]
+- Azure Region: [e.g., eastus2]
+
+## Steps to Reproduce
+1. Step 1
+2. Step 2
+3. Step 3
+
+## Expected Behavior
+What should happen
+
+## Actual Behavior
+What actually happens
+
+## Logs/Screenshots
+[Attach relevant logs or screenshots]
+
+## Additional Context
+Any other relevant information
+</code></pre>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="logs.html">System Logs</a></li>
+<li><a href="../security-permissions/authentication-authorization/index.html">Authentication Setup</a></li>
+<li><a href="../deployment/app-configuration-values.html">App Configuration Values</a></li>
+<li><a href="../security-permissions/platform-security.html">Platform Security</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Resource Providers Overview | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Resource Providers Overview | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/apis-sdks/apis/management-api/resource-providers-overview.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="resource-providers-overview">Resource Providers Overview</h1>
+
+<p>Resource providers are the core platform components that manage specific types of resources in FoundationaLLM. This pattern mirrors Azure Resource Manager, providing a consistent API for all resource operations.</p>
+<h2 id="overview">Overview</h2>
+<p>Each resource provider:</p>
+<ul>
+<li>Manages a specific category of resources</li>
+<li>Exposes a consistent REST API pattern</li>
+<li>Enforces authorization through RBAC</li>
+<li>Handles resource lifecycle (create, read, update, delete, purge)</li>
+</ul>
+<h2 id="api-pattern">API Pattern</h2>
+<p>All resource providers follow this URL structure:</p>
+<pre><code>/instances/{instanceId}/providers/{providerName}/{resourceType}/{resourceName}
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>instanceId</code></td>
+<td>FoundationaLLM instance GUID</td>
+<td><code>abc123-def456-...</code></td>
+</tr>
+<tr>
+<td><code>providerName</code></td>
+<td>Resource provider namespace</td>
+<td><code>FoundationaLLM.Agent</code></td>
+</tr>
+<tr>
+<td><code>resourceType</code></td>
+<td>Type of resource</td>
+<td><code>agents</code></td>
+</tr>
+<tr>
+<td><code>resourceName</code></td>
+<td>Resource identifier</td>
+<td><code>my-agent</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="available-resource-providers">Available Resource Providers</h2>
+<h3 id="foundationallmagent">FoundationaLLM.Agent</h3>
+<p>Manages AI agents, their workflows, and tools.</p>
+<table>
+<thead>
+<tr>
+<th>Resource Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>agents</code></td>
+<td>Agent configurations</td>
+</tr>
+<tr>
+<td><code>workflows</code></td>
+<td>Orchestration workflows</td>
+</tr>
+<tr>
+<td><code>tools</code></td>
+<td>Agent tools (code interpreter, knowledge search, etc.)</td>
+</tr>
+<tr>
+<td><code>accessTokens</code></td>
+<td>Agent access tokens for unauthenticated access</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example Endpoints:</strong></p>
+<pre><code class="lang-http">GET  /instances/{id}/providers/FoundationaLLM.Agent/agents
+GET  /instances/{id}/providers/FoundationaLLM.Agent/agents/{name}
+POST /instances/{id}/providers/FoundationaLLM.Agent/agents/{name}
+DELETE /instances/{id}/providers/FoundationaLLM.Agent/agents/{name}
+</code></pre>
+<hr>
+<h3 id="foundationallmaimodel">FoundationaLLM.AIModel</h3>
+<p>Manages AI model configurations and deployments.</p>
+<table>
+<thead>
+<tr>
+<th>Resource Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>aiModels</code></td>
+<td>AI model definitions (GPT-4, Claude, etc.)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>AI Model Types:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>completion</code></td>
+<td>Text generation models</td>
+</tr>
+<tr>
+<td><code>embedding</code></td>
+<td>Embedding/vectorization models</td>
+</tr>
+<tr>
+<td><code>image</code></td>
+<td>Image generation models (DALL-E)</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="foundationallmattachment">FoundationaLLM.Attachment</h3>
+<p>Manages file attachments uploaded through the portal.</p>
+<table>
+<thead>
+<tr>
+<th>Resource Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>attachments</code></td>
+<td>User-uploaded files</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="foundationallmauthorization">FoundationaLLM.Authorization</h3>
+<p>Manages role-based access control.</p>
+<table>
+<thead>
+<tr>
+<th>Resource Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>roleAssignments</code></td>
+<td>Bindings between principals, roles, and scopes</td>
+</tr>
+<tr>
+<td><code>roleDefinitions</code></td>
+<td>Available role definitions (Owner, Contributor, Reader, etc.)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Built-in Roles:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>ID</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Owner</td>
+<td><code>1301f8d4-3bea-4880-945f-315dbd2ddb46</code></td>
+</tr>
+<tr>
+<td>Contributor</td>
+<td><code>a9f0020f-6e3a-49bf-8d1d-35fd53058edf</code></td>
+</tr>
+<tr>
+<td>Reader</td>
+<td><code>00a53e72-f66e-4c03-8f81-7e885fd2eb35</code></td>
+</tr>
+<tr>
+<td>User Access Administrator</td>
+<td><code>fb8e0fd0-f7e2-4957-89d6-19f44f7d6618</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="foundationallmconfiguration">FoundationaLLM.Configuration</h3>
+<p>Manages platform configuration and API endpoints.</p>
+<table>
+<thead>
+<tr>
+<th>Resource Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>appConfigurations</code></td>
+<td>App Configuration key-value settings</td>
+</tr>
+<tr>
+<td><code>apiEndpointConfigurations</code></td>
+<td>External API endpoint definitions</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Common Configuration Categories:</strong></p>
+<ul>
+<li>Branding settings (<code>FoundationaLLM:Branding:*</code>)</li>
+<li>API endpoints (<code>FoundationaLLM:APIs:*</code>)</li>
+<li>Feature flags (<code>FoundationaLLM:Features:*</code>)</li>
+</ul>
+<hr>
+<h3 id="foundationallmconversation">FoundationaLLM.Conversation</h3>
+<p>Manages user conversations and messages.</p>
+<table>
+<thead>
+<tr>
+<th>Resource Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>conversations</code></td>
+<td>Chat sessions/conversations</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Note:</strong> Conversations are typically managed through the Core API. The Management API provides administrative access.</p>
+</blockquote>
+<hr>
+<h3 id="foundationallmdatapipeline">FoundationaLLM.DataPipeline</h3>
+<p>Manages data ingestion and processing pipelines.</p>
+<table>
+<thead>
+<tr>
+<th>Resource Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dataPipelines</code></td>
+<td>Pipeline definitions</td>
+</tr>
+<tr>
+<td><code>dataPipelineRuns</code></td>
+<td>Pipeline execution history</td>
+</tr>
+</tbody>
+</table>
+<p>See <a href="data-pipelines.html">Data Pipelines API</a> for detailed documentation.</p>
+<hr>
+<h3 id="foundationallmdatasource">FoundationaLLM.DataSource</h3>
+<p>Manages connections to external data repositories.</p>
+<table>
+<thead>
+<tr>
+<th>Resource Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dataSources</code></td>
+<td>Data source configurations</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Supported Data Source Types:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>AzureDataLake</code></td>
+<td>Azure Blob Storage / Data Lake Gen2</td>
+</tr>
+<tr>
+<td><code>OneLake</code></td>
+<td>Microsoft Fabric OneLake</td>
+</tr>
+<tr>
+<td><code>SharePointOnline</code></td>
+<td>SharePoint document libraries</td>
+</tr>
+<tr>
+<td><code>AzureSQLDatabase</code></td>
+<td>Azure SQL Database</td>
+</tr>
+<tr>
+<td><code>Web</code></td>
+<td>Web page sources</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="foundationallmplugin">FoundationaLLM.Plugin</h3>
+<p>Manages the plugin system for extensibility.</p>
+<table>
+<thead>
+<tr>
+<th>Resource Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pluginPackages</code></td>
+<td>Plugin package definitions</td>
+</tr>
+<tr>
+<td><code>plugins</code></td>
+<td>Individual plugin configurations</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Plugin Types:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>AgentWorkflow</code></td>
+<td>Custom workflow implementations</td>
+</tr>
+<tr>
+<td><code>AgentTool</code></td>
+<td>Custom agent tools</td>
+</tr>
+<tr>
+<td><code>DataSource</code></td>
+<td>Custom data source connectors</td>
+</tr>
+<tr>
+<td><code>DataPipelineStage</code></td>
+<td>Custom pipeline processing stages</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="foundationallmprompt">FoundationaLLM.Prompt</h3>
+<p>Manages reusable prompt templates.</p>
+<table>
+<thead>
+<tr>
+<th>Resource Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>prompts</code></td>
+<td>Prompt template definitions</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Prompt Categories:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>AgentWorkflow</code></td>
+<td>Agent system prompts</td>
+</tr>
+<tr>
+<td><code>AgentTool</code></td>
+<td>Tool-specific instructions</td>
+</tr>
+<tr>
+<td><code>DataPipeline</code></td>
+<td>Pipeline processing instructions</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="foundationallmvector">FoundationaLLM.Vector</h3>
+<p>Manages vector database configurations.</p>
+<table>
+<thead>
+<tr>
+<th>Resource Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>vectorDatabases</code></td>
+<td>Vector database connection definitions</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="resource-object-ids">Resource Object IDs</h2>
+<p>Every resource has a unique object ID following this format:</p>
+<pre><code>/instances/{instanceId}/providers/{providerName}/{resourceType}/{resourceName}
+</code></pre>
+<p>Object IDs are used for:</p>
+<ul>
+<li>Cross-resource references</li>
+<li>Authorization scopes</li>
+<li>Resource identification</li>
+</ul>
+<p><strong>Example:</strong></p>
+<pre><code class="lang-json">{
+  &quot;object_id&quot;: &quot;/instances/abc123/providers/FoundationaLLM.Agent/agents/my-agent&quot;,
+  &quot;workflow_object_id&quot;: &quot;/instances/abc123/providers/FoundationaLLM.Agent/workflows/my-workflow&quot;
+}
+</code></pre>
+<h2 id="standard-operations">Standard Operations</h2>
+<p>All resource providers support these operations:</p>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>HTTP Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>List</td>
+<td><code>GET /{resourceType}</code></td>
+<td>List all resources</td>
+</tr>
+<tr>
+<td>Get</td>
+<td><code>GET /{resourceType}/{name}</code></td>
+<td>Get specific resource</td>
+</tr>
+<tr>
+<td>Create/Update</td>
+<td><code>POST /{resourceType}/{name}</code></td>
+<td>Create or update resource</td>
+</tr>
+<tr>
+<td>Delete</td>
+<td><code>DELETE /{resourceType}/{name}</code></td>
+<td>Soft delete resource</td>
+</tr>
+<tr>
+<td>Purge</td>
+<td><code>POST /{resourceType}/{name}/purge</code></td>
+<td>Permanent delete</td>
+</tr>
+</tbody>
+</table>
+<h2 id="response-format">Response Format</h2>
+<p>All GET operations return resources with metadata:</p>
+<pre><code class="lang-json">{
+  &quot;resource&quot;: {
+    &quot;type&quot;: &quot;agent&quot;,
+    &quot;name&quot;: &quot;my-agent&quot;,
+    &quot;object_id&quot;: &quot;/instances/{id}/providers/FoundationaLLM.Agent/agents/my-agent&quot;,
+    // Resource-specific properties
+  },
+  &quot;roles&quot;: [&quot;Owner&quot;, &quot;Contributor&quot;],
+  &quot;actions&quot;: [&quot;read&quot;, &quot;write&quot;, &quot;delete&quot;]
+}
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>resource</code></td>
+<td>The resource definition</td>
+</tr>
+<tr>
+<td><code>roles</code></td>
+<td>User's assigned roles for this resource</td>
+</tr>
+<tr>
+<td><code>actions</code></td>
+<td>Actions the user can perform</td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="index.html">Management API Overview</a></li>
+<li><a href="api-reference.html">API Reference</a></li>
+<li><a href="../../../management-portal/reference/permissions-roles.html">Permissions &amp; Roles Reference</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

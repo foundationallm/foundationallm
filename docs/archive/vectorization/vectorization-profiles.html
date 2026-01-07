@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Managing vectorization profiles | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Managing vectorization profiles | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../toc.html">
+      <meta name="docfx:tocrel" content="../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/archive/vectorization/vectorization-profiles.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../index.html">
+            <img id="logo" class="svg" src="../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="managing-vectorization-profiles">Managing vectorization profiles</h1>
+
+<p>The FoundationaLLM (FLLM) vectorization pipelines require the following types of profiles:</p>
+<ul>
+<li><a href="#data-sources">Data Sources</a></li>
+<li><a href="#text-partitioning-profiles">Text partitioning profiles</a></li>
+<li><a href="#text-embedding-profiles">Text embedding profiles</a></li>
+<li><a href="#indexing-profiles">Indexing profiles</a></li>
+</ul>
+<h2 id="data-sources">Data Sources</h2>
+<p>Data sources are managed with the <code>FoundationaLLM.DataSource</code> resource provider through the Management API. The structure of a data source profile is the following:</p>
+<pre><code class="lang-json">{
+  &quot;type&quot;: &quot;&lt;data_source_type&gt;&quot;,
+  &quot;name&quot;: &quot;&lt;name&gt;&quot;,
+  &quot;object_id&quot;: &quot;/instances/&lt;instance_id&gt;/providers/FoundationaLLM.DataSource/dataSources/&lt;name&gt;&quot;,
+  &quot;display_name&quot;: null,
+  &quot;description&quot;: &quot;&lt;description&gt;&quot;,
+  &quot;&lt;settings&gt;&quot;: [
+    &quot;&lt;value&gt;&quot;
+  ],
+  &quot;configuration_references&quot;: {
+    &quot;AuthenticationType&quot;: &quot;FoundationaLLM:DataSources:datalake01:AuthenticationType&quot;,
+    &quot;ConnectionString&quot;: &quot;FoundationaLLM:DataSources:datalake01:ConnectionString&quot;
+  },
+  &quot;created_on&quot;: &quot;0001-01-01T00:00:00+00:00&quot;,
+  &quot;updated_on&quot;: &quot;0001-01-01T00:00:00+00:00&quot;,
+  &quot;created_by&quot;: null,
+  &quot;updated_by&quot;: null,
+  &quot;deleted&quot;: false
+}
+</code></pre>
+<p>where:</p>
+<ul>
+<li><code>&lt;data_source_type&gt;</code> is the type of the data source. The supported types are <code>AzureDataLake</code>, <code>SharePointOnline</code>, <code>WebSite</code> and <code>AzureSQLDatabase</code>.</li>
+<li><code>&lt;name&gt;</code> is the name of the data source.</li>
+<li><code>&lt;instance_id&gt;</code> is the unique identifier of the FLLM instance.</li>
+<li><code>&lt;description&gt;</code> is the description of the Data Source.</li>
+<li><code>&lt;settings&gt;</code> is a JSON object containing the data source settings, the name of the property varies by data source type.</li>
+<li><code>&lt;configuration_references&gt;</code> is a JSON object containing the profile configuration references. The content of this object also varies by data source type.</li>
+</ul>
+<p>The reminder of this section describes the configuration parameters for each of the supported Data Source types.</p>
+<h3 id="azuredatalake"><code>AzureDataLake</code></h3>
+<pre><code class="lang-json">  &quot;folders&quot;: [
+    &quot;/vectorization-input/sdzwa/journals/2024&quot;
+  ],
+  &quot;configuration_references&quot;: {
+    &quot;AuthenticationType&quot;: &quot;FoundationaLLM:DataSources:datalake01:AuthenticationType&quot;,
+    &quot;ConnectionString&quot;: &quot;FoundationaLLM:DataSources:datalake01:ConnectionString&quot;,
+    &quot;APIKey&quot;: &quot;FoundationaLLM:DataSources:datalake01:APIKey&quot;,
+    &quot;Endpoint&quot;: &quot;FoundationaLLM:DataSources:datalake01:Endpoint&quot;
+  },
+</code></pre>
+<p>The configuration parameters for <code>AzureDataLake</code> are the following:</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>folders</code></td>
+<td>The list of folders in the Azure Data Lake storage account that contain the data to be vectorized.</td>
+</tr>
+<tr>
+<td><code>configuration_references.AuthenticationType</code></td>
+<td>The authentication type used to connect to the underlying storage. Can be one of <code>AzureIdentity</code>, <code>AccountKey</code>, or <code>ConnectionString</code>.</td>
+</tr>
+<tr>
+<td><code>configuration_references.ConnectionString</code></td>
+<td>The connection string to the Azure Storage account used for the the Azure Data Lake vectorization Data Source.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sharepointonline"><code>SharePointOnline</code></h3>
+<pre><code class="lang-json">  &quot;site_url&quot;: &quot;https://solliance.sharepoint.com/sites/foundationallm01&quot;,
+  &quot;document_libraries&quot;: [
+    &quot;/documents01&quot;
+  ],
+  &quot;configuration_references&quot;: {
+    &quot;ClientId&quot;: &quot;FoundationaLLM:DataSources:sharepointsite01:ClientId&quot;,
+    &quot;TenantId&quot;: &quot;FoundationaLLM:DataSources:sharepointsite01:TenantId&quot;,
+    &quot;CertificateName&quot;: &quot;FoundationaLLM:DataSources:sharepointsite01:CertificateName&quot;,
+    &quot;KeyVaultURL&quot;: &quot;FoundationaLLM:DataSources:sharepointsite01:KeyVaultURL&quot;
+  },
+</code></pre>
+<p>The configuration parameters for <code>SharePointOnline</code> are the following:</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>site_url</code></td>
+<td>The URL of the SharePoint Online site collection.</td>
+</tr>
+<tr>
+<td><code>document_libraries</code></td>
+<td>The list of document libraries in the SharePoint Online site collection that contain the data to be vectorized.</td>
+</tr>
+<tr>
+<td><code>configuration_references.CertificateName</code></td>
+<td>The name of the X.509 Certificate. The certificate must be valid and be uploaded into an Azure Key Vault certificate store.</td>
+</tr>
+<tr>
+<td><code>configuration_references.KeyVaultURL</code></td>
+<td>The URL of the KeyVault where the X.509 Certificate is stored.</td>
+</tr>
+<tr>
+<td><code>configuration_references.ClientId</code></td>
+<td>The Application (client) Id of the Microsoft Entra ID App Registration. See <a href="#entra-id-app-registration-for-sharepoint-online-data-source">Entra ID app registration for SharePoint Online Data Source</a>.</td>
+</tr>
+<tr>
+<td><code>configuration_references.TenantId</code></td>
+<td>The unique identifier of the SharePoint Online tenant.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="azuresqldatabase"><code>AzureSQLDatabase</code></h3>
+<pre><code class="lang-json">  &quot;tables&quot;: [
+    &quot;Table1&quot;
+  ],
+  &quot;configuration_references&quot;: {
+    &quot;ConnectionString&quot;: &quot;FoundationaLLM:DataSources:sqldatabase01:ConnectionString&quot;,
+    &quot;AuthenticationType&quot;: &quot;FoundationaLLM:DataSources:sqldatabase01:AuthenticationType&quot;
+  },
+</code></pre>
+<p>The configuration parameters for <code>AzureSQLDatabase</code> are the following:</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>tables</code></td>
+<td>The list of tables in the Azure SQL database that contain the data to be vectorized.</td>
+</tr>
+<tr>
+<td><code>configuration_references.ConnectionString</code></td>
+<td>The connection string to the Azure SQL database used for the Azure SQL Database vectorization Data Source.</td>
+</tr>
+<tr>
+<td><code>configuration_references.AuthenticationType</code></td>
+<td>The authentication type used to connect to the Azure SQL database. Can be one of <code>AzureIdentity</code> or <code>ConnectionString</code>.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="managing-data-sources">Managing Data Sources</h3>
+<p>This section describes how to manage Data Sources using the Management API.
+<code>{{baseUrl}}</code> is the base URL of the Management API. <code>{{instanceId}}</code> is the unique identifier of the FLLM instance.</p>
+<p><strong>Retrieve</strong></p>
+<pre><code>HTTP GET {{baseUrl}}/instances/{{instanceId}}/providers/FoundationaLLM.DataSource/dataSources
+</code></pre>
+<p><strong>Create or update</strong></p>
+<pre><code>HTTP POST {{baseUrl}}/instances/{{instanceId}}/providers/FoundationaLLM.DataSource/dataSources/&lt;name&gt;
+Content-Type: application/json
+
+BODY
+&lt;data source&gt;
+</code></pre>
+<p>where <code>&lt;data source&gt;</code> is a JSON object with the structure described above.</p>
+<p><strong>Delete</strong></p>
+<pre><code>HTTP DELETE {{baseUrl}}/instances/{{instanceId}}/providers/FoundationaLLM.DataSource/dataSources/&lt;name&gt;
+</code></pre>
+<div class="NOTE">
+<h5>Note</h5>
+<p>The delete operation is a <em>logical delete</em>. To purge a Data Source, call the <code>/purge</code> endpoint after deleting the Data Source.</p>
+</div>
+<p><strong>Purge</strong></p>
+<pre><code>HTTP POST {{baseUrl}}/instances/{{instanceId}}/providers/FoundationaLLM.DataSource/dataSources/&lt;name&gt;/purge
+Content-Type: application/json
+
+BODY
+{}
+</code></pre>
+<p><strong>Check Name</strong></p>
+<pre><code>HTTP POST {{baseUrl}}/instances/{{instanceId}}/providers/FoundationaLLM.DataSource/dataSources/checkname
+Content-Type: application/json
+
+BODY
+{
+  &quot;name&quot;: &quot;&lt;name&gt;&quot;
+}
+</code></pre>
+<h2 id="text-partitioning-profiles">Text partitioning profiles</h2>
+<p>The structure of a text partitioning profile is the following:</p>
+<pre><code class="lang-json">{
+    &quot;type&quot;: &quot;text-partitioning-profile&quot;,
+    &quot;name&quot;: &quot;&lt;name&gt;&quot;,
+    &quot;object_id&quot;: &quot;/instances/[INSTANCE ID]/providers/FoundationaLLM.Vectorization/textPartitioningProfiles/&lt;name&gt;&quot;,
+    &quot;description&quot;: &quot;&lt;description&gt;&quot;,
+    &quot;deleted&quot;: false,
+    &quot;text_splitter&quot;: &quot;&lt;text_splitter&gt;&quot;,
+    &quot;settings&quot;: {&lt;profile_settings&gt;},
+    &quot;configuration_references&quot;: {&lt;profile_configuration_references&gt;}
+}
+</code></pre>
+<p>where:</p>
+<ul>
+<li><code>&lt;name&gt;</code> is the name of the text partitioning profile.</li>
+<li><code>&lt;description&gt;</code> is the description of the text partitioning profile.</li>
+<li><code>&lt;text_splitter&gt;</code> is the type of the text splitter. The supported types are <code>TextTokenSplitter</code>.</li>
+<li><code>&lt;profile_settings&gt;</code> is a JSON object containing the profile settings.</li>
+<li><code>&lt;profile_configuration_references&gt;</code> is a JSON object containing the profile configuration references.</li>
+</ul>
+<p>The reminder of this section describes the configuration parameters for each of the supported text splitters.</p>
+<h3 id="texttokensplitter"><code>TextTokenSplitter</code></h3>
+<pre><code class="lang-json">&quot;settings&quot; : {
+    &quot;Tokenizer&quot;: &quot;MicrosoftBPETokenizer&quot;,
+    &quot;TokenizerEncoder&quot;: &quot;cl100k_base&quot;,
+    &quot;ChunkSizeTokens&quot;: &quot;2000&quot;,
+    &quot;OverlapSizeTokens&quot;: &quot;200&quot;
+},
+&quot;configuration_references&quot;: {}
+</code></pre>
+<p>The configuration parameters for <code>TokenTextSplitter</code> are the following:</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>settings.Tokenizer</code></td>
+<td>The tokenizer used to split the text into tokens. Currently, the only supported tokenizer is <code>MicrosoftBPETokenizer</code>. Under the hood, it uses the .NET equivalent of OpenAI's <a href="https://github.com/openai/tiktoken">tiktoken</a>.</td>
+</tr>
+<tr>
+<td><code>settings.TokenizerEncoder</code></td>
+<td>The encoder used by the tokenizer. Currently, the only supported encoder is <code>cl100k_base</code>. This encoder is the one currently used by Azure OpenAI (and OpenAI) in <code>gpt-3.5-turbo</code> and <code>gpt-4</code>.</td>
+</tr>
+<tr>
+<td><code>settings.ChunkSizeTokens</code></td>
+<td>The maximum number of tokens in each text chunk.</td>
+</tr>
+<tr>
+<td><code>settings.OverlapSizeTokens</code></td>
+<td>The maximum number of tokens that overlap between two consecutive chunks.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="managing-text-partitioning-profiles">Managing text partitioning profiles</h3>
+<p>This section describes how to manage text partitioning profiles using the Management API.
+<code>{{baseUrl}}</code> is the base URL of the Management API. <code>{{instanceId}}</code> is the unique identifier of the FLLM instance.</p>
+<p><strong>Retrieve</strong></p>
+<pre><code>HTTP GET {{baseUrl}}/instances/{{instanceId}}/providers/FoundationaLLM.Vectorization/textPartitioningProfiles
+</code></pre>
+<p><strong>Create or update</strong></p>
+<pre><code>HTTP POST {{baseUrl}}/instances/{{instanceId}}/providers/FoundationaLLM.Vectorization/textPartitioningProfiles/&lt;name&gt;
+Content-Type: application/json
+
+BODY
+&lt;text partitioning profile&gt;
+</code></pre>
+<p>where <code>&lt;text partitioning profile&gt;</code> is a JSON object with the structure described above.</p>
+<p><strong>Delete</strong></p>
+<pre><code>HTTP DELETE {{baseUrl}}/instances/{{instanceId}}/providers/FoundationaLLM.Vectorization/textPartitioningProfiles/&lt;name&gt;
+</code></pre>
+<div class="NOTE">
+<h5>Note</h5>
+<p>The delete operation is a <em>logical delete</em>. To purge a Text Partitioning Profile, call the <code>/purge</code> endpoint after deleting the Text Partitioning Profile.</p>
+</div>
+<p><strong>Purge</strong></p>
+<pre><code>HTTP POST {{baseUrl}}/instances/{{instanceId}}/providers/FoundationaLLM.Vectorization/textPartitioningProfiles/&lt;name&gt;/purge
+Content-Type: application/json
+
+BODY
+{}
+</code></pre>
+<h2 id="text-embedding-profiles">Text embedding profiles</h2>
+<p>The structure of a text embedding profile is the following:</p>
+<pre><code class="lang-json">{
+    &quot;type&quot;: &quot;text-embedding-profile&quot;,
+    &quot;name&quot;: &quot;&lt;name&gt;&quot;,
+    &quot;object_id&quot;: &quot;/instances/[INSTANCE ID]/providers/FoundationaLLM.Vectorization/textEmbeddingProfiles/&lt;name&gt;&quot;,
+    &quot;display_name&quot;: null,
+    &quot;description&quot;: &quot;&lt;description&gt;&quot;,
+    &quot;text_embedding&quot;: &quot;&lt;text_embedding&gt;&quot;,
+    &quot;settings&quot;: {&lt;profile_settings&gt;},
+    &quot;configuration_references&quot;: {&lt;profile_configuration_references&gt;},
+    &quot;created_on&quot;: &quot;0001-01-01T00:00:00+00:00&quot;,
+    &quot;updated_on&quot;: &quot;0001-01-01T00:00:00+00:00&quot;,
+    &quot;created_by&quot;: null,
+    &quot;updated_by&quot;: null,
+    &quot;deleted&quot;: false
+}
+</code></pre>
+<p>where:</p>
+<ul>
+<li><code>&lt;name&gt;</code> is the name of the text embedding profile.</li>
+<li><code>&lt;description&gt;</code> is the description of the text embedding profile.</li>
+<li><code>&lt;text_embedding&gt;</code> is the type of the text embedder. The supported types are <code>SemanticKernelTextEmbedding</code> and <code>GatewayTextEmbedding</code>. <code>SemanticKernelTextEmbedding</code> supports synchronous and asynchronous vectorization, while <code>GatewayTextEmbedding</code> only supports asynchronous vectorization.</li>
+<li><code>&lt;profile_settings&gt;</code> is a JSON object containing the profile settings.</li>
+<li><code>&lt;profile_configuration_references&gt;</code> is a JSON object containing the profile configuration references.</li>
+</ul>
+<p>The reminder of this section describes the configuration parameters for each of the supported text embedders.</p>
+<h3 id="semantickerneltextembedding"><code>SemanticKernelTextEmbedding</code></h3>
+<pre><code class="lang-json">&quot;settings&quot;: {},
+&quot;configuration_references&quot;: {
+    &quot;APIKey&quot;: &quot;FoundationaLLM:Vectorization:SemanticKernelTextEmbeddingService:APIKey&quot;,
+    &quot;APIVersion&quot;: &quot;FoundationaLLM:Vectorization:SemanticKernelTextEmbeddingService:APIVersion&quot;,
+    &quot;AuthenticationType&quot;: &quot;FoundationaLLM:Vectorization:SemanticKernelTextEmbeddingService:AuthenticationType&quot;,
+    &quot;DeploymentName&quot;: &quot;FoundationaLLM:Vectorization:SemanticKernelTextEmbeddingService:DeploymentName&quot;,
+    &quot;Endpoint&quot;: &quot;FoundationaLLM:Vectorization:SemanticKernelTextEmbeddingService:Endpoint&quot;
+}
+</code></pre>
+<p>The configuration parameters for <code>SemanticKernelTextEmbedding</code> are the following:</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>configuration_references.APIKey</code></td>
+<td>The API key used to connect to the Azure OpenAI service. By default, this maps to the Azure OpenAI service deployed by FLLM.</td>
+</tr>
+<tr>
+<td><code>configuration_references.APIVersion</code></td>
+<td>The API version used to connect to the Azure OpenAI service. By default, this value is <code>2023-05-15</code>.</td>
+</tr>
+<tr>
+<td><code>configuration_references.AuthenticationType</code></td>
+<td>The authentication type used to connect to the Azure OpenAI service. Can be one of <code>AzureIdentity</code> or <code>APIKey</code>. By default, it is set to <code>APIKey</code>.</td>
+</tr>
+<tr>
+<td><code>configuration_references.DeploymentName</code></td>
+<td>The name of the Azure OpenAI model deployment. The default value is <code>embeddings</code>.</td>
+</tr>
+<tr>
+<td><code>configuration_references.Endpoint</code></td>
+<td>The endpoint of the Azure OpenAI service. By default, this maps to the Azure OpenAI service deployed by FLLM.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="gatewaytextembedding"><code>GatewayTextEmbedding</code></h3>
+<pre><code class="lang-json">&quot;settings&quot;: {
+  &quot;model_name&quot;: &quot;embeddings&quot;
+},
+&quot;configuration_references&quot;: {}
+</code></pre>
+<p>The settings for <code>GatewayTextEmbedding</code> are the following:</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>settings.model_name</code></td>
+<td>The name of the embeddings model deployment in Azure OpenAI Service.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="managing-text-embedding-profiles">Managing text embedding profiles</h3>
+<p>This section describes how to manage text embedding profiles using the Management API.
+<code>{{baseUrl}}</code> is the base URL of the Management API. <code>{{instanceId}}</code> is the unique identifier of the FLLM instance.</p>
+<p><strong>Retrieve</strong></p>
+<pre><code>HTTP GET {{baseUrl}}/instances/{{instanceId}}/providers/FoundationaLLM.Vectorization/textEmbeddingProfiles
+</code></pre>
+<p><strong>Create or update</strong></p>
+<pre><code>HTTP POST {{baseUrl}}/instances/{{instanceId}}/providers/FoundationaLLM.Vectorization/textEmbeddingProfiles/&lt;name&gt;
+Content-Type: application/json
+
+BODY
+&lt;text embedding profile&gt;
+</code></pre>
+<p>where <code>&lt;text embedding profile&gt;</code> is a JSON object with the structure described above.</p>
+<p><strong>Delete</strong></p>
+<pre><code>HTTP DELETE {{baseUrl}}/instances/{{instanceId}}/providers/FoundationaLLM.Vectorization/textEmbeddingProfiles/&lt;name&gt;
+</code></pre>
+<div class="NOTE">
+<h5>Note</h5>
+<p>The delete operation is a <em>logical delete</em>. To purge a Text Embedding Profile, call the <code>/purge</code> endpoint after deleting the Text Embedding Profile.</p>
+</div>
+<p><strong>Purge</strong></p>
+<pre><code>HTTP POST {{baseUrl}}/instances/{{instanceId}}/providers/FoundationaLLM.Vectorization/textEmbeddingProfiles/&lt;name&gt;/purge
+Content-Type: application/json
+
+BODY
+{}
+</code></pre>
+<h2 id="indexing-profiles">Indexing profiles</h2>
+<p>The structure of an indexing profile is the following:</p>
+<pre><code class="lang-json">{
+    &quot;type&quot;: &quot;indexing-profile&quot;,
+    &quot;name&quot;: &quot;&lt;name&gt;&quot;,
+    &quot;object_id&quot;: &quot;/instances/[INSTANCE ID]/providers/FoundationaLLM.Vectorization/indexingProfiles/&lt;name&gt;&quot;,
+    &quot;display_name&quot;: null,
+    &quot;description&quot;: &quot;&lt;description&gt;&quot;,
+    &quot;deleted&quot;: false,
+    &quot;indexer&quot;: &quot;&lt;indexer&gt;&quot;,
+    &quot;settings&quot;: {&lt;profile_settings&gt;},
+    &quot;configuration_references&quot;: {&lt;profile_configuration_references&gt;},
+    &quot;created_on&quot;: &quot;0001-01-01T00:00:00+00:00&quot;,
+    &quot;updated_on&quot;: &quot;0001-01-01T00:00:00+00:00&quot;,
+    &quot;created_by&quot;: null,
+    &quot;updated_by&quot;: null,
+    &quot;deleted&quot;: false
+}
+</code></pre>
+<p>where:</p>
+<ul>
+<li><code>&lt;name&gt;</code> is the name of the indexing profile.</li>
+<li><code>&lt;description&gt;</code> is the description of the indexing profile.</li>
+<li><code>&lt;indexer&gt;</code> is the type of the indexer. The supported types are <code>AzureAISearchIndexer</code>.</li>
+<li><code>&lt;profile_settings&gt;</code> is a JSON object containing the profile settings.</li>
+<li><code>&lt;profile_configuration_references&gt;</code> is a JSON object containing the profile configuration references.</li>
+</ul>
+<p>The reminder of this section describes the configuration parameters for each of the supported indexers.</p>
+<h3 id="azureaisearchindexer"><code>AzureAISearchIndexer</code></h3>
+<pre><code class="lang-json">&quot;settings&quot;: {
+    &quot;IndexName&quot;: &quot;fllm-default-001&quot;,
+    &quot;TopN&quot;: &quot;3&quot;,
+    &quot;Filters&quot;: &quot;&quot;,
+    &quot;EmbeddingFieldName&quot;: &quot;Embedding&quot;,
+    &quot;TextFieldName&quot;: &quot;Text&quot;
+},
+&quot;configuration_references&quot;: {
+    &quot;APIKey&quot;: &quot;FoundationaLLM:Vectorization:AzureAISearchIndexingService:APIKey&quot;,
+    &quot;AuthenticationType&quot;: &quot;FoundationaLLM:Vectorization:AzureAISearchIndexingService:AuthenticationType&quot;,
+    &quot;Endpoint&quot;: &quot;FoundationaLLM:Vectorization:AzureAISearchIndexingService:Endpoint&quot;
+}
+</code></pre>
+<p>The configuration parameters for <code>AzureAISearchIndexer</code> are the following:</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>settings.IndexName</code></td>
+<td>The name of the Azure AI Search index. If the index does not exist, it will be created.</td>
+</tr>
+<tr>
+<td><code>settings.TopN</code></td>
+<td>The number of embeddings closest to the index query to return.</td>
+</tr>
+<tr>
+<td><code>settings.Filters</code></td>
+<td>Optional filters to further refine the index search.</td>
+</tr>
+<tr>
+<td><code>settings.EmbeddingFieldName</code></td>
+<td>Field name of the embedding vector in the JSON documents returned by Azure AI Search.</td>
+</tr>
+<tr>
+<td><code>settings.TextFieldName</code></td>
+<td>Field name of the text equivalent of the embedding vector in the JSON documents returned by Azure AI Search.</td>
+</tr>
+<tr>
+<td><code>configuration_references.APIKey</code></td>
+<td>The API key used to connect to the Azure AI Search service. By default, this maps to the Azure AI Search service deployed by FLLM.</td>
+</tr>
+<tr>
+<td><code>ConfigurationReference.AuthenticationType</code></td>
+<td>The authentication type used to connect to the Azure AI Search service. Can be one of <code>AzureIdentity</code> or <code>APIKey</code>. By default, it is set to <code>APIKey</code>.</td>
+</tr>
+<tr>
+<td><code>configuration_references.Endpoint</code></td>
+<td>The endpoint of the Azure AI Search service. By default, this maps to the Azure AI Search service deployed by FLLM.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="managing-indexing-profiles">Managing indexing profiles</h3>
+<p>This section describes how to manage indexing profiles using the Management API.
+<code>{{baseUrl}}</code> is the base URL of the Management API. <code>{{instanceId}}</code> is the unique identifier of the FLLM instance.</p>
+<p><strong>Retrieve</strong></p>
+<pre><code>HTTP GET {{baseUrl}}/instances/{{instanceId}}/providers/FoundationaLLM.Vectorization/indexingProfiles
+</code></pre>
+<p><strong>Create or update</strong></p>
+<pre><code>HTTP POST {{baseUrl}}/instances/{{instanceId}}/providers/FoundationaLLM.Vectorization/indexingProfiles/&lt;name&gt;
+Content-Type: application/json
+
+BODY
+&lt;indexing profile&gt;
+</code></pre>
+<p>where <code>&lt;indexing profile&gt;</code> is a JSON object with the structure described above.</p>
+<p><strong>Delete</strong></p>
+<pre><code>HTTP DELETE {{baseUrl}}/instances/{{instanceId}}/providers/FoundationaLLM.Vectorization/indexingProfiles/&lt;name&gt;
+</code></pre>
+<div class="NOTE">
+<h5>Note</h5>
+<p>The delete operation is a <em>logical delete</em>. To purge an Indexing Profile, call the <code>/purge</code> endpoint after deleting the Indexing Profile.</p>
+</div>
+<p><strong>Purge</strong></p>
+<pre><code>HTTP POST {{baseUrl}}/instances/{{instanceId}}/providers/FoundationaLLM.Vectorization/indexingProfiles/&lt;name&gt;/purge
+Content-Type: application/json
+
+BODY
+{}
+</code></pre>
+<p><strong>Check Name</strong></p>
+<pre><code>HTTP POST {{baseUrl}}/instances/{{instanceId}}/providers/FoundationaLLM.Vectorization/indexingProfiles/checkname
+Content-Type: application/json
+
+BODY
+{
+  &quot;name&quot;: &quot;&lt;name&gt;&quot;
+}
+</code></pre>
+<h2 id="additional-configuration-steps">Additional configuration steps</h2>
+<h3 id="entra-id-app-registration-for-sharepoint-online-data-source">Entra ID app registration for SharePoint Online Data Source</h3>
+<p>Apps typically access SharePoint Online through certificates: Anyone having the certificate and its private key can use the app with the permissions granted to it.</p>
+<ol>
+<li><p>Create a new <strong>App registration</strong> in your <strong>Microsoft Entra ID</strong> tenant. Next, provide a <strong>Name</strong> for your application and click on <strong>Register</strong> at the bottom of the blade.</p>
+</li>
+<li><p>Navigate to the <strong>API Permissions</strong> blade and click on <strong>Add a permission</strong> button Here you choose the permissions that you will grant to this application. Select <strong>SharePoint</strong> from the <strong>Microsoft APIs</strong> tab, then select <strong>Application permissions</strong> as the type of permissions required, choose the desired permissions (i.e. <strong>Sites.Read.All</strong>) and click on <strong>Add permissions</strong>. Here are the required scopes:</p>
+<ul>
+<li><code>Group.ReadWrite.All</code></li>
+<li><code>User.ReadWrite.All</code></li>
+<li><code>Sites.Read.All</code> OR <code>Sites.Selected</code>
+<ul>
+<li><code>Sites.Read.All</code> will allow the application to read documents and list items in all site collections.</li>
+<li><code>Sites.Selected</code> will allow the application to access only a subset of site collections. The specific site collections and the permissions granted will be configured separately, in SharePoint Online.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>The application permission requires admin consent in a tenant before it can be used. In order to do this, click on <strong>API permissions</strong> in the left menu again. At the bottom you will see a section <strong>Grant consent</strong>. Click on the <strong>Grant admin consent for {{organization}}</strong> button and confirm the action by clicking on the <strong>Yes</strong> button that appears at the top.</p>
+</li>
+<li><p>To invoke SharePoint Online with an app-only access token, you have to create and configure a <strong>self-signed X.509 certificate</strong>, which will be used to authenticate your application against Microsoft Entra ID. You can find additional details on how to do this in <a href="https://learn.microsoft.com/en-us/sharepoint/dev/solution-guidance/security-apponly-azuread#setting-up-an-azure-ad-app-for-app-only-access">this document</a>.</p>
+</li>
+<li><p>Next step is to register the certificate you created to this application. Click on <strong>Certificates &amp; secrets</strong> blade. Next, click on the <strong>Upload certificate</strong> button, select the .CER file you generated earlier and click on <strong>Add</strong> to upload it.</p>
+<p>To confirm that the certificate was successfully registered, click on <strong>Manifest</strong> blade and search for the <code>keyCredentials</code> property, which contains your certificate details. It should look like this:</p>
+<pre><code class="lang-json">&quot;keyCredentials&quot;: [
+    {
+        &quot;customKeyIdentifier&quot;: &quot;&lt;$base64CertHash&gt;&quot;,
+        &quot;endDate&quot;: &quot;yyyy-MM-ddThh:mm:ssZ&quot;,
+        &quot;keyId&quot;: &quot;&lt;$guid&gt;&quot;,
+        &quot;startDate&quot;: &quot;yyyy-MM-ddThh:mm:ssZ&quot;,
+        &quot;type&quot;: &quot;AsymmetricX509Cert&quot;,
+        &quot;usage&quot;: &quot;Verify&quot;,
+        &quot;value&quot;: &quot;&lt;$base64Cert&gt;&quot;,
+        &quot;displayName&quot;: &quot;CN=&lt;$name of your cert&gt;&quot;
+    }
+]
+</code></pre>
+</li>
+<li><p>Upload and store the certificate in the <strong>KeyVault</strong> where the FoundationaLLM Vectorization API has permissions to read <strong>Secrets</strong>. You will need the <strong>Certificate Name</strong> for the App Configuration settings listed in the table above.</p>
+<blockquote>
+<p><strong>NOTE</strong></p>
+<p>Can I use other means besides certificates for realizing app-only access for my Azure AD app?</p>
+<p><strong>NO</strong>, all other options are blocked by SharePoint Online and will result in an <code>Access Denied</code> message.</p>
+</blockquote>
+</li>
+<li><p>Create a new <a href="#data-sources">Data Source using the Management API.</a> Ensure that you set the necessary App Configuration settings appropriately.</p>
+</li>
+</ol>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

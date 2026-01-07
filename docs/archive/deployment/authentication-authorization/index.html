@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Authentication | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Authentication | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/archive/deployment/authentication-authorization/index.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="authentication">Authentication</h1>
+
+<p>FoundationaLLM uses the <a href="https://learn.microsoft.com/entra/fundamentals/whatis">Microsoft Entra ID</a> service to authenticate users and applications. Check back for additional authentication providers in the future.</p>
+<h2 id="microsoft-entra-id">Microsoft Entra ID</h2>
+<p>Starting <code>release 0.8.0</code> there are 2 options of completing the app registrations for the 6 apps required for FoundationaLLM. Option #1 is to run a script that will register all 6 applications for you. Option #2 is to manually register the 6 applications. The steps for both options are below.</p>
+<h2 id="option-1---run-the-script-to-register-all-6-applications">Option #1 - Run the script to register all 6 applications</h2>
+<p>The script is available in the <code>\deploy\common\scripts\</code> folder. The script is called <code>Create-FllmEntraIdApps.ps1</code>. The script will register the 6 required applications in the Entra ID tenant that you are logged into.</p>
+<p><img src="../media/EntraIDAppsCreation.png" alt="Entra ID app registration script"></p>
+<p>After the completion of the script execution, you will see the 6 applications registered in the Entra ID tenant under <code>App registrations</code></p>
+<p><img src="../media/EntraIDRegisteredAppsPortal.png" alt="Entra ID registered apps in Portal"></p>
+<h2 id="option-2---manually-registering-the-6-applications">Option 2 - Manually registering the 6 applications</h2>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>The following steps are to set up authentication and authorization for the solution. You will need to create app registrations in the Entra ID tenant in the Azure portal manually if you choose not to run the automatic script for any reason.  There are currently <strong>five</strong> app registrations required for the solution as listed below.  After you complete the 6 app registrations, you will need to finish the deployment process of the solution and revisit these app registrations to fill in some missing values that are generated during the deployment itself.</p>
+</div>
+<h3 id="steps-to-perform-before-the-deployment">Steps to perform before the deployment</h3>
+<ul>
+<li><a href="core-authentication-setup-entra.html">Core API and user portal authentication pre-deployment - Microsoft Entra ID</a></li>
+<li><a href="management-authentication-setup-entra.html">Management API and portal authentication pre-deployment - Microsoft Entra ID</a></li>
+<li><a href="authorization-setup-entra.html">Authorization pre-deployment - Microsoft Entra ID</a></li>
+</ul>
+<h3 id="steps-to-perform-after-the-deployment">Steps to perform after the deployment</h3>
+<ul>
+<li><a href="pre-requisites.html">Pre-requisites for post-deployment configuration</a></li>
+<li><a href="post-core-deployment.html">Core API and user portal authentication post-deployment - Microsoft Entra ID</a></li>
+<li><a href="post-management-deployment.html">Management API and portal authentication post-deployment - Microsoft Entra ID</a></li>
+<li><a href="post-authorization-deployment.html">Authorization post-deployment - Microsoft Entra ID</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Monitoring and troubleshooting vectorization | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Monitoring and troubleshooting vectorization | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/archive/setup-guides/vectorization/vectorization-monitoring-troubleshooting.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="monitoring-and-troubleshooting-vectorization">Monitoring and troubleshooting vectorization</h1>
+
+<p>The typical steps you have to perform when monitoring and troubleshooting vectorization in FoundationaLLM (FLLM) are:</p>
+<ol>
+<li>Check the configuration of the Vectorization API and Vectorization Worker. For more details, see <a href="vectorization-configuration.html">Configuring vectorization</a>.</li>
+<li>Check the working condition of the Management API, Vectorization API and Vectorization Worker(s). Ensure the services have started and initialized successfully.</li>
+<li>Check the status endpoints for the Core API, Vectorization API and the Management API. You can do this by submitting a HTTP GET request to the <code>/status</code> endpoint of these APIs and validate that you get a HTTP 200 OK response with body like <code>&lt;api_name&gt; - ready</code>.</li>
+<li>Check the logs of the Management Vectorization API and Vectorization Worker(s) for errors. By default, the logs are written to the Azure App Insights Log Analytics Workspace deployed by FLLM.</li>
+<li>Check the definitions of the vectorization profiles used in the vectorization requests. For more details, see <a href="vectorization-profiles.html">Managing vectorization profiles</a>. Ensure all the required app configuration elements are present and have the correct values.</li>
+<li>Check the state of the vectorization requests. By default, the vectorization requests are stored in the <code>vectorization-state</code> container of the Azure Storage account deployed by FLLM.</li>
+</ol>
+<h2 id="state-and-logging-of-vectorization-requests">State and logging of vectorization requests</h2>
+<p>All state and logging of vectorization requests are stored in the <code>vectorization-state</code> container of the Azure Storage account deployed by FLLM.</p>
+<h3 id="vectorization-request-resource-files">Vectorization request resource files</h3>
+<p>Each vectorization request resource is stored in the <code>vectorization-state/requests</code> folder. The request resources are created and managed through the Management API. The naming convention is: <code>vectorization-state/requests/&lt;request_id&gt;-&lt;yyyMMdd&gt;.json</code>.</p>
+<p>The resource file is updated as the vectorization request progresses through the processing. The resource file contains the following fields that can assist in troubleshooting:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>The unique identifier of the vectorization request. When looking up the subsequent execution state, this is the identifier that is used in the file name.</td>
+</tr>
+<tr>
+<td><code>content-identifier.canonical_id</code></td>
+<td>The canonical id of the vectorization request. This is the path within the <code>execution-state</code> folder where additional logs and associated vectorization artifacts are stored.</td>
+</tr>
+<tr>
+<td><code>processing-state</code></td>
+<td>The current state of the vectorization request, values can be <code>New</code>, <code>InProgress</code>, <code>Completed</code>, <code>Failed</code></td>
+</tr>
+<tr>
+<td><code>error_messages</code></td>
+<td>A high level list of error messages encountered during processing.</td>
+</tr>
+<tr>
+<td><code>current_step</code></td>
+<td>The step currently being executed, or the step in which a failure occurred.</td>
+</tr>
+<tr>
+<td><code>pipeline_object_id</code></td>
+<td>When created through a vectorization pipeline, this field contains the object id of the pipeline.</td>
+</tr>
+<tr>
+<td><code>pipeline_execution_id</code></td>
+<td>When <code>process</code> is initiated through a vectorization pipeline, this field contains the unique identifier of the pipeline execution.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="vectorization-execution-state-files">Vectorization execution state files</h3>
+<p>The execution state of a vectorization request is stored in the <code>vectorization-state/execution-state</code> folder. The naming convention is: <code>vectorization-state/execution-state/&lt;canonical_id&gt;/&lt;file_name&gt;_state_&lt;request_id&gt;.json</code>. The execution state file provide verbose details about the request that is updated as the vectorization request is processed. This file records generated assets and logs. Error messages can be found in the <code>log</code> field.</p>
+<h3 id="vectorization-pipeline-state-files">Vectorization pipeline state files</h3>
+<p>The state of the vectorization pipeline is stored in the <code>vectorization-state/pipeline-state</code> folder. The naming convention is: <code>vectorization-state/pipeline-state/&lt;pipeline_name&gt;/&lt;pipeline_name&gt;-&lt;pipeline_execution_id&gt;.json</code>. The pipeline state records associated vectorization requests that are processed together in a single pipeline in the <code>vectorization_requests</code> field. The overall pipeline state is calculated based on the states of the collection of vectorization requests, this state is calculated by the following table in order:</p>
+<table>
+<thead>
+<tr>
+<th>Condition</th>
+<th>Pipeline state</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>At least one request is <code>InProgress</code></td>
+<td><code>InProgress</code></td>
+</tr>
+<tr>
+<td>All requests are <code>Completed</code></td>
+<td><code>Completed</code></td>
+</tr>
+<tr>
+<td>At least one request is <code>Failed</code></td>
+<td><code>Failed</code></td>
+</tr>
+<tr>
+<td>All requests are <code>New</code> or there are no requests being tracked.</td>
+<td><code>New</code></td>
+</tr>
+</tbody>
+</table>
+<p>You can use the Management API with the object id of the request to retrieve the vectorization request resource that contains a high level overview of any errors that have occurred. If more detailed information is required, then reviewing the execution state file is recommended.</p>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

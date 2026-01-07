@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Microsoft Graph API Permissions | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Microsoft Graph API Permissions | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../toc.html">
+      <meta name="docfx:tocrel" content="../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/platform-operations/security-permissions/graph-api-permissions.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../index.html">
+            <img id="logo" class="svg" src="../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="microsoft-graph-api-permissions">Microsoft Graph API Permissions</h1>
+
+<p>FoundationaLLM requires Microsoft Graph API permissions for its role-based access control (RBAC) implementation.</p>
+<h2 id="overview">Overview</h2>
+<p>Graph API permissions enable:</p>
+<ul>
+<li>User and group enumeration</li>
+<li>Security principal lookups</li>
+<li>Group membership resolution</li>
+<li>Display name mapping</li>
+</ul>
+<h2 id="why-graph-api-permissions-are-required">Why Graph API Permissions Are Required</h2>
+<h3 id="rbac-implementation">RBAC Implementation</h3>
+<p>A fully functional RBAC system requires:</p>
+<table>
+<thead>
+<tr>
+<th>Capability</th>
+<th>Graph API Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Resolve group membership</td>
+<td><code>Group.Read.All</code></td>
+</tr>
+<tr>
+<td>Display user names</td>
+<td><code>User.Read.All</code></td>
+</tr>
+<tr>
+<td>Display service principals</td>
+<td><code>Application.Read.All</code></td>
+</tr>
+<tr>
+<td>Assign roles to groups</td>
+<td><code>Group.Read.All</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="enterprise-scenarios">Enterprise Scenarios</h3>
+<p>Standard approaches (like group claims in tokens) have limitations:</p>
+<ul>
+<li>Token size limits restrict group count</li>
+<li>Large organizations exceed claim limits</li>
+<li>Graph API reference is needed anyway</li>
+</ul>
+<p>FoundationaLLM directly calls Graph API for robust handling of enterprise scenarios.</p>
+<h2 id="required-permissions">Required Permissions</h2>
+<table>
+<thead>
+<tr>
+<th>Permission</th>
+<th>Type</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Group.Read.All</code></td>
+<td>Application</td>
+<td>Read all groups, resolve memberships</td>
+</tr>
+<tr>
+<td><code>User.Read.All</code></td>
+<td>Application</td>
+<td>Read all users, display names</td>
+</tr>
+<tr>
+<td><code>Application.Read.All</code></td>
+<td>Application</td>
+<td>Read service principals</td>
+</tr>
+</tbody>
+</table>
+<h3 id="permission-justification">Permission Justification</h3>
+<p><strong><code>Group.Read.All</code>:</strong></p>
+<ul>
+<li>Get group membership for authenticated users</li>
+<li>Evaluate role membership</li>
+<li>List groups for role assignment</li>
+</ul>
+<p><strong><code>User.Read.All</code>:</strong></p>
+<ul>
+<li>Retrieve user display names</li>
+<li>List users for role assignment</li>
+<li>Resolve user object IDs</li>
+</ul>
+<p><strong><code>Application.Read.All</code>:</strong></p>
+<ul>
+<li>Read service principal information</li>
+<li>Support for non-user principals in groups</li>
+<li>Required when groups contain service principals</li>
+</ul>
+<h2 id="assigned-services">Assigned Services</h2>
+<p>Permissions are granted to managed identities for:</p>
+<table>
+<thead>
+<tr>
+<th>Service</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Core API</strong></td>
+<td>User authentication, RBAC evaluation</td>
+</tr>
+<tr>
+<td><strong>Management API</strong></td>
+<td>RBAC management, user/group lookup</td>
+</tr>
+</tbody>
+</table>
+<h2 id="granting-permissions">Granting Permissions</h2>
+<h3 id="using-the-deployment-script">Using the Deployment Script</h3>
+<p>After deployment, run:</p>
+<pre><code class="lang-powershell">cd deploy/quick-start  # or deploy/standard
+../common/scripts/Set-FllmGraphRoles.ps1 -resourceGroupName &lt;resource-group&gt;
+</code></pre>
+<h3 id="requirements">Requirements</h3>
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Role</strong></td>
+<td>Global Administrator OR Privileged Role Administrator</td>
+</tr>
+<tr>
+<td><strong>Scope</strong></td>
+<td>Entra ID tenant</td>
+</tr>
+</tbody>
+</table>
+<h3 id="manual-assignment">Manual Assignment</h3>
+<p>If the script cannot be used:</p>
+<ol>
+<li>Navigate to <strong>Azure Portal</strong> &gt; <strong>Microsoft Entra ID</strong></li>
+<li>Select <strong>Enterprise applications</strong></li>
+<li>Find the Core API managed identity</li>
+<li>Select <strong>Permissions</strong></li>
+<li>Click <strong>Grant admin consent</strong></li>
+<li>Repeat for Management API</li>
+</ol>
+<h2 id="transparency--auditing">Transparency &amp; Auditing</h2>
+<h3 id="source-code-review">Source Code Review</h3>
+<p>All Graph API interactions are implemented in:</p>
+<pre><code>src/dotnet/Common/Services/Security/MicrosoftGraphIdentityManagementService.cs
+</code></pre>
+<p>The code:</p>
+<ul>
+<li>Performs only the operations described above</li>
+<li>Uses minimal property sets</li>
+<li>Is fully auditable in the public GitHub repository</li>
+</ul>
+<h3 id="audit-graph-api-calls">Audit Graph API Calls</h3>
+<p>Monitor Graph API usage:</p>
+<pre><code class="lang-kql">AuditLogs
+| where OperationName contains &quot;Microsoft Graph&quot;
+| project TimeGenerated, OperationName, InitiatedBy, TargetResources
+| order by TimeGenerated desc
+</code></pre>
+<h2 id="security-considerations">Security Considerations</h2>
+<h3 id="principle-of-least-privilege">Principle of Least Privilege</h3>
+<ul>
+<li>Only <code>Read</code> permissions are requested</li>
+<li>No write or modify capabilities</li>
+<li>Application permissions (not delegated)</li>
+</ul>
+<h3 id="managed-identity-benefits">Managed Identity Benefits</h3>
+<table>
+<thead>
+<tr>
+<th>Benefit</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>No credentials</td>
+<td>No secrets to manage</td>
+</tr>
+<tr>
+<td>Auto-rotation</td>
+<td>Azure handles key management</td>
+</tr>
+<tr>
+<td>Audit trail</td>
+<td>All access logged</td>
+</tr>
+<tr>
+<td>Scoped access</td>
+<td>Limited to assigned permissions</td>
+</tr>
+</tbody>
+</table>
+<h3 id="alternative-approaches">Alternative Approaches</h3>
+<table>
+<thead>
+<tr>
+<th>Approach</th>
+<th>Limitation</th>
+<th>Why Not Used</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Token claims</td>
+<td>200 group limit</td>
+<td>Enterprise scenarios exceed limits</td>
+</tr>
+<tr>
+<td>Delegated permissions</td>
+<td>User context only</td>
+<td>Service-to-service needs app permissions</td>
+</tr>
+<tr>
+<td>Client secrets</td>
+<td>Credential management</td>
+<td>Managed identities are more secure</td>
+</tr>
+</tbody>
+</table>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="permission-errors">Permission Errors</h3>
+<table>
+<thead>
+<tr>
+<th>Error</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>&quot;Insufficient privileges&quot;</td>
+<td>Run <code>Set-FllmGraphRoles.ps1</code></td>
+</tr>
+<tr>
+<td>&quot;Access denied&quot;</td>
+<td>Verify admin consent granted</td>
+</tr>
+<tr>
+<td>&quot;Graph API error&quot;</td>
+<td>Check managed identity permissions</td>
+</tr>
+</tbody>
+</table>
+<h3 id="verify-permissions">Verify Permissions</h3>
+<pre><code class="lang-powershell"># List permissions for managed identity
+$servicePrincipal = Get-AzADServicePrincipal -DisplayName &quot;&lt;managed-identity-name&gt;&quot;
+Get-AzADAppPermission -ObjectId $servicePrincipal.Id
+</code></pre>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="platform-security.html">Platform Security</a></li>
+<li><a href="role-based-access-control/index.html">Role-Based Access Control</a></li>
+<li><a href="authentication-authorization/index.html">Authentication Setup</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Data Pipelines API | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Data Pipelines API | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/apis-sdks/apis/management-api/data-pipelines.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="data-pipelines-api">Data Pipelines API</h1>
+
+<p>API reference for managing data pipelines programmatically through the Management API.</p>
+<h2 id="overview">Overview</h2>
+<p>The Data Pipelines API enables:</p>
+<ul>
+<li>Creating and configuring data pipelines</li>
+<li>Executing pipeline runs</li>
+<li>Monitoring pipeline execution history</li>
+<li>Managing pipeline lifecycle</li>
+</ul>
+<h2 id="resource-provider">Resource Provider</h2>
+<p><strong>Provider:</strong> <code>FoundationaLLM.DataPipeline</code></p>
+<p><strong>Resource Types:</strong></p>
+<ul>
+<li><code>dataPipelines</code> - Pipeline definitions</li>
+<li><code>dataPipelineRuns</code> - Execution history</li>
+</ul>
+<h2 id="pipeline-endpoints">Pipeline Endpoints</h2>
+<h3 id="list-data-pipelines">List Data Pipelines</h3>
+<pre><code class="lang-http">GET /instances/{instanceId}/providers/FoundationaLLM.DataPipeline/dataPipelines
+Authorization: Bearer &lt;token&gt;
+</code></pre>
+<p><strong>Response (200 OK):</strong></p>
+<pre><code class="lang-json">[
+  {
+    &quot;resource&quot;: {
+      &quot;type&quot;: &quot;data-pipeline&quot;,
+      &quot;name&quot;: &quot;documents-pipeline&quot;,
+      &quot;object_id&quot;: &quot;/instances/{instanceId}/providers/FoundationaLLM.DataPipeline/dataPipelines/documents-pipeline&quot;,
+      &quot;display_name&quot;: &quot;Documents Pipeline&quot;,
+      &quot;description&quot;: &quot;Processes documents from Azure Storage&quot;,
+      &quot;active&quot;: true
+    },
+    &quot;roles&quot;: [&quot;Owner&quot;],
+    &quot;actions&quot;: [&quot;read&quot;, &quot;write&quot;, &quot;delete&quot;, &quot;process&quot;]
+  }
+]
+</code></pre>
+<hr>
+<h3 id="get-data-pipeline">Get Data Pipeline</h3>
+<pre><code class="lang-http">GET /instances/{instanceId}/providers/FoundationaLLM.DataPipeline/dataPipelines/{pipelineName}
+Authorization: Bearer &lt;token&gt;
+</code></pre>
+<p><strong>Response (200 OK):</strong></p>
+<pre><code class="lang-json">{
+  &quot;resource&quot;: {
+    &quot;type&quot;: &quot;data-pipeline&quot;,
+    &quot;name&quot;: &quot;documents-pipeline&quot;,
+    &quot;object_id&quot;: &quot;/instances/{instanceId}/providers/FoundationaLLM.DataPipeline/dataPipelines/documents-pipeline&quot;,
+    &quot;display_name&quot;: &quot;Documents Pipeline&quot;,
+    &quot;description&quot;: &quot;Processes documents from Azure Storage&quot;,
+    &quot;active&quot;: true,
+    &quot;data_source_object_id&quot;: &quot;/instances/{instanceId}/providers/FoundationaLLM.DataSource/dataSources/azure-storage&quot;,
+    &quot;stages&quot;: [
+      {
+        &quot;name&quot;: &quot;text-extraction&quot;,
+        &quot;type&quot;: &quot;TextExtraction&quot;,
+        &quot;plugin_object_id&quot;: &quot;/instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/text-extractor&quot;,
+        &quot;parameters&quot;: {},
+        &quot;next_stages&quot;: [&quot;text-partitioning&quot;]
+      },
+      {
+        &quot;name&quot;: &quot;text-partitioning&quot;,
+        &quot;type&quot;: &quot;TextPartitioning&quot;,
+        &quot;plugin_object_id&quot;: &quot;/instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/text-partitioner&quot;,
+        &quot;parameters&quot;: {
+          &quot;chunk_size&quot;: 1000,
+          &quot;chunk_overlap&quot;: 200
+        },
+        &quot;next_stages&quot;: [&quot;embedding&quot;]
+      },
+      {
+        &quot;name&quot;: &quot;embedding&quot;,
+        &quot;type&quot;: &quot;Embedding&quot;,
+        &quot;plugin_object_id&quot;: &quot;/instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/embedder&quot;,
+        &quot;parameters&quot;: {},
+        &quot;next_stages&quot;: [&quot;indexing&quot;]
+      },
+      {
+        &quot;name&quot;: &quot;indexing&quot;,
+        &quot;type&quot;: &quot;Indexing&quot;,
+        &quot;plugin_object_id&quot;: &quot;/instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/indexer&quot;,
+        &quot;parameters&quot;: {
+          &quot;index_name&quot;: &quot;documents-index&quot;
+        },
+        &quot;next_stages&quot;: []
+      }
+    ],
+    &quot;trigger&quot;: {
+      &quot;type&quot;: &quot;Manual&quot;
+    }
+  },
+  &quot;roles&quot;: [&quot;Owner&quot;],
+  &quot;actions&quot;: [&quot;read&quot;, &quot;write&quot;, &quot;delete&quot;, &quot;process&quot;]
+}
+</code></pre>
+<hr>
+<h3 id="create-data-pipeline">Create Data Pipeline</h3>
+<pre><code class="lang-http">POST /instances/{instanceId}/providers/FoundationaLLM.DataPipeline/dataPipelines/{pipelineName}
+Content-Type: application/json
+Authorization: Bearer &lt;token&gt;
+</code></pre>
+<p><strong>Request Body:</strong></p>
+<pre><code class="lang-json">{
+  &quot;type&quot;: &quot;data-pipeline&quot;,
+  &quot;name&quot;: &quot;my-pipeline&quot;,
+  &quot;display_name&quot;: &quot;My Pipeline&quot;,
+  &quot;description&quot;: &quot;Pipeline description&quot;,
+  &quot;active&quot;: true,
+  &quot;data_source_object_id&quot;: &quot;/instances/{instanceId}/providers/FoundationaLLM.DataSource/dataSources/azure-storage&quot;,
+  &quot;stages&quot;: [
+    {
+      &quot;name&quot;: &quot;text-extraction&quot;,
+      &quot;type&quot;: &quot;TextExtraction&quot;,
+      &quot;plugin_object_id&quot;: &quot;/instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/text-extractor&quot;,
+      &quot;parameters&quot;: {},
+      &quot;next_stages&quot;: [&quot;text-partitioning&quot;]
+    },
+    {
+      &quot;name&quot;: &quot;text-partitioning&quot;,
+      &quot;type&quot;: &quot;TextPartitioning&quot;,
+      &quot;plugin_object_id&quot;: &quot;/instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/text-partitioner&quot;,
+      &quot;parameters&quot;: {
+        &quot;chunk_size&quot;: 1000,
+        &quot;chunk_overlap&quot;: 200
+      },
+      &quot;next_stages&quot;: [&quot;embedding&quot;]
+    },
+    {
+      &quot;name&quot;: &quot;embedding&quot;,
+      &quot;type&quot;: &quot;Embedding&quot;,
+      &quot;plugin_object_id&quot;: &quot;/instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/embedder&quot;,
+      &quot;parameters&quot;: {},
+      &quot;next_stages&quot;: [&quot;indexing&quot;]
+    },
+    {
+      &quot;name&quot;: &quot;indexing&quot;,
+      &quot;type&quot;: &quot;Indexing&quot;,
+      &quot;plugin_object_id&quot;: &quot;/instances/{instanceId}/providers/FoundationaLLM.Plugin/plugins/indexer&quot;,
+      &quot;parameters&quot;: {
+        &quot;index_name&quot;: &quot;my-index&quot;
+      },
+      &quot;next_stages&quot;: []
+    }
+  ],
+  &quot;trigger&quot;: {
+    &quot;type&quot;: &quot;Manual&quot;
+  }
+}
+</code></pre>
+<p><strong>Response (200 OK):</strong></p>
+<pre><code class="lang-json">{
+  &quot;object_id&quot;: &quot;/instances/{instanceId}/providers/FoundationaLLM.DataPipeline/dataPipelines/my-pipeline&quot;
+}
+</code></pre>
+<hr>
+<h3 id="update-data-pipeline">Update Data Pipeline</h3>
+<p>Same endpoint as create - use <code>POST</code> with the updated pipeline definition.</p>
+<hr>
+<h3 id="delete-data-pipeline">Delete Data Pipeline</h3>
+<pre><code class="lang-http">DELETE /instances/{instanceId}/providers/FoundationaLLM.DataPipeline/dataPipelines/{pipelineName}
+Authorization: Bearer &lt;token&gt;
+</code></pre>
+<hr>
+<h3 id="purge-data-pipeline">Purge Data Pipeline</h3>
+<pre><code class="lang-http">POST /instances/{instanceId}/providers/FoundationaLLM.DataPipeline/dataPipelines/{pipelineName}/purge
+Authorization: Bearer &lt;token&gt;
+</code></pre>
+<hr>
+<h3 id="execute-data-pipeline">Execute Data Pipeline</h3>
+<p>Trigger a pipeline run:</p>
+<pre><code class="lang-http">POST /instances/{instanceId}/providers/FoundationaLLM.DataPipeline/dataPipelines/{pipelineName}/process
+Content-Type: application/json
+Authorization: Bearer &lt;token&gt;
+</code></pre>
+<p><strong>Request Body (Optional):</strong></p>
+<pre><code class="lang-json">{
+  &quot;run_type&quot;: &quot;full&quot;,
+  &quot;parameters&quot;: {}
+}
+</code></pre>
+<p><strong>Response (202 Accepted):</strong></p>
+<pre><code class="lang-json">{
+  &quot;run_id&quot;: &quot;run-guid&quot;,
+  &quot;status&quot;: &quot;Pending&quot;,
+  &quot;message&quot;: &quot;Pipeline execution started&quot;
+}
+</code></pre>
+<hr>
+<h2 id="pipeline-runs-endpoints">Pipeline Runs Endpoints</h2>
+<h3 id="list-pipeline-runs">List Pipeline Runs</h3>
+<pre><code class="lang-http">GET /instances/{instanceId}/providers/FoundationaLLM.DataPipeline/dataPipelineRuns
+Authorization: Bearer &lt;token&gt;
+</code></pre>
+<p><strong>Query Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pipelineName</code></td>
+<td>string</td>
+<td>Filter by pipeline name</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>string</td>
+<td>Filter by status (Pending, Running, Completed, Failed)</td>
+</tr>
+<tr>
+<td><code>startTime</code></td>
+<td>datetime</td>
+<td>Filter by start time</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Response (200 OK):</strong></p>
+<pre><code class="lang-json">[
+  {
+    &quot;resource&quot;: {
+      &quot;type&quot;: &quot;data-pipeline-run&quot;,
+      &quot;name&quot;: &quot;run-guid&quot;,
+      &quot;object_id&quot;: &quot;/instances/{instanceId}/providers/FoundationaLLM.DataPipeline/dataPipelineRuns/run-guid&quot;,
+      &quot;pipeline_object_id&quot;: &quot;/instances/{instanceId}/providers/FoundationaLLM.DataPipeline/dataPipelines/documents-pipeline&quot;,
+      &quot;pipeline_name&quot;: &quot;documents-pipeline&quot;,
+      &quot;status&quot;: &quot;Completed&quot;,
+      &quot;start_time&quot;: &quot;2024-01-15T10:30:00Z&quot;,
+      &quot;end_time&quot;: &quot;2024-01-15T10:45:00Z&quot;,
+      &quot;documents_processed&quot;: 150,
+      &quot;documents_failed&quot;: 2
+    }
+  }
+]
+</code></pre>
+<hr>
+<h3 id="get-pipeline-run">Get Pipeline Run</h3>
+<pre><code class="lang-http">GET /instances/{instanceId}/providers/FoundationaLLM.DataPipeline/dataPipelineRuns/{runId}
+Authorization: Bearer &lt;token&gt;
+</code></pre>
+<p><strong>Response (200 OK):</strong></p>
+<pre><code class="lang-json">{
+  &quot;resource&quot;: {
+    &quot;type&quot;: &quot;data-pipeline-run&quot;,
+    &quot;name&quot;: &quot;run-guid&quot;,
+    &quot;object_id&quot;: &quot;/instances/{instanceId}/providers/FoundationaLLM.DataPipeline/dataPipelineRuns/run-guid&quot;,
+    &quot;pipeline_object_id&quot;: &quot;/instances/{instanceId}/providers/FoundationaLLM.DataPipeline/dataPipelines/documents-pipeline&quot;,
+    &quot;pipeline_name&quot;: &quot;documents-pipeline&quot;,
+    &quot;status&quot;: &quot;Completed&quot;,
+    &quot;start_time&quot;: &quot;2024-01-15T10:30:00Z&quot;,
+    &quot;end_time&quot;: &quot;2024-01-15T10:45:00Z&quot;,
+    &quot;documents_processed&quot;: 150,
+    &quot;documents_failed&quot;: 2,
+    &quot;stage_results&quot;: [
+      {
+        &quot;stage_name&quot;: &quot;text-extraction&quot;,
+        &quot;status&quot;: &quot;Completed&quot;,
+        &quot;items_processed&quot;: 150,
+        &quot;items_failed&quot;: 0,
+        &quot;duration_seconds&quot;: 120
+      },
+      {
+        &quot;stage_name&quot;: &quot;text-partitioning&quot;,
+        &quot;status&quot;: &quot;Completed&quot;,
+        &quot;items_processed&quot;: 150,
+        &quot;items_failed&quot;: 0,
+        &quot;duration_seconds&quot;: 60
+      }
+    ]
+  }
+}
+</code></pre>
+<hr>
+<h2 id="pipeline-structure">Pipeline Structure</h2>
+<h3 id="stage-types">Stage Types</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>TextExtraction</code></td>
+<td>Extract text from documents</td>
+</tr>
+<tr>
+<td><code>TextPartitioning</code></td>
+<td>Split text into chunks</td>
+</tr>
+<tr>
+<td><code>Embedding</code></td>
+<td>Generate vector embeddings</td>
+</tr>
+<tr>
+<td><code>Indexing</code></td>
+<td>Store in vector database</td>
+</tr>
+<tr>
+<td><code>ImageDescription</code></td>
+<td>Generate descriptions for images</td>
+</tr>
+</tbody>
+</table>
+<h3 id="trigger-types">Trigger Types</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Manual</code></td>
+<td>Triggered via API or UI</td>
+</tr>
+<tr>
+<td><code>Scheduled</code></td>
+<td>Runs on a schedule</td>
+</tr>
+<tr>
+<td><code>Event</code></td>
+<td>Triggered by events (e.g., new files)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="run-status-values">Run Status Values</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Pending</code></td>
+<td>Queued for execution</td>
+</tr>
+<tr>
+<td><code>Running</code></td>
+<td>Currently executing</td>
+</tr>
+<tr>
+<td><code>Completed</code></td>
+<td>Finished successfully</td>
+</tr>
+<tr>
+<td><code>Failed</code></td>
+<td>Execution failed</td>
+</tr>
+<tr>
+<td><code>Cancelled</code></td>
+<td>Cancelled by user</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="code-examples">Code Examples</h2>
+<h3 id="python">Python</h3>
+<pre><code class="lang-python">import requests
+
+base_url = &quot;https://management-api.example.com&quot;
+instance_id = &quot;your-instance-id&quot;
+token = &quot;your-bearer-token&quot;
+
+headers = {
+    &quot;Authorization&quot;: f&quot;Bearer {token}&quot;,
+    &quot;Content-Type&quot;: &quot;application/json&quot;
+}
+
+# List pipelines
+response = requests.get(
+    f&quot;{base_url}/instances/{instance_id}/providers/FoundationaLLM.DataPipeline/dataPipelines&quot;,
+    headers=headers
+)
+pipelines = response.json()
+
+# Execute pipeline
+response = requests.post(
+    f&quot;{base_url}/instances/{instance_id}/providers/FoundationaLLM.DataPipeline/dataPipelines/my-pipeline/process&quot;,
+    headers=headers,
+    json={&quot;run_type&quot;: &quot;full&quot;}
+)
+run = response.json()
+print(f&quot;Started run: {run['run_id']}&quot;)
+</code></pre>
+<h3 id="powershell">PowerShell</h3>
+<pre><code class="lang-powershell">$baseUrl = &quot;https://management-api.example.com&quot;
+$instanceId = &quot;your-instance-id&quot;
+$token = &quot;your-bearer-token&quot;
+
+$headers = @{
+    &quot;Authorization&quot; = &quot;Bearer $token&quot;
+    &quot;Content-Type&quot; = &quot;application/json&quot;
+}
+
+# List pipelines
+$pipelines = Invoke-RestMethod `
+    -Uri &quot;$baseUrl/instances/$instanceId/providers/FoundationaLLM.DataPipeline/dataPipelines&quot; `
+    -Headers $headers
+
+# Execute pipeline
+$run = Invoke-RestMethod `
+    -Uri &quot;$baseUrl/instances/$instanceId/providers/FoundationaLLM.DataPipeline/dataPipelines/my-pipeline/process&quot; `
+    -Method Post `
+    -Headers $headers `
+    -Body '{&quot;run_type&quot;: &quot;full&quot;}'
+
+Write-Host &quot;Started run: $($run.run_id)&quot;
+</code></pre>
+<hr>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="index.html">Management API Overview</a></li>
+<li><a href="../../../management-portal/how-to-guides/data/data-pipelines/creating-data-pipelines.html">Creating Data Pipelines</a></li>
+<li><a href="../../../management-portal/how-to-guides/data/data-pipelines/monitoring-data-pipelines.html">Monitoring Data Pipelines</a></li>
+<li><a href="../../../management-portal/reference/concepts/data-pipelines.html">Data Pipelines Concepts</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

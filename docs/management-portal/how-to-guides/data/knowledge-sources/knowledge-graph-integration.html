@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Knowledge Graph Integration | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Knowledge Graph Integration | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/management-portal/how-to-guides/data/knowledge-sources/knowledge-graph-integration.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../../index.html">
+            <img id="logo" class="svg" src="../../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="knowledge-graph-integration">Knowledge Graph Integration</h1>
+
+<p>Learn how to use knowledge graphs as a knowledge source for FoundationaLLM agents.</p>
+<h2 id="overview">Overview</h2>
+<p>Knowledge graphs provide structured, relationship-rich data that enhances agent capabilities:</p>
+<ul>
+<li><strong>Semantic Relationships</strong>: Understand connections between entities</li>
+<li><strong>Contextual Answers</strong>: Provide richer, more accurate responses</li>
+<li><strong>Graph Traversal</strong>: Follow relationships to find related information</li>
+</ul>
+<h2 id="supported-graph-formats">Supported Graph Formats</h2>
+<table>
+<thead>
+<tr>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Neo4j</strong></td>
+<td>Popular graph database</td>
+</tr>
+<tr>
+<td><strong>Azure Cosmos DB (Gremlin API)</strong></td>
+<td>Azure-native graph database</td>
+</tr>
+<tr>
+<td><strong>RDF/SPARQL</strong></td>
+<td>W3C standard semantic web format</td>
+</tr>
+<tr>
+<td><strong>Custom JSON-LD</strong></td>
+<td>Linked data format</td>
+</tr>
+</tbody>
+</table>
+<h2 id="use-cases">Use Cases</h2>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Benefits</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Organizational Data</strong></td>
+<td>Employee relationships, reporting structures</td>
+</tr>
+<tr>
+<td><strong>Product Catalogs</strong></td>
+<td>Product relationships, accessories, alternatives</td>
+</tr>
+<tr>
+<td><strong>Research</strong></td>
+<td>Citation networks, topic relationships</td>
+</tr>
+<tr>
+<td><strong>Customer Data</strong></td>
+<td>Customer relationships, interaction history</td>
+</tr>
+</tbody>
+</table>
+<h2 id="configuration-overview">Configuration Overview</h2>
+<h3 id="prerequisites">Prerequisites</h3>
+<ul>
+<li>A knowledge graph database populated with your data</li>
+<li>Network connectivity from FoundationaLLM to the graph database</li>
+<li>Authentication credentials configured</li>
+</ul>
+<h3 id="integration-steps">Integration Steps</h3>
+<ol>
+<li><strong>Prepare Your Knowledge Graph</strong> - Ensure data follows expected schema</li>
+<li><strong>Create a Data Source</strong> - Configure connection to the graph database</li>
+<li><strong>Create a Data Pipeline</strong> - Process graph data for agent use</li>
+<li><strong>Configure Agent</strong> - Associate the knowledge source with your agent</li>
+</ol>
+<h2 id="data-source-configuration">Data Source Configuration</h2>
+<blockquote>
+<p><strong>TODO</strong>: Document specific data source configuration steps for knowledge graph types when available in the UI, including connection parameters, authentication, and query configuration.</p>
+</blockquote>
+<h3 id="connection-settings">Connection Settings</h3>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Endpoint</strong></td>
+<td>Graph database endpoint URL</td>
+</tr>
+<tr>
+<td><strong>Authentication</strong></td>
+<td>Credentials or managed identity</td>
+</tr>
+<tr>
+<td><strong>Database/Graph Name</strong></td>
+<td>Specific database or graph to query</td>
+</tr>
+</tbody>
+</table>
+<h2 id="schema-requirements">Schema Requirements</h2>
+<h3 id="node-structure">Node Structure</h3>
+<p>Nodes should include identifiable properties:</p>
+<pre><code class="lang-json">{
+  &quot;id&quot;: &quot;unique-node-identifier&quot;,
+  &quot;type&quot;: &quot;Person&quot;,
+  &quot;properties&quot;: {
+    &quot;name&quot;: &quot;John Smith&quot;,
+    &quot;title&quot;: &quot;Software Engineer&quot;,
+    &quot;department&quot;: &quot;Engineering&quot;,
+    &quot;description&quot;: &quot;Senior developer specializing in AI systems&quot;
+  }
+}
+</code></pre>
+<p><strong>Required Properties:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>Unique identifier for the node</td>
+</tr>
+<tr>
+<td><code>type</code></td>
+<td>Entity type/label</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>Human-readable name</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>Text description for search/context</td>
+</tr>
+</tbody>
+</table>
+<h3 id="relationship-structure">Relationship Structure</h3>
+<p>Relationships connect nodes with semantic meaning:</p>
+<pre><code class="lang-json">{
+  &quot;source&quot;: &quot;person-123&quot;,
+  &quot;target&quot;: &quot;person-456&quot;,
+  &quot;type&quot;: &quot;REPORTS_TO&quot;,
+  &quot;properties&quot;: {
+    &quot;since&quot;: &quot;2023-01-15&quot;
+  }
+}
+</code></pre>
+<p><strong>Relationship Components:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>source</code></td>
+<td>Starting node ID</td>
+</tr>
+<tr>
+<td><code>target</code></td>
+<td>Ending node ID</td>
+</tr>
+<tr>
+<td><code>type</code></td>
+<td>Relationship label (e.g., REPORTS_TO, KNOWS, CONTAINS)</td>
+</tr>
+<tr>
+<td><code>properties</code></td>
+<td>Optional metadata about the relationship</td>
+</tr>
+</tbody>
+</table>
+<h2 id="data-pipeline-configuration">Data Pipeline Configuration</h2>
+<h3 id="graph-processing-stages">Graph Processing Stages</h3>
+<blockquote>
+<p><strong>TODO</strong>: Document specific pipeline stages for processing knowledge graphs.</p>
+</blockquote>
+<p>Common stages include:</p>
+<ol>
+<li><strong>Graph Query</strong> - Execute queries to extract relevant data</li>
+<li><strong>Entity Extraction</strong> - Convert nodes to searchable documents</li>
+<li><strong>Embedding</strong> - Generate vector embeddings for semantic search</li>
+<li><strong>Indexing</strong> - Store in vector database for retrieval</li>
+</ol>
+<h3 id="query-patterns">Query Patterns</h3>
+<p><strong>Cypher (Neo4j) Example:</strong></p>
+<pre><code class="lang-cypher">MATCH (p:Person)-[r:WORKS_IN]-&gt;(d:Department)
+RETURN p.name, p.description, d.name AS department
+</code></pre>
+<p><strong>Gremlin (Cosmos DB) Example:</strong></p>
+<pre><code class="lang-groovy">g.V().hasLabel('Person').out('works_in').hasLabel('Department')
+</code></pre>
+<h2 id="best-practices">Best Practices</h2>
+<h3 id="schema-design">Schema Design</h3>
+<table>
+<thead>
+<tr>
+<th>Practice</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Consistent Types</strong></td>
+<td>Use standard entity type names</td>
+</tr>
+<tr>
+<td><strong>Meaningful Relationships</strong></td>
+<td>Clear, semantic relationship labels</td>
+</tr>
+<tr>
+<td><strong>Rich Properties</strong></td>
+<td>Include descriptive text for search</td>
+</tr>
+<tr>
+<td><strong>Avoid Deep Nesting</strong></td>
+<td>Flatten complex structures when possible</td>
+</tr>
+</tbody>
+</table>
+<h3 id="query-optimization">Query Optimization</h3>
+<ul>
+<li>Limit result set sizes</li>
+<li>Use indexes on frequently queried properties</li>
+<li>Consider materialized views for complex queries</li>
+</ul>
+<h3 id="content-quality">Content Quality</h3>
+<ul>
+<li>Include descriptive text in node properties</li>
+<li>Keep descriptions concise but informative</li>
+<li>Update graph data regularly</li>
+</ul>
+<h2 id="integration-patterns">Integration Patterns</h2>
+<h3 id="direct-query">Direct Query</h3>
+<p>Agents query the graph database directly for specific relationships.</p>
+<h3 id="vector-search">Vector Search</h3>
+<p>Graph data is processed into vector embeddings for semantic search.</p>
+<h3 id="hybrid-approach">Hybrid Approach</h3>
+<p>Combine vector search with graph traversal for comprehensive answers.</p>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="connection-issues">Connection Issues</h3>
+<ul>
+<li>Verify endpoint URL is correct</li>
+<li>Check authentication credentials</li>
+<li>Review network/firewall configuration</li>
+</ul>
+<h3 id="query-failures">Query Failures</h3>
+<ul>
+<li>Validate query syntax for your graph database</li>
+<li>Check for schema mismatches</li>
+<li>Review timeout settings for large queries</li>
+</ul>
+<h3 id="poor-results">Poor Results</h3>
+<ul>
+<li>Ensure node descriptions are meaningful</li>
+<li>Check that relevant data is being indexed</li>
+<li>Review embedding quality</li>
+</ul>
+<h2 id="limitations">Limitations</h2>
+<table>
+<thead>
+<tr>
+<th>Limitation</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Graph Size</strong></td>
+<td>Very large graphs may require query optimization</td>
+</tr>
+<tr>
+<td><strong>Real-time Sync</strong></td>
+<td>Graph changes may not immediately reflect</td>
+</tr>
+<tr>
+<td><strong>Complex Queries</strong></td>
+<td>Some multi-hop queries may be slow</td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="../data-pipelines/creating-data-pipelines.html">Data Pipelines</a></li>
+<li><a href="../data-sources.html">Data Sources</a></li>
+<li><a href="azure-data-lake.html">Azure Data Lake Knowledge Source</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Branding Customization using the App Configurator | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Branding Customization using the App Configurator | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/archive/setup-guides/branding/branding-app-configuration.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="branding-customization-using-the-app-configurator">Branding Customization using the App Configurator</h1>
+
+<p>The <code>FoundationaLLM</code> application provides a way to customize the branding of the applications. The branding customization can be done by setting any of the <strong>21 configuration values</strong> available in the <code>App Configuration</code> resource in your Azure Resource Group.  It can also be changed using the REST API calls pertaining to Branding.</p>
+<h3 id="accessing-the-app-configuration-for-branding-customization">Accessing the App Configuration for branding customization</h3>
+<p>In your Azure Resource Group, navigate to the <code>App Configuration</code> resource and select the <code>Configuration Explorer</code> option under <code>Operations</code>. You will see a list of all configuration settings for <code>FoundationaLLM </code>, filter the list on the word <code>Branding</code> and you will be able to see the 21 relevant configuration settings pertaining to Branding.</p>
+<p><img src="media/branding-1.jpg" alt="Branding App Configuration"></p>
+<h3 id="the-default-user-interface-of-the-foundationallm-is-shown-below">The default User Interface of the <code>FoundationaLLM</code> is shown below</h3>
+<p><img src="media/branding-2.jpg" alt="Branding defaultn"></p>
+<h3 id="the-login-screen-can-also-be-customized-as-shown-below">The Login screen can also be customized as shown below</h3>
+<p><img src="media/branding-3.jpg" alt="Branding Login Page"></p>
+<h3 id="the-chat-window-can-be-customized-as-shown-below">The chat window can be customized as shown below</h3>
+<p><img src="media/branding-4.jpg" alt="Branding Chat Page"></p>
+<h2 id="foundationallmbrandingaccentcolor">FoundationaLLM:Branding:AccentColor</h2>
+<p>Takes a hexadecimal or RGB color value to set the accent color of the chat application which is used for top header and the the token counter in the chat.</p>
+<h2 id="foundationallmbrandingaccenttextcolor">FoundationaLLM:Branding:AccentTextColor</h2>
+<p>Takes a hexadecimal or RGB color value to set the accent text color of the chat application which is used for top header and the the token counter in the chat.</p>
+<h2 id="foundationallmbrandingagenticonurl">FoundationaLLM:Branding:AgentIconUrl</h2>
+<p>A string value to set the Agent Icon Url which is displayed in the chat window.</p>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>The AgentIconUrl can be an SVG or PNG image placed in the Public folder of the application's source code but will require rebuilding of the docker image to reflect the changes. The preferred ways of setting the LogoUrl is to set it to a relative accessible public URL to an SVG or PNG image or include the full Base64 encoded image in the configuration value directly.</p>
+</div>
+<h2 id="foundationallmbrandingbackgroundcolor">FoundationaLLM:Branding:BackgroundColor</h2>
+<p>Takes a hexadecimal or RGB color value to set the background color of the chat application.</p>
+<h2 id="foundationallmbrandingcompanyname">FoundationaLLM:Branding:CompanyName</h2>
+<p>Not is use.  Reserved for future enhancements.</p>
+<h2 id="foundationallmbrandingfaviconurl">FoundationaLLM:Branding:FavIconUrl</h2>
+<p>A string value to set the FavIcon Url which is displayed in the browser tab.</p>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>The FavIconUrl can be an SVG or PNG image placed in the Public folder of the application's source code but will require rebuilding of the docker image to reflect the changes. The preferred ways of setting the FavIconUrl is to set it to a relative accessible public URL to an SVG or PNG image or include the full Base64 encoded image in the configuration value directly.</p>
+</div>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>Any changes to the <code>FoundationaLLM:Branding:FavIconUrl</code> will require a restart of the <code>CoreAPI</code> image to take effect.</p>
+</div>
+<h2 id="foundationallmbrandingfootertext">FoundationaLLM:Branding:FooterText</h2>
+<p>A string value to set the Footer Text value which is displayed at the bottom right of the screen.</p>
+<h2 id="foundationallmbrandingkioskmode">FoundationaLLM:Branding:KioskMode</h2>
+<p>This is a boolean flag to indicate if the application is running in kiosk mode, if true will remove the sessions panel on the left navigation panel.
+Kiosk mode does not store user conversations and is meant to be used within a public kiosk setting</p>
+<h2 id="foundationallmbrandinglogotext">FoundationaLLM:Branding:LogoText</h2>
+<p>A string value to set the Logo Text value which is displayed only if the <code>FoundationaLLM:Branding:LogoUrl</code> is not set.</p>
+<h2 id="foundationallmbrandinglogourl">FoundationaLLM:Branding:LogoUrl</h2>
+<p>A string value to set the Logo Url which is displayed in top left header and also in the login screen.</p>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>The LogoUrl can be an SVG or PNG image placed in the Public folder of the application's source code but will require rebuilding of the docker image to reflect the changes. The preferred ways of setting the LogoUrl is to set it to a relative accessible public URL to an SVG or PNG image or include the full Base64 encoded image in the configuration value directly.</p>
+</div>
+<h2 id="foundationallmbrandingpagetitle">FoundationaLLM:Branding:PageTitle</h2>
+<p>A string value to set the Page Title value which is displayed in the browser tab.</p>
+<p><img src="media/branding-5.jpg" alt="PageTitle"></p>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>Any changes to the <code>FoundationaLLM:Branding:PageTitle</code> will require a restart of the <code>CoreAPI</code> image to take effect.</p>
+</div>
+<h2 id="foundationallmbrandingprimarybuttonbackgroundcolor">FoundationaLLM:Branding:PrimaryButtonBackgroundColor</h2>
+<p>Takes a hexadecimal or RGB color value to set the Primary Button Background color of the chat application. It affects the <code>Send</code> button in the chat at the bottom right, the <code>Close</code> button the <code>View Prompt</code> screen and the <code>login</code> button in the login screen.</p>
+<h2 id="foundationallmbrandingprimarybuttontextcolor">FoundationaLLM:Branding:PrimaryButtonTextColor</h2>
+<p>Takes a hexadecimal or RGB color value to set the Primary Button Text color of the chat application. It affects the <code>Send</code> button in the chat at the bottom right, the <code>Close</code> button the <code>View Prompt</code> screen and the <code>login</code> button in the login screen.</p>
+<h2 id="foundationallmbrandingprimarycolor">FoundationaLLM:Branding:PrimaryColor</h2>
+<p>Takes a hexadecimal or RGB color value to set the Primary color of the chat application. It affects the left navigation panel and the <code>User Message</code> panel in the chat.</p>
+<h2 id="foundationallmbrandingprimarytextcolor">FoundationaLLM:Branding:PrimaryTextColor</h2>
+<p>Takes a hexadecimal or RGB color value to set the Primary Text color of the chat application. It affects the left navigation panel and the <code>User Message</code> panel in the chat.</p>
+<h2 id="foundationallmbrandingsecondarybuttonbackgroundcolor">FoundationaLLM:Branding:SecondaryButtonBackgroundColor</h2>
+<p>Takes a hexadecimal or RGB color value to set the Secondary Button Background color of the chat application. It affects the <code>collapsable arrow</code> in the left navigation panel, the <code>Sign Out</code> bottom at the bottom and the <code>attachment</code> of files button in the chat window.</p>
+<h2 id="foundationallmbrandingsecondarybuttontextcolor">FoundationaLLM:Branding:SecondaryButtonTextColor</h2>
+<p>Takes a hexadecimal or RGB color value to set the Secondary Button Text color of the chat application. It affects the <code>collapsable arrow</code> in the left navigation panel, the <code>Sign Out</code> bottom at the bottom and the <code>attachment</code> of files button in the chat window.</p>
+<h2 id="foundationallmbrandingsecondarycolor">FoundationaLLM:Branding:SecondaryColor</h2>
+<p>Takes a hexadecimal or RGB color value to set the Secondary color of the chat application. It affects the background color of the <code>session identifier</code> in the left navigations panel and the background of the entire <code>login screen</code>.</p>
+<h2 id="foundationallmbrandingsecondarytextcolor">FoundationaLLM:Branding:SecondaryTextColor</h2>
+<p>Takes a hexadecimal or RGB color value to set the Secondary Text color of the chat application. It affects the background color of the <code>session identifier</code> in the left navigations panel.</p>
+<h2 id="foundationallmbrandingnoagentsmessage">FoundationaLLM:Branding:NoAgentsMessage</h2>
+<p>A string value to set the No Agents Message value which is displayed in the chat window when no agents are available. HTML allowed in this field.</p>
+<h2 id="foundationallmbrandingdefaultagentwelcomemessage">FoundationaLLM:Branding:DefaultAgentWelcomeMessage</h2>
+<p>A string value to set the Default Agent Welcome Message value which is displayed in the chat window when the agent is connected. HTML allowed in this field.</p>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

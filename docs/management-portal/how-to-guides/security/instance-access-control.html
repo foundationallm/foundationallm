@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Instance Access Control | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Instance Access Control | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/management-portal/how-to-guides/security/instance-access-control.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="instance-access-control">Instance Access Control</h1>
+
+<p>Learn how to manage access control and role assignments for your FoundationaLLM instance.</p>
+<h2 id="overview">Overview</h2>
+<p>Instance Access Control allows you to manage who can access your FoundationaLLM deployment and what actions they can perform. The system uses Role-Based Access Control (RBAC) to define permissions.</p>
+<h2 id="accessing-instance-access-control">Accessing Instance Access Control</h2>
+<ol>
+<li>In the Management Portal sidebar, click <strong>Instance Access Control</strong> under the <strong>Security</strong> section</li>
+<li>The role assignments page loads, showing all current assignments</li>
+</ol>
+<h2 id="role-assignments-table">Role Assignments Table</h2>
+<p>The table displays role assignments grouped by role:</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Name</strong></td>
+<td>Principal name and email (if available)</td>
+</tr>
+<tr>
+<td><strong>Type</strong></td>
+<td>Principal type (User, Group, Service Principal)</td>
+</tr>
+<tr>
+<td><strong>Scope</strong></td>
+<td>Resource scope for the assignment</td>
+</tr>
+<tr>
+<td><strong>Delete</strong></td>
+<td>Remove the assignment</td>
+</tr>
+</tbody>
+</table>
+<h3 id="principal-type-icons">Principal Type Icons</h3>
+<table>
+<thead>
+<tr>
+<th>Icon</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>👤</td>
+<td>User</td>
+</tr>
+<tr>
+<td>👥</td>
+<td>Group</td>
+</tr>
+<tr>
+<td>✓</td>
+<td>Service Principal</td>
+</tr>
+</tbody>
+</table>
+<h3 id="role-groups">Role Groups</h3>
+<p>Assignments are grouped by role, with an expandable header showing:</p>
+<ul>
+<li>Role display name</li>
+<li>Role description (hover over info icon)</li>
+</ul>
+<h2 id="available-roles">Available Roles</h2>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Owner</strong></td>
+<td>Full access to all resources</td>
+</tr>
+<tr>
+<td><strong>Contributor</strong></td>
+<td>Create and manage resources (cannot manage access)</td>
+</tr>
+<tr>
+<td><strong>Reader</strong></td>
+<td>View resources only</td>
+</tr>
+<tr>
+<td><strong>User Access Administrator</strong></td>
+<td>Manage role assignments</td>
+</tr>
+</tbody>
+</table>
+<h2 id="creating-a-role-assignment">Creating a Role Assignment</h2>
+<ol>
+<li>Click <strong>Create Role Assignment</strong> at the top right of the page</li>
+<li>Navigate to the role assignment creation form</li>
+</ol>
+<h3 id="role-assignment-configuration">Role Assignment Configuration</h3>
+<blockquote>
+<p><strong>TODO</strong>: Document the specific fields in the role assignment creation form, which may include:</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Principal Type</strong></td>
+<td>User, Group, or Service Principal</td>
+</tr>
+<tr>
+<td><strong>Principal ID</strong></td>
+<td>Azure AD Object ID or email</td>
+</tr>
+<tr>
+<td><strong>Role</strong></td>
+<td>Role to assign</td>
+</tr>
+<tr>
+<td><strong>Scope</strong></td>
+<td>Resource scope for the assignment</td>
+</tr>
+</tbody>
+</table>
+<h3 id="specifying-principals">Specifying Principals</h3>
+<h4 id="users">Users</h4>
+<ol>
+<li>Select <strong>User</strong> as the principal type</li>
+<li>Enter the user's email address or Object ID</li>
+<li>The system validates the principal exists</li>
+</ol>
+<h4 id="groups">Groups</h4>
+<ol>
+<li>Select <strong>Group</strong> as the principal type</li>
+<li>Enter the security group's Object ID</li>
+<li>All group members inherit the role</li>
+</ol>
+<h4 id="service-principals">Service Principals</h4>
+<ol>
+<li>Select <strong>Service Principal</strong> as the principal type</li>
+<li>Enter the service principal's Object ID</li>
+<li>Used for application/service access</li>
+</ol>
+<h3 id="selecting-scope">Selecting Scope</h3>
+<p>Scope determines which resources the role applies to:</p>
+<table>
+<thead>
+<tr>
+<th>Scope Level</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Instance</strong></td>
+<td>Entire FoundationaLLM instance</td>
+</tr>
+<tr>
+<td><strong>Resource Provider</strong></td>
+<td>All resources of a type (e.g., all agents)</td>
+</tr>
+<tr>
+<td><strong>Resource</strong></td>
+<td>Specific resource (e.g., one agent)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Scope Format Examples:</strong></p>
+<ul>
+<li>Instance: <code>/</code></li>
+<li>All Agents: <code>providers/FoundationaLLM.Agent</code></li>
+<li>Specific Agent: <code>providers/FoundationaLLM.Agent/agents/my-agent</code></li>
+</ul>
+<h2 id="deleting-a-role-assignment">Deleting a Role Assignment</h2>
+<ol>
+<li>Locate the assignment in the table</li>
+<li>Click the <strong>Trash</strong> icon (🗑️)</li>
+<li>Confirm deletion in the dialog: &quot;Are you sure you want to delete the role assignment for [principal name]?&quot;</li>
+<li>Click <strong>Yes</strong> to confirm</li>
+</ol>
+<blockquote>
+<p><strong>Warning:</strong> Removing access immediately prevents the principal from performing actions. Ensure this is intended before confirming.</p>
+</blockquote>
+<h2 id="refreshing-the-list">Refreshing the List</h2>
+<p>Click the <strong>Refresh</strong> button (🔄) at the top of the table to reload role assignments.</p>
+<h2 id="common-access-patterns">Common Access Patterns</h2>
+<h3 id="administrator-access">Administrator Access</h3>
+<p>Grant full administrative access:</p>
+<ul>
+<li><strong>Role</strong>: Owner</li>
+<li><strong>Scope</strong>: Instance level (<code>/</code>)</li>
+<li><strong>Principal</strong>: Admin user or admin group</li>
+</ul>
+<h3 id="developer-access">Developer Access</h3>
+<p>Grant agent development access:</p>
+<ul>
+<li><strong>Role</strong>: Contributor</li>
+<li><strong>Scope</strong>: Agent resource provider</li>
+<li><strong>Principal</strong>: Developer group</li>
+</ul>
+<h3 id="read-only-access">Read-Only Access</h3>
+<p>Grant view-only access:</p>
+<ul>
+<li><strong>Role</strong>: Reader</li>
+<li><strong>Scope</strong>: Appropriate level</li>
+<li><strong>Principal</strong>: Viewer group</li>
+</ul>
+<h3 id="portal-access">Portal Access</h3>
+<p>For portal access specifically:</p>
+<ul>
+<li>See <a href="../fllm-platform/configuration.html">Configuration</a> for portal access settings</li>
+</ul>
+<h2 id="best-practices">Best Practices</h2>
+<h3 id="use-groups-over-individual-users">Use Groups Over Individual Users</h3>
+<ul>
+<li>Create Azure AD security groups for role-based teams</li>
+<li>Assign roles to groups instead of individual users</li>
+<li>Simplifies management as team membership changes</li>
+</ul>
+<h3 id="apply-least-privilege">Apply Least Privilege</h3>
+<ul>
+<li>Grant the minimum permissions needed</li>
+<li>Use specific scopes rather than instance-wide</li>
+<li>Review and remove unnecessary assignments regularly</li>
+</ul>
+<h3 id="document-assignments">Document Assignments</h3>
+<ul>
+<li>Maintain records of who has what access and why</li>
+<li>Review assignments during security audits</li>
+<li>Update documentation when roles change</li>
+</ul>
+<h3 id="regular-review">Regular Review</h3>
+<ul>
+<li>Periodically audit role assignments</li>
+<li>Remove access for departed team members</li>
+<li>Verify service principal access is still needed</li>
+</ul>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="user-cannot-access-expected-resources">User Cannot Access Expected Resources</h3>
+<ol>
+<li>Verify role assignment exists</li>
+<li>Check the scope includes the resource</li>
+<li>Ensure the user/group is correct</li>
+<li>User may need to sign out and back in</li>
+</ol>
+<h3 id="role-assignment-not-working">Role Assignment Not Working</h3>
+<ol>
+<li>Verify principal ID is correct</li>
+<li>Check for typos in scope</li>
+<li>Ensure Azure AD sync is current</li>
+<li>Review for conflicting assignments</li>
+</ol>
+<h3 id="cannot-create-role-assignment">Cannot Create Role Assignment</h3>
+<ol>
+<li>Verify you have User Access Administrator role</li>
+<li>Check you have permission on the target scope</li>
+<li>Ensure the principal exists in Azure AD</li>
+</ol>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="../../reference/permissions-roles.html">Permissions and Roles Reference</a></li>
+<li><a href="../fllm-platform/configuration.html">Configuration (Portal Access)</a></li>
+<li><a href="../../reference/concepts/agent-access-tokens.html">Agent Access Tokens</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

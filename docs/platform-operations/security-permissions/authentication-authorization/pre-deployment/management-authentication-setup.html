@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Management API &amp; Portal Authentication Setup | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Management API &amp; Portal Authentication Setup | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/platform-operations/security-permissions/authentication-authorization/pre-deployment/management-authentication-setup.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../../index.html">
+            <img id="logo" class="svg" src="../../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="management-api--portal-authentication-setup">Management API &amp; Portal Authentication Setup</h1>
+
+<p>This guide covers creating the Microsoft Entra ID app registrations for the Management API and Management Portal.</p>
+<h2 id="overview">Overview</h2>
+<p>You will create two app registrations:</p>
+<table>
+<thead>
+<tr>
+<th>App Registration</th>
+<th>Purpose</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FoundationaLLM-Management-Portal</td>
+<td>Management portal authentication</td>
+<td>Client (SPA)</td>
+</tr>
+<tr>
+<td>FoundationaLLM-Management-API</td>
+<td>Management API authentication</td>
+<td>API</td>
+</tr>
+</tbody>
+</table>
+<h2 id="create-the-client-application-management-portal">Create the Client Application (Management Portal)</h2>
+<h3 id="step-1-register-the-application">Step 1: Register the Application</h3>
+<ol>
+<li>Sign in to <a href="https://entra.microsoft.com/">Microsoft Entra admin center</a></li>
+<li>Navigate to <strong>Identity</strong> &gt; <strong>Applications</strong> &gt; <strong>App registrations</strong></li>
+<li>Click <strong>+ New registration</strong></li>
+<li>Configure:
+<ul>
+<li><strong>Name:</strong> <code>FoundationaLLM-Management-Portal</code></li>
+<li><strong>Supported account types:</strong> Accounts in this organizational directory only</li>
+</ul>
+</li>
+<li>Click <strong>Register</strong></li>
+<li><strong>Record</strong> the <strong>Application (client) ID</strong> and <strong>Directory (tenant) ID</strong></li>
+</ol>
+<h3 id="step-2-configure-authentication">Step 2: Configure Authentication</h3>
+<ol>
+<li><p>Under <strong>Manage</strong>, select <strong>Authentication</strong></p>
+</li>
+<li><p>Click <strong>Add a platform</strong> &gt; <strong>Single-page application</strong></p>
+</li>
+<li><p>Add Redirect URIs:</p>
+<table>
+<thead>
+<tr>
+<th>Environment</th>
+<th>URI</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Production</td>
+<td><code>&lt;MANAGEMENT_PORTAL_URL&gt;/signin-oidc</code></td>
+</tr>
+<tr>
+<td>Local Dev</td>
+<td><code>http://localhost:3001/signin-oidc</code></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p>Click <strong>Configure</strong></p>
+</li>
+</ol>
+<h3 id="step-3-enable-implicit-grant">Step 3: Enable Implicit Grant</h3>
+<p>Under <strong>Implicit grant and hybrid flows</strong>:</p>
+<ol>
+<li>Check <strong>Access tokens</strong></li>
+<li>Check <strong>ID tokens</strong></li>
+<li>Click <strong>Save</strong></li>
+</ol>
+<h3 id="step-4-optional-add-postman-redirect">Step 4: (Optional) Add Postman Redirect</h3>
+<p>For API testing with Postman:</p>
+<ol>
+<li>Click <strong>Add a platform</strong> &gt; <strong>Mobile and desktop applications</strong></li>
+<li>Add: <code>https://oauth.pstmn.io/v1/callback</code></li>
+<li>Click <strong>Configure</strong></li>
+</ol>
+<h3 id="step-5-update-manifest">Step 5: Update Manifest</h3>
+<ol>
+<li>Under <strong>Manage</strong>, select <strong>Manifest</strong></li>
+<li>Find <code>accessTokenAcceptedVersion</code></li>
+<li>Change value to <code>2</code></li>
+<li>Click <strong>Save</strong></li>
+</ol>
+<h2 id="create-the-api-application-management-api">Create the API Application (Management API)</h2>
+<h3 id="step-1-register-the-application-1">Step 1: Register the Application</h3>
+<ol>
+<li>Navigate to <strong>App registrations</strong> &gt; <strong>+ New registration</strong></li>
+<li>Configure:
+<ul>
+<li><strong>Name:</strong> <code>FoundationaLLM-Management-API</code></li>
+<li><strong>Supported account types:</strong> Accounts in this organizational directory only</li>
+</ul>
+</li>
+<li>Click <strong>Register</strong></li>
+<li><strong>Record</strong> the <strong>Application (client) ID</strong> and <strong>Directory (tenant) ID</strong></li>
+</ol>
+<h3 id="step-2-configure-authentication-1">Step 2: Configure Authentication</h3>
+<ol>
+<li>Under <strong>Manage</strong>, select <strong>Authentication</strong></li>
+<li>Click <strong>Add a platform</strong> &gt; <strong>Web</strong></li>
+<li>Enter Redirect URI: <code>http://localhost</code></li>
+<li>Click <strong>Configure</strong></li>
+</ol>
+<blockquote>
+<p><strong>Note:</strong> The localhost URI is required to enable token options but isn't used in production.</p>
+</blockquote>
+<h3 id="step-3-enable-implicit-grant-1">Step 3: Enable Implicit Grant</h3>
+<ol>
+<li>Check <strong>Access tokens</strong></li>
+<li>Check <strong>ID tokens</strong></li>
+<li>Click <strong>Save</strong></li>
+</ol>
+<h3 id="step-4-expose-an-api">Step 4: Expose an API</h3>
+<ol>
+<li><p>Under <strong>Manage</strong>, select <strong>Expose an API</strong></p>
+</li>
+<li><p>Click <strong>Add a scope</strong></p>
+</li>
+<li><p>Set Application ID URI: <code>api://FoundationaLLM-Management</code> (or accept default)</p>
+</li>
+<li><p>Click <strong>Save and continue</strong></p>
+</li>
+<li><p>Configure scope:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Scope name</td>
+<td><code>Data.Manage</code></td>
+</tr>
+<tr>
+<td>Who can consent?</td>
+<td>Admins and users</td>
+</tr>
+<tr>
+<td>Admin consent display name</td>
+<td>Manage data on behalf of users</td>
+</tr>
+<tr>
+<td>Admin consent description</td>
+<td>Allows the app to manage data on behalf of the signed-in user</td>
+</tr>
+<tr>
+<td>User consent display name</td>
+<td>Manage data on behalf of the user</td>
+</tr>
+<tr>
+<td>User consent description</td>
+<td>Allows the app to manage data on behalf of the signed-in user</td>
+</tr>
+<tr>
+<td>State</td>
+<td>Enabled</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p>Click <strong>Add scope</strong></p>
+</li>
+<li><p><strong>Record</strong> the scope name: <code>api://FoundationaLLM-Management/Data.Manage</code></p>
+</li>
+</ol>
+<h3 id="step-5-add-authorized-client-application">Step 5: Add Authorized Client Application</h3>
+<ol>
+<li>Still in <strong>Expose an API</strong>, click <strong>+ Add a client application</strong></li>
+<li>Paste the <strong>Application (client) ID</strong> of <code>FoundationaLLM-Management-Portal</code></li>
+<li>Check the <code>Data.Manage</code> scope</li>
+<li>Click <strong>Add application</strong></li>
+</ol>
+<h3 id="step-6-update-manifest">Step 6: Update Manifest</h3>
+<ol>
+<li>Under <strong>Manage</strong>, select <strong>Manifest</strong></li>
+<li>Find <code>accessTokenAcceptedVersion</code></li>
+<li>Change value to <code>2</code></li>
+<li>Click <strong>Save</strong></li>
+</ol>
+<h2 id="configure-api-permissions-client-app">Configure API Permissions (Client App)</h2>
+<h3 id="add-permissions-to-management-portal">Add Permissions to Management Portal</h3>
+<ol>
+<li>Navigate to <strong>App registrations</strong></li>
+<li>Select <code>FoundationaLLM-Management-Portal</code></li>
+<li>Under <strong>Manage</strong>, select <strong>API permissions</strong></li>
+<li>Click <strong>+ Add a permission</strong></li>
+<li>Select <strong>My APIs</strong> tab</li>
+<li>Select <code>FoundationaLLM-Management-API</code></li>
+<li>Check <code>Data.Manage</code></li>
+<li>Click <strong>Add permissions</strong></li>
+</ol>
+<h3 id="grant-admin-consent-optional">Grant Admin Consent (Optional)</h3>
+<p>If required by your organization:</p>
+<ol>
+<li>Click <strong>Grant admin consent for [tenant]</strong></li>
+<li>Confirm</li>
+</ol>
+<h2 id="values-to-record">Values to Record</h2>
+<p>Save these values for App Configuration:</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>App Configuration Key</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Management Portal Client ID</td>
+<td><code>FoundationaLLM:Management:Entra:ClientId</code></td>
+</tr>
+<tr>
+<td>Management API Client ID</td>
+<td><code>FoundationaLLM:ManagementAPI:Entra:ClientId</code></td>
+</tr>
+<tr>
+<td>Tenant ID</td>
+<td><code>FoundationaLLM:Management:Entra:TenantId</code>, <code>FoundationaLLM:ManagementAPI:Entra:TenantId</code></td>
+</tr>
+<tr>
+<td>Scope</td>
+<td><code>FoundationaLLM:Management:Entra:Scopes</code> = <code>api://FoundationaLLM-Management/Data.Manage</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="next-steps">Next Steps</h2>
+<ol>
+<li>Complete <a href="authorization-setup.html">Authorization API Setup</a></li>
+<li>Run deployment (<code>azd up</code>)</li>
+<li>Complete <a href="../post-deployment/management-authentication-post.html">Post-Deployment Configuration</a></li>
+</ol>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="../index.html">Authentication Setup Overview</a></li>
+<li><a href="core-authentication-setup.html">Core API &amp; Portal Setup</a></li>
+<li><a href="../../../deployment/app-configuration-values.html">App Configuration Values</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>App Configuration Values | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="App Configuration Values | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../toc.html">
+      <meta name="docfx:tocrel" content="../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/platform-operations/deployment/app-configuration-values.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../index.html">
+            <img id="logo" class="svg" src="../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="app-configuration-values">App Configuration Values</h1>
+
+<p>FoundationaLLM uses Azure App Configuration as the central store for configuration values, Key Vault secret references, and feature flags.</p>
+<h2 id="overview">Overview</h2>
+<p>Benefits of centralized configuration:</p>
+<ul>
+<li><strong>Single source of truth</strong> for all services</li>
+<li><strong>No redeployment required</strong> for configuration changes</li>
+<li><strong>Key Vault integration</strong> for secrets</li>
+<li><strong>Shared settings</strong> across multiple services</li>
+</ul>
+<h2 id="configuration-categories">Configuration Categories</h2>
+<h3 id="instance-configuration">Instance Configuration</h3>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM:Instance:Id</code></td>
+<td>Generated GUID</td>
+<td>Unique instance identifier</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Configuration:KeyVaultURI</code></td>
+<td>(Required)</td>
+<td>Key Vault URL for secrets</td>
+</tr>
+</tbody>
+</table>
+<h3 id="api-endpoints">API Endpoints</h3>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM:APIs:CoreAPI:APIUrl</code></td>
+<td>Core API base URL</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIs:ManagementAPI:APIUrl</code></td>
+<td>Management API base URL</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIs:OrchestrationAPI:APIUrl</code></td>
+<td>Orchestration API URL</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIs:GatekeeperAPI:APIUrl</code></td>
+<td>Gatekeeper API URL</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIs:LangChainAPI:APIUrl</code></td>
+<td>LangChain API URL</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIs:SemanticKernelAPI:APIUrl</code></td>
+<td>Semantic Kernel API URL</td>
+</tr>
+</tbody>
+</table>
+<h3 id="api-keys-key-vault-references">API Keys (Key Vault References)</h3>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Key Vault Secret</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM:APIs:OrchestrationAPI:APIKey</code></td>
+<td><code>foundationallm-apis-orchestrationapi-apikey</code></td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIs:GatekeeperAPI:APIKey</code></td>
+<td><code>foundationallm-apis-gatekeeperapi-apikey</code></td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIs:LangChainAPI:APIKey</code></td>
+<td><code>foundationallm-apis-langchainapi-apikey</code></td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIs:SemanticKernelAPI:APIKey</code></td>
+<td><code>foundationallm-apis-semantickernelapi-apikey</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="gatekeeper-configuration">Gatekeeper Configuration</h3>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM:APIs:CoreAPI:BypassGatekeeper</code></td>
+<td><code>true</code></td>
+<td>Skip content filtering for performance</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIs:GatekeeperAPI:Configuration:EnableAzureContentSafety</code></td>
+<td><code>true</code></td>
+<td>Enable Azure Content Safety</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIs:GatekeeperAPI:Configuration:EnableLakeraGuard</code></td>
+<td><code>true</code></td>
+<td>Enable Lakera Guard</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIs:GatekeeperAPI:Configuration:EnableMicrosoftPresidio</code></td>
+<td><code>true</code></td>
+<td>Enable PII detection</td>
+</tr>
+</tbody>
+</table>
+<h3 id="azure-content-safety">Azure Content Safety</h3>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM:APIs:Gatekeeper:AzureContentSafety:APIUrl</code></td>
+<td>(Required)</td>
+<td>Content Safety endpoint</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIs:Gatekeeper:AzureContentSafety:HateSeverity</code></td>
+<td><code>2</code></td>
+<td>Threshold (0-6)</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIs:Gatekeeper:AzureContentSafety:SelfHarmSeverity</code></td>
+<td><code>2</code></td>
+<td>Threshold (0-6)</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIs:Gatekeeper:AzureContentSafety:SexualSeverity</code></td>
+<td><code>2</code></td>
+<td>Threshold (0-6)</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:APIs:Gatekeeper:AzureContentSafety:ViolenceSeverity</code></td>
+<td><code>2</code></td>
+<td>Threshold (0-6)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="azure-openai-configuration">Azure OpenAI Configuration</h3>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM:AzureOpenAI:API:Endpoint</code></td>
+<td>(Required)</td>
+<td>Azure OpenAI endpoint</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:AzureOpenAI:API:Version</code></td>
+<td><code>2023-05-15</code></td>
+<td>API version</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:AzureOpenAI:API:Completions:DeploymentName</code></td>
+<td><code>completions</code></td>
+<td>Completion model deployment</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:AzureOpenAI:API:Completions:ModelName</code></td>
+<td><code>gpt-35-turbo</code></td>
+<td>Model name</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:AzureOpenAI:API:Completions:MaxTokens</code></td>
+<td><code>8096</code></td>
+<td>Max tokens</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:AzureOpenAI:API:Completions:Temperature</code></td>
+<td><code>0</code></td>
+<td>Temperature</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:AzureOpenAI:API:Embeddings:DeploymentName</code></td>
+<td><code>embeddings</code></td>
+<td>Embedding deployment</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:AzureOpenAI:API:Embeddings:ModelName</code></td>
+<td><code>text-embedding-ada-002</code></td>
+<td>Embedding model</td>
+</tr>
+</tbody>
+</table>
+<h3 id="branding-configuration">Branding Configuration</h3>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM:Branding:CompanyName</code></td>
+<td><code>FoundationaLLM</code></td>
+<td>Organization name</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Branding:PageTitle</code></td>
+<td><code>FoundationaLLM Chat Copilot</code></td>
+<td>Browser title</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Branding:LogoUrl</code></td>
+<td><code>foundationallm-logo-white.svg</code></td>
+<td>Logo path</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Branding:FavIconUrl</code></td>
+<td><code>favicon.ico</code></td>
+<td>Favicon path</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Branding:PrimaryColor</code></td>
+<td><code>#131833</code></td>
+<td>Primary color</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Branding:PrimaryTextColor</code></td>
+<td><code>#fff</code></td>
+<td>Primary text color</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Branding:SecondaryColor</code></td>
+<td><code>#334581</code></td>
+<td>Secondary color</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Branding:BackgroundColor</code></td>
+<td><code>#fff</code></td>
+<td>Background color</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Branding:KioskMode</code></td>
+<td><code>false</code></td>
+<td>Enable kiosk mode</td>
+</tr>
+</tbody>
+</table>
+<h3 id="entra-id-authentication">Entra ID Authentication</h3>
+<h4 id="core-api--chat-portal">Core API / Chat Portal</h4>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM:CoreAPI:Entra:Instance</code></td>
+<td>Entra login URL</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:CoreAPI:Entra:TenantId</code></td>
+<td>Tenant ID</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:CoreAPI:Entra:ClientId</code></td>
+<td>Client ID</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:CoreAPI:Entra:Scopes</code></td>
+<td>API scopes</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:CoreAPI:Entra:CallbackPath</code></td>
+<td><code>/signin-oidc</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="management-api--portal">Management API / Portal</h4>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM:ManagementAPI:Entra:Instance</code></td>
+<td>Entra login URL</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:ManagementAPI:Entra:TenantId</code></td>
+<td>Tenant ID</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:ManagementAPI:Entra:ClientId</code></td>
+<td>Client ID</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:ManagementAPI:Entra:Scopes</code></td>
+<td>API scopes</td>
+</tr>
+</tbody>
+</table>
+<h3 id="cosmosdb-configuration">CosmosDB Configuration</h3>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM:CosmosDB:Endpoint</code></td>
+<td>(Required)</td>
+<td>CosmosDB endpoint</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:CosmosDB:Database</code></td>
+<td><code>database</code></td>
+<td>Database name</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:CosmosDB:Containers</code></td>
+<td><code>Sessions, UserSessions</code></td>
+<td>Container list</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:CosmosDB:ChangeFeedLeaseContainer</code></td>
+<td><code>leases</code></td>
+<td>Change feed container</td>
+</tr>
+</tbody>
+</table>
+<h3 id="storage-configuration">Storage Configuration</h3>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM:AgentHub:AgentMetadata:StorageContainer</code></td>
+<td>Agent metadata container</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:PromptHub:PromptMetadata:StorageContainer</code></td>
+<td>Prompt metadata container</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:DataSourceHub:DataSourceMetadata:StorageContainer</code></td>
+<td>Data source container</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:BlobStorageMemorySource:BlobStorageContainer</code></td>
+<td>Memory source container</td>
+</tr>
+</tbody>
+</table>
+<h3 id="vectorization-configuration">Vectorization Configuration</h3>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM:APIs:VectorizationAPI:APIUrl</code></td>
+<td>Vectorization API URL</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Vectorization:AzureAISearchIndexingService:Endpoint</code></td>
+<td>AI Search endpoint</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Vectorization:SemanticKernelTextEmbeddingService:Endpoint</code></td>
+<td>Embedding endpoint</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Vectorization:SemanticKernelTextEmbeddingService:DeploymentName</code></td>
+<td><code>embeddings</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="event-grid-configuration">Event Grid Configuration</h3>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM:Events:AzureEventGridEventService:Endpoint</code></td>
+<td>Event Grid endpoint</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Events:AzureEventGridEventService:NamespaceId</code></td>
+<td>Event Grid namespace</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:Events:AzureEventGridEventService:AuthenticationType</code></td>
+<td><code>APIKey</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="key-vault-secret-references">Key Vault Secret References</h2>
+<p>Many App Configuration values reference Key Vault secrets. The format is:</p>
+<pre><code class="lang-json">{
+  &quot;uri&quot;: &quot;https://{keyvault-name}.vault.azure.net/secrets/{secret-name}&quot;
+}
+</code></pre>
+<p>Common secret references:</p>
+<table>
+<thead>
+<tr>
+<th>App Config Key</th>
+<th>Key Vault Secret</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM:AzureOpenAI:API:Key</code></td>
+<td><code>foundationallm-azureopenai-api-key</code></td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:CoreAPI:Entra:ClientSecret</code></td>
+<td><code>foundationallm-coreapi-entra-clientsecret</code></td>
+</tr>
+<tr>
+<td><code>FoundationaLLM:ManagementAPI:Entra:ClientSecret</code></td>
+<td><code>foundationallm-managementapi-entra-clientsecret</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="modifying-configuration">Modifying Configuration</h2>
+<h3 id="via-azure-portal">Via Azure Portal</h3>
+<ol>
+<li>Navigate to your App Configuration resource</li>
+<li>Select <strong>Configuration explorer</strong></li>
+<li>Find and edit the key</li>
+<li>Save changes</li>
+</ol>
+<h3 id="via-azure-cli">Via Azure CLI</h3>
+<pre><code class="lang-bash">az appconfig kv set \
+  --name &lt;app-config-name&gt; \
+  --key &quot;FoundationaLLM:Branding:CompanyName&quot; \
+  --value &quot;My Company&quot;
+</code></pre>
+<h3 id="via-management-portal">Via Management Portal</h3>
+<p>Some settings (like branding) can be modified through the Management Portal UI.</p>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="deployment-configuration.html">Deployment Configuration</a></li>
+<li><a href="security-permissions/authentication-authorization/index.md">Authentication Setup</a></li>
+<li><a href="../../management-portal/reference/branding/index.html">Branding Configuration</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

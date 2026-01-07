@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Using the Code Interpreter Tool | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Using the Code Interpreter Tool | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/chat-user-portal/how-to-guides/using-agents/using-code-interpreter.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="using-the-code-interpreter-tool">Using the Code Interpreter Tool</h1>
+
+<p>Leverage the Code Interpreter tool for data analysis, calculations, and dynamic code execution.</p>
+<h2 id="what-is-code-interpreter">What Is Code Interpreter?</h2>
+<p>Code Interpreter is a tool that allows agents to write and execute Python code in real-time. When enabled, agents can:</p>
+<ul>
+<li>Analyze data from uploaded files</li>
+<li>Perform complex calculations</li>
+<li>Generate charts and visualizations</li>
+<li>Transform and process data</li>
+<li>Create files for you to download</li>
+</ul>
+<h2 id="when-code-interpreter-is-available">When Code Interpreter Is Available</h2>
+<p>The Code Interpreter tool is available when:</p>
+<ul>
+<li>The agent you're using has Code Interpreter enabled</li>
+<li>Your administrator has configured Python execution environments</li>
+<li>You're asking questions that benefit from code execution</li>
+</ul>
+<blockquote>
+<p><strong>Note:</strong> Not all agents have Code Interpreter. If you need this capability, check with your administrator or select an agent that supports it.</p>
+</blockquote>
+<h2 id="how-it-works">How It Works</h2>
+<h3 id="the-process">The Process</h3>
+<ol>
+<li><strong>You ask a question</strong> that requires computation or data analysis</li>
+<li><strong>The agent writes Python code</strong> to address your request</li>
+<li><strong>Code runs in a secure environment</strong> isolated from your system</li>
+<li><strong>Results are returned</strong> in the conversation as text, tables, or images</li>
+</ol>
+<h3 id="behind-the-scenes">Behind the Scenes</h3>
+<ul>
+<li>Code executes in a containerized Python environment</li>
+<li>The agent has access to common data science libraries</li>
+<li>Uploaded files can be accessed by the code</li>
+<li>Generated files are made available for download</li>
+</ul>
+<h2 id="what-you-can-do">What You Can Do</h2>
+<h3 id="data-analysis">Data Analysis</h3>
+<p>Upload spreadsheets or data files and ask questions:</p>
+<ul>
+<li>&quot;What's the average sales by region in this file?&quot;</li>
+<li>&quot;Find correlations between columns A and B&quot;</li>
+<li>&quot;Show me the top 10 customers by revenue&quot;</li>
+<li>&quot;Calculate year-over-year growth rates&quot;</li>
+</ul>
+<h3 id="visualizations">Visualizations</h3>
+<p>Request charts and graphs from your data:</p>
+<ul>
+<li>&quot;Create a bar chart of monthly sales&quot;</li>
+<li>&quot;Plot the trend line for quarterly revenue&quot;</li>
+<li>&quot;Make a pie chart showing market share&quot;</li>
+<li>&quot;Generate a scatter plot comparing price and quantity&quot;</li>
+</ul>
+<h3 id="calculations">Calculations</h3>
+<p>Perform mathematical or statistical operations:</p>
+<ul>
+<li>&quot;Calculate the compound interest on $10,000 at 5% for 10 years&quot;</li>
+<li>&quot;What's the standard deviation of these numbers?&quot;</li>
+<li>&quot;Solve this equation: 2x + 5 = 15&quot;</li>
+<li>&quot;Run a regression analysis on this dataset&quot;</li>
+</ul>
+<h3 id="data-transformation">Data Transformation</h3>
+<p>Process and transform data:</p>
+<ul>
+<li>&quot;Convert this CSV to JSON format&quot;</li>
+<li>&quot;Clean this data by removing duplicates&quot;</li>
+<li>&quot;Merge these two datasets by customer ID&quot;</li>
+<li>&quot;Pivot this data to show totals by category&quot;</li>
+</ul>
+<h3 id="file-generation">File Generation</h3>
+<p>Create new files from your data:</p>
+<ul>
+<li>&quot;Export the results as a CSV file&quot;</li>
+<li>&quot;Save this chart as a PNG image&quot;</li>
+<li>&quot;Create a summary report of the analysis&quot;</li>
+<li>&quot;Generate a cleaned version of this dataset&quot;</li>
+</ul>
+<h2 id="example-prompts">Example Prompts</h2>
+<h3 id="basic-analysis">Basic Analysis</h3>
+<blockquote>
+<p>&quot;I've uploaded a CSV file with sales data. Can you summarize the key metrics including total revenue, number of transactions, and average order value?&quot;</p>
+</blockquote>
+<h3 id="visualization-request">Visualization Request</h3>
+<blockquote>
+<p>&quot;Using the uploaded data, create a line chart showing sales trends over the past 12 months with a trend line.&quot;</p>
+</blockquote>
+<h3 id="complex-processing">Complex Processing</h3>
+<blockquote>
+<p>&quot;Compare the sales performance across all regions. Show the top 3 and bottom 3 performers, and calculate the percentage difference from the average.&quot;</p>
+</blockquote>
+<h3 id="data-cleaning">Data Cleaning</h3>
+<blockquote>
+<p>&quot;The uploaded file has some issues — there are duplicate rows and some missing values in the 'price' column. Clean the data and show me what was fixed.&quot;</p>
+</blockquote>
+<h2 id="understanding-the-output">Understanding the Output</h2>
+<h3 id="text-results">Text Results</h3>
+<p>The agent explains findings in natural language:</p>
+<ul>
+<li>Summaries of calculations</li>
+<li>Interpretations of data</li>
+<li>Answers to your questions</li>
+</ul>
+<h3 id="tables">Tables</h3>
+<p>Data results may appear as formatted tables:</p>
+<ul>
+<li>Column headers</li>
+<li>Organized rows of data</li>
+<li>Numerical results</li>
+</ul>
+<h3 id="charts-and-images">Charts and Images</h3>
+<p>Visualizations appear directly in the conversation:</p>
+<ul>
+<li>Click to view full size</li>
+<li>Right-click to save</li>
+<li>Charts are PNG images by default</li>
+</ul>
+<h3 id="generated-files">Generated Files</h3>
+<p>When the agent creates files:</p>
+<ul>
+<li>Download links appear in the response</li>
+<li>Click to download the file</li>
+<li>Files may be in various formats (CSV, XLSX, PNG, etc.)</li>
+</ul>
+<h2 id="tips-for-best-results">Tips for Best Results</h2>
+<h3 id="provide-clear-data">Provide Clear Data</h3>
+<ul>
+<li>Use clean, well-formatted files</li>
+<li>Include clear column headers</li>
+<li>Remove unnecessary data before uploading</li>
+<li>Smaller, focused datasets process faster</li>
+</ul>
+<h3 id="be-specific-in-requests">Be Specific in Requests</h3>
+<p>Instead of: &quot;Analyze this data&quot;
+Try: &quot;Calculate the monthly average and identify any months with values more than 2 standard deviations from the mean&quot;</p>
+<h3 id="request-specific-formats">Request Specific Formats</h3>
+<ul>
+<li>Specify chart types you want</li>
+<li>Ask for specific file formats for exports</li>
+<li>Request particular calculations or metrics</li>
+</ul>
+<h3 id="build-on-previous-results">Build on Previous Results</h3>
+<ul>
+<li>Reference earlier analysis in the conversation</li>
+<li>Ask follow-up questions</li>
+<li>Request modifications to previous outputs</li>
+</ul>
+<h3 id="check-the-results">Check the Results</h3>
+<ul>
+<li>Verify calculations make sense</li>
+<li>Spot-check numbers against your source data</li>
+<li>Ask for explanations if results are unexpected</li>
+</ul>
+<h2 id="limitations">Limitations</h2>
+<h3 id="what-code-interpreter-cannot-do">What Code Interpreter Cannot Do</h3>
+<ul>
+<li>Access the internet or external systems</li>
+<li>Run indefinitely (there are time limits)</li>
+<li>Access files outside what you've uploaded</li>
+<li>Install arbitrary packages</li>
+<li>Access your local computer</li>
+</ul>
+<h3 id="size-and-time-limits">Size and Time Limits</h3>
+<ul>
+<li>Very large files may take longer to process</li>
+<li>Complex operations may timeout</li>
+<li>Some requests may be too resource-intensive</li>
+</ul>
+<h3 id="library-availability">Library Availability</h3>
+<p>Common libraries are available (pandas, numpy, matplotlib, etc.) but:</p>
+<ul>
+<li>Specialized libraries may not be installed</li>
+<li>Ask the agent what capabilities are available</li>
+</ul>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="code-doesnt-run">Code Doesn't Run</h3>
+<ul>
+<li>The agent may not have Code Interpreter enabled</li>
+<li>Try a different agent with code execution capability</li>
+<li>Rephrase your request to be more specific</li>
+</ul>
+<h3 id="analysis-takes-too-long">Analysis Takes Too Long</h3>
+<ul>
+<li>Try with a smaller sample of data</li>
+<li>Simplify your request</li>
+<li>Break complex analysis into steps</li>
+</ul>
+<h3 id="results-are-incorrect">Results Are Incorrect</h3>
+<ul>
+<li>Check your source data for issues</li>
+<li>Be more specific about what you want</li>
+<li>Ask the agent to explain its approach</li>
+<li>Try rephrasing your question</li>
+</ul>
+<h3 id="chart-doesnt-generate">Chart Doesn't Generate</h3>
+<ul>
+<li>Request a specific chart type</li>
+<li>Ensure the data is suitable for visualization</li>
+<li>Ask for a different visualization approach</li>
+</ul>
+<h3 id="cant-download-generated-file">Can't Download Generated File</h3>
+<ul>
+<li>Wait for the response to fully complete</li>
+<li>Click the download link in the message</li>
+<li>Check your browser's downloads</li>
+<li>Try asking the agent to regenerate the file</li>
+</ul>
+<h2 id="security-and-privacy">Security and Privacy</h2>
+<ul>
+<li>Code runs in an isolated environment</li>
+<li>Your uploaded data is processed by the agent</li>
+<li>Generated code is visible in some configurations</li>
+<li>Follow your organization's data policies</li>
+</ul>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="uploading-files.html">Uploading Files to a Conversation</a> — Get data into the conversation</li>
+<li><a href="downloading-files.html">Downloading Files from a Conversation</a> — Save generated outputs</li>
+<li><a href="using-knowledge-tool.html">Using the Knowledge Tool</a> — Search document content</li>
+<li><a href="viewing-agent-prompts.html">Viewing Agent Prompts</a> — See how responses are generated</li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

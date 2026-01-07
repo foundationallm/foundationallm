@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Vulnerability Management | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Vulnerability Management | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../toc.html">
+      <meta name="docfx:tocrel" content="../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/platform-operations/security-permissions/vulnerabilities.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../index.html">
+            <img id="logo" class="svg" src="../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="vulnerability-management">Vulnerability Management</h1>
+
+<p>FoundationaLLM maintains a proactive approach to identifying, categorizing, and remediating security vulnerabilities.</p>
+<h2 id="vulnerability-identification">Vulnerability Identification</h2>
+<h3 id="regular-security-testing">Regular Security Testing</h3>
+<table>
+<thead>
+<tr>
+<th>Activity</th>
+<th>Frequency</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Red Team Exercises</strong></td>
+<td>Periodic</td>
+<td>Identify attack vectors</td>
+</tr>
+<tr>
+<td><strong>Container Scans</strong></td>
+<td>Every build</td>
+<td>Detect CVEs</td>
+</tr>
+<tr>
+<td><strong>Dependency Analysis</strong></td>
+<td>Continuous</td>
+<td>Track vulnerable packages</td>
+</tr>
+<tr>
+<td><strong>Penetration Testing</strong></td>
+<td>Periodic</td>
+<td>External assessment</td>
+</tr>
+</tbody>
+</table>
+<h3 id="automated-scanning">Automated Scanning</h3>
+<p>Every container image build includes:</p>
+<ul>
+<li>Base image vulnerability scanning</li>
+<li>Dependency analysis</li>
+<li>CVE detection</li>
+<li>Security best practice checks</li>
+</ul>
+<h2 id="severity-classification">Severity Classification</h2>
+<h3 id="severity-levels">Severity Levels</h3>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Description</th>
+<th>Response Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Critical</strong></td>
+<td>Severe, imminent threat</td>
+<td>Immediate (hours)</td>
+</tr>
+<tr>
+<td><strong>High</strong></td>
+<td>Significant risk</td>
+<td>24-48 hours</td>
+</tr>
+<tr>
+<td><strong>Major</strong></td>
+<td>Moderate risk</td>
+<td>1 week</td>
+</tr>
+<tr>
+<td><strong>Minor</strong></td>
+<td>Low/negligible risk</td>
+<td>Next release cycle</td>
+</tr>
+</tbody>
+</table>
+<h3 id="classification-criteria">Classification Criteria</h3>
+<p><strong>Critical:</strong></p>
+<ul>
+<li>Remote code execution</li>
+<li>Authentication bypass</li>
+<li>Data exfiltration potential</li>
+<li>Active exploitation in the wild</li>
+</ul>
+<p><strong>High:</strong></p>
+<ul>
+<li>Privilege escalation</li>
+<li>Significant data exposure</li>
+<li>Denial of service</li>
+<li>Requires immediate patching</li>
+</ul>
+<p><strong>Major:</strong></p>
+<ul>
+<li>Limited impact vulnerabilities</li>
+<li>Complex exploitation requirements</li>
+<li>Defense-in-depth failures</li>
+<li>Scheduled remediation</li>
+</ul>
+<p><strong>Minor:</strong></p>
+<ul>
+<li>Information disclosure (low impact)</li>
+<li>Configuration issues</li>
+<li>Best practice deviations</li>
+<li>Addressed in routine maintenance</li>
+</ul>
+<h2 id="remediation-process">Remediation Process</h2>
+<h3 id="criticalhigh-severity">Critical/High Severity</h3>
+<pre><code class="lang-mermaid">graph LR
+    A[Detect] --&gt; B[Assess]
+    B --&gt; C[Develop Fix]
+    C --&gt; D[Test]
+    D --&gt; E[Release Patch]
+    E --&gt; F[Notify Users]
+</code></pre>
+<ol>
+<li><strong>Detection</strong> - Automated or reported</li>
+<li><strong>Assessment</strong> - Verify and classify</li>
+<li><strong>Development</strong> - Create fix</li>
+<li><strong>Testing</strong> - Validate fix</li>
+<li><strong>Release</strong> - Deploy patch</li>
+<li><strong>Notification</strong> - Inform users</li>
+</ol>
+<h3 id="standard-remediation">Standard Remediation</h3>
+<ul>
+<li>Included in regular release cycles</li>
+<li>Documented in release notes</li>
+<li>Users upgrade at their schedule</li>
+</ul>
+<h2 id="communication">Communication</h2>
+<h3 id="github-releases">GitHub Releases</h3>
+<p>Primary channel for security updates:</p>
+<table>
+<thead>
+<tr>
+<th>Information</th>
+<th>Location</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Security patches</td>
+<td>Release notes</td>
+</tr>
+<tr>
+<td>Vulnerability details</td>
+<td>Security advisories</td>
+</tr>
+<tr>
+<td>Upgrade instructions</td>
+<td>Release documentation</td>
+</tr>
+<tr>
+<td>Breaking changes</td>
+<td>Migration guides</td>
+</tr>
+</tbody>
+</table>
+<h3 id="release-notes-include">Release Notes Include</h3>
+<ul>
+<li>Summary of vulnerabilities addressed</li>
+<li>Severity classification</li>
+<li>Affected versions</li>
+<li>Upgrade instructions</li>
+<li>Credit to reporters</li>
+</ul>
+<h3 id="responsible-disclosure">Responsible Disclosure</h3>
+<p>We practice responsible disclosure:</p>
+<ul>
+<li>Credit researchers who report vulnerabilities</li>
+<li>Coordinate disclosure timing</li>
+<li>Provide details after patch availability</li>
+<li>Document in security advisories</li>
+</ul>
+<h2 id="reporting-vulnerabilities">Reporting Vulnerabilities</h2>
+<h3 id="how-to-report">How to Report</h3>
+<ol>
+<li><strong>Email:</strong> security@foundationallm.ai</li>
+<li><strong>GitHub:</strong> Security advisories (private)</li>
+<li><strong>Do not</strong> disclose publicly before coordinated response</li>
+</ol>
+<h3 id="report-contents">Report Contents</h3>
+<p>Please include:</p>
+<ul>
+<li>Description of the vulnerability</li>
+<li>Steps to reproduce</li>
+<li>Potential impact</li>
+<li>Suggested remediation (if any)</li>
+<li>Your contact information</li>
+</ul>
+<h3 id="response-timeline">Response Timeline</h3>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Timeline</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Acknowledge receipt</td>
+<td>24-48 hours</td>
+</tr>
+<tr>
+<td>Initial assessment</td>
+<td>1 week</td>
+</tr>
+<tr>
+<td>Status update</td>
+<td>Weekly</td>
+</tr>
+<tr>
+<td>Patch development</td>
+<td>Based on severity</td>
+</tr>
+<tr>
+<td>Coordinated disclosure</td>
+<td>After patch available</td>
+</tr>
+</tbody>
+</table>
+<h2 id="staying-updated">Staying Updated</h2>
+<h3 id="subscribe-to-updates">Subscribe to Updates</h3>
+<ul>
+<li>Watch <a href="https://github.com/foundationallm/foundationallm">GitHub repository</a></li>
+<li>Enable release notifications</li>
+<li>Monitor security advisories</li>
+</ul>
+<h3 id="version-management">Version Management</h3>
+<ul>
+<li>Track deployed versions</li>
+<li>Plan regular update cycles</li>
+<li>Prioritize security patches</li>
+</ul>
+<h2 id="customer-responsibilities">Customer Responsibilities</h2>
+<h3 id="recommended-practices">Recommended Practices</h3>
+<table>
+<thead>
+<tr>
+<th>Practice</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Stay Current</strong></td>
+<td>Apply updates promptly</td>
+</tr>
+<tr>
+<td><strong>Monitor Releases</strong></td>
+<td>Watch for security patches</td>
+</tr>
+<tr>
+<td><strong>Test Updates</strong></td>
+<td>Verify in staging first</td>
+</tr>
+<tr>
+<td><strong>Report Issues</strong></td>
+<td>Help improve security</td>
+</tr>
+</tbody>
+</table>
+<h3 id="update-checklist">Update Checklist</h3>
+<ul>
+<li>[ ] Review release notes</li>
+<li>[ ] Identify security fixes</li>
+<li>[ ] Plan update window</li>
+<li>[ ] Test in staging</li>
+<li>[ ] Deploy to production</li>
+<li>[ ] Verify functionality</li>
+</ul>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="platform-security.html">Platform Security</a></li>
+<li><a href="../how-to-guides/updating-container-versions.html">Updating Container Versions</a></li>
+<li><a href="../how-to-guides/creating-release-notes.html">Creating Release Notes</a></li>
+<li><a href="https://github.com/foundationallm/foundationallm/releases">GitHub Releases</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

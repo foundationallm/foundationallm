@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Understand FoundationaLLM role definitions | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Understand FoundationaLLM role definitions | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../toc.html">
+      <meta name="docfx:tocrel" content="../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/archive/role-based-access-control/role-definitions.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../index.html">
+            <img id="logo" class="svg" src="../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="understand-foundationallm-role-definitions">Understand FoundationaLLM role definitions</h1>
+
+<h2 id="role-definition">Role definition</h2>
+<p>A role defininition (or just role) is a collection of permissions. A role definition lists the actions that can be performed, such as read, write, and delete.</p>
+<p>The following table describes the propoerties of a role definition.</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Name</td>
+<td>The display name of the role definition.</td>
+</tr>
+<tr>
+<td>Id</td>
+<td>The unique identifier of the role definition.</td>
+</tr>
+<tr>
+<td>Description</td>
+<td>The description of the role definition.</td>
+</tr>
+<tr>
+<td>Actions</td>
+<td>An array of strings that lists the control plane actions that a role definition can perform. For example, <code>FoundationaLLM.Agent/agents/create</code>.</td>
+</tr>
+<tr>
+<td>NotActions</td>
+<td>An array of strings that lists the actions that are excluded from the actions listed in the Actions property.</td>
+</tr>
+<tr>
+<td>DataActions</td>
+<td>An array of strings that lists the data plane actions that a role definition can perform. For example, <code>FoundationaLLM.Agent/agents/read</code>.</td>
+</tr>
+<tr>
+<td>NotDataActions</td>
+<td>An array of strings that lists the data plane actions that are excluded from the actions listed in the DataActions property.</td>
+</tr>
+<tr>
+<td>AssignableScopes</td>
+<td>An array of strings that lists the scopes that the role definition can be assigned to.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="actions-format">Actions format</h2>
+<p>The string that represents an action has the following format:</p>
+<p><code>FoundationaLLM.{ProviderName}/{resourceType}/{action}</code></p>
+<p>Examples of actions include <code>read</code>, <code>write</code>, and <code>delete</code>.</p>
+<p>The wildcard character (<code>*</code>) can be used to match any resource type or action. For example, <code>FoundationaLLM.Agent/*/read</code> matches all read actions for all resource types in the <code>FoundationaLLM.Agent</code> provider.</p>
+<h2 id="role-definition-example">Role definition example</h2>
+<p>The following example shows the <code>Contributor</code> role definition. The wildcard (<code>*</code>) character under <code>Actions</code> indicates that the principal assigned to the role can perform all actions (i.e., it can manage everything). This includes also actions defined in the future, as FoundationaLLM adds new resource types. The actions under <code>NotActions</code> are subtracted from <code>Actions</code>. In this specific case, <code>NotActions</code> removes the role's ability to manage access to resources.</p>
+<pre><code class="lang-json">{
+  &quot;Name&quot;: &quot;Contributor&quot;,
+  &quot;Id&quot;: &quot;e459c3a6-6b93-4062-85b3-fffc9fb253df&quot;,
+  &quot;Description&quot;: &quot;Allows you to manage everything except access to resources.&quot;,
+  &quot;Actions&quot;: [
+    &quot;*&quot;
+  ],
+  &quot;NotActions&quot;: [
+    &quot;FoundationaLLM.Authorization/*/delete&quot;,
+    &quot;FoundationaLLM.Authorization/*/write&quot;
+  ],
+  &quot;DataActions&quot;: [],
+  &quot;NotDataActions&quot;: [],
+  &quot;AssignableScopes&quot;: [
+    &quot;/&quot;
+  ]
+}
+</code></pre>
+<h2 id="control-and-data-actions">Control and data actions</h2>
+<p>Control plane actions are specified in the <code>Actions</code> and <code>NotActions</code> properties.</p>
+<p>Examples of control plane actions in FoundationaLLM include:</p>
+<ul>
+<li>Manage access to an agent</li>
+<li>Create a new data source</li>
+<li>Delete a prompt</li>
+</ul>
+<p>Data plane actions are specified in the <code>DataActions</code> and <code>NotDataActions</code> properties.</p>
+<p><strong>NOTE</strong>: FoundationaLLM maintains a strict separation between the control and data planes. Control plane access is not inherited to the data plane. For example, if a user has the <code>FoundationaLLM.Agent/agents/create</code> permission, it does not mean that the user has the <code>FoundationaLLM.Agent/agents/read</code> permission.</p>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

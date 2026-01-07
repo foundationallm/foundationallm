@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>API Endpoints | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="API Endpoints | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/management-portal/how-to-guides/models-endpoints/api-endpoints.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="api-endpoints">API Endpoints</h1>
+
+<p>Learn how to configure and manage API endpoint configurations in the Management Portal.</p>
+<h2 id="overview">Overview</h2>
+<p>API Endpoints define the connection configurations for external services used by FoundationaLLM, including AI model providers, authentication services, and other backend systems.</p>
+<h2 id="accessing-api-endpoints">Accessing API Endpoints</h2>
+<ol>
+<li>In the Management Portal sidebar, click <strong>API Endpoints</strong> under the <strong>Models and Endpoints</strong> section</li>
+<li>The endpoints list loads, showing all configured endpoints</li>
+</ol>
+<h2 id="endpoint-list">Endpoint List</h2>
+<p>The table displays:</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Name</strong></td>
+<td>Endpoint identifier</td>
+</tr>
+<tr>
+<td><strong>Category</strong></td>
+<td>Type of endpoint</td>
+</tr>
+<tr>
+<td><strong>Subcategory</strong></td>
+<td>More specific classification</td>
+</tr>
+<tr>
+<td><strong>Edit</strong></td>
+<td>Settings icon to modify configuration</td>
+</tr>
+<tr>
+<td><strong>Delete</strong></td>
+<td>Trash icon to remove the endpoint</td>
+</tr>
+</tbody>
+</table>
+<h3 id="searching-and-managing">Searching and Managing</h3>
+<ul>
+<li>Use the search box to filter by name or description</li>
+<li>Click the refresh button to reload the list</li>
+<li>Click column headers to sort</li>
+</ul>
+<h2 id="endpoint-categories">Endpoint Categories</h2>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>LLM</strong></td>
+<td>Large Language Model endpoints</td>
+</tr>
+<tr>
+<td><strong>Embedding</strong></td>
+<td>Embedding model endpoints</td>
+</tr>
+<tr>
+<td><strong>Authorization</strong></td>
+<td>Authentication and authorization services</td>
+</tr>
+<tr>
+<td><strong>Storage</strong></td>
+<td>Storage service endpoints</td>
+</tr>
+<tr>
+<td><strong>Search</strong></td>
+<td>Search service endpoints</td>
+</tr>
+</tbody>
+</table>
+<h2 id="creating-an-api-endpoint">Creating an API Endpoint</h2>
+<ol>
+<li>Click <strong>Create API Endpoint</strong> at the top right of the page</li>
+<li>Configure the endpoint settings</li>
+</ol>
+<h3 id="endpoint-configuration">Endpoint Configuration</h3>
+<blockquote>
+<p><strong>TODO</strong>: Document specific API endpoint configuration fields when available in the UI, including:</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Endpoint Name</strong></td>
+<td>Unique identifier</td>
+</tr>
+<tr>
+<td><strong>Category</strong></td>
+<td>Endpoint type</td>
+</tr>
+<tr>
+<td><strong>Subcategory</strong></td>
+<td>Specific classification</td>
+</tr>
+<tr>
+<td><strong>URL</strong></td>
+<td>Service endpoint URL</td>
+</tr>
+<tr>
+<td><strong>Authentication</strong></td>
+<td>Auth configuration</td>
+</tr>
+</tbody>
+</table>
+<h3 id="azure-openai-endpoints">Azure OpenAI Endpoints</h3>
+<p>For Azure OpenAI services:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Endpoint URL</strong></td>
+<td><code>https://&lt;resource&gt;.openai.azure.com/</code></td>
+</tr>
+<tr>
+<td><strong>API Version</strong></td>
+<td>API version (e.g., <code>2024-02-01</code>)</td>
+</tr>
+<tr>
+<td><strong>Authentication</strong></td>
+<td>API Key or Managed Identity</td>
+</tr>
+</tbody>
+</table>
+<h3 id="other-service-endpoints">Other Service Endpoints</h3>
+<p>For other services, configure:</p>
+<ul>
+<li>Service URL</li>
+<li>Authentication method</li>
+<li>Required headers or parameters</li>
+</ul>
+<h2 id="authentication-configuration">Authentication Configuration</h2>
+<h3 id="api-key-authentication">API Key Authentication</h3>
+<ol>
+<li>Select API Key authentication</li>
+<li>Enter the key value (stored securely)</li>
+<li>Configure header name if non-standard</li>
+</ol>
+<h3 id="managed-identity">Managed Identity</h3>
+<ol>
+<li>Select Managed Identity authentication</li>
+<li>Ensure the identity has required permissions</li>
+<li>No credentials required in configuration</li>
+</ol>
+<h3 id="oauthtoken-authentication">OAuth/Token Authentication</h3>
+<ol>
+<li>Configure token endpoint</li>
+<li>Set client credentials</li>
+<li>Configure scopes as needed</li>
+</ol>
+<h2 id="editing-endpoints">Editing Endpoints</h2>
+<ol>
+<li>Locate the endpoint in the list</li>
+<li>Click the <strong>Settings</strong> icon (⚙️)</li>
+<li>Modify settings as needed</li>
+<li>Click <strong>Save Changes</strong></li>
+</ol>
+<h2 id="deleting-endpoints">Deleting Endpoints</h2>
+<ol>
+<li>Click the <strong>Trash</strong> icon (🗑️) for the endpoint</li>
+<li>Confirm deletion in the dialog</li>
+</ol>
+<blockquote>
+<p><strong>Warning:</strong> Deleting an endpoint affects any models or services referencing it. Verify dependencies before deleting.</p>
+</blockquote>
+<h2 id="endpoint-references">Endpoint References</h2>
+<p>API Endpoints are referenced by:</p>
+<ul>
+<li><strong>AI Models</strong>: Models use endpoints for API connectivity</li>
+<li><strong>Data Sources</strong>: Some sources reference endpoints for authentication</li>
+<li><strong>Internal Services</strong>: Platform services use configured endpoints</li>
+</ul>
+<h2 id="access-control">Access Control</h2>
+<p>Configure who can access and manage endpoints:</p>
+<table>
+<thead>
+<tr>
+<th>Permission</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM.Configuration/apiEndpointConfigurations/read</code></td>
+<td>View endpoints</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Configuration/apiEndpointConfigurations/write</code></td>
+<td>Edit endpoints</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Configuration/apiEndpointConfigurations/delete</code></td>
+<td>Delete endpoints</td>
+</tr>
+</tbody>
+</table>
+<h2 id="best-practices">Best Practices</h2>
+<h3 id="naming-conventions">Naming Conventions</h3>
+<ul>
+<li>Use descriptive names indicating service and purpose</li>
+<li>Include environment when relevant (dev, prod)</li>
+<li>Example: <code>azure-openai-eastus-prod</code>, <code>search-service-main</code></li>
+</ul>
+<h3 id="security">Security</h3>
+<ul>
+<li>Use Managed Identity when possible</li>
+<li>Rotate API keys regularly</li>
+<li>Avoid hardcoding credentials</li>
+</ul>
+<h3 id="organization">Organization</h3>
+<ul>
+<li>Group related endpoints logically</li>
+<li>Document endpoint purposes</li>
+<li>Maintain consistent naming</li>
+</ul>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="connection-failures">Connection Failures</h3>
+<ul>
+<li>Verify endpoint URL is correct</li>
+<li>Check authentication credentials</li>
+<li>Review network/firewall configuration</li>
+</ul>
+<h3 id="authentication-errors">Authentication Errors</h3>
+<ul>
+<li>Verify API key or credentials</li>
+<li>Check managed identity permissions</li>
+<li>Review token expiration</li>
+</ul>
+<h3 id="endpoint-not-available">Endpoint Not Available</h3>
+<ul>
+<li>Verify the endpoint exists</li>
+<li>Check your permissions</li>
+<li>Ensure the service is running</li>
+</ul>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="ai-models.html">AI Models</a></li>
+<li><a href="../../reference/configuration-reference.html">Configuration Reference</a></li>
+<li><a href="../data/data-sources.html">Data Sources</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

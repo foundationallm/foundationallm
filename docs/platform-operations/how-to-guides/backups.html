@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Backups &amp; Data Resiliency | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Backups &amp; Data Resiliency | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../toc.html">
+      <meta name="docfx:tocrel" content="../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/platform-operations/how-to-guides/backups.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../index.html">
+            <img id="logo" class="svg" src="../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="backups--data-resiliency">Backups &amp; Data Resiliency</h1>
+
+<p>This guide covers backup strategies and data resiliency options for FoundationaLLM platform components.</p>
+<h2 id="overview">Overview</h2>
+<p>Before implementing backup strategies, consider:</p>
+<table>
+<thead>
+<tr>
+<th>Factor</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>RTO</strong></td>
+<td>Recovery Time Objective - acceptable downtime</td>
+</tr>
+<tr>
+<td><strong>RPO</strong></td>
+<td>Recovery Point Objective - acceptable data loss</td>
+</tr>
+<tr>
+<td><strong>Compliance</strong></td>
+<td>Regulatory requirements for data retention</td>
+</tr>
+<tr>
+<td><strong>Cost</strong></td>
+<td>Storage and compute costs for backups</td>
+</tr>
+</tbody>
+</table>
+<h2 id="cosmos-db">Cosmos DB</h2>
+<p>Cosmos DB stores conversations, user sessions, and other application data.</p>
+<h3 id="automated-backups">Automated Backups</h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Standard Deployment Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Backup Mode</strong></td>
+<td>Continuous or Periodic</td>
+</tr>
+<tr>
+<td><strong>Retention Period</strong></td>
+<td>30 days</td>
+</tr>
+<tr>
+<td><strong>Backup Frequency</strong></td>
+<td>Automatic</td>
+</tr>
+<tr>
+<td><strong>Restore Granularity</strong></td>
+<td>Point-in-time</td>
+</tr>
+</tbody>
+</table>
+<h3 id="configuring-backup-policy">Configuring Backup Policy</h3>
+<p><strong>Via Azure Portal:</strong></p>
+<ol>
+<li>Navigate to your Cosmos DB account</li>
+<li>Select <strong>Settings</strong> &gt; <strong>Backup &amp; Restore</strong></li>
+<li>Configure backup mode and retention</li>
+</ol>
+<p><strong>Via Azure CLI:</strong></p>
+<pre><code class="lang-bash">az cosmosdb update \
+  --name &lt;account-name&gt; \
+  --resource-group &lt;resource-group&gt; \
+  --backup-policy-type Continuous
+</code></pre>
+<h3 id="restoring-from-backup">Restoring from Backup</h3>
+<p><strong>Via Azure Portal:</strong></p>
+<ol>
+<li>Navigate to Cosmos DB account</li>
+<li>Select <strong>Settings</strong> &gt; <strong>Backup &amp; Restore</strong></li>
+<li>Click <strong>Restore</strong></li>
+<li>Select restore point and destination</li>
+</ol>
+<p><strong>Via Azure CLI:</strong></p>
+<pre><code class="lang-bash">az cosmosdb restore \
+  --account-name &lt;source-account&gt; \
+  --resource-group &lt;resource-group&gt; \
+  --target-database-account-name &lt;target-account&gt; \
+  --restore-timestamp &quot;2024-01-01T00:00:00Z&quot; \
+  --location &lt;region&gt;
+</code></pre>
+<h3 id="data-resiliency-options">Data Resiliency Options</h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Global Distribution</strong></td>
+<td>Multi-region replication</td>
+<td>Not enabled</td>
+</tr>
+<tr>
+<td><strong>Consistency Levels</strong></td>
+<td>Session, Strong, Eventual, etc.</td>
+<td>Session</td>
+</tr>
+<tr>
+<td><strong>Automatic Failover</strong></td>
+<td>Regional failover</td>
+<td>Not configured</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>TODO:</strong> Document procedure for enabling multi-region replication in Standard deployment.</p>
+</blockquote>
+<h2 id="storage-accounts">Storage Accounts</h2>
+<p>Storage accounts contain prompts, agents, data sources, and vectorized content.</p>
+<h3 id="built-in-protection">Built-in Protection</h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Standard Deployment Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Replication</strong></td>
+<td>LRS (Locally Redundant)</td>
+</tr>
+<tr>
+<td><strong>Blob Versioning</strong></td>
+<td>Enabled</td>
+</tr>
+<tr>
+<td><strong>Soft Delete (Blobs)</strong></td>
+<td>30 days</td>
+</tr>
+<tr>
+<td><strong>Soft Delete (Containers)</strong></td>
+<td>30 days</td>
+</tr>
+</tbody>
+</table>
+<h3 id="upgrading-replication">Upgrading Replication</h3>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>LRS</strong></td>
+<td>3 copies in single datacenter</td>
+<td>Development</td>
+</tr>
+<tr>
+<td><strong>ZRS</strong></td>
+<td>3 copies across availability zones</td>
+<td>Production</td>
+</tr>
+<tr>
+<td><strong>GRS</strong></td>
+<td>6 copies across two regions</td>
+<td>Disaster recovery</td>
+</tr>
+<tr>
+<td><strong>RA-GRS</strong></td>
+<td>GRS with read access to secondary</td>
+<td>High availability</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Change Replication:</strong></p>
+<pre><code class="lang-bash">az storage account update \
+  --name &lt;account-name&gt; \
+  --resource-group &lt;resource-group&gt; \
+  --sku Standard_GRS
+</code></pre>
+<h3 id="azure-backup-for-storage">Azure Backup for Storage</h3>
+<p>Configure Azure Backup for blob data:</p>
+<ol>
+<li>Navigate to <strong>Recovery Services vault</strong></li>
+<li>Select <strong>+ Backup</strong></li>
+<li>Choose <strong>Azure Blob Storage</strong></li>
+<li>Select storage account</li>
+<li>Configure backup policy</li>
+</ol>
+<h3 id="manual-export">Manual Export</h3>
+<p>Export data for archival or migration:</p>
+<pre><code class="lang-bash"># Export using AzCopy
+azcopy copy &quot;https://&lt;account&gt;.blob.core.windows.net/&lt;container&gt;/*&quot; \
+  &quot;/local/backup/&quot; \
+  --recursive
+</code></pre>
+<h2 id="key-vault">Key Vault</h2>
+<p>Key Vault stores secrets, certificates, and encryption keys.</p>
+<h3 id="built-in-protection-1">Built-in Protection</h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Soft Delete</strong></td>
+<td>Enabled (7-90 days)</td>
+</tr>
+<tr>
+<td><strong>Purge Protection</strong></td>
+<td>Enabled (7 days)</td>
+</tr>
+<tr>
+<td><strong>Secret Versioning</strong></td>
+<td>Automatic</td>
+</tr>
+</tbody>
+</table>
+<h3 id="backing-up-secrets">Backing Up Secrets</h3>
+<p><strong>Via Azure Portal:</strong></p>
+<ol>
+<li>Navigate to Key Vault</li>
+<li>Select <strong>Secrets</strong></li>
+<li>Select a secret</li>
+<li>Click <strong>Download Backup</strong></li>
+</ol>
+<p><strong>Via Azure CLI:</strong></p>
+<pre><code class="lang-bash"># Backup single secret
+az keyvault secret backup \
+  --vault-name &lt;vault-name&gt; \
+  --name &lt;secret-name&gt; \
+  --file &lt;backup-file&gt;
+
+# Restore secret
+az keyvault secret restore \
+  --vault-name &lt;vault-name&gt; \
+  --file &lt;backup-file&gt;
+</code></pre>
+<h3 id="backup-all-secrets-script">Backup All Secrets Script</h3>
+<pre><code class="lang-powershell">$vaultName = &quot;&lt;vault-name&gt;&quot;
+$backupPath = &quot;./keyvault-backup&quot;
+
+# Create backup directory
+New-Item -ItemType Directory -Force -Path $backupPath
+
+# Get all secrets
+$secrets = az keyvault secret list --vault-name $vaultName --query &quot;[].name&quot; -o tsv
+
+# Backup each secret
+foreach ($secret in $secrets) {
+    az keyvault secret backup `
+        --vault-name $vaultName `
+        --name $secret `
+        --file &quot;$backupPath/$secret.backup&quot;
+}
+</code></pre>
+<blockquote>
+<p><strong>Note:</strong> Key Vault does not support full vault backup. Back up individual items.</p>
+</blockquote>
+<h2 id="app-configuration">App Configuration</h2>
+<p>App Configuration stores application settings and feature flags.</p>
+<h3 id="versioning">Versioning</h3>
+<ul>
+<li>Changes are automatically versioned</li>
+<li>Access history via <strong>History</strong> view in portal</li>
+<li>Rollback by restoring previous version</li>
+</ul>
+<h3 id="export-configuration">Export Configuration</h3>
+<p><strong>Via Azure Portal:</strong></p>
+<ol>
+<li>Navigate to App Configuration</li>
+<li>Select <strong>Import/export</strong></li>
+<li>Select <strong>Export</strong></li>
+<li>Choose destination (file, App Service, another App Config)</li>
+</ol>
+<p><strong>Via Azure CLI:</strong></p>
+<pre><code class="lang-bash"># Export to file
+az appconfig kv export \
+  --name &lt;app-config-name&gt; \
+  --destination file \
+  --path ./config-backup.json \
+  --format json
+</code></pre>
+<h3 id="import-configuration">Import Configuration</h3>
+<pre><code class="lang-bash"># Import from file
+az appconfig kv import \
+  --name &lt;app-config-name&gt; \
+  --source file \
+  --path ./config-backup.json \
+  --format json
+</code></pre>
+<h2 id="backup-schedule-recommendations">Backup Schedule Recommendations</h2>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Frequency</th>
+<th>Retention</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cosmos DB</td>
+<td>Continuous</td>
+<td>30 days</td>
+</tr>
+<tr>
+<td>Storage (critical)</td>
+<td>Daily</td>
+<td>30 days</td>
+</tr>
+<tr>
+<td>Key Vault secrets</td>
+<td>Before changes</td>
+<td>As needed</td>
+</tr>
+<tr>
+<td>App Configuration</td>
+<td>Before changes</td>
+<td>As needed</td>
+</tr>
+</tbody>
+</table>
+<h2 id="disaster-recovery">Disaster Recovery</h2>
+<h3 id="standard-deployment-considerations">Standard Deployment Considerations</h3>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>DR Strategy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>AKS Clusters</strong></td>
+<td>Redeploy from templates</td>
+</tr>
+<tr>
+<td><strong>Cosmos DB</strong></td>
+<td>Restore from backup</td>
+</tr>
+<tr>
+<td><strong>Storage</strong></td>
+<td>Restore from GRS secondary</td>
+</tr>
+<tr>
+<td><strong>Key Vault</strong></td>
+<td>Restore secrets from backup</td>
+</tr>
+<tr>
+<td><strong>App Config</strong></td>
+<td>Import from export</td>
+</tr>
+</tbody>
+</table>
+<h3 id="recovery-procedure">Recovery Procedure</h3>
+<ol>
+<li><strong>Assess</strong> - Identify affected components</li>
+<li><strong>Provision</strong> - Deploy new infrastructure</li>
+<li><strong>Restore</strong> - Restore data from backups</li>
+<li><strong>Configure</strong> - Apply App Configuration</li>
+<li><strong>Validate</strong> - Test functionality</li>
+<li><strong>Cutover</strong> - Update DNS/routing</li>
+</ol>
+<blockquote>
+<p><strong>TODO:</strong> Add detailed disaster recovery runbook for Standard deployment.</p>
+</blockquote>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="../monitoring-troubleshooting/logs.html">Logs &amp; Monitoring</a></li>
+<li><a href="../monitoring-troubleshooting/troubleshooting.html">Troubleshooting</a></li>
+<li><a href="../deployment/deployment-standard.html">Standard Deployment</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

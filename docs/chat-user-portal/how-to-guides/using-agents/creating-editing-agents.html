@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Creating and Editing Custom Agents | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Creating and Editing Custom Agents | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/chat-user-portal/how-to-guides/using-agents/creating-editing-agents.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+
+<blockquote>
+<p><strong>This article is still being authored.</strong> Some sections contain placeholder content that requires additional information.</p>
+</blockquote>
+<h1 id="creating-and-editing-custom-agents">Creating and Editing Custom Agents</h1>
+<p>Learn how to create and customize your own agents in the Chat User Portal when self-service agent creation is enabled.</p>
+<h2 id="overview">Overview</h2>
+<p>When your organization enables the Agent Self-Service feature, you can create custom agents tailored to your specific needs directly from the Chat User Portal. Custom agents allow you to:</p>
+<ul>
+<li>Define specialized behaviors with custom prompts</li>
+<li>Select appropriate AI models for your use case</li>
+<li>Configure tools like image generation and file upload</li>
+<li>Share agents with colleagues</li>
+</ul>
+<blockquote>
+<p><strong>Note:</strong> This feature must be enabled by your administrator. If you don't see agent creation options, contact your IT department.</p>
+</blockquote>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>Before creating custom agents:</p>
+<ul>
+<li>Your organization must have <strong>Agent Self-Service</strong> enabled</li>
+<li>You need appropriate permissions (typically the <strong>Agent Contributor</strong> role)</li>
+<li>At least one AI model must be available for selection</li>
+</ul>
+<h2 id="accessing-agent-creation">Accessing Agent Creation</h2>
+<h3 id="from-settings">From Settings</h3>
+<ol>
+<li>Click the <strong>Settings</strong> button (gear icon ⚙️) in the bottom-left corner of the sidebar</li>
+<li>Click the <strong>Manage Agents</strong> link at the bottom of the dialog</li>
+<li>Click <strong>Create New Agent</strong></li>
+</ol>
+<h3 id="from-agent-management">From Agent Management</h3>
+<ol>
+<li>Open the Agent Management page (if available)</li>
+<li>Click <strong>Create New Agent</strong> button</li>
+<li>The agent creation form opens</li>
+</ol>
+<h2 id="agent-configuration-options">Agent Configuration Options</h2>
+<h3 id="basic-information">Basic Information</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+<th>Requirements</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Agent Display Name</strong></td>
+<td>The name users see when selecting the agent</td>
+<td>Required. Any text.</td>
+</tr>
+<tr>
+<td><strong>Description</strong></td>
+<td>Brief description of what the agent does</td>
+<td>Recommended for discoverability</td>
+</tr>
+<tr>
+<td><strong>Welcome Message</strong></td>
+<td>Greeting shown when starting a conversation</td>
+<td>Optional. Supports rich text.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="prompt-definition">Prompt Definition</h3>
+<p>The prompt defines your agent's personality, knowledge focus, and behavior:</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>System Prompt</strong></td>
+<td>Instructions that guide the agent's responses</td>
+</tr>
+<tr>
+<td><strong>Prompt Style</strong></td>
+<td>Formal, conversational, technical, etc.</td>
+</tr>
+<tr>
+<td><strong>Focus Area</strong></td>
+<td>What topics the agent specializes in</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Best practices for prompts:</strong></p>
+<ul>
+<li>Be specific about the agent's role and expertise</li>
+<li>Include any constraints or boundaries</li>
+<li>Specify the tone and style of responses</li>
+<li>Define how to handle off-topic questions</li>
+</ul>
+<h3 id="model-selection">Model Selection</h3>
+<p>Choose the AI model that powers your agent:</p>
+<table>
+<thead>
+<tr>
+<th>Consideration</th>
+<th>Guidance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Capability</strong></td>
+<td>More capable models handle complex tasks better</td>
+</tr>
+<tr>
+<td><strong>Speed</strong></td>
+<td>Faster models provide quicker responses</td>
+</tr>
+<tr>
+<td><strong>Cost</strong></td>
+<td>Different models have different usage costs</td>
+</tr>
+<tr>
+<td><strong>Context Length</strong></td>
+<td>Larger context windows support longer conversations</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Note:</strong> Available models depend on what your administrator has configured.</p>
+</blockquote>
+<h3 id="temperature-setting">Temperature Setting</h3>
+<p>Temperature controls the randomness/creativity of responses:</p>
+<table>
+<thead>
+<tr>
+<th>Temperature</th>
+<th>Behavior</th>
+<th>Best For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Low (0.0-0.3)</strong></td>
+<td>Consistent, focused responses</td>
+<td>Factual Q&amp;A, data analysis</td>
+</tr>
+<tr>
+<td><strong>Medium (0.4-0.7)</strong></td>
+<td>Balanced creativity</td>
+<td>General assistance</td>
+</tr>
+<tr>
+<td><strong>High (0.8-1.0)</strong></td>
+<td>More creative, varied responses</td>
+<td>Creative writing, brainstorming</td>
+</tr>
+</tbody>
+</table>
+<h3 id="agent-status">Agent Status</h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Active</strong></td>
+<td>Agent is available for use</td>
+</tr>
+<tr>
+<td><strong>Inactive</strong></td>
+<td>Agent exists but cannot be selected</td>
+</tr>
+<tr>
+<td><strong>Expired</strong></td>
+<td>Agent has passed its expiration date (if set)</td>
+</tr>
+</tbody>
+</table>
+<p>You can set an <strong>Expiration Date</strong> to automatically disable the agent after a certain date.</p>
+<h2 id="tool-selection">Tool Selection</h2>
+<p>Enable tools to extend your agent's capabilities:</p>
+<h3 id="image-generation">Image Generation</h3>
+<p>Enable agents to create images using AI:</p>
+<ul>
+<li>Powered by DALL-E or similar models</li>
+<li>Users can request image creation in conversations</li>
+<li>Generated images can be downloaded</li>
+</ul>
+<h3 id="upload-from-computer">Upload from Computer</h3>
+<p>Allow users to upload files for analysis:</p>
+<ul>
+<li>Supports common document formats (PDF, DOCX, etc.)</li>
+<li>Files are processed for the current conversation</li>
+<li>Enable for document analysis, data processing tasks</li>
+</ul>
+<h3 id="private-storage-knowledge-source">Private Storage Knowledge Source</h3>
+<p>Connect to agent-specific private storage:</p>
+<ul>
+<li>Access documents stored in the agent's dedicated storage</li>
+<li>Provides persistent knowledge across conversations</li>
+<li>Configured separately in Private Storage settings</li>
+</ul>
+<h3 id="website-crawler">Website Crawler</h3>
+<blockquote>
+<p><strong>TODO</strong>: This feature is planned for future release. Website crawler tool will allow agents to access and search web content.</p>
+</blockquote>
+<h2 id="accessibility-best-practices">Accessibility Best Practices</h2>
+<p>When creating agents, follow accessibility guidelines:</p>
+<h3 id="explainer-text">Explainer Text</h3>
+<p>Provide clear, accessible descriptions:</p>
+<ul>
+<li>Use plain language in agent descriptions</li>
+<li>Explain what the agent does in the welcome message</li>
+<li>Include guidance on how to interact effectively</li>
+</ul>
+<h3 id="accessibility-considerations">Accessibility Considerations</h3>
+<table>
+<thead>
+<tr>
+<th>Element</th>
+<th>Guidance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Display Name</strong></td>
+<td>Use clear, descriptive names</td>
+</tr>
+<tr>
+<td><strong>Welcome Message</strong></td>
+<td>Provide context for screen reader users</td>
+</tr>
+<tr>
+<td><strong>Tool Descriptions</strong></td>
+<td>Explain what each enabled tool does</td>
+</tr>
+<tr>
+<td><strong>Error Messages</strong></td>
+<td>Ensure errors are clearly communicated</td>
+</tr>
+</tbody>
+</table>
+<h2 id="saving-your-agent">Saving Your Agent</h2>
+<ol>
+<li>Review all configuration settings</li>
+<li>Click <strong>Create Agent</strong> or <strong>Save Changes</strong></li>
+<li>Wait for the creation process to complete</li>
+<li>Your agent appears in your agent list</li>
+</ol>
+<h2 id="editing-existing-agents">Editing Existing Agents</h2>
+<h3 id="accessing-edit-mode">Accessing Edit Mode</h3>
+<ol>
+<li>Open <strong>Settings</strong> &gt; <strong>Agents</strong> tab</li>
+<li>Find your agent in the list</li>
+<li>Click the <strong>Edit</strong> button (pencil icon)</li>
+</ol>
+<h3 id="editable-properties">Editable Properties</h3>
+<p>You can modify:</p>
+<ul>
+<li>Display name (not the internal agent name)</li>
+<li>Welcome message</li>
+<li>Prompt definition</li>
+<li>Model selection</li>
+<li>Temperature</li>
+<li>Tool configuration</li>
+<li>Agent status and expiration</li>
+</ul>
+<blockquote>
+<p><strong>Note:</strong> The internal agent name cannot be changed after creation.</p>
+</blockquote>
+<h3 id="saving-changes">Saving Changes</h3>
+<ol>
+<li>Make your modifications</li>
+<li>Click <strong>Save Changes</strong></li>
+<li>Changes take effect immediately for new conversations</li>
+</ol>
+<h2 id="agent-visibility">Agent Visibility</h2>
+<h3 id="who-can-see-your-agent">Who Can See Your Agent</h3>
+<p>Custom agents you create are:</p>
+<ul>
+<li>Visible to you by default</li>
+<li>Shareable with others through the sharing model</li>
+<li>Subject to your organization's visibility policies</li>
+</ul>
+<h3 id="making-agents-available">Making Agents Available</h3>
+<p>See <a href="sharing-agents.html">Sharing Agents</a> for information on sharing your custom agents with others.</p>
+<h2 id="limitations">Limitations</h2>
+<table>
+<thead>
+<tr>
+<th>Limitation</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Model Access</strong></td>
+<td>Only models configured by admins are available</td>
+</tr>
+<tr>
+<td><strong>Tool Access</strong></td>
+<td>Only enabled tools can be selected</td>
+</tr>
+<tr>
+<td><strong>Storage</strong></td>
+<td>Private storage requires separate configuration</td>
+</tr>
+<tr>
+<td><strong>Permissions</strong></td>
+<td>Some settings may require elevated permissions</td>
+</tr>
+</tbody>
+</table>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="cant-create-agents">Can't Create Agents</h3>
+<ul>
+<li>Verify Agent Self-Service is enabled for your organization</li>
+<li>Check you have the Agent Contributor role</li>
+<li>Contact your administrator for permission</li>
+</ul>
+<h3 id="model-not-available">Model Not Available</h3>
+<ul>
+<li>The model may not be configured in your deployment</li>
+<li>Your permissions may not include that model</li>
+<li>Contact your administrator</li>
+</ul>
+<h3 id="tools-not-working">Tools Not Working</h3>
+<ul>
+<li>Verify the tool is properly enabled</li>
+<li>Check your agent configuration</li>
+<li>Some tools require additional setup</li>
+</ul>
+<h3 id="agent-not-appearing">Agent Not Appearing</h3>
+<ul>
+<li>Ensure the agent status is Active</li>
+<li>Check the agent hasn't expired</li>
+<li>Verify sharing settings if others can't see it</li>
+</ul>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="sharing-agents.html">Sharing Agents</a> — Share your agents with others</li>
+<li><a href="managing-available-agents.html">Managing Available Agents</a> — Control which agents you see</li>
+<li><a href="selecting-agent.html">Selecting an Agent</a> — Choose an agent for conversations</li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

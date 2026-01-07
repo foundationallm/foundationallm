@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Quota Definition | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Quota Definition | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/archive/concepts/quota/quota-definition.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="quota-definition">Quota Definition</h1>
+
+<p>The quota definitions are stored in the main FoundationaLLM storage account, in the <code>quota</code> container in a file named <code>quota-store.json</code>. If the file does not exist, the file is automatically created. The file contains a list of quota definitions with the following structure:</p>
+<pre><code class="lang-json">{
+	&quot;name&quot;: &quot;CoreAPICompletionsUPNRawRequestRateLimit&quot;,
+	&quot;description&quot;: &quot;Defines a per UPN raw request rate limit on the Core API Completions controller.&quot;,
+	&quot;context&quot;: &quot;CoreAPI:Completions&quot;,
+	&quot;type&quot;: &quot;RawRequestRateLimit&quot;,
+	&quot;metric_partition&quot;: &quot;UserPrincipalName&quot;,
+	&quot;metric_limit&quot;: 120,
+	&quot;metric_window_seconds&quot;: 60,
+	&quot;lockout_duration_seconds&quot;: 60,
+	&quot;distributed_enforcement&quot;: false
+}
+</code></pre>
+<p>The example above defines a quota for the Core API Completions controller that limits the number of raw API requests per user principal name (UPN) to 120 requests in a 60-second window. If the user principal exceeds this limit, they are locked out for 60 seconds before the quota is reset.</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>A user principal name corresponds to either a user or an agent access token. If the same agent access token is shared by multiple applications calling the Core API, the quota is enforced across all applications using that token.</p>
+</div>
+<div class="NOTE">
+<h5>Note</h5>
+<p>FoundationaLLM using a smoothing time window of 20 seconds for the quota enforcement. This means that the quota is enforced every 20 seconds, and the number of requests is averaged over that time window. This helps to smooth out spikes in traffic and provides a more consistent experience for users. In the example above, this means that the specified user principal name can make up to 40 requests every 20 seconds. The first time the user principal name exceeds the limit, they are locked out for 60 seconds. After the lockout period, the user principal name can make requests again, and the quota is reset.</p>
+<p>It is recommended to set the <code>metric_window_seconds</code> to a multiple of 20 seconds to align with the smoothing time window. The standard practice is to set the <code>metric_window_seconds</code> to 60 seconds, which makes it easy to understand for the consumers of the API. Also, it is recommended to set the <code>metric_limit</code> to a multiple of <code>metric_window_seconds</code> divided by 20 seconds, so that you avoid misinterpretation of the quota limits due to roundings. In the example above, since <code>metric_window_seconds</code> is set to 60 seconds, <code>metric_limit</code> should be set to a multiple of 3 (60 seconds / 20 seconds). Therefore, the value of <code>metric_limit</code> is set to 120. If <code>metric_limit</code> were set to 3, the user principal name would be allowed to make only 1 request every 20 seconds. It is also important to note that setting <code>metric_limit</code> to a value below <code>metric_windows_seconds</code> divided by 20 seconds would result in the user principal name being locked out immediately after the first request, which is not a desirable behavior.</p>
+</div>
+<p>The following table provides details about the quota definition properties:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>The name of the quota definition.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>A description of the quota definition.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>context</code></td>
+<td>The context of the quota definition.</td>
+<td>The format of the context is <code>&lt;service_name&gt;:&lt;controller_name&gt;</code> or <code>&lt;service_name&gt;:&lt;controller_name&gt;:&lt;agent_name&gt;</code>. Currently the following contexts can be used: <code>CoreAPI:&lt;controller_name&gt;</code>, <code>CoreAPI:Completions:&lt;agent_name&gt;</code> where <code>&lt;agent_name&gt;</code> must be a valid agent name. For more details on the available controllers and their contexts, see <a href="api-raw-request-rate.html">API Raw Request Rate</a>.</td>
+</tr>
+<tr>
+<td><code>type</code></td>
+<td>The type of the quota enforcement applied.</td>
+<td>The following types are supported: <code>RawRequestRateLimit</code> and <code>AgentRequestRateLimit</code>. <code>RawRequestRateLimt</code> defines the quota metric to be raw API requests and requires a context of <code>&lt;service_name&gt;:&lt;controller_name&gt;</code>. <code>AgentRequestRateLimit</code> defines the quota metric to be agent completion requests and requires a context of <code>&lt;service_name&gt;:&lt;controller_name&gt;:&lt;agent_name&gt;</code>. For more details, see <a href="api-raw-request-rate.html">API Raw Request Rate</a> or <a href="agent-request-rate.html">Agent Request Rate</a>.</td>
+</tr>
+<tr>
+<td><code>metric_partition</code></td>
+<td>The metric partition used to enforce the quota.</td>
+<td>The following partitions are supported: <code>None</code> (the metric is not partitioned) <code>UserPrincipalName</code> (the metric is partitioned by user principal name) and <code>UserIdentifier</code> (the metric is partitioned by user identifier). In the example above, the metric is partitioned by user principal name, meaning that each user principal name has its own quota limit. If <code>metric_partition</code> were set to <code>None</code>, the quota would be enforced globally across all calls, regardless of user principal names, meaning that the limit would apply to all users collectively. If <code>metric_partition</code> were set to <code>UserIdentifier</code>, the quota would be enforced per user identifier, which is a unique identifier for each user. In most cases, the relationship between user principal name and user identifier is one-to-one, so the quota would be effectively the same as if <code>metric_partition</code> were set to <code>UserPrincipalName</code>. In these cases, the recommended value for <code>metric_partition</code> is <code>UserPrincipalName</code>. However, in some more advanced scenarios (e.g., when calls are made by another service that authenticates against the Core API using a managed identity), the user principal name may not be available, and the quota should be enforced by user identifier. In these cases, the recommended value for <code>metric_partition</code> is <code>UserIdentifier</code>.</td>
+</tr>
+<tr>
+<td><code>metric_limit</code></td>
+<td>The limit of the metric.</td>
+<td>The limit is enforced over the <code>metric_window_seconds</code>. In the example above, a maximum number of 120 raw API requests are allowed per user principal name in a 60-second window.</td>
+</tr>
+<tr>
+<td><code>metric_window_seconds</code></td>
+<td>The time window in seconds over which the limit is enforced.</td>
+<td>In the example above, a maximum number of 120 raw API requests are allowed per user principal name in a 60-second window.</td>
+</tr>
+<tr>
+<td><code>lockout_duration_seconds</code></td>
+<td>The duration in seconds for which the caller is locked out after exceeding the quota.</td>
+<td>The lockout duration is applied after the user exceeds the quota limit. The user is locked out for the specified duration before the quota is reset.</td>
+</tr>
+<tr>
+<td><code>distributed_enforcement</code></td>
+<td>Indicates whether the quota is enforced across multiple instances of the same API.</td>
+<td>If <code>true</code>, the quota is enforced across all the instances of the API. If <code>false</code>, the quota is enforced individually on every single instance. In the example above, if the platform in running 5 instances of the Core API, one user principal name can make up to 5 x 120 = 600 raw API requests in a 60-second window. If <code>distributed_enforcement</code> were set to <code>true</code>, the user principal name would be allowed to make only 120 raw API requests in a 60-second window across all instances of the Core API.</td>
+</tr>
+</tbody>
+</table>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

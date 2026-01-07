@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Automating Agent Role Assignments | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Automating Agent Role Assignments | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/platform-operations/security-permissions/role-based-access-control/agent-role-assignments.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="automating-agent-role-assignments">Automating Agent Role Assignments</h1>
+
+<p>This guide covers programmatic management of role assignments for agents using the Management API.</p>
+<h2 id="overview">Overview</h2>
+<p>Automate agent access control for:</p>
+<ul>
+<li>Bulk user provisioning</li>
+<li>Integration with identity management systems</li>
+<li>Scheduled access reviews</li>
+<li>Temporary access grants</li>
+</ul>
+<h2 id="prerequisites">Prerequisites</h2>
+<h3 id="authentication">Authentication</h3>
+<pre><code class="lang-bash">az login
+TOKEN=$(az account get-access-token \
+  --scope api://FoundationaLLM-Management/Data.Manage \
+  --query accessToken -o tsv)
+</code></pre>
+<h3 id="required-role">Required Role</h3>
+<p>The caller must have at the agent scope:</p>
+<ul>
+<li><strong>Owner</strong> (<code>1301f8d4-3bea-4880-945f-315dbd2ddb46</code>), OR</li>
+<li><strong>User Access Administrator</strong> (<code>fb8e0fd0-f7e2-4957-89d6-19f44f7d6618</code>)</li>
+</ul>
+<h3 id="get-management-api-url">Get Management API URL</h3>
+<p>Find the URL in Management Portal under <strong>Deployment Information</strong>, or from your deployment configuration.</p>
+<h2 id="listing-agents">Listing Agents</h2>
+<p>Get all agents in your instance:</p>
+<pre><code class="lang-http">GET {managementApiUrl}/instances/{instanceId}/providers/FoundationaLLM.Agent/agents
+Authorization: Bearer {token}
+</code></pre>
+<h3 id="response">Response</h3>
+<pre><code class="lang-json">[
+  {
+    &quot;resource&quot;: {
+      &quot;name&quot;: &quot;sales-agent&quot;,
+      &quot;object_id&quot;: &quot;/instances/{instanceId}/providers/FoundationaLLM.Agent/agents/sales-agent&quot;,
+      &quot;display_name&quot;: &quot;Sales Assistant&quot;,
+      &quot;description&quot;: &quot;Helps sales team with customer inquiries&quot;
+    }
+  },
+  {
+    &quot;resource&quot;: {
+      &quot;name&quot;: &quot;support-agent&quot;,
+      &quot;object_id&quot;: &quot;/instances/{instanceId}/providers/FoundationaLLM.Agent/agents/support-agent&quot;,
+      &quot;display_name&quot;: &quot;Support Bot&quot;,
+      &quot;description&quot;: &quot;Customer support automation&quot;
+    }
+  }
+]
+</code></pre>
+<p>Note the <code>object_id</code> for use in role assignments.</p>
+<h2 id="managing-external-role-assignments">Managing External Role Assignments</h2>
+<p>Use the external role assignments endpoint for bulk operations:</p>
+<pre><code class="lang-http">POST {managementApiUrl}/instances/{instanceId}/providers/FoundationaLLM.Agent/agents/{agentName}/externalRoleAssignments
+Authorization: Bearer {token}
+Content-Type: application/json
+</code></pre>
+<h3 id="request-body">Request Body</h3>
+<pre><code class="lang-json">{
+  &quot;roleAssignmentsToAdd&quot;: [
+    {
+      &quot;roleDefinitionId&quot;: &quot;00a53e72-f66e-4c03-8f81-7e885fd2eb35&quot;,
+      &quot;identities&quot;: [
+        &quot;user1@contoso.com&quot;,
+        &quot;user2@contoso.com&quot;
+      ],
+      &quot;expirationDate&quot;: &quot;2024-12-31T23:59:59Z&quot;
+    }
+  ],
+  &quot;roleAssignmentsToRemove&quot;: [
+    {
+      &quot;roleDefinitionId&quot;: &quot;00a53e72-f66e-4c03-8f81-7e885fd2eb35&quot;,
+      &quot;identities&quot;: [
+        &quot;former.employee@contoso.com&quot;
+      ]
+    }
+  ]
+}
+</code></pre>
+<h3 id="parameters">Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>roleDefinitionId</code></td>
+<td>Role to assign/remove</td>
+</tr>
+<tr>
+<td><code>identities</code></td>
+<td>Array of user principal names (UPNs)</td>
+</tr>
+<tr>
+<td><code>expirationDate</code></td>
+<td>Optional expiration for added assignments</td>
+</tr>
+</tbody>
+</table>
+<h3 id="common-role-definition-ids">Common Role Definition IDs</h3>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>ID</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Owner</td>
+<td><code>1301f8d4-3bea-4880-945f-315dbd2ddb46</code></td>
+</tr>
+<tr>
+<td>Contributor</td>
+<td><code>e459c3a6-6b93-4062-85b3-fffc9fb253df</code></td>
+</tr>
+<tr>
+<td>Reader</td>
+<td><code>00a53e72-f66e-4c03-8f81-7e885fd2eb35</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="examples">Examples</h2>
+<h3 id="grant-reader-access-to-multiple-users">Grant Reader Access to Multiple Users</h3>
+<pre><code class="lang-bash">curl -X POST \
+  &quot;https://&lt;management-api&gt;/instances/{instanceId}/providers/FoundationaLLM.Agent/agents/sales-agent/externalRoleAssignments&quot; \
+  -H &quot;Authorization: Bearer $TOKEN&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -d '{
+    &quot;roleAssignmentsToAdd&quot;: [
+      {
+        &quot;roleDefinitionId&quot;: &quot;00a53e72-f66e-4c03-8f81-7e885fd2eb35&quot;,
+        &quot;identities&quot;: [
+          &quot;alice@contoso.com&quot;,
+          &quot;bob@contoso.com&quot;,
+          &quot;charlie@contoso.com&quot;
+        ]
+      }
+    ],
+    &quot;roleAssignmentsToRemove&quot;: []
+  }'
+</code></pre>
+<h3 id="grant-temporary-access">Grant Temporary Access</h3>
+<pre><code class="lang-bash">curl -X POST \
+  &quot;https://&lt;management-api&gt;/instances/{instanceId}/providers/FoundationaLLM.Agent/agents/demo-agent/externalRoleAssignments&quot; \
+  -H &quot;Authorization: Bearer $TOKEN&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -d '{
+    &quot;roleAssignmentsToAdd&quot;: [
+      {
+        &quot;roleDefinitionId&quot;: &quot;00a53e72-f66e-4c03-8f81-7e885fd2eb35&quot;,
+        &quot;identities&quot;: [&quot;demo.user@contoso.com&quot;],
+        &quot;expirationDate&quot;: &quot;2024-03-15T17:00:00Z&quot;
+      }
+    ],
+    &quot;roleAssignmentsToRemove&quot;: []
+  }'
+</code></pre>
+<h3 id="remove-access">Remove Access</h3>
+<pre><code class="lang-bash">curl -X POST \
+  &quot;https://&lt;management-api&gt;/instances/{instanceId}/providers/FoundationaLLM.Agent/agents/sales-agent/externalRoleAssignments&quot; \
+  -H &quot;Authorization: Bearer $TOKEN&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -d '{
+    &quot;roleAssignmentsToAdd&quot;: [],
+    &quot;roleAssignmentsToRemove&quot;: [
+      {
+        &quot;roleDefinitionId&quot;: &quot;00a53e72-f66e-4c03-8f81-7e885fd2eb35&quot;,
+        &quot;identities&quot;: [
+          &quot;departed.employee@contoso.com&quot;
+        ]
+      }
+    ]
+  }'
+</code></pre>
+<h3 id="add-and-remove-in-single-call">Add and Remove in Single Call</h3>
+<pre><code class="lang-bash">curl -X POST \
+  &quot;https://&lt;management-api&gt;/instances/{instanceId}/providers/FoundationaLLM.Agent/agents/support-agent/externalRoleAssignments&quot; \
+  -H &quot;Authorization: Bearer $TOKEN&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -d '{
+    &quot;roleAssignmentsToAdd&quot;: [
+      {
+        &quot;roleDefinitionId&quot;: &quot;00a53e72-f66e-4c03-8f81-7e885fd2eb35&quot;,
+        &quot;identities&quot;: [&quot;new.hire@contoso.com&quot;]
+      }
+    ],
+    &quot;roleAssignmentsToRemove&quot;: [
+      {
+        &quot;roleDefinitionId&quot;: &quot;00a53e72-f66e-4c03-8f81-7e885fd2eb35&quot;,
+        &quot;identities&quot;: [&quot;contractor@external.com&quot;]
+      }
+    ]
+  }'
+</code></pre>
+<h2 id="powershell-script-example">PowerShell Script Example</h2>
+<pre><code class="lang-powershell">$managementApiUrl = &quot;https://&lt;management-api&gt;&quot;
+$instanceId = &quot;your-instance-id&quot;
+$agentName = &quot;sales-agent&quot;
+
+# Get token
+$token = az account get-access-token `
+  --scope api://FoundationaLLM-Management/Data.Manage `
+  --query accessToken -o tsv
+
+# Define assignments
+$body = @{
+    roleAssignmentsToAdd = @(
+        @{
+            roleDefinitionId = &quot;00a53e72-f66e-4c03-8f81-7e885fd2eb35&quot;
+            identities = @(&quot;user1@contoso.com&quot;, &quot;user2@contoso.com&quot;)
+        }
+    )
+    roleAssignmentsToRemove = @()
+} | ConvertTo-Json -Depth 3
+
+# Make request
+$headers = @{
+    &quot;Authorization&quot; = &quot;Bearer $token&quot;
+    &quot;Content-Type&quot; = &quot;application/json&quot;
+}
+
+$uri = &quot;$managementApiUrl/instances/$instanceId/providers/FoundationaLLM.Agent/agents/$agentName/externalRoleAssignments&quot;
+
+Invoke-RestMethod -Uri $uri -Method Post -Headers $headers -Body $body
+</code></pre>
+<h2 id="integration-scenarios">Integration Scenarios</h2>
+<h3 id="hr-system-integration">HR System Integration</h3>
+<p>Sync agent access with HR onboarding/offboarding:</p>
+<ol>
+<li>HR system triggers webhook on employee status change</li>
+<li>Azure Function processes webhook</li>
+<li>Function calls Management API to add/remove assignments</li>
+<li>Access is immediately updated</li>
+</ol>
+<h3 id="access-review-automation">Access Review Automation</h3>
+<p>Schedule periodic access reviews:</p>
+<ol>
+<li>Azure Logic App runs on schedule</li>
+<li>Queries current assignments</li>
+<li>Compares against approved access list</li>
+<li>Removes unauthorized assignments</li>
+<li>Sends report to administrators</li>
+</ol>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="role-definitions.html">Role Definitions</a></li>
+<li><a href="role-assignments.html">Role Assignments</a></li>
+<li><a href="role-management.html">Role Management</a></li>
+<li><a href="../../../../apis-sdks/apis/management-api/api-reference.md">Management API Reference</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

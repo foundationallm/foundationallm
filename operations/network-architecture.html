@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>FoundationaLLM Network Architecture | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="FoundationaLLM Network Architecture | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../media/favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="../toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/operations/network-architecture.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="foundationallm-network-architecture">FoundationaLLM Network Architecture</h1>
+
+<p>This document provides a visual overview of the FoundationaLLM network architecture when deployed to Azure using Azure Container Apps.</p>
+<h2 id="network-diagram">Network Diagram</h2>
+<pre><code class="lang-mermaid">flowchart TB
+    subgraph Internet[&quot;🌐 Internet&quot;]
+        Dev1[&quot;💻 Developer Laptop 1&lt;br/&gt;Home Network&quot;]
+        Dev2[&quot;💻 Developer Laptop 2&lt;br/&gt;Office Network&quot;]
+        Users[&quot;👥 End Users&quot;]
+        Admins[&quot;👔 Administrators&quot;]
+    end
+
+    subgraph GitHub[&quot;☁️ GitHub Cloud&quot;]
+        Repo[&quot;📦 foundationallm/foundationallm&quot;]
+        GHCR[&quot;📦 GitHub Container Registry&lt;br/&gt;ghcr.io/foundationallm&quot;]
+    end
+
+    subgraph Azure[&quot;☁️ Azure Region (e.g., East US 2)&quot;]
+        
+        subgraph PublicEndpoints[&quot;🔓 Public Endpoints (HTTPS 443)&quot;]
+            UserPortalIP[&quot;🌐 user-portal&lt;br/&gt;*.azurecontainerapps.io&quot;]
+            MgmtPortalIP[&quot;🌐 management-portal&lt;br/&gt;*.azurecontainerapps.io&quot;]
+        end
+
+        subgraph VNet[&quot;🔒 Virtual Network (10.0.0.0/16)&quot;]
+            
+            subgraph CAESubnet[&quot;📡 Container Apps Subnet (10.0.0.0/21)&quot;]
+                subgraph CAE[&quot;🐳 Container Apps Environment&quot;]
+                    
+                    subgraph FrontendApps[&quot;Frontend (External Ingress)&quot;]
+                        UserPortal[&quot;👤 user-portal:80&quot;]
+                        MgmtPortal[&quot;📋 management-portal:80&quot;]
+                    end
+                    
+                    subgraph BackendAPIs[&quot;Backend APIs (Internal Ingress)&quot;]
+                        CoreAPI[&quot;🚀 core-api:80&quot;]
+                        MgmtAPI[&quot;📋 management-api:80&quot;]
+                        AuthAPI[&quot;🔐 authorization-api:80&quot;]
+                        OrchAPI[&quot;🎭 orchestration-api:80&quot;]
+                        GatewayAPI[&quot;🚪 gateway-api:80&quot;]
+                        LangChainAPI[&quot;🔗 langchain-api:80&quot;]
+                        StateAPI[&quot;💾 state-api:80&quot;]
+                        ContextAPI[&quot;📝 context-api:80&quot;]
+                        CoreWorker[&quot;⚡ core-worker&quot;]
+                    end
+                end
+            end
+            
+            subgraph PESubnet[&quot;🔐 Private Endpoints Subnet (10.0.8.0/24)&quot;]
+                PE_KV[&quot;PE: Key Vault&quot;]
+                PE_Storage[&quot;PE: Storage&quot;]
+                PE_Cosmos[&quot;PE: Cosmos DB&quot;]
+                PE_AppConfig[&quot;PE: App Config&quot;]
+                PE_AI[&quot;PE: AI Services&quot;]
+            end
+        end
+
+        subgraph PaaS[&quot;☁️ Azure PaaS Services&quot;]
+            subgraph CoreRG[&quot;Core Resource Group&quot;]
+                KV[&quot;🔑 Key Vault&quot;]
+                AppConfig[&quot;⚙️ App Configuration&quot;]
+                AppInsights[&quot;📊 App Insights&quot;]
+                EventGrid[&quot;📨 Event Grid&quot;]
+            end
+            
+            subgraph DataRG[&quot;Data Resource Group&quot;]
+                Storage[&quot;📦 Blob Storage&lt;br/&gt;(ADLS Gen2)&quot;]
+                CosmosDB[&quot;🌍 Cosmos DB&quot;]
+            end
+            
+            subgraph ContextRG[&quot;Context Resource Group&quot;]
+                ContextStorage[&quot;📦 Context Storage&quot;]
+            end
+            
+            subgraph AIRG[&quot;AI Resource Group&quot;]
+                AIServices[&quot;🤖 AI Services&lt;br/&gt;(OpenAI Endpoint)&quot;]
+            end
+        end
+
+        subgraph EntraID[&quot;🔷 Microsoft Entra ID&quot;]
+            OAuth[&quot;OAuth 2.0 / OIDC&lt;br/&gt;Token Validation&quot;]
+        end
+    end
+
+    %% Developer connections
+    Dev1 --&gt;|&quot;HTTPS 443&lt;br/&gt;git push&quot;| Repo
+    Dev2 --&gt;|&quot;HTTPS 443&lt;br/&gt;git push&quot;| Repo
+    Repo --&gt;|&quot;Build &amp; Push&lt;br/&gt;Images&quot;| GHCR
+    GHCR --&gt;|&quot;Pull Images&lt;br/&gt;HTTPS 443&quot;| CAE
+
+    %% User traffic flow
+    Users --&gt;|&quot;HTTPS 443&quot;| UserPortalIP
+    Admins --&gt;|&quot;HTTPS 443&quot;| MgmtPortalIP
+    UserPortalIP --&gt; UserPortal
+    MgmtPortalIP --&gt; MgmtPortal
+
+    %% Internal API calls (within CAE - internal DNS)
+    UserPortal --&gt;|&quot;HTTP 80&quot;| CoreAPI
+    MgmtPortal --&gt;|&quot;HTTP 80&quot;| MgmtAPI
+    CoreAPI --&gt;|&quot;HTTP 80&quot;| AuthAPI
+    CoreAPI --&gt;|&quot;HTTP 80&quot;| OrchAPI
+    MgmtAPI --&gt;|&quot;HTTP 80&quot;| AuthAPI
+    OrchAPI --&gt;|&quot;HTTP 80&quot;| LangChainAPI
+    LangChainAPI --&gt;|&quot;HTTP 80&quot;| GatewayAPI
+    CoreAPI --&gt;|&quot;HTTP 80&quot;| StateAPI
+    CoreAPI --&gt;|&quot;HTTP 80&quot;| ContextAPI
+
+    %% Private endpoint connections
+    PE_KV -.-&gt;|&quot;Private Link&quot;| KV
+    PE_Storage -.-&gt;|&quot;Private Link&quot;| Storage
+    PE_Cosmos -.-&gt;|&quot;Private Link&quot;| CosmosDB
+    PE_AppConfig -.-&gt;|&quot;Private Link&quot;| AppConfig
+    PE_AI -.-&gt;|&quot;Private Link&quot;| AIServices
+
+    %% Service to PaaS via Private Endpoints
+    BackendAPIs --&gt;|&quot;TCP 443&quot;| PE_KV
+    BackendAPIs --&gt;|&quot;TCP 443&quot;| PE_AppConfig
+    BackendAPIs --&gt;|&quot;TCP 443&quot;| PE_Storage
+    BackendAPIs --&gt;|&quot;TCP 443&quot;| PE_Cosmos
+    GatewayAPI --&gt;|&quot;TCP 443&quot;| PE_AI
+    ContextAPI --&gt;|&quot;TCP 443&quot;| ContextStorage
+
+    %% Telemetry (outbound)
+    CAE -.-&gt;|&quot;HTTPS 443&lt;br/&gt;Telemetry&quot;| AppInsights
+    CAE -.-&gt;|&quot;HTTPS 443&lt;br/&gt;Events&quot;| EventGrid
+
+    %% Auth flow
+    FrontendApps -.-&gt;|&quot;HTTPS 443&lt;br/&gt;Token Validation&quot;| OAuth
+    BackendAPIs -.-&gt;|&quot;HTTPS 443&lt;br/&gt;Token Validation&quot;| OAuth
+
+    %% Styling
+    classDef internet fill:#E8E8E8,stroke:#999,color:#333
+    classDef github fill:#24292E,stroke:#1B1F23,color:#fff
+    classDef public fill:#28A745,stroke:#1E7E34,color:#fff
+    classDef vnet fill:#0078D4,stroke:#005A9E,color:#fff
+    classDef container fill:#326CE5,stroke:#1E4F9E,color:#fff
+    classDef privateendpoint fill:#FF6B6B,stroke:#CC5555,color:#fff
+    classDef paas fill:#FF8C00,stroke:#CC7000,color:#fff
+    classDef identity fill:#68217A,stroke:#4B1557,color:#fff
+
+    class Dev1,Dev2,Users,Admins internet
+    class Repo,GHCR github
+    class UserPortalIP,MgmtPortalIP public
+    class UserPortal,MgmtPortal,CoreAPI,MgmtAPI,AuthAPI,OrchAPI,GatewayAPI,LangChainAPI,StateAPI,ContextAPI,CoreWorker container
+    class PE_KV,PE_Storage,PE_Cosmos,PE_AppConfig,PE_AI privateendpoint
+    class KV,AppConfig,AppInsights,EventGrid,Storage,CosmosDB,ContextStorage,AIServices paas
+    class OAuth identity
+</code></pre>
+<h2 id="network-zones">Network Zones</h2>
+<table>
+<thead>
+<tr>
+<th>Zone</th>
+<th>CIDR / Endpoint</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Internet</strong></td>
+<td>Public</td>
+<td>Developers, End Users, GitHub</td>
+</tr>
+<tr>
+<td><strong>Public Endpoints</strong></td>
+<td><code>*.azurecontainerapps.io</code></td>
+<td>User Portal, Management Portal (HTTPS 443)</td>
+</tr>
+<tr>
+<td><strong>Container Apps Subnet</strong></td>
+<td><code>10.0.0.0/21</code></td>
+<td>All containerized microservices</td>
+</tr>
+<tr>
+<td><strong>Private Endpoints Subnet</strong></td>
+<td><code>10.0.8.0/24</code></td>
+<td>Secure PaaS connectivity</td>
+</tr>
+</tbody>
+</table>
+<h2 id="traffic-flows">Traffic Flows</h2>
+<table>
+<thead>
+<tr>
+<th>Flow</th>
+<th>Protocol</th>
+<th>Source → Destination</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>User Access</strong></td>
+<td>HTTPS 443</td>
+<td>Internet → Public Endpoints → Portals</td>
+</tr>
+<tr>
+<td><strong>API Calls</strong></td>
+<td>HTTP 80</td>
+<td>Container ↔ Container (internal)</td>
+</tr>
+<tr>
+<td><strong>Data Access</strong></td>
+<td>TCP 443</td>
+<td>Containers → Private Endpoints → PaaS</td>
+</tr>
+<tr>
+<td><strong>AI Inference</strong></td>
+<td>HTTPS 443</td>
+<td>gateway-api → AI Services</td>
+</tr>
+<tr>
+<td><strong>Telemetry</strong></td>
+<td>HTTPS 443</td>
+<td>All containers → App Insights</td>
+</tr>
+<tr>
+<td><strong>Authentication</strong></td>
+<td>HTTPS 443</td>
+<td>All services → Entra ID</td>
+</tr>
+<tr>
+<td><strong>CI/CD</strong></td>
+<td>HTTPS 443</td>
+<td>GitHub → GHCR → Container Apps</td>
+</tr>
+</tbody>
+</table>
+<h2 id="security-boundaries">Security Boundaries</h2>
+<ul>
+<li><strong>External ingress</strong>: Only <code>user-portal</code> and <code>management-portal</code> are publicly accessible</li>
+<li><strong>Internal ingress</strong>: All backend APIs use internal ingress (not publicly accessible)</li>
+<li><strong>Private Link</strong>: All Azure PaaS services are accessed via private endpoints within the VNet</li>
+<li><strong>OAuth 2.0</strong>: All requests are authenticated via Microsoft Entra ID</li>
+</ul>
+<h2 id="container-apps-services">Container Apps Services</h2>
+<h3 id="frontend-services-external-ingress">Frontend Services (External Ingress)</h3>
+<table>
+<thead>
+<tr>
+<th>Service</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>user-portal</code></td>
+<td>End-user web application for interacting with AI agents</td>
+</tr>
+<tr>
+<td><code>management-portal</code></td>
+<td>Administrative web application for managing agents, prompts, and configuration</td>
+</tr>
+</tbody>
+</table>
+<h3 id="backend-apis-internal-ingress">Backend APIs (Internal Ingress)</h3>
+<table>
+<thead>
+<tr>
+<th>Service</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>core-api</code></td>
+<td>Main API gateway for user-facing operations</td>
+</tr>
+<tr>
+<td><code>management-api</code></td>
+<td>API for administrative operations</td>
+</tr>
+<tr>
+<td><code>authorization-api</code></td>
+<td>Handles authentication and authorization</td>
+</tr>
+<tr>
+<td><code>orchestration-api</code></td>
+<td>Routes requests to appropriate AI orchestrators</td>
+</tr>
+<tr>
+<td><code>gateway-api</code></td>
+<td>Gateway for AI model interactions</td>
+</tr>
+<tr>
+<td><code>langchain-api</code></td>
+<td>LangChain-based orchestration service</td>
+</tr>
+<tr>
+<td><code>state-api</code></td>
+<td>Manages conversation and application state</td>
+</tr>
+<tr>
+<td><code>context-api</code></td>
+<td>Handles context and file operations</td>
+</tr>
+<tr>
+<td><code>core-worker</code></td>
+<td>Background job processing</td>
+</tr>
+</tbody>
+</table>
+<h2 id="azure-paas-services">Azure PaaS Services</h2>
+<table>
+<thead>
+<tr>
+<th>Service</th>
+<th>Resource Group</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Key Vault</strong></td>
+<td>Core</td>
+<td>Secrets and certificate management</td>
+</tr>
+<tr>
+<td><strong>App Configuration</strong></td>
+<td>Core</td>
+<td>Centralized application configuration</td>
+</tr>
+<tr>
+<td><strong>Application Insights</strong></td>
+<td>Core</td>
+<td>Monitoring and telemetry</td>
+</tr>
+<tr>
+<td><strong>Event Grid</strong></td>
+<td>Core</td>
+<td>Event-driven messaging</td>
+</tr>
+<tr>
+<td><strong>Blob Storage (ADLS Gen2)</strong></td>
+<td>Data</td>
+<td>Resource provider storage, file storage</td>
+</tr>
+<tr>
+<td><strong>Cosmos DB</strong></td>
+<td>Data</td>
+<td>Conversations, state, and document storage</td>
+</tr>
+<tr>
+<td><strong>Context Storage</strong></td>
+<td>Context</td>
+<td>Context files and queue storage</td>
+</tr>
+<tr>
+<td><strong>AI Services</strong></td>
+<td>AI</td>
+<td>Azure OpenAI endpoints for LLM inference</td>
+</tr>
+</tbody>
+</table>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

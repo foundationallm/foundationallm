@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Creating Data Pipelines | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Creating Data Pipelines | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/management-portal/how-to-guides/data/data-pipelines/creating-data-pipelines.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../../index.html">
+            <img id="logo" class="svg" src="../../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="creating-data-pipelines">Creating Data Pipelines</h1>
+
+<p>Learn how to create and configure data pipelines for processing and indexing your data.</p>
+<h2 id="overview">Overview</h2>
+<p>Data pipelines define the processing workflow for transforming raw data into indexed, searchable content that agents can use. A pipeline consists of:</p>
+<ul>
+<li><strong>Data Source</strong>: Where to read data from</li>
+<li><strong>Stages</strong>: Processing steps (text extraction, splitting, embedding, indexing)</li>
+<li><strong>Configuration</strong>: Parameters for each stage</li>
+</ul>
+<h2 id="accessing-data-pipelines">Accessing Data Pipelines</h2>
+<ol>
+<li>In the Management Portal sidebar, click <strong>Data Pipelines</strong> under the <strong>Data</strong> section</li>
+<li>The pipelines list shows all configured pipelines</li>
+</ol>
+<h2 id="pipeline-list">Pipeline List</h2>
+<p>The table displays:</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Name</strong></td>
+<td>Pipeline identifier</td>
+</tr>
+<tr>
+<td><strong>Description</strong></td>
+<td>Purpose of the pipeline</td>
+</tr>
+<tr>
+<td><strong>Active</strong></td>
+<td>Whether the pipeline is enabled</td>
+</tr>
+<tr>
+<td><strong>Edit</strong></td>
+<td>Settings icon to modify configuration</td>
+</tr>
+<tr>
+<td><strong>Run</strong></td>
+<td>Execute the pipeline manually</td>
+</tr>
+<tr>
+<td><strong>Delete</strong></td>
+<td>Remove the pipeline</td>
+</tr>
+</tbody>
+</table>
+<h2 id="creating-a-pipeline">Creating a Pipeline</h2>
+<ol>
+<li>Click <strong>Create Pipeline</strong> at the top right</li>
+<li>Configure the pipeline settings</li>
+</ol>
+<h3 id="basic-information">Basic Information</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Pipeline Name</strong></td>
+<td>Unique identifier (letters, numbers, dashes, underscores)</td>
+</tr>
+<tr>
+<td><strong>Display Name</strong></td>
+<td>User-friendly name</td>
+</tr>
+<tr>
+<td><strong>Description</strong></td>
+<td>Purpose and what data it processes</td>
+</tr>
+</tbody>
+</table>
+<h3 id="select-data-source">Select Data Source</h3>
+<p>Choose an existing data source from the dropdown. This determines where the pipeline reads input data.</p>
+<p>After selecting a data source:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Data Source Name</strong></td>
+<td>Override name for this pipeline's data reference</td>
+</tr>
+<tr>
+<td><strong>Data Source Description</strong></td>
+<td>Additional description</td>
+</tr>
+<tr>
+<td><strong>Data Source Plugin</strong></td>
+<td>Plugin for processing this data source type</td>
+</tr>
+</tbody>
+</table>
+<h3 id="configure-data-source-plugin">Configure Data Source Plugin</h3>
+<p>The plugin determines how data is read. Configure default values for plugin parameters:</p>
+<table>
+<thead>
+<tr>
+<th>Parameter Type</th>
+<th>Input Method</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>String/Int/Float/DateTime</strong></td>
+<td>Text input</td>
+</tr>
+<tr>
+<td><strong>Boolean</strong></td>
+<td>Toggle switch</td>
+</tr>
+<tr>
+<td><strong>Array</strong></td>
+<td>Chips (comma-separated values)</td>
+</tr>
+<tr>
+<td><strong>Resource Object ID</strong></td>
+<td>Dropdown selection</td>
+</tr>
+</tbody>
+</table>
+<h2 id="pipeline-stages">Pipeline Stages</h2>
+<p>Stages define the processing workflow. Common stages include:</p>
+<h3 id="stage-types">Stage Types</h3>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Text Extraction</strong></td>
+<td>Extract text content from documents</td>
+</tr>
+<tr>
+<td><strong>Text Partitioning</strong></td>
+<td>Split text into chunks</td>
+</tr>
+<tr>
+<td><strong>Text Embedding</strong></td>
+<td>Generate vector embeddings</td>
+</tr>
+<tr>
+<td><strong>Indexing</strong></td>
+<td>Store in vector database</td>
+</tr>
+</tbody>
+</table>
+<h3 id="configuring-stages">Configuring Stages</h3>
+<p>For each stage:</p>
+<ol>
+<li><strong>Select Plugin</strong>: Choose the processing plugin</li>
+<li><strong>Configure Parameters</strong>: Set stage-specific settings</li>
+<li><strong>Define Outputs</strong>: Specify where results go</li>
+</ol>
+<h3 id="stage-parameters">Stage Parameters</h3>
+<p>Common parameters by stage type:</p>
+<p><strong>Text Partitioning:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Chunk Size</strong></td>
+<td>Maximum size of each text chunk</td>
+</tr>
+<tr>
+<td><strong>Overlap Size</strong></td>
+<td>Characters overlapping between chunks</td>
+</tr>
+<tr>
+<td><strong>Tokenizer</strong></td>
+<td>How to count tokens</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Text Embedding:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Model</strong></td>
+<td>Embedding model to use</td>
+</tr>
+<tr>
+<td><strong>Dimensions</strong></td>
+<td>Vector size</td>
+</tr>
+<tr>
+<td><strong>Batch Size</strong></td>
+<td>Documents per batch</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Indexing:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Vector Store</strong></td>
+<td>Target vector database</td>
+</tr>
+<tr>
+<td><strong>Index Name</strong></td>
+<td>Name for the index</td>
+</tr>
+</tbody>
+</table>
+<h3 id="stage-ordering">Stage Ordering</h3>
+<p>Stages can be reordered:</p>
+<ul>
+<li>Drag and drop stages to change order</li>
+<li>Use the visual connectors to see flow</li>
+<li>Ensure logical progression (extraction → partitioning → embedding → indexing)</li>
+</ul>
+<h2 id="advanced-configuration">Advanced Configuration</h2>
+<h3 id="trigger-settings">Trigger Settings</h3>
+<p>Configure when the pipeline runs:</p>
+<table>
+<thead>
+<tr>
+<th>Trigger Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Manual</strong></td>
+<td>Run on demand only</td>
+</tr>
+<tr>
+<td><strong>Scheduled</strong></td>
+<td>Run on a cron schedule</td>
+</tr>
+<tr>
+<td><strong>Event-driven</strong></td>
+<td>Run when data changes</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>TODO</strong>: Document specific trigger configuration options when available in the UI.</p>
+</blockquote>
+<h3 id="prompt-configuration">Prompt Configuration</h3>
+<p>Some stages use prompts for processing:</p>
+<ol>
+<li>Select a prompt from the available options</li>
+<li>Configure prompt parameters</li>
+<li>Set the prompt role (e.g., <code>main_prompt</code>)</li>
+</ol>
+<h2 id="saving-the-pipeline">Saving the Pipeline</h2>
+<ol>
+<li>Review all configuration sections</li>
+<li>Click <strong>Create Pipeline</strong> or <strong>Save Changes</strong></li>
+<li>Wait for validation and saving</li>
+</ol>
+<h2 id="best-practices">Best Practices</h2>
+<h3 id="design">Design</h3>
+<ul>
+<li>Start with simple pipelines and add complexity as needed</li>
+<li>Use descriptive names for stages</li>
+<li>Document expected input and output formats</li>
+</ul>
+<h3 id="performance">Performance</h3>
+<ul>
+<li>Tune chunk sizes based on your content type</li>
+<li>Use appropriate batch sizes for embedding</li>
+<li>Consider parallel processing where supported</li>
+</ul>
+<h3 id="maintenance">Maintenance</h3>
+<ul>
+<li>Test with sample data before production</li>
+<li>Monitor pipeline runs for errors</li>
+<li>Keep data sources and plugins updated</li>
+</ul>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="../data-sources.html">Data Sources</a></li>
+<li><a href="invoking-data-pipelines.html">Invoking Data Pipelines</a></li>
+<li><a href="monitoring-data-pipelines.html">Monitoring Data Pipelines</a></li>
+<li><a href="../../../reference/concepts/data-pipelines.html">Data Pipelines Reference</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

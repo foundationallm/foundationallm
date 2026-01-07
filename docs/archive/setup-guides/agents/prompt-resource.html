@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Prompt | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Prompt | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/archive/setup-guides/agents/prompt-resource.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="prompt">Prompt</h1>
+
+<p>The FoundationaLLM (FLLM) prompt resource encapsulates the system prompt of an agent. The system prompt describes the persona of the agent and any instructional guardrails used to generate the desired responses to user prompts. The prompt resource is used in the <a href="knowledge-management-agent.html">Knowledge Management agent configuration</a>.</p>
+<h2 id="prompt-configuration">Prompt configuration</h2>
+<p>The structure of a prompt is the following:</p>
+<pre><code class="lang-json">{
+  &quot;type&quot;: &quot;multipart&quot;,
+  &quot;name&quot;: &quot;&lt;name&gt;&quot;,
+  &quot;object_id&quot;: &quot;/instances/&lt;instance_id&gt;/providers/FoundationaLLM.Prompt/prompts/&lt;name&gt;&quot;,
+  &quot;description&quot;: &quot;&lt;description&gt;&quot;,
+  &quot;prefix&quot;: &quot;&lt;prompt_prefix&gt;&quot;,
+  &quot;suffix&quot;: &quot;&lt;prompt_suffix&gt;&quot;
+}
+</code></pre>
+<p>where:</p>
+<ul>
+<li><code>&lt;name&gt;</code> is the name of the agent.</li>
+<li><code>&lt;instance_id&gt;</code> is the instance ID of the deployment.</li>
+<li><code>&lt;description&gt;</code> is the description of the prompt, describing the persona of the agent.</li>
+<li><code>&lt;prompt_prefix&gt;</code> is the beginning of the prompt.</li>
+<li><code>&lt;prompt_suffix&gt;</code> (optional) appended to the end of the prompt (after any prefix and context).</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>type</code></td>
+<td>The type - will be <code>multipart</code>. <code>multipart</code> prompts have a prefix and suffix. Support for <code>basic</code> prompts, which have no suffix, will be added in a future release. <strong><code>type</code> must be the first parameter in the request body.</strong></td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>The name of the prompt.</td>
+</tr>
+<tr>
+<td><code>object_id</code></td>
+<td>The object ID of the prompt. Remove this key when creating a prompt, as it is automatically populated by the Management API.</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>The description of the prompt, ensure this description details the purpose or role of the prompt.</td>
+</tr>
+<tr>
+<td><code>prompt_prefix</code></td>
+<td>The beginning of the prompt.</td>
+</tr>
+<tr>
+<td><code>prompt_suffix</code></td>
+<td>Text appended to the ending of the prompt.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="managing-prompts">Managing prompts</h2>
+<p>This section describes how to manage knowledge management prompts using the Management API. <code>{{baseUrl}}</code> is the base URL of the Management API. <code>{{instanceId}}</code> is the unique identifier of the FLLM instance.</p>
+<h3 id="retrieve">Retrieve</h3>
+<pre><code class="lang-http">HTTP GET {{baseUrl}}/instances/{{instanceId}}/providers/FoundationaLLM.Prompt/prompts
+</code></pre>
+<h3 id="create-or-update">Create or update</h3>
+<pre><code class="lang-http">HTTP POST {{baseUrl}}/instances/{{instanceId}}/providers/FoundationaLLM.Prompt/prompts/&lt;name&gt;
+Content-Type: application/json
+
+BODY
+&lt;prompt_configuration&gt;
+</code></pre>
+<p>where <code>&lt;prompt_configuration&gt;</code> is the prompt configuration structure described above.</p>
+<h3 id="delete">Delete</h3>
+<pre><code class="lang-http">HTTP DELETE {{baseUrl}}/instances/{{instanceId}}/providers/FoundationaLLM.Prompt/prompts/&lt;name&gt;
+</code></pre>
+<div class="NOTE">
+<h5>Note</h5>
+<p>The delete operation is a <em>logical delete</em>. To purge a Prompt, call the <code>/purge</code> endpoint after deleting the Prompt.</p>
+</div>
+<h3 id="purge">Purge</h3>
+<pre><code>HTTP POST {{baseUrl}}/instances/{{instanceId}}/providers/FoundationaLLM.Prompt/prompts/&lt;name&gt;/purge
+Content-Type: application/json
+
+BODY
+{}
+</code></pre>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

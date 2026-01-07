@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Permissions &amp; Roles Reference | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Permissions &amp; Roles Reference | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../toc.html">
+      <meta name="docfx:tocrel" content="../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/management-portal/reference/permissions-roles.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../index.html">
+            <img id="logo" class="svg" src="../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="permissions--roles-reference">Permissions &amp; Roles Reference</h1>
+
+<p>Reference documentation for FoundationaLLM permissions and role definitions.</p>
+<h2 id="overview">Overview</h2>
+<p>FoundationaLLM implements a Role-Based Access Control (RBAC) system that mirrors Azure RBAC patterns. Access is controlled through:</p>
+<ul>
+<li><strong>Role Definitions</strong>: Named sets of permissions</li>
+<li><strong>Role Assignments</strong>: Bindings between principals, roles, and scopes</li>
+<li><strong>Authorizable Actions</strong>: Granular permission strings</li>
+</ul>
+<h2 id="role-definitions">Role Definitions</h2>
+<h3 id="core-roles">Core Roles</h3>
+<h4 id="owner">Owner</h4>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ID</td>
+<td><code>1301f8d4-3bea-4880-945f-315dbd2ddb46</code></td>
+</tr>
+<tr>
+<td>Description</td>
+<td>Full access to manage all resources, including the ability to assign roles in FoundationaLLM RBAC.</td>
+</tr>
+<tr>
+<td>Permissions</td>
+<td><code>*</code> (all actions)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Use Cases:</strong></p>
+<ul>
+<li>Instance administrators</li>
+<li>Full platform management</li>
+<li>Managing other users' access</li>
+</ul>
+<h4 id="contributor">Contributor</h4>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ID</td>
+<td><code>a9f0020f-6e3a-49bf-8d1d-35fd53058edf</code></td>
+</tr>
+<tr>
+<td>Description</td>
+<td>Full access to manage all resources without the ability to assign roles in FoundationaLLM RBAC.</td>
+</tr>
+<tr>
+<td>Permissions</td>
+<td><code>*</code> (all actions)</td>
+</tr>
+<tr>
+<td>Excluded</td>
+<td><code>FoundationaLLM.Authorization/*/write</code>, <code>FoundationaLLM.Authorization/*/delete</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Use Cases:</strong></p>
+<ul>
+<li>Creating and managing agents, data sources, pipelines</li>
+<li>Platform configuration (non-security)</li>
+</ul>
+<h4 id="reader">Reader</h4>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ID</td>
+<td><code>00a53e72-f66e-4c03-8f81-7e885fd2eb35</code></td>
+</tr>
+<tr>
+<td>Description</td>
+<td>View all resources without the ability to make any changes.</td>
+</tr>
+<tr>
+<td>Permissions</td>
+<td><code>*/read</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Use Cases:</strong></p>
+<ul>
+<li>Auditors and compliance reviewers</li>
+<li>Read-only access for reporting</li>
+</ul>
+<h4 id="user-access-administrator">User Access Administrator</h4>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ID</td>
+<td><code>fb8e0fd0-f7e2-4957-89d6-19f44f7d6618</code></td>
+</tr>
+<tr>
+<td>Description</td>
+<td>Manage access to FoundationaLLM resources.</td>
+</tr>
+<tr>
+<td>Permissions</td>
+<td><code>*/read</code>, <code>FoundationaLLM.Authorization/*</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Use Cases:</strong></p>
+<ul>
+<li>Delegated access management</li>
+<li>User onboarding/offboarding</li>
+</ul>
+<h4 id="role-based-access-control-administrator">Role Based Access Control Administrator</h4>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ID</td>
+<td><code>17ca4b59-3aee-497d-b43b-95dd7d916f99</code></td>
+</tr>
+<tr>
+<td>Description</td>
+<td>Manage access to FoundationaLLM resources by assigning roles using FoundationaLLM RBAC.</td>
+</tr>
+<tr>
+<td>Permissions</td>
+<td>Role assignment read/write/delete, role definition read</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Use Cases:</strong></p>
+<ul>
+<li>Focused access management (no resource modification)</li>
+</ul>
+<h3 id="specialized-contributor-roles">Specialized Contributor Roles</h3>
+<h4 id="agents-contributor">Agents Contributor</h4>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ID</td>
+<td><code>3f28aa77-a854-4aa7-ae11-ffda238275c9</code></td>
+</tr>
+<tr>
+<td>Description</td>
+<td>Create new agents.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="attachments-contributor">Attachments Contributor</h4>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ID</td>
+<td><code>8e77fb6a-7a78-43e1-b628-d9e2285fe25a</code></td>
+</tr>
+<tr>
+<td>Description</td>
+<td>Upload attachments including uploading to Azure OpenAI file store.</td>
+</tr>
+<tr>
+<td>Permissions</td>
+<td>Attachment read/write, Azure OpenAI conversation/file mappings, API endpoint configs, AI models</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Use Cases:</strong></p>
+<ul>
+<li>Users who need to upload files to agents</li>
+</ul>
+<h4 id="conversations-contributor">Conversations Contributor</h4>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ID</td>
+<td><code>d0d21b90-5317-499a-9208-3a6cb71b84f9</code></td>
+</tr>
+<tr>
+<td>Description</td>
+<td>Create and update conversations, including Azure OpenAI Assistants threads.</td>
+</tr>
+<tr>
+<td>Permissions</td>
+<td>Conversation read/write, Azure OpenAI conversation mappings, API endpoint configs, AI models</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Use Cases:</strong></p>
+<ul>
+<li>Chat user portal users</li>
+</ul>
+<h4 id="data-pipelines-contributor">Data Pipelines Contributor</h4>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ID</td>
+<td><code>2da16a58-ed63-431a-b90e-9df32c2cae4a</code></td>
+</tr>
+<tr>
+<td>Description</td>
+<td>Create new data pipelines.</td>
+</tr>
+<tr>
+<td>Permissions</td>
+<td>Read access to data pipelines, vectorization pipelines, data sources, profiles, plugins</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Use Cases:</strong></p>
+<ul>
+<li>Data engineers creating pipelines</li>
+</ul>
+<h4 id="data-pipelines-execution-manager">Data Pipelines Execution Manager</h4>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ID</td>
+<td><code>e959eecb-8edf-4442-b532-4990f9a1df2b</code></td>
+</tr>
+<tr>
+<td>Description</td>
+<td>Manage all aspects related to data pipeline runs.</td>
+</tr>
+<tr>
+<td>Permissions</td>
+<td>Data pipeline read/write, data sources, API endpoints, AI models, plugins, vector databases</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Use Cases:</strong></p>
+<ul>
+<li>Operators running and monitoring pipelines</li>
+</ul>
+<h4 id="prompts-contributor">Prompts Contributor</h4>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ID</td>
+<td><code>479e7b36-5965-4a7f-baf7-84e57be854aa</code></td>
+</tr>
+<tr>
+<td>Description</td>
+<td>Create new prompts.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="vector-databases-contributor">Vector Databases Contributor</h4>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ID</td>
+<td><code>c026f070-abc2-4419-aed9-ec0676f81519</code></td>
+</tr>
+<tr>
+<td>Description</td>
+<td>Create new vector databases.</td>
+</tr>
+<tr>
+<td>Permissions</td>
+<td>Vector database read, API endpoint configuration read</td>
+</tr>
+</tbody>
+</table>
+<h4 id="agent-access-tokens-contributor">Agent Access Tokens Contributor</h4>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ID</td>
+<td><code>8c5ea0d3-f5a1-4be5-90a7-a12921c45542</code></td>
+</tr>
+<tr>
+<td>Description</td>
+<td>Create new agent access tokens.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="resource-providers-administrator">Resource Providers Administrator</h4>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ID</td>
+<td><code>63b6cc4d-9e1c-4891-8201-cf58286ebfe6</code></td>
+</tr>
+<tr>
+<td>Description</td>
+<td>Execute management actions on resource providers.</td>
+</tr>
+<tr>
+<td>Permissions</td>
+<td><code>*/management/write</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="authorizable-actions">Authorizable Actions</h2>
+<p>Actions follow the pattern: <code>{ResourceProvider}/{ResourceType}/{Operation}</code></p>
+<h3 id="authorization-actions">Authorization Actions</h3>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM.Authorization/roleAssignments/read</code></td>
+<td>Read role assignments</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Authorization/roleAssignments/write</code></td>
+<td>Create or update role assignments</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Authorization/roleAssignments/delete</code></td>
+<td>Delete role assignments</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Authorization/roleDefinitions/read</code></td>
+<td>Read role definitions</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Authorization/securityPrincipals/read</code></td>
+<td>Read security principals (users, groups, service principals)</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Authorization/management/write</code></td>
+<td>Execute management actions</td>
+</tr>
+</tbody>
+</table>
+<h3 id="agent-actions">Agent Actions</h3>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM.Agent/agents/read</code></td>
+<td>Read agents</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Agent/agents/write</code></td>
+<td>Create or update agents</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Agent/agents/delete</code></td>
+<td>Delete agents</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Agent/workflows/read</code></td>
+<td>Read workflows</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Agent/workflows/write</code></td>
+<td>Create or update workflows</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Agent/workflows/delete</code></td>
+<td>Delete workflows</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Agent/tools/read</code></td>
+<td>Read tools</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Agent/tools/write</code></td>
+<td>Create or update tools</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Agent/tools/delete</code></td>
+<td>Delete tools</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Agent/agentTemplates/read</code></td>
+<td>Read agent templates</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Agent/agentTemplates/write</code></td>
+<td>Create or update agent templates</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Agent/agentTemplates/delete</code></td>
+<td>Delete agent templates</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Agent/management/write</code></td>
+<td>Execute management actions</td>
+</tr>
+</tbody>
+</table>
+<h3 id="ai-model-actions">AI Model Actions</h3>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM.AIModel/aiModels/read</code></td>
+<td>Read AI models</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.AIModel/aiModels/write</code></td>
+<td>Create or update AI models</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.AIModel/aiModels/delete</code></td>
+<td>Delete AI models</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.AIModel/management/write</code></td>
+<td>Execute management actions</td>
+</tr>
+</tbody>
+</table>
+<h3 id="attachment-actions">Attachment Actions</h3>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM.Attachment/attachments/read</code></td>
+<td>Read attachments</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Attachment/attachments/write</code></td>
+<td>Create or update attachments</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Attachment/attachments/delete</code></td>
+<td>Delete attachments</td>
+</tr>
+</tbody>
+</table>
+<h3 id="azure-ai-actions">Azure AI Actions</h3>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM.AzureAI/agentConversationMappings/read</code></td>
+<td>Read Azure AI Agent Service conversation mappings</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.AzureAI/agentConversationMappings/write</code></td>
+<td>Create or update Azure AI Agent Service conversation mappings</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.AzureAI/agentConversationMappings/delete</code></td>
+<td>Delete Azure AI Agent Service conversation mappings</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.AzureAI/agentFileMappings/read</code></td>
+<td>Read Azure AI Agent Service file mappings</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.AzureAI/agentFileMappings/write</code></td>
+<td>Create or update Azure AI Agent Service file mappings</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.AzureAI/agentFileMappings/delete</code></td>
+<td>Delete Azure AI Agent Service file mappings</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.AzureAI/projects/read</code></td>
+<td>Read Azure AI project resources</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.AzureAI/projects/write</code></td>
+<td>Create or update Azure AI project resources</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.AzureAI/projects/delete</code></td>
+<td>Delete Azure AI project resources</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.AzureAI/management/write</code></td>
+<td>Execute management actions</td>
+</tr>
+</tbody>
+</table>
+<h3 id="azure-openai-actions">Azure OpenAI Actions</h3>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM.AzureOpenAI/conversationMappings/read</code></td>
+<td>Read Azure OpenAI conversation mappings</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.AzureOpenAI/conversationMappings/write</code></td>
+<td>Create or update Azure OpenAI conversation mappings</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.AzureOpenAI/conversationMappings/delete</code></td>
+<td>Delete Azure OpenAI conversation mappings</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.AzureOpenAI/fileMappings/read</code></td>
+<td>Read Azure OpenAI file mappings</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.AzureOpenAI/fileMappings/write</code></td>
+<td>Create or update Azure OpenAI file mappings</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.AzureOpenAI/fileMappings/delete</code></td>
+<td>Delete Azure OpenAI file mappings</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.AzureOpenAI/management/write</code></td>
+<td>Execute management actions</td>
+</tr>
+</tbody>
+</table>
+<h3 id="configuration-actions">Configuration Actions</h3>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM.Configuration/appConfigurations/read</code></td>
+<td>Read app configurations</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Configuration/appConfigurations/write</code></td>
+<td>Create or update app configurations</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Configuration/appConfigurations/delete</code></td>
+<td>Delete app configurations</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Configuration/appConfigurationSets/read</code></td>
+<td>Read app configuration sets</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Configuration/keyVaultSecrets/read</code></td>
+<td>Read Key Vault secrets</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Configuration/keyVaultSecrets/write</code></td>
+<td>Create or update Key Vault secrets</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Configuration/keyVaultSecrets/delete</code></td>
+<td>Delete Key Vault secrets</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Configuration/apiEndpointConfigurations/read</code></td>
+<td>Read API endpoint configurations</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Configuration/apiEndpointConfigurations/write</code></td>
+<td>Create or update API endpoint configurations</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Configuration/apiEndpointConfigurations/delete</code></td>
+<td>Delete API endpoint configurations</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Configuration/management/write</code></td>
+<td>Execute management actions</td>
+</tr>
+</tbody>
+</table>
+<h3 id="context-actions">Context Actions</h3>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM.Context/knowledgeSources/read</code></td>
+<td>Read context knowledge sources</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Context/knowledgeSources/write</code></td>
+<td>Create or update context knowledge sources</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Context/knowledgeSources/delete</code></td>
+<td>Delete context knowledge sources</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Context/knowledgeUnits/read</code></td>
+<td>Read context knowledge units</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Context/knowledgeUnits/write</code></td>
+<td>Create or update context knowledge units</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Context/knowledgeUnits/delete</code></td>
+<td>Delete context knowledge units</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Context/management/write</code></td>
+<td>Execute management actions</td>
+</tr>
+</tbody>
+</table>
+<h3 id="conversation-actions">Conversation Actions</h3>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM.Conversation/conversations/read</code></td>
+<td>Read conversations</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Conversation/conversations/write</code></td>
+<td>Create or update conversations</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Conversation/conversations/delete</code></td>
+<td>Delete conversations</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Conversation/management/write</code></td>
+<td>Execute management actions</td>
+</tr>
+</tbody>
+</table>
+<h3 id="data-pipeline-actions">Data Pipeline Actions</h3>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM.DataPipeline/dataPipelines/read</code></td>
+<td>Read data pipelines</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.DataPipeline/dataPipelines/write</code></td>
+<td>Create or update data pipelines</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.DataPipeline/dataPipelines/delete</code></td>
+<td>Delete data pipelines</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.DataPipeline/management/write</code></td>
+<td>Execute management actions</td>
+</tr>
+</tbody>
+</table>
+<h3 id="data-source-actions">Data Source Actions</h3>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM.DataSource/dataSources/read</code></td>
+<td>Read data sources</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.DataSource/dataSources/write</code></td>
+<td>Create or update data sources</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.DataSource/dataSources/delete</code></td>
+<td>Delete data sources</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.DataSource/management/write</code></td>
+<td>Execute management actions</td>
+</tr>
+</tbody>
+</table>
+<h3 id="plugin-actions">Plugin Actions</h3>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM.Plugin/plugins/read</code></td>
+<td>Read plugins</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Plugin/plugins/write</code></td>
+<td>Create or update plugins</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Plugin/plugins/delete</code></td>
+<td>Delete plugins</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Plugin/pluginPackages/read</code></td>
+<td>Read plugin packages</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Plugin/pluginPackages/write</code></td>
+<td>Create or update plugin packages</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Plugin/pluginPackages/delete</code></td>
+<td>Delete plugin packages</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Plugin/management/write</code></td>
+<td>Execute management actions</td>
+</tr>
+</tbody>
+</table>
+<h3 id="prompt-actions">Prompt Actions</h3>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM.Prompt/prompts/read</code></td>
+<td>Read prompts</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Prompt/prompts/write</code></td>
+<td>Create or update prompts</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Prompt/prompts/delete</code></td>
+<td>Delete prompts</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Prompt/management/write</code></td>
+<td>Execute management actions</td>
+</tr>
+</tbody>
+</table>
+<h3 id="vector-actions">Vector Actions</h3>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM.Vector/vectorDatabases/read</code></td>
+<td>Read vector databases</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Vector/vectorDatabases/write</code></td>
+<td>Create or update vector databases</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Vector/vectorDatabases/delete</code></td>
+<td>Delete vector databases</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Vector/management/write</code></td>
+<td>Execute management actions</td>
+</tr>
+</tbody>
+</table>
+<h3 id="vectorization-actions-legacy">Vectorization Actions (Legacy)</h3>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FoundationaLLM.Vectorization/vectorizationPipelines/read</code></td>
+<td>Read vectorization pipelines</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Vectorization/vectorizationPipelines/write</code></td>
+<td>Create or update vectorization pipelines</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Vectorization/vectorizationPipelines/delete</code></td>
+<td>Delete vectorization pipelines</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Vectorization/vectorizationRequests/read</code></td>
+<td>Read vectorization requests</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Vectorization/vectorizationRequests/write</code></td>
+<td>Create or update vectorization requests</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Vectorization/vectorizationRequests/delete</code></td>
+<td>Delete vectorization requests</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Vectorization/contentSourceProfiles/read</code></td>
+<td>Read content source profiles</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Vectorization/contentSourceProfiles/write</code></td>
+<td>Create or update content source profiles</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Vectorization/contentSourceProfiles/delete</code></td>
+<td>Delete content source profiles</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Vectorization/textPartitioningProfiles/read</code></td>
+<td>Read text partitioning profiles</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Vectorization/textPartitioningProfiles/write</code></td>
+<td>Create or update text partitioning profiles</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Vectorization/textPartitioningProfiles/delete</code></td>
+<td>Delete text partitioning profiles</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Vectorization/textEmbeddingProfiles/read</code></td>
+<td>Read text embedding profiles</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Vectorization/textEmbeddingProfiles/write</code></td>
+<td>Create or update text embedding profiles</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Vectorization/textEmbeddingProfiles/delete</code></td>
+<td>Delete text embedding profiles</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Vectorization/indexingProfiles/read</code></td>
+<td>Read indexing profiles</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Vectorization/indexingProfiles/write</code></td>
+<td>Create or update indexing profiles</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Vectorization/indexingProfiles/delete</code></td>
+<td>Delete indexing profiles</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="scope-hierarchy">Scope Hierarchy</h2>
+<p>Permissions are evaluated against a hierarchical scope structure:</p>
+<pre><code>/instances/{instanceId}
+├── /providers/FoundationaLLM.Agent
+│   ├── /agents/{agentName}
+│   ├── /workflows/{workflowName}
+│   └── /tools/{toolName}
+├── /providers/FoundationaLLM.AIModel
+│   └── /aiModels/{modelName}
+├── /providers/FoundationaLLM.Authorization
+│   ├── /roleAssignments/{assignmentId}
+│   └── /roleDefinitions/{definitionId}
+├── /providers/FoundationaLLM.Configuration
+│   ├── /appConfigurations/{configName}
+│   └── /apiEndpointConfigurations/{endpointName}
+├── /providers/FoundationaLLM.DataPipeline
+│   └── /dataPipelines/{pipelineName}
+├── /providers/FoundationaLLM.DataSource
+│   └── /dataSources/{dataSourceName}
+├── /providers/FoundationaLLM.Plugin
+│   ├── /plugins/{pluginName}
+│   └── /pluginPackages/{packageName}
+├── /providers/FoundationaLLM.Prompt
+│   └── /prompts/{promptName}
+└── /providers/FoundationaLLM.Vector
+    └── /vectorDatabases/{databaseName}
+</code></pre>
+<h3 id="scope-inheritance">Scope Inheritance</h3>
+<ul>
+<li>Permissions assigned at a parent scope are inherited by child scopes</li>
+<li>Instance-level assignments (<code>/instances/{instanceId}</code>) apply to all resources</li>
+<li>Provider-level assignments apply to all resources of that type</li>
+<li>Resource-level assignments apply only to the specific resource</li>
+</ul>
+<h2 id="wildcards">Wildcards</h2>
+<p>Actions support wildcards:</p>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>*</code></td>
+<td>All actions on all resources</td>
+</tr>
+<tr>
+<td><code>*/read</code></td>
+<td>All read actions</td>
+</tr>
+<tr>
+<td><code>*/write</code></td>
+<td>All write actions</td>
+</tr>
+<tr>
+<td><code>*/delete</code></td>
+<td>All delete actions</td>
+</tr>
+<tr>
+<td><code>*/management/write</code></td>
+<td>All management write actions</td>
+</tr>
+<tr>
+<td><code>FoundationaLLM.Authorization/*</code></td>
+<td>All authorization actions</td>
+</tr>
+</tbody>
+</table>
+<h2 id="related-topics">Related Topics</h2>
+<ul>
+<li><a href="../how-to-guides/security/instance-access-control.html">Instance Access Control</a></li>
+<li><a href="concepts/resource-management.html">Resource Management Concepts</a></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

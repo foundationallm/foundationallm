@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <title>Prompt Variable | FoundationaLLM </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Prompt Variable | FoundationaLLM ">
+      
+      
+      <link rel="icon" href="../../../../media/favicon.ico">
+      <link rel="stylesheet" href="../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../toc.html">
+      
+      <meta name="docfx:rel" content="../../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/foundationallm/foundationallm/blob/main/docs/docs/management-portal/reference/concepts/prompt-variables.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../index.html">
+            <img id="logo" class="svg" src="../../../../media/fllm-icon-50x50.svg" alt="FoundationaLLM">
+            FoundationaLLM
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="prompt-variable">Prompt Variable</h1>
+
+<p>A <strong>prompt variable</strong> is a placeholder in a prompt that can be replaced with specific values when the prompt is executed. This allows for dynamic and flexible prompts that can adapt to different contexts or inputs.</p>
+<p>FoundationaLLM supports prompt variables in the following format:</p>
+<pre><code class="lang-plaintext">{{foundationallm:variable_name[:format]}}
+</code></pre>
+<p>where:</p>
+<ul>
+<li><code>foundationallm</code> is a reserved keyword that indicates the variable is a FoundationaLLM prompt variable.</li>
+<li><code>variable_name</code> is the name of the variable that will be replaced with a specific value.</li>
+<li><code>format</code> is an optional parameter that specifies the format of the value to be used when replacing the variable. If not specified, the value will be used as is.</li>
+</ul>
+<div class="NOTE">
+<h5>Note</h5>
+<p>Prompt variables are extrapolated in a .NET module written in C# which means that <code>format</code> is a .NET format string. For more details on the available format strings, see the <a href="https://learn.microsoft.com/dotnet/standard/base-types/standard-numeric-format-strings">Standard Numeric Format Strings</a> and <a href="https://learn.microsoft.com/dotnet/standard/base-types/standard-date-and-time-format-strings">Standard Date and Time Format Strings</a> documentation.</p>
+</div>
+<p>The following table provides details about the prompt variables supported by FoundationaLLM:</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>{{foundationallm:router_prompt}}</code></td>
+<td>Used to insert the tool selection information into the main workflow prompt. This variable should only be used for agents that have tools associated with them.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>{{foundationallm:tool_list}}</code></td>
+<td>Used to insert the list of tools available to the agent into the tool selection information (which in turn is inserted into the main workflow prompt). This variable should only be used for agents that have tools associated with them.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>{{foundationallm:tool_router_prompts}}</code></td>
+<td>Used to insert additional, per tool instructions to help tool selection into the tool selection information (which in turn is inserted into the main workflow prompt). This variable should only be used for agents that have tools associated with them.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>{{foundationallm:current_datetime_utc[:format]}}</code></td>
+<td>Used to insert the current date and time in UTC into the prompt. The <code>format</code> parameter is optional and can be used to specify the format of the date and time. If not specified, the default format is used.</td>
+<td>The default format is <code>yyyy-MM-ddTHH:mm:ssZ</code>, which represents the date and time in ISO 8601 format. For more details on the available format strings, see the <a href="https://learn.microsoft.com/dotnet/standard/base-types/standard-date-and-time-format-strings">Standard Date and Time Format Strings</a> documentation.</td>
+</tr>
+</tbody>
+</table>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © FoundationaLLM. All rights reserved. | Find out more about FoundationaLLM at <a href="https://foundationallm.ai">foundationallm.ai</a>.
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
