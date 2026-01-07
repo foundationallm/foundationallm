@@ -11,6 +11,7 @@ import type {
 	MessageResponse,
 	MultipartPrompt,
 	OneDriveWorkSchool,
+	RealtimeSpeechConfiguration,
 	ResourceBase,
 	ResourceName,
 	ResourceNameCheckResult,
@@ -1121,6 +1122,17 @@ export default {
 			console.error('Error setting agent primary owner:', error);
 			throw error;
 		}
+	},
+
+	/**
+	 * Gets the realtime speech configuration for an agent.
+	 * @param agentName The agent name.
+	 * @returns The realtime speech configuration.
+	 */
+	async getRealtimeSpeechConfig(agentName: string): Promise<RealtimeSpeechConfiguration> {
+		return await this.fetch<RealtimeSpeechConfiguration>(
+			`/instances/${this.instanceId}/agents/${agentName}/realtime-speech/config`
+		);
 	},
 };
 

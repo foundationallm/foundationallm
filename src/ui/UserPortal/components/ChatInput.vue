@@ -203,6 +203,14 @@
 				</template>
 			</VTooltip>
 
+			<RealtimeSpeechButton
+				v-if="showRealtimeSpeech"
+				:agent-name="currentAgent?.resource?.name"
+				:session-id="$appStore.currentSession.sessionId"
+				@transcription="handleTranscription"
+				@status-change="handleRealtimeStatusChange"
+			/>
+
 			<Dialog
 				v-model:visible="showOneDriveIframeDialog"
 				modal
@@ -262,6 +270,7 @@ import 'floating-vue/dist/style.css';
 import { hideAllPoppers } from 'floating-vue';
 import { isAgentExpired, isAgentFileUploadEnabled } from '@/js/helpers';
 import { useConfirmationStore } from '@/stores/confirmationStore';
+import RealtimeSpeechButton from '@/components/RealtimeSpeechButton.vue';
 
 const DEFAULT_INPUT_TEXT = '';
 
@@ -365,6 +374,12 @@ export default {
 
 		currentAgent() {
 			return this.$appStore.lastSelectedAgent;
+		},
+
+		showRealtimeSpeech() {
+			const agent = this.$appStore.lastSelectedAgent?.resource;
+			return agent?.realtime_speech_settings?.enabled === true &&
+				!!agent?.realtime_speech_settings?.realtime_speech_ai_model_object_id;
 		}
 	},
 
@@ -506,6 +521,17 @@ export default {
 				this.$refs.inputRef.style.height = 'auto';
 				this.$refs.inputRef.style.height = this.$refs.inputRef.scrollHeight + 'px';
 			});
+		},
+
+		handleTranscription(data: { text: string; sender: 'User' | 'AI' }) {
+			// Transcriptions are automatically saved by the backend
+			// This can be used for UI updates if needed
+			console.log('Transcription:', data);
+		},
+
+		handleRealtimeStatusChange(status: 'connecting' | 'connected' | 'disconnected' | 'error') {
+			// Handle status changes if needed
+			console.log('Realtime speech status:', status);
 		},
 
 		handleSend() {
