@@ -616,6 +616,19 @@ export default {
 	},
 
 	/**
+	 * Updates an agent's properties (display_name, description, etc.) without modifying the workflow.
+	 * @param agent The agent object to update.
+	 * @returns A promise that resolves to the updated agent.
+	 */
+	async updateAgent(agent: AgentBase): Promise<AgentBase> {
+		const url = `/management/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agent.name}`;
+		return await this.fetch<AgentBase>(url, {
+			method: 'POST',
+			body: agent,
+		});
+	},
+
+	/**
 	 * Retrieves private store files for a given agent from the management endpoint.
 	 * Returns an array of ResourceProviderGetResult where each result.resource contains file details.
 	 */
@@ -862,7 +875,9 @@ export default {
 	       };
 
 	       // POST the full agent model to update (must match KnowledgeManagementAgent/AgentBase shape)
-	       const url = `/management/${agent.object_id}`;
+	       // Remove leading slash from object_id if present to avoid double slash
+	       const objectIdPath = agent.object_id.startsWith('/') ? agent.object_id.slice(1) : agent.object_id;
+	       const url = `/management/${objectIdPath}`;
 	       return await this.fetch<AgentBase>(url, {
 		       method: 'POST',
 		       body: agent,
