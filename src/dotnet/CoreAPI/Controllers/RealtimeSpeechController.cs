@@ -1,4 +1,3 @@
-using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants.Authorization;
 using FoundationaLLM.Core.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -12,15 +11,13 @@ namespace FoundationaLLM.Core.API.Controllers
     /// Provides WebSocket endpoints for realtime speech-to-speech communication.
     /// </summary>
     /// <remarks>
-    /// This controller supports both Microsoft Entra ID and Agent Access Token authentication,
-    /// enabling use by both interactive users and API clients with agent access tokens.
+    /// This controller supports Microsoft Entra ID authentication for interactive users.
+    /// WebSocket connections require token to be passed via query string (access_token parameter)
+    /// since WebSockets cannot use standard Authorization headers.
     /// </remarks>
     [Authorize(
         AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,
         Policy = AuthorizationPolicyNames.MicrosoftEntraIDStandard)]
-    [Authorize(
-        AuthenticationSchemes = AgentAccessTokenDefaults.AuthenticationScheme,
-        Policy = AuthorizationPolicyNames.FoundationaLLMAgentAccessToken)]
     [ApiController]
     [Route("instances/{instanceId}")]
     public class RealtimeSpeechController : ControllerBase

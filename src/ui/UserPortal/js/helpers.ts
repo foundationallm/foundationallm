@@ -1,7 +1,8 @@
 import type { AgentBase, ResourceProviderGetResult } from '@/js/types';
 
-export const isAgentExpired = (agent: ResourceProviderGetResult<AgentBase>): boolean => {
-	return agent.resource.expiration_date !== null && new Date() > new Date(agent.resource.expiration_date)
+export const isAgentExpired = (agent: ResourceProviderGetResult<AgentBase> | null | undefined): boolean => {
+	if (!agent || !agent.resource) return false;
+	return agent.resource.expiration_date !== null && new Date() > new Date(agent.resource.expiration_date);
 }
 
 export const isAgentFileUploadEnabled = (agent: ResourceProviderGetResult<AgentBase>): boolean => {

@@ -1,15 +1,5 @@
 <template>
 	<div class="realtime-speech-container">
-		<!-- Waveform Visualizer (shown when active) -->
-		<div v-if="isActive" class="waveform-container">
-			<canvas ref="userWaveformCanvas" class="waveform user-waveform"></canvas>
-			<canvas ref="aiWaveformCanvas" class="waveform ai-waveform"></canvas>
-			<div class="waveform-labels">
-				<span class="user-label">You</span>
-				<span class="ai-label">AI</span>
-			</div>
-		</div>
-
 		<!-- Speech Button -->
 		<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 			<Button
@@ -33,6 +23,7 @@
 <script lang="ts">
 import { useRealtimeSpeech } from '@/composables/useRealtimeSpeech';
 import { isAgentExpired } from '@/js/helpers';
+import { ref, watch, onUnmounted, type Ref } from 'vue';
 
 export default {
 	name: 'RealtimeSpeechButton',
@@ -48,44 +39,27 @@ export default {
 		},
 	},
 
-	emits: ['transcription', 'status-change'],
+	emits: ['transcription', 'status-change', 'audio-level'],
 
 	data() {
 		return {
 			isMobile: window.screen.width < 950,
-		};
-	},
-
-	setup(props, { emit }) {
-		const {
-			isActive,
-			isConnecting,
-			isSupported,
-			userAudioLevel,
-			aiAudioLevel,
-			connect,
-			disconnect,
-			error,
-		} = useRealtimeSpeech({
-			agentName: props.agentName,
-			sessionId: props.sessionId,
-			onTranscription: (text, sender) => {
-				emit('transcription', { text, sender });
-			},
-			onStatusChange: (status) => {
-				emit('status-change', status);
-			},
-		});
-
-		return {
-			isActive,
-			isConnecting,
-			isSupported,
-			userAudioLevel,
-			aiAudioLevel,
-			connect,
-			disconnect,
-			error,
+			// Local state that we'll sync from the composable
+			isActive: false,
+			isConnecting: false,
+			userAudioLevel: 0,
+			aiAudioLevel: 0,
+			// Store composable controls (not reactive state)
+			speechControls: null as {
+				connect: () => Promise<void>;
+				disconnect: () => Promise<void>;
+				isActive: Ref<boolean>;
+				isConnecting: Ref<boolean>;
+				userAudioLevel: Ref<number>;
+				aiAudioLevel: Ref<number>;
+			} | null,
+			// Watch cleanup functions
+			watchCleanups: [] as (() => void)[],
 		};
 	},
 
@@ -93,6 +67,10 @@ export default {
 		isCurrentAgentExpired() {
 			const currentAgent = this.$appStore.lastSelectedAgent?.resource;
 			return currentAgent ? isAgentExpired(currentAgent) : false;
+		},
+
+		isSupported() {
+			return typeof AudioContext !== 'undefined' && 'mediaDevices' in navigator;
 		},
 
 		buttonIcon() {
@@ -117,61 +95,110 @@ export default {
 	},
 
 	watch: {
-		userAudioLevel: 'drawUserWaveform',
-		aiAudioLevel: 'drawAiWaveform',
+		userAudioLevel(newVal) {
+			this.$emit('audio-level', { 
+				userLevel: newVal, 
+				aiLevel: this.aiAudioLevel,
+				isActive: this.isActive 
+			});
+		},
+		aiAudioLevel(newVal) {
+			this.$emit('audio-level', { 
+				userLevel: this.userAudioLevel, 
+				aiLevel: newVal,
+				isActive: this.isActive 
+			});
+		},
+		isActive(newVal) {
+			this.$emit('audio-level', { 
+				userLevel: this.userAudioLevel, 
+				aiLevel: this.aiAudioLevel,
+				isActive: newVal 
+			});
+		},
+	},
+
+	beforeUnmount() {
+		// Clean up watchers
+		this.watchCleanups.forEach(cleanup => cleanup());
+		this.watchCleanups = [];
 	},
 
 	methods: {
 		async toggleRealtimeSpeech() {
 			if (this.isActive) {
-				await this.disconnect();
+				await this.speechControls?.disconnect();
 			} else {
-				await this.connect();
+				// Ensure we have a real session before starting voice conversation
+				// This handles the case where user starts voice immediately on a new conversation
+				if (this.$appStore.currentSession?.is_temp) {
+					console.log('Creating real session before starting voice conversation');
+					const newSession = await this.$appStore.addSession(this.$appStore.getDefaultChatSessionProperties());
+					this.$appStore.changeSession(newSession);
+					// Wait for the session change to propagate
+					await this.$nextTick();
+				}
+
+				// Initialize the composable with the current session ID
+				this.initRealtimeSpeech();
+				await this.speechControls?.connect();
 			}
 		},
 
-		drawUserWaveform() {
-			this.drawWaveform(this.$refs.userWaveformCanvas, this.userAudioLevel, '#4CAF50');
-		},
+		initRealtimeSpeech() {
+			// Clean up previous watchers if any
+			this.watchCleanups.forEach(cleanup => cleanup());
+			this.watchCleanups = [];
 
-		drawAiWaveform() {
-			this.drawWaveform(this.$refs.aiWaveformCanvas, this.aiAudioLevel, '#2196F3');
-		},
-
-		drawWaveform(canvas: HTMLCanvasElement | undefined, level: number, color: string) {
-			if (!canvas) return;
-			
-			const ctx = canvas.getContext('2d');
-			if (!ctx) return;
-			const width = canvas.width;
-			const height = canvas.height;
-			
-			ctx.clearRect(0, 0, width, height);
-			ctx.fillStyle = color;
-			
-			// Draw waveform bars
-			const barCount = 20;
-			const barWidth = width / barCount - 2;
-			
-			for (let i = 0; i < barCount; i++) {
-				const barHeight = Math.random() * level * height;
-				const x = i * (barWidth + 2);
-				const y = (height - barHeight) / 2;
-				ctx.fillRect(x, y, barWidth, barHeight);
+			// Get the current session ID from the store (which will be the real session ID now)
+			const currentSessionId = this.$appStore.currentSession?.sessionId;
+			if (!currentSessionId || currentSessionId === 'temp') {
+				console.error('Cannot initialize realtime speech without a valid session ID');
+				return;
 			}
-		},
-	},
 
-	mounted() {
-		// Initialize canvas dimensions
-		if (this.$refs.userWaveformCanvas) {
-			this.$refs.userWaveformCanvas.width = 100;
-			this.$refs.userWaveformCanvas.height = 40;
-		}
-		if (this.$refs.aiWaveformCanvas) {
-			this.$refs.aiWaveformCanvas.width = 100;
-			this.$refs.aiWaveformCanvas.height = 40;
-		}
+			console.log('Initializing realtime speech with session:', currentSessionId);
+
+			const composable = useRealtimeSpeech({
+				agentName: this.agentName,
+				sessionId: currentSessionId,
+				onTranscription: (text, sender) => {
+					this.$emit('transcription', { text, sender });
+				},
+				onStatusChange: (status) => {
+					this.$emit('status-change', status);
+				},
+			});
+
+			// Store the controls
+			this.speechControls = {
+				connect: composable.connect,
+				disconnect: composable.disconnect,
+				isActive: composable.isActive,
+				isConnecting: composable.isConnecting,
+				userAudioLevel: composable.userAudioLevel,
+				aiAudioLevel: composable.aiAudioLevel,
+			};
+
+			// Set up watchers to sync composable refs to local state
+			const stopWatchActive = watch(composable.isActive, (newVal) => {
+				this.isActive = newVal;
+			}, { immediate: true });
+
+			const stopWatchConnecting = watch(composable.isConnecting, (newVal) => {
+				this.isConnecting = newVal;
+			}, { immediate: true });
+
+			const stopWatchUserAudio = watch(composable.userAudioLevel, (newVal) => {
+				this.userAudioLevel = newVal;
+			}, { immediate: true });
+
+			const stopWatchAiAudio = watch(composable.aiAudioLevel, (newVal) => {
+				this.aiAudioLevel = newVal;
+			}, { immediate: true });
+
+			this.watchCleanups = [stopWatchActive, stopWatchConnecting, stopWatchUserAudio, stopWatchAiAudio];
+		},
 	},
 };
 </script>
@@ -179,72 +206,46 @@ export default {
 <style lang="scss" scoped>
 .realtime-speech-container {
 	display: flex;
-	flex-direction: column;
-	align-items: center;
-	gap: 8px;
-}
-
-.waveform-container {
-	display: flex;
-	gap: 16px;
-	padding: 8px 16px;
-	background: rgba(0, 0, 0, 0.05);
-	border-radius: 8px;
-	margin-bottom: 8px;
-}
-
-.waveform {
-	width: 100px;
-	height: 40px;
-	border-radius: 4px;
-}
-
-.user-waveform {
-	background: rgba(76, 175, 80, 0.1);
-}
-
-.ai-waveform {
-	background: rgba(33, 150, 243, 0.1);
-}
-
-.waveform-labels {
-	display: flex;
-	gap: 16px;
-	font-size: 0.75rem;
-	color: #666;
+	align-items: stretch;
+	height: 100%;
 }
 
 .realtime-speech-button {
 	width: 48px;
-	height: 48px;
-	border-radius: 50%;
-	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-	border: none;
-	color: white;
-	transition: all 0.3s ease;
+	min-width: 48px;
+	border-radius: 0;
+	background: #f5f5f5;
+	border: 2px solid #e1e1e1;
+	border-left: none;
+	color: #666;
+	transition: all 0.2s ease;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+
+	:deep(.pi) {
+		font-size: 1.1rem;
+	}
 
 	&:hover:not(:disabled) {
-		transform: scale(1.1);
-		box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+		background: #eee;
+		color: #333;
 	}
 
 	&.active {
-		background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-		animation: pulse 2s infinite;
+		background: linear-gradient(135deg, #ef5350 0%, #e53935 100%);
+		border-color: #e53935;
+		color: white;
+
+		:deep(.pi) {
+			font-size: 1rem;
+		}
 	}
 
 	&:disabled {
-		opacity: 0.5;
+		opacity: 0.4;
 		cursor: not-allowed;
-	}
-}
-
-@keyframes pulse {
-	0%, 100% {
-		box-shadow: 0 0 0 0 rgba(245, 87, 108, 0.4);
-	}
-	50% {
-		box-shadow: 0 0 0 10px rgba(245, 87, 108, 0);
 	}
 }
 </style>

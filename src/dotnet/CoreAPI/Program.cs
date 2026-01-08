@@ -245,19 +245,16 @@ namespace FoundationaLLM.Core.API
                 options.LowercaseUrls = true;
             });
 
-            // Add WebSocket support
-            builder.Services.AddWebSockets(options =>
-            {
-                options.KeepAliveInterval = TimeSpan.FromSeconds(30);
-            });
-
             var app = builder.Build();
 
             // Set the CORS policy before other middleware.
             app.UseCors(CorsPolicyNames.AllowAllOrigins);
 
             // Add WebSocket support
-            app.UseWebSockets();
+            app.UseWebSockets(new WebSocketOptions
+            {
+                KeepAliveInterval = TimeSpan.FromSeconds(30)
+            });
 
             // For the CoreAPI, we need to make sure that UseAuthentication is called before the UserIdentityMiddleware.
             app.UseAuthentication();

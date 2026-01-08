@@ -141,7 +141,29 @@ namespace FoundationaLLM
         {
             // Entra ID authentication configuration.
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddMicrosoftIdentityWebApi(jwtOptions => { },
+                .AddMicrosoftIdentityWebApi(jwtOptions =>
+                    {
+                        // Configure event handling for WebSocket connections
+                        // WebSockets cannot use Authorization headers, so tokens must be passed via query string
+                        jwtOptions.Events = new JwtBearerEvents
+                        {
+                            OnMessageReceived = context =>
+                            {
+                                // Check if this is a WebSocket request and extract token from query string
+                                var accessToken = context.Request.Query["access_token"];
+                                var path = context.HttpContext.Request.Path;
+
+                                // If the request is for the realtime-speech WebSocket endpoint and has a token
+                                if (!string.IsNullOrEmpty(accessToken) &&
+                                    (path.StartsWithSegments("/instances") && path.Value?.Contains("/realtime-speech") == true))
+                                {
+                                    context.Token = accessToken;
+                                }
+
+                                return Task.CompletedTask;
+                            }
+                        };
+                    },
                     identityOptions =>
                     {
                         identityOptions.Instance = builder.Configuration[entraInstanceConfigurationKey] ?? "";

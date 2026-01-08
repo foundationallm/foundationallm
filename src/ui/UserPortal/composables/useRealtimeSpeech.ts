@@ -1,4 +1,4 @@
-import { ref, onUnmounted } from 'vue';
+import { ref, onUnmounted, getCurrentInstance } from 'vue';
 import api from '@/js/api';
 import { AudioHandler } from '@/js/audioHandler';
 
@@ -128,30 +128,30 @@ export function useRealtimeSpeech(options: UseRealtimeSpeechOptions) {
 					audioHandler?.clearPlayback();
 					break;
 
-				case 'response.output_audio.delta':
-					// Receive AI audio chunk
-					if (!audioHandler) break;
-					const audioData = Uint8Array.from(
-						atob(message.delta),
-						(c) => c.charCodeAt(0)
-					);
-					
-					// Start playback on first chunk
-					if (message.content_index === 0 && message.output_index === 0) {
-						audioHandler.startStreamingPlayback();
-					}
-					
-					audioHandler.playChunk(audioData);
+			case 'response.audio.delta':
+				// Receive AI audio chunk
+				if (!audioHandler) break;
+				const audioData = Uint8Array.from(
+					atob(message.delta),
+					(c) => c.charCodeAt(0)
+				);
+				
+				// Start playback on first chunk
+				if (!audioHandler.isPlaying()) {
+					audioHandler.startStreamingPlayback();
+				}
+				
+				audioHandler.playChunk(audioData);
 
-					// Calculate AI audio level for visualization
-					const int16Data = new Int16Array(audioData.buffer);
-					let sum = 0;
-					for (let i = 0; i < int16Data.length; i++) {
-						const normalized = int16Data[i] / 32768;
-						sum += normalized * normalized;
-					}
-					aiAudioLevel.value = Math.sqrt(sum / int16Data.length);
-					break;
+				// Calculate AI audio level for visualization
+				const int16Data = new Int16Array(audioData.buffer);
+				let sum = 0;
+				for (let i = 0; i < int16Data.length; i++) {
+					const normalized = int16Data[i] / 32768;
+					sum += normalized * normalized;
+				}
+				aiAudioLevel.value = Math.sqrt(sum / int16Data.length);
+				break;
 
 				case 'conversation.item.input_audio_transcription.completed':
 					// User speech transcription completed
@@ -160,17 +160,17 @@ export function useRealtimeSpeech(options: UseRealtimeSpeechOptions) {
 					}
 					break;
 
-				case 'response.output_audio_transcript.delta':
-					// AI response transcription (streaming)
-					// Could be used for real-time display
-					break;
+			case 'response.audio_transcript.delta':
+				// AI response transcription (streaming)
+				// Could be used for real-time display
+				break;
 
-				case 'response.output_audio_transcript.done':
-					// AI response transcription completed
-					if (message.transcript) {
-						options.onTranscription?.(message.transcript, 'AI');
-					}
-					break;
+			case 'response.audio_transcript.done':
+				// AI response transcription completed
+				if (message.transcript) {
+					options.onTranscription?.(message.transcript, 'AI');
+				}
+				break;
 
 				case 'response.done':
 					// Response completed
@@ -209,9 +209,14 @@ export function useRealtimeSpeech(options: UseRealtimeSpeechOptions) {
 		aiAudioLevel.value = 0;
 	}
 
-	onUnmounted(() => {
-		disconnect();
-	});
+	// Only register onUnmounted if there's an active component instance
+	// This prevents errors when the composable is used in mixed Options/Composition API components
+	const instance = getCurrentInstance();
+	if (instance) {
+		onUnmounted(() => {
+			disconnect();
+		});
+	}
 
 	return {
 		isActive,

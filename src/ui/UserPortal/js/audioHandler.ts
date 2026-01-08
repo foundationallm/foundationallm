@@ -11,7 +11,7 @@ export class AudioHandler {
 
 	// Playback scheduling for smooth audio
 	private nextPlayTime: number = 0;
-	private isPlaying: boolean = false;
+	private _isPlaying: boolean = false;
 	private playbackQueue: AudioBufferSourceNode[] = [];
 
 	constructor() {
@@ -84,10 +84,17 @@ export class AudioHandler {
 	}
 
 	/**
+	 * Check if playback is active.
+	 */
+	isPlaying(): boolean {
+		return this._isPlaying;
+	}
+
+	/**
 	 * Start streaming playback mode - resets playback timing.
 	 */
 	startStreamingPlayback() {
-		this.isPlaying = true;
+		this._isPlaying = true;
 		this.nextPlayTime = this.context.currentTime;
 	}
 
@@ -95,7 +102,7 @@ export class AudioHandler {
 	 * Stop streaming playback and clear the queue.
 	 */
 	stopStreamingPlayback() {
-		this.isPlaying = false;
+		this._isPlaying = false;
 		this.playbackQueue.forEach((source) => source.stop());
 		this.playbackQueue = [];
 	}
@@ -105,7 +112,7 @@ export class AudioHandler {
 	 * @param chunk PCM16 audio data as Uint8Array
 	 */
 	playChunk(chunk: Uint8Array) {
-		if (!this.isPlaying) return;
+		if (!this._isPlaying) return;
 
 		// Convert Int16 (PCM16) to Float32 for Web Audio API
 		const int16Data = new Int16Array(chunk.buffer);

@@ -75,6 +75,8 @@ namespace FoundationaLLM.Common.Constants.Configuration
             options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_CoreAPI_Essentials);
             options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_CoreAPI_Configuration);
             options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AuthorizationAPI_Essentials);
+            // Required for Realtime Speech WebSocket connections to Azure OpenAI
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AzureOpenAI_Essentials);
             options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_OrchestrationAPI_Essentials);
             options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_GatewayAPI_Essentials);
             options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_GatekeeperAPI_Essentials);

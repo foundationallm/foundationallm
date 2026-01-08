@@ -32,14 +32,24 @@ namespace FoundationaLLM.Core.Services.Providers
             
             // Build WebSocket URL for Azure OpenAI Realtime API
             var wsUrl = BuildWebSocketUrl(model);
+            _logger.LogInformation(
+                "Connecting to Azure OpenAI Realtime API: {Url}, Deployment: {Deployment}, Version: {Version}",
+                wsUrl.Split('?')[0], // Log URL without query params for security
+                model.DeploymentName,
+                model.Version);
             
             // Set authentication header
             if (!string.IsNullOrWhiteSpace(model.ApiKey))
             {
                 clientWebSocket.Options.SetRequestHeader("api-key", model.ApiKey);
             }
+            else
+            {
+                _logger.LogWarning("No API key provided for Azure OpenAI Realtime connection");
+            }
             
             await clientWebSocket.ConnectAsync(new Uri(wsUrl), cancellationToken);
+            _logger.LogInformation("Successfully connected to Azure OpenAI Realtime API");
             return clientWebSocket;
         }
 
@@ -49,6 +59,31 @@ namespace FoundationaLLM.Core.Services.Providers
             string? instructions,
             CancellationToken cancellationToken)
         {
+            // Build turn detection config - default to server_vad if not specified
+            // Server VAD is required for automatic response generation
+            object? turnDetectionConfig;
+            if (model.TurnDetection != null)
+            {
+                turnDetectionConfig = new
+                {
+                    type = model.TurnDetection.Type ?? "server_vad",
+                    threshold = model.TurnDetection.Threshold,
+                    prefix_padding_ms = model.TurnDetection.PrefixPaddingMs,
+                    silence_duration_ms = model.TurnDetection.SilenceDurationMs
+                };
+            }
+            else
+            {
+                // Default server VAD settings for good user experience
+                turnDetectionConfig = new
+                {
+                    type = "server_vad",
+                    threshold = 0.5,
+                    prefix_padding_ms = 300,
+                    silence_duration_ms = 500
+                };
+            }
+
             var sessionUpdate = new
             {
                 type = "session.update",
@@ -59,21 +94,17 @@ namespace FoundationaLLM.Core.Services.Providers
                     voice = model.Voice ?? "alloy",
                     input_audio_format = model.InputAudioFormat ?? "pcm16",
                     output_audio_format = model.OutputAudioFormat ?? "pcm16",
-                    input_audio_transcription = model.InputAudioTranscriptionEnabled ? new
+                    input_audio_transcription = new
                     {
                         model = model.InputAudioTranscriptionModel ?? "whisper-1"
-                    } : null,
-                    turn_detection = model.TurnDetection != null ? new
-                    {
-                        type = model.TurnDetection.Type,
-                        threshold = model.TurnDetection.Threshold,
-                        prefix_padding_ms = model.TurnDetection.PrefixPaddingMs,
-                        silence_duration_ms = model.TurnDetection.SilenceDurationMs
-                    } : null
+                    },
+                    turn_detection = turnDetectionConfig
                 }
             };
 
             var json = JsonSerializer.Serialize(sessionUpdate);
+            _logger.LogInformation("Configuring session with: {Config}", json);
+            
             var bytes = Encoding.UTF8.GetBytes(json);
             await backendSocket.SendAsync(
                 new ArraySegment<byte>(bytes),
@@ -94,6 +125,13 @@ namespace FoundationaLLM.Core.Services.Providers
                 if (doc.RootElement.TryGetProperty("type", out var typeElement))
                 {
                     result.MessageType = typeElement.GetString();
+                    
+                    // Log important message types (skip audio deltas to avoid spam)
+                    if (result.MessageType != "response.audio.delta" && 
+                        result.MessageType != "response.audio_transcript.delta")
+                    {
+                        _logger.LogInformation("Azure OpenAI message: {MessageType}", result.MessageType);
+                    }
                 }
 
                 // Handle user transcription completed
@@ -144,7 +182,7 @@ namespace FoundationaLLM.Core.Services.Providers
         private string BuildWebSocketUrl(RealtimeSpeechAIModel model)
         {
             // Build URL for Azure OpenAI Realtime API
-            // Format: wss://{endpoint}/openai/realtime?api-version={version}&deployment={deployment}
+            // Format: wss://{resource}.openai.azure.com/openai/realtime?api-version={version}&deployment={deployment}
             var endpoint = model.Endpoint?.TrimEnd('/');
             if (string.IsNullOrWhiteSpace(endpoint))
             {
@@ -154,13 +192,30 @@ namespace FoundationaLLM.Core.Services.Providers
             var deployment = model.DeploymentName;
             if (string.IsNullOrWhiteSpace(deployment))
             {
-                throw new InvalidOperationException("DeploymentName is required for Azure OpenAI Realtime API");
+                throw new InvalidOperationException($"DeploymentName is required for Azure OpenAI Realtime API. Model: {model.Name}, Endpoint: {endpoint}");
             }
             
             var apiVersion = model.Version ?? "2024-10-01-preview";
             
+            // Convert HTTPS endpoint to WSS
             var baseUrl = endpoint.Replace("https://", "wss://").Replace("http://", "ws://");
-            return $"{baseUrl}/openai/realtime?api-version={apiVersion}&deployment={deployment}";
+            
+            // Strip any trailing path segments that would cause duplication
+            // Users sometimes configure the full realtime path instead of just the base URL
+            if (baseUrl.EndsWith("/openai/realtime"))
+            {
+                baseUrl = baseUrl[..^16]; // Remove trailing /openai/realtime
+                _logger.LogWarning("Endpoint contained /openai/realtime path - this should be removed from the configuration. Using base URL: {BaseUrl}", baseUrl);
+            }
+            else if (baseUrl.EndsWith("/openai"))
+            {
+                baseUrl = baseUrl[..^7]; // Remove trailing /openai
+                _logger.LogWarning("Endpoint contained /openai path - this should be removed from the configuration. Using base URL: {BaseUrl}", baseUrl);
+            }
+            
+            var url = $"{baseUrl}/openai/realtime?api-version={apiVersion}&deployment={deployment}";
+            _logger.LogDebug("Built Azure OpenAI Realtime URL: {Url}", url);
+            return url;
         }
     }
 }
