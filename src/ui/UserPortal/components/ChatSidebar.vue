@@ -176,18 +176,20 @@
 				placeholder="New chat name"
 				aria-label="New chat name"
 				autofocus
-				@keydown="updateConversationInputKeydown"
-			></InputText>
-			<label for="update-conversation-description" style="margin-top: 1rem; margin-bottom: 0.5rem; font-weight: 500; display: block;">Metadata:</label>
-			<Textarea
-				id="update-conversation-description"
-				v-model="newConversationMetadata"
-				:rows="4"
-				:style="{ width: '100%', minWidth: '400px' }"
-				placeholder="Add metadata for the conversation (must be valid JSON)"
-				aria-label="Conversation description"
-			></Textarea>
-			<template #footer>
+			@keydown="updateConversationInputKeydown"
+		></InputText>
+		<!-- Metadata field hidden - not used yet
+		<label for="update-conversation-description" style="margin-top: 1rem; margin-bottom: 0.5rem; font-weight: 500; display: block;">Metadata:</label>
+		<Textarea
+			id="update-conversation-description"
+			v-model="newConversationMetadata"
+			:rows="4"
+			:style="{ width: '100%', minWidth: '400px' }"
+			placeholder="Add metadata for the conversation (must be valid JSON)"
+			aria-label="Conversation description"
+		></Textarea>
+		-->
+		<template #footer>
 				<Button class="sidebar-dialog__button" label="Cancel" text autofocus @click="closeUpdateModal" />
 				<Button class="sidebar-dialog__button" label="Update" @click="handleUpdateConversation" />
 			</template>

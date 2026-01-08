@@ -42,7 +42,31 @@
 
             <div class="flex flex-wrap items-center -mx-4">
                 <div class="w-full max-w-full md:max-w-[50%] px-4 mb-5 text-center md:text-left">
-                    <h2 class="page-header text-3xl text-[#334581]">{{ isEditMode ? 'Edit Agent' : 'Create Agent' }}</h2>
+                    <div class="flex items-center gap-3 justify-center md:justify-start">
+                        <h2 class="page-header text-3xl text-[#334581] mb-0">
+                            {{ isEditMode ? `Edit Agent: ${agentDisplayName || ''}` : 'Create Agent' }}
+                        </h2>
+                        <span 
+                            v-if="isEditMode" 
+                            :class="[
+                                'inline-flex items-center px-3 py-1 rounded-full text-sm font-medium',
+                                agentStatus === 'Active' 
+                                    ? 'bg-green-100 text-green-800' 
+                                    : 'bg-red-100 text-red-800'
+                            ]"
+                        >
+                            <span 
+                                :class="[
+                                    'w-2 h-2 rounded-full mr-2',
+                                    agentStatus === 'Active' ? 'bg-green-500' : 'bg-red-500'
+                                ]"
+                            ></span>
+                            {{ agentStatus }}
+                        </span>
+                    </div>
+                    <p v-if="isEditMode && lastEditedDate" class="text-sm text-[#898989] mt-1">
+                        Last Edited: {{ lastEditedDate }}
+                    </p>
                 </div>
 
                 <!-- Guidance shown until an agent is created -->
@@ -196,11 +220,7 @@
                                                     class="inline-block relative top-[2px]">
                                                     <i class="pi pi-info-circle text-[#5472d4]"></i>
                                                     <template #popper>
-                                                        <div role="tooltip" class="max-w-[250px]">Lorem ipsum dolor sit
-                                                            amet consectetur adipisicing elit. Voluptate tenetur iure,
-                                                            distinctio soluta nostrum corporis excepturi consectetur
-                                                            vitae mollitia eum cumque corrupti necessitatibus? Nihil
-                                                            vero, dolorem nesciunt perspiciatis voluptas amet!</div>
+                                                        <div role="tooltip" class="max-w-[250px]">Select the AI model that will power your agent's responses. Different models have varying capabilities, response styles, and performance characteristics.</div>
                                                     </template>
                                                 </VTooltip>
                                                 Chat Model <span class="text-[#ff0000]">*</span>
@@ -220,10 +240,7 @@
                                                     class="inline-block relative top-[2px]">
                                                     <i class="pi pi-info-circle text-[#5472d4]"></i>
                                                     <template #popper>
-                                                        <div role="tooltip" class="max-w-[250px]">You are an analytic
-                                                            agent named Khalil that helps people find information about
-                                                            FoundationaLLM. Provide concise answers that are polite and
-                                                            professional.</div>
+                                                        <div role="tooltip" class="max-w-[250px]">Define the agent's personality, behavior, and instructions. This prompt guides how the agent responds to users and sets the context for all conversations.</div>
                                                     </template>
                                                 </VTooltip>
                                                 System Prompt
@@ -257,9 +274,7 @@
                                                         class="inline-block relative top-[2px]">
                                                         <i class="pi pi-info-circle text-[#5472d4]"></i>
                                                         <template #popper>
-                                                            <div role="tooltip" class="max-w-[250px]">Lorem ipsum dolor
-                                                                sit amet, consectetur adipisicing elit. Iusto quae
-                                                                molestias quam numquam alias?</div>
+                                                            <div role="tooltip" class="max-w-[250px]">Enable or disable the agent's ability to generate images based on user requests. When enabled, users can ask the agent to create visual content.</div>
                                                         </template>
                                                     </VTooltip>
                                                     Image Generation
@@ -280,9 +295,7 @@
                                                         class="inline-block relative top-[2px]">
                                                         <i class="pi pi-info-circle text-[#5472d4]"></i>
                                                         <template #popper>
-                                                            <div role="tooltip" class="max-w-[250px]">Lorem ipsum dolor
-                                                                sit amet, consectetur adipisicing elit. Iusto quae
-                                                                molestias quam numquam alias?</div>
+                                                            <div role="tooltip" class="max-w-[250px]">Allow users to upload files during conversations with this agent. Uploaded files can be used as context for the agent's responses.</div>
                                                         </template>
                                                     </VTooltip>
                                                     User Portal File Upload
@@ -309,11 +322,7 @@
                                             class="inline-block relative top-[2px]">
                                             <i class="pi pi-info-circle text-[#5472d4]"></i>
                                             <template #popper>
-                                                <div role="tooltip" class="max-w-[250px]">Lorem ipsum dolor sit amet
-                                                    consectetur adipisicing elit. Voluptate tenetur iure, distinctio
-                                                    soluta nostrum corporis excepturi consectetur vitae mollitia eum
-                                                    cumque corrupti necessitatibus? Nihil vero, dolorem nesciunt
-                                                    perspiciatis voluptas amet!</div>
+                                                <div role="tooltip" class="max-w-[250px]">Upload files to provide your agent with knowledge and context. These files will be processed and used by the agent to answer questions and provide relevant information.</div>
                                             </template>
                                         </VTooltip>
                                         Data Source(s)
@@ -438,7 +447,7 @@
                                             class="inline-block relative top-[2px]">
                                             <i class="pi pi-info-circle text-[#5472d4]"></i>
                                             <template #popper>
-                                                <div role="tooltip" class="max-w-[250px]">View role assignments for this agent. Shows which users and groups have been granted specific roles to access and use this agent, including their names, email addresses, and assigned permissions.</div>
+                                                <div role="tooltip" class="max-w-[250px]">Share your agent with other users by assigning them roles. Use the Add Role Assignment button to grant Reader, Contributor, or Owner access to specific users.</div>
                                             </template>
                                         </VTooltip>
                                         Share with Individual Users
@@ -871,6 +880,53 @@ export default defineComponent({
 
                 // Default text for other cases
                 return 'Return to conversations';
+            },
+
+            lastEditedDate() {
+                if (!this.createdAgent?.updated_on) {
+                    return null;
+                }
+                
+                try {
+                    const date = new Date(this.createdAgent.updated_on);
+                    // Check if date is valid
+                    if (isNaN(date.getTime())) {
+                        return null;
+                    }
+                    // Check if date is default/unset value (year 0001 or very old date)
+                    // DateTimeOffset.MinValue in C# is 0001-01-01 which shows as year 1 or earlier in JS
+                    if (date.getFullYear() < 1970) {
+                        return null;
+                    }
+                    // Format date with full 4-digit year always displayed
+                    const month = date.toLocaleDateString('en-US', { month: 'short' });
+                    const day = date.getDate();
+                    const year = date.getFullYear();
+                    const timeStr = date.toLocaleTimeString('en-US', {
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                    return `${month} ${day}, ${year} at ${timeStr}`;
+                } catch {
+                    return null;
+                }
+            },
+
+            agentStatus() {
+                if (!this.createdAgent) {
+                    return 'Active';
+                }
+                // Check if agent has an expiration date and if it has passed
+                if (this.createdAgent.expiration_date) {
+                    const expirationDate = new Date(this.createdAgent.expiration_date);
+                    const now = new Date();
+                    // Return 'Inactive' if expiration date has passed
+                    if (expirationDate < now) {
+                        return 'Inactive';
+                    }
+                }
+                // Active if no expiration date or expiration date hasn't passed yet
+                return 'Active';
             }
         },
 
@@ -1274,7 +1330,7 @@ export default defineComponent({
             this.createdAgent.expiration_date = formattedDate;
 
             try {
-                // Update main model if changed
+                // Find the current main model ID
                 let currentMainModelId = null;
                 if (this.createdAgent.workflow && this.createdAgent.workflow.resource_object_ids) {
                     for (const [key, obj] of Object.entries(this.createdAgent.workflow.resource_object_ids)) {
@@ -1285,10 +1341,16 @@ export default defineComponent({
                     }
                 }
 
-                const modelIdToUpdate = this.selectedAIModel || currentMainModelId;
-                if (modelIdToUpdate) {
-                    const updatedAgent = await api.updateAgentMainModel(this.createdAgent, modelIdToUpdate);
+                // Check if model is being changed
+                const isModelChanged = this.selectedAIModel && this.selectedAIModel !== currentMainModelId;
+
+                if (isModelChanged) {
+                    // Update the agent with model change
+                    const updatedAgent = await api.updateAgentMainModel(this.createdAgent, this.selectedAIModel);
                     this.createdAgent.object_id = updatedAgent.object_id;
+                } else {
+                    // Just update the agent properties without modifying the workflow
+                    await api.updateAgent(this.createdAgent);
                 }
 
                 // Update system prompt if changed
