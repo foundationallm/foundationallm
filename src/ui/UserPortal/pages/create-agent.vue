@@ -196,11 +196,7 @@
                                                     class="inline-block relative top-[2px]">
                                                     <i class="pi pi-info-circle text-[#5472d4]"></i>
                                                     <template #popper>
-                                                        <div role="tooltip" class="max-w-[250px]">Lorem ipsum dolor sit
-                                                            amet consectetur adipisicing elit. Voluptate tenetur iure,
-                                                            distinctio soluta nostrum corporis excepturi consectetur
-                                                            vitae mollitia eum cumque corrupti necessitatibus? Nihil
-                                                            vero, dolorem nesciunt perspiciatis voluptas amet!</div>
+                                                        <div role="tooltip" class="max-w-[250px]">Select the AI model that will power your agent's responses. Different models have varying capabilities, response styles, and performance characteristics.</div>
                                                     </template>
                                                 </VTooltip>
                                                 Chat Model <span class="text-[#ff0000]">*</span>
@@ -220,10 +216,7 @@
                                                     class="inline-block relative top-[2px]">
                                                     <i class="pi pi-info-circle text-[#5472d4]"></i>
                                                     <template #popper>
-                                                        <div role="tooltip" class="max-w-[250px]">You are an analytic
-                                                            agent named Khalil that helps people find information about
-                                                            FoundationaLLM. Provide concise answers that are polite and
-                                                            professional.</div>
+                                                        <div role="tooltip" class="max-w-[250px]">Define the agent's personality, behavior, and instructions. This prompt guides how the agent responds to users and sets the context for all conversations.</div>
                                                     </template>
                                                 </VTooltip>
                                                 System Prompt
@@ -257,9 +250,7 @@
                                                         class="inline-block relative top-[2px]">
                                                         <i class="pi pi-info-circle text-[#5472d4]"></i>
                                                         <template #popper>
-                                                            <div role="tooltip" class="max-w-[250px]">Lorem ipsum dolor
-                                                                sit amet, consectetur adipisicing elit. Iusto quae
-                                                                molestias quam numquam alias?</div>
+                                                            <div role="tooltip" class="max-w-[250px]">Enable or disable the agent's ability to generate images based on user requests. When enabled, users can ask the agent to create visual content.</div>
                                                         </template>
                                                     </VTooltip>
                                                     Image Generation
@@ -280,9 +271,7 @@
                                                         class="inline-block relative top-[2px]">
                                                         <i class="pi pi-info-circle text-[#5472d4]"></i>
                                                         <template #popper>
-                                                            <div role="tooltip" class="max-w-[250px]">Lorem ipsum dolor
-                                                                sit amet, consectetur adipisicing elit. Iusto quae
-                                                                molestias quam numquam alias?</div>
+                                                            <div role="tooltip" class="max-w-[250px]">Allow users to upload files during conversations with this agent. Uploaded files can be used as context for the agent's responses.</div>
                                                         </template>
                                                     </VTooltip>
                                                     User Portal File Upload
@@ -309,11 +298,7 @@
                                             class="inline-block relative top-[2px]">
                                             <i class="pi pi-info-circle text-[#5472d4]"></i>
                                             <template #popper>
-                                                <div role="tooltip" class="max-w-[250px]">Lorem ipsum dolor sit amet
-                                                    consectetur adipisicing elit. Voluptate tenetur iure, distinctio
-                                                    soluta nostrum corporis excepturi consectetur vitae mollitia eum
-                                                    cumque corrupti necessitatibus? Nihil vero, dolorem nesciunt
-                                                    perspiciatis voluptas amet!</div>
+                                                <div role="tooltip" class="max-w-[250px]">Upload files to provide your agent with knowledge and context. These files will be processed and used by the agent to answer questions and provide relevant information.</div>
                                             </template>
                                         </VTooltip>
                                         Data Source(s)
@@ -438,7 +423,7 @@
                                             class="inline-block relative top-[2px]">
                                             <i class="pi pi-info-circle text-[#5472d4]"></i>
                                             <template #popper>
-                                                <div role="tooltip" class="max-w-[250px]">View role assignments for this agent. Shows which users and groups have been granted specific roles to access and use this agent, including their names, email addresses, and assigned permissions.</div>
+                                                <div role="tooltip" class="max-w-[250px]">Share your agent with other users by assigning them roles. Use the Add Role Assignment button to grant Reader, Contributor, or Owner access to specific users.</div>
                                             </template>
                                         </VTooltip>
                                         Share with Individual Users
