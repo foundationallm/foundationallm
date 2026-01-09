@@ -161,26 +161,10 @@
 		},
 
 		watch: {
-			currentSession(newSession: Session, oldSession: Session) {
-				if (newSession.sessionId !== oldSession?.sessionId) {
-					this.setAgentOptions();
-				}
-			},
-			'appStore.selectedAgents': {
-				handler() {
-					this.updateAgentSelection();
-				},
-				deep: true,
-			},
+			// Rebuild agent options when agents list or user profile changes
 			'appStore.agents': {
 				handler() {
 					this.setAgentOptions();
-				},
-				deep: true,
-			},
-			'appStore.lastSelectedAgent': {
-				handler() {
-					this.updateAgentSelection();
 				},
 				deep: true,
 			},
@@ -196,9 +180,16 @@
 					this.setAgentOptions();
 				},
 			},
+			// Update dropdown selection when the centralized agent changes
+			'appStore.currentSessionAgent': {
+				handler() {
+					this.updateAgentSelection();
+				},
+			},
 		},
 
 		mounted() {
+			this.setAgentOptions();
 			this.updateAgentSelection();
 		},
 
@@ -206,7 +197,7 @@
 			handleAgentChange() {
 				if (isAgentExpired(this.agentSelection!.value)) return;
 
-				this.appStore.setSessionAgent(this.currentSession, this.agentSelection!.value, true);
+				this.appStore.setSessionAgent(this.currentSession, this.agentSelection!.value);
 				const message = this.agentSelection!.value
 					? `Agent changed to ${this.agentSelection!.label}`
 					: `Cleared agent hint selection`;
@@ -237,14 +228,7 @@
 				this.hasAvailableAgents = this.appStore.agents.some(
 					(agent: any) => !isAgentExpired(agent));
 
-				// Cache the current session agent to avoid repeated lookups in the filter loop
-				const currentSessionAgent = this.appStore.getSessionAgent(this.currentSession);
-				const isCurrentAgent = (agent: any): boolean => {
-					return agent.resource.name === currentSessionAgent?.resource?.name;
-				};
-
 				// Filter out expired agents, disabled agents, and agents not enabled in user profile
-				// but keep the currently selected agent even if it doesn't meet these criteria
 				const filteredAgents = this.appStore.agents.filter((agent: any) => {
 					const isExpiredOrDisabled = isAgentExpired(agent) || agent.enabled === false;
 
@@ -255,7 +239,7 @@
 					return (!isExpiredOrDisabled && isEnabled)
 				});
 
-				// Map filtered agents to dropdown options - no additional filtering needed since filtering was done above
+				// Map filtered agents to dropdown options
 				this.agentOptions = filteredAgents.map((agent: any) => ({
 					label: agent.resource.display_name ? agent.resource.display_name : agent.resource.name,
 					type: agent.resource.type,
@@ -304,20 +288,6 @@
 					});
 				}
 
-				// Auto-select a default agent only for NEW sessions (no messages yet).
-				// If the session has messages, the agent will be derived from those messages
-				// by ChatThread.updateSessionAgentFromMessages - don't auto-select here.
-				if (!currentSessionAgent && this.currentSession) {
-					const hasMessages = this.appStore.currentMessages && this.appStore.currentMessages.length > 0;
-					const isNewSession = !hasMessages;
-
-					if (isNewSession && featuredAgents.length > 0) {
-						const selectedAgent = featuredAgents[0];
-						this.agentSelection = selectedAgent;
-						this.appStore.setSessionAgent(this.currentSession, selectedAgent.value, false);
-					}
-				}
-
 				// Add Other Agents group if there are non-featured agents
 				if (nonFeaturedAgents.length > 0) {
 					this.agentOptionsGroup.push({
@@ -326,8 +296,8 @@
 					});
 				}
 
-				// Update agent selection after options are set
-				this.updateAgentSelection(currentSessionAgent);
+				// Update dropdown to reflect current agent from centralized store
+				this.updateAgentSelection();
 			},
 
 			// handleCopySession() {
@@ -340,8 +310,9 @@
 			// 	});
 			// },
 
-			updateAgentSelection(cachedAgent?: any) {
-				const agent = cachedAgent !== undefined ? cachedAgent : this.appStore.getSessionAgent(this.currentSession);
+			updateAgentSelection() {
+				// Read from the centralized source of truth
+				const agent = this.appStore.currentSessionAgent;
 
 				if (!agent) {
 					this.agentSelection = null;

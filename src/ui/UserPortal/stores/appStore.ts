@@ -78,6 +78,14 @@ export const useAppStore = defineStore('app', {
 		agentShowFileUpload(): boolean {
 			return !!(this.lastSelectedAgent && this.lastSelectedAgent.resource?.show_file_upload);
 		},
+
+		/**
+		 * Single source of truth for the current session's agent.
+		 * Components should read this instead of calling getSessionAgent directly.
+		 */
+		currentSessionAgent(): ResourceProviderGetResult<AgentBase> | null {
+			return this.lastSelectedAgent;
+		},
 	},
 
 	actions: {
@@ -348,6 +356,7 @@ export const useAppStore = defineStore('app', {
 			if (this.currentSessionConfirmedEmpty) {
 				// We have already confirmed this session has no messages.
 				this.currentMessages = [];
+				this.resolveCurrentSessionAgent();
 				return;
 			}
 
@@ -359,6 +368,7 @@ export const useAppStore = defineStore('app', {
 			) {
 				// This is a new session, no need to fetch messages.
 				this.currentMessages = [];
+				this.resolveCurrentSessionAgent();
 				return;
 			}
 
@@ -397,6 +407,9 @@ export const useAppStore = defineStore('app', {
 						}
 
 						this.calculateMessageProcessingTime();
+
+						// Resolve the agent for this session after messages are loaded
+						this.resolveCurrentSessionAgent();
 					}
 				} finally {
 					// Only clear if this is still the active load for this session
@@ -437,55 +450,145 @@ export const useAppStore = defineStore('app', {
 		// 	return data;
 		// },
 
-		updateSessionAgentFromMessages(session: Session) {
-			const lastAssistantMessage = this.currentMessages
-				.filter((message) => message.sender.toLowerCase() === 'agent')
-				.pop();
+		/**
+		 * Auto-selects a default agent for new sessions that have no messages.
+		 * Selects the first featured agent if available, otherwise the first available agent.
+		 */
+		autoSelectDefaultAgent(session: Session) {
+			const appConfigStore = useAppConfigStore();
+			const featuredAgentNames = appConfigStore.featuredAgentNames || [];
 
-			if (lastAssistantMessage) {
-				const agent = this.agents.find(
-					(agent) => agent.resource.name === lastAssistantMessage.senderDisplayName,
-				);
-				if (agent) {
-					this.setSessionAgent(session, agent);
-				}
+			// Filter to only enabled, non-expired agents
+			const availableAgents = this.agents.filter((agent: any) => {
+				const isExpiredOrDisabled = isAgentExpired(agent) || agent.enabled === false;
+				const isEnabled = agent.properties?.['enabled'] || false;
+				return !isExpiredOrDisabled && isEnabled;
+			});
+
+			if (availableAgents.length === 0) return;
+
+			// Try to find a featured agent first
+			let selectedAgent = null;
+			for (const featuredName of featuredAgentNames) {
+				selectedAgent = availableAgents.find((agent: any) => agent.resource.name === featuredName);
+				if (selectedAgent) break;
+			}
+
+			// Fall back to first available agent
+			if (!selectedAgent) {
+				selectedAgent = availableAgents[0];
+			}
+
+			if (selectedAgent) {
+				this.setSessionAgent(session, selectedAgent);
 			}
 		},
 
 		getSessionAgent(session: Session) {
 			if (!session) return null;
-			let selectedAgent = this.selectedAgents.get(session.sessionId);
+			const selectedAgent = this.selectedAgents.get(session.sessionId);
 
-			if (!selectedAgent) {
-				const storedAgentId = localStorage.getItem(`session-agent-${session.sessionId}`);
-				if (storedAgentId) {
-					selectedAgent = this.agents.find(agent => agent.resource.object_id === storedAgentId);
-				}
-			}
 			// If selected agent is expired, remove it
 			if (selectedAgent && isAgentExpired(selectedAgent)) {
-				localStorage.removeItem(`session-agent-${session.sessionId}`);
 				this.selectedAgents.delete(session.sessionId);
-				selectedAgent = null;
+				return null;
 			}
+
+			// If selected agent is no longer available (deleted), return null but keep cache
+			// so setSessionAgent can detect this session had a deleted agent
+			if (selectedAgent && !this.agents.find(a => a.resource.object_id === selectedAgent.resource.object_id)) {
+				return null;
+			}
+
 			return selectedAgent || null;
 		},
 
-		setSessionAgent(session: Session, agent: ResourceProviderGetResult<AgentBase>, shouldPersist: boolean = false) {
+		setSessionAgent(session: Session, agent: ResourceProviderGetResult<AgentBase>) {
+			// Prevent setting agent on a session that had a deleted agent
+			// (i.e., session was used with an agent that no longer exists)
+			
+			// Check 1: If there's a cached agent that's been deleted
+			const cachedAgent = this.selectedAgents.get(session.sessionId);
+			if (cachedAgent && !this.agents.find(a => a.resource.object_id === cachedAgent.resource.object_id)) {
+				// Session has a deleted agent in cache - don't set on this session
+				// But still update lastSelectedAgent so it can be used for new sessions
+				this.lastSelectedAgent = agent;
+				return this.selectedAgents;
+			}
+
+			// Check 2: If this is the current session, check message history for deleted agent
+			if (this.currentSession?.sessionId === session.sessionId && this.currentMessages.length > 0) {
+				const lastAssistantMessage = this.currentMessages
+					.filter((message) => message.sender.toLowerCase() === 'agent')
+					.pop();
+				
+				if (lastAssistantMessage?.senderDisplayName) {
+					const messageAgent = this.agents.find(
+						(a) => a.resource.name === lastAssistantMessage.senderDisplayName
+					);
+					// If the message references an agent that doesn't exist, don't set on this session
+					// But still update lastSelectedAgent so it can be used for new sessions
+					if (!messageAgent) {
+						this.lastSelectedAgent = agent;
+						return this.selectedAgents;
+					}
+				}
+			}
+
 			this.lastSelectedAgent = agent;
 			this.selectedAgents.set(session.sessionId, agent);
-			if (shouldPersist && agent?.resource?.object_id) {
-				const key = `session-agent-${session.sessionId}`;
-				const value = agent.resource.object_id;
-				localStorage.setItem(key, value);
-			}
 			return this.selectedAgents;
 		},
 
 		resetSessionAgent(session: Session) {
 			this.lastSelectedAgent = null;
-			this.selectedAgents.delete(session.sessionId)
-			localStorage.removeItem(`session-agent-${session.sessionId}`);
+			this.selectedAgents.delete(session.sessionId);
+		},
+
+		/**
+		 * Centralized agent resolution for the current session.
+		 * Called after messages are loaded to determine the correct agent.
+		 *
+		 * Resolution order:
+		 * 1. If session already has an agent in memory, use it
+		 * 2. Try to derive agent from message history (last assistant message)
+		 * 3. For new sessions (no messages), auto-select default agent
+		 * 4. If no agent found, set lastSelectedAgent to null
+		 */
+		resolveCurrentSessionAgent() {
+			if (!this.currentSession) {
+				this.lastSelectedAgent = null;
+				return;
+			}
+
+			// Check if session already has an agent
+			let agent = this.getSessionAgent(this.currentSession);
+
+			if (!agent) {
+				// Try to derive from messages
+				const lastAssistantMessage = this.currentMessages
+					.filter((message) => message.sender.toLowerCase() === 'agent')
+					.pop();
+
+				if (lastAssistantMessage) {
+					agent = this.agents.find(
+						(a) => a.resource.name === lastAssistantMessage.senderDisplayName,
+					) || null;
+
+					if (agent) {
+						this.selectedAgents.set(this.currentSession.sessionId, agent);
+					}
+				}
+			}
+
+			if (!agent && this.currentMessages.length === 0) {
+				// New session with no messages - auto-select default
+				this.autoSelectDefaultAgent(this.currentSession);
+				agent = this.getSessionAgent(this.currentSession);
+			}
+
+			// Update the single source of truth
+			this.lastSelectedAgent = agent;
 		},
 
 		/**
@@ -771,6 +874,10 @@ export const useAppStore = defineStore('app', {
 			confirmedEmpty: boolean = false,
 		) {
 			this.stopPolling(session.sessionId);
+
+			// Immediately update lastSelectedAgent to the new session's agent (or null)
+			// to prevent stale agent data from showing during session transition
+			this.lastSelectedAgent = this.getSessionAgent(session);
 
 			const nuxtApp = useNuxtApp();
 			const appConfigStore = useAppConfigStore();
