@@ -302,6 +302,7 @@ export interface AgentBase extends ResourceBase {
 			minimum_similarity_threshold: number;
 		};
 	};
+	realtime_speech_settings?: RealtimeSpeechSettings | null;
 	conversation_history_settings: {
 		enabled: boolean;
 		max_history: number;
@@ -337,6 +338,46 @@ export interface AgentBase extends ResourceBase {
 	 * May be null/undefined if not set.
 	 */
 	owner_user_id?: string | null;
+}
+
+export interface RealtimeSpeechSettings {
+	/**
+	 * Whether realtime speech is enabled for this agent.
+	 */
+	enabled: boolean;
+	
+	/**
+	 * Object ID of the realtime speech AI model.
+	 * This follows the same pattern as embedding_ai_model_object_id in AgentSemanticCacheSettings.
+	 */
+	realtime_speech_ai_model_object_id: string;
+	
+	/**
+	 * Stop words that terminate the realtime session.
+	 */
+	stop_words: string[];
+	
+	/**
+	 * Maximum session duration in seconds (0 = unlimited).
+	 */
+	max_session_duration_seconds: number;
+	
+	/**
+	 * Whether to show transcriptions in the chat thread.
+	 */
+	show_transcriptions: boolean;
+	
+	/**
+	 * Whether to include conversation history in session context.
+	 */
+	include_conversation_history: boolean;
+}
+
+export interface RealtimeSpeechConfiguration {
+	enabled: boolean;
+	stop_words: string[];
+	websocket_url?: string;
+	voice?: string;
 }
 
 

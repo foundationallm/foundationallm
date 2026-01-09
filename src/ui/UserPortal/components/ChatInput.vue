@@ -1,5 +1,48 @@
 <template>
 	<div class="chat-input p-inputgroup csm-mnt-txta-all-1" role="group" aria-label="Chat input group">
+		<!-- Voice Active Sound Bar -->
+		<Transition name="soundbar-fade">
+			<div v-if="voiceActive" class="voice-soundbar">
+				<div class="soundbar-content">
+					<!-- User Waveform -->
+					<div class="soundbar-indicator user-indicator">
+						<span class="speaker-label user-label">You</span>
+						<div class="soundbar-waves">
+							<span 
+								v-for="i in 16" 
+								:key="'user-' + i" 
+								class="wave-bar user-wave"
+								:style="{ 
+									animationDelay: `${i * 0.04}s`,
+									height: `${Math.max(3, Math.min(24, userAudioLevel * 100 + Math.random() * 6))}px`
+								}"
+							></span>
+						</div>
+					</div>
+					
+					<!-- Divider -->
+					<div class="soundbar-divider"></div>
+					
+					<!-- AI Waveform -->
+					<div class="soundbar-indicator ai-indicator">
+						<div class="soundbar-waves">
+							<span 
+								v-for="i in 16" 
+								:key="'ai-' + i" 
+								class="wave-bar ai-wave"
+								:style="{ 
+									animationDelay: `${i * 0.04}s`,
+									height: `${Math.max(3, Math.min(24, aiAudioLevel * 100 + Math.random() * 6))}px`
+								}"
+							></span>
+						</div>
+						<span class="speaker-label ai-label">AI</span>
+					</div>
+					
+					<span class="voice-status">Voice active</span>
+				</div>
+			</div>
+		</Transition>
 		<div class="input-wrapper">
 			<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
 				<Button
@@ -236,6 +279,15 @@
 				@keydown="handleKeydown"
 			/>
 
+			<RealtimeSpeechButton
+				v-if="showRealtimeSpeech"
+				:agent-name="currentAgent?.resource?.name"
+				:session-id="$appStore.currentSession.sessionId"
+				@transcription="handleTranscription"
+				@status-change="handleRealtimeStatusChange"
+				@audio-level="handleAudioLevel"
+			/>
+
 			<Button
 				:disabled="disabled || isCurrentAgentExpired || isUploading"
 				class="submit"
@@ -243,15 +295,15 @@
 				label=""
 				@click="handleSend"
 			/>
-		</div>
 
-		<div class="tooltip-component">
-			<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
-				<i class="pi pi-info-circle" tabindex="0" aria-hidden @keydown.esc="hideAllPoppers"></i>
-				<template #popper>
-					<div role="tooltip">Use Shift+Enter to add a new line</div>
-				</template>
-			</VTooltip>
+			<div class="tooltip-component">
+				<VTooltip :auto-hide="isMobile" :popper-triggers="isMobile ? [] : ['hover']">
+					<i class="pi pi-info-circle" tabindex="0" aria-hidden @keydown.esc="hideAllPoppers"></i>
+					<template #popper>
+						<div role="tooltip">Use Shift+Enter to add a new line</div>
+					</template>
+				</VTooltip>
+			</div>
 		</div>
 	</div>
 </template>
@@ -262,6 +314,7 @@ import 'floating-vue/dist/style.css';
 import { hideAllPoppers } from 'floating-vue';
 import { isAgentExpired, isAgentFileUploadEnabled } from '@/js/helpers';
 import { useConfirmationStore } from '@/stores/confirmationStore';
+import RealtimeSpeechButton from '@/components/RealtimeSpeechButton.vue';
 
 const DEFAULT_INPUT_TEXT = '';
 
@@ -290,6 +343,10 @@ export default {
 			isUploading: false,
 			uploadProgress: 0,
 			isMobile: window.screen.width < 950,
+			// Voice conversation state
+			voiceActive: false,
+			userAudioLevel: 0,
+			aiAudioLevel: 0,
 			win: null as any,
 			port: null as any,
 			filePickerParams: {
@@ -365,6 +422,12 @@ export default {
 
 		currentAgent() {
 			return this.$appStore.lastSelectedAgent;
+		},
+
+		showRealtimeSpeech() {
+			const agent = this.$appStore.lastSelectedAgent?.resource;
+			return agent?.realtime_speech_settings?.enabled === true &&
+				!!agent?.realtime_speech_settings?.realtime_speech_ai_model_object_id;
 		}
 	},
 
@@ -506,6 +569,55 @@ export default {
 				this.$refs.inputRef.style.height = 'auto';
 				this.$refs.inputRef.style.height = this.$refs.inputRef.scrollHeight + 'px';
 			});
+		},
+
+		handleTranscription(data: { text: string; sender: 'User' | 'AI' }) {
+			// Add transcription to the conversation UI
+			// The backend also saves these to the database
+			console.log('Transcription:', data);
+
+			const agent = this.$appStore.lastSelectedAgent?.resource;
+			const isUser = data.sender === 'User';
+
+			// For Agent messages, the ChatMessage component expects text in the content array
+			// For User messages, it can use the text property directly
+			const contentArray = isUser ? [] : [
+				{
+					type: 'text',
+					value: data.text,
+				}
+			];
+
+			const message = {
+				completionPromptId: null,
+				content: contentArray,
+				operation_id: '',
+				rating: null,
+				sender: isUser ? 'User' : 'Agent',
+				senderDisplayName: isUser 
+					? (this.$authStore?.currentAccount?.name ?? 'You')
+					: (agent?.name ?? 'Assistant'),
+				sessionId: this.$appStore.currentSession?.sessionId,
+				text: data.text,
+				timeStamp: new Date().toISOString(),
+				tokens: 0,
+				type: 'Message',
+				vector: [],
+				status: 'Completed',
+			};
+
+			this.$appStore.currentMessages.push(message);
+		},
+
+		handleRealtimeStatusChange(status: 'connecting' | 'connected' | 'disconnected' | 'error') {
+			// Handle status changes if needed
+			console.log('Realtime speech status:', status);
+		},
+
+		handleAudioLevel(data: { userLevel: number; aiLevel: number; isActive: boolean }) {
+			this.voiceActive = data.isActive;
+			this.userAudioLevel = data.userLevel;
+			this.aiAudioLevel = data.aiLevel;
 		},
 
 		handleSend() {
@@ -1007,8 +1119,135 @@ export default {
 <style lang="scss" scoped>
 .chat-input {
 	display: flex;
+	flex-direction: column;
 	background-color: white;
 	width: 100%;
+}
+
+/* Voice Sound Bar Styles */
+.voice-soundbar {
+	background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+	padding: 10px 20px;
+	border-radius: 8px 8px 0 0;
+	margin-bottom: -2px;
+	/* Align right edge with send button by accounting for tooltip component width */
+	box-sizing: border-box;
+	width: calc(100% - 24px);
+}
+
+.soundbar-content {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 16px;
+}
+
+.soundbar-indicator {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.soundbar-indicator.user-indicator {
+	flex-direction: row;
+}
+
+.soundbar-indicator.ai-indicator {
+	flex-direction: row;
+}
+
+.speaker-label {
+	font-size: 0.7rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	min-width: 20px;
+}
+
+.speaker-label.user-label {
+	color: #4ade80;
+}
+
+.speaker-label.ai-label {
+	color: #60a5fa;
+}
+
+.soundbar-divider {
+	width: 1px;
+	height: 28px;
+	background: rgba(255, 255, 255, 0.15);
+	margin: 0 8px;
+}
+
+.soundbar-waves {
+	display: flex;
+	align-items: center;
+	gap: 2px;
+	height: 28px;
+}
+
+.wave-bar {
+	width: 3px;
+	border-radius: 2px;
+	animation: wave 0.35s ease-in-out infinite alternate;
+	transition: height 0.08s ease;
+}
+
+.wave-bar.user-wave {
+	background: linear-gradient(180deg, #4ade80 0%, #22c55e 100%);
+	box-shadow: 0 0 4px rgba(74, 222, 128, 0.3);
+}
+
+.wave-bar.ai-wave {
+	background: linear-gradient(180deg, #60a5fa 0%, #3b82f6 100%);
+	box-shadow: 0 0 4px rgba(96, 165, 250, 0.3);
+}
+
+@keyframes wave {
+	0% {
+		transform: scaleY(0.4);
+	}
+	100% {
+		transform: scaleY(1);
+	}
+}
+
+/* Staggered animation delays for wave bars */
+.wave-bar:nth-child(1) { animation-delay: 0s; }
+.wave-bar:nth-child(2) { animation-delay: 0.03s; }
+.wave-bar:nth-child(3) { animation-delay: 0.06s; }
+.wave-bar:nth-child(4) { animation-delay: 0.09s; }
+.wave-bar:nth-child(5) { animation-delay: 0.12s; }
+.wave-bar:nth-child(6) { animation-delay: 0.15s; }
+.wave-bar:nth-child(7) { animation-delay: 0.18s; }
+.wave-bar:nth-child(8) { animation-delay: 0.21s; }
+.wave-bar:nth-child(9) { animation-delay: 0.18s; }
+.wave-bar:nth-child(10) { animation-delay: 0.15s; }
+.wave-bar:nth-child(11) { animation-delay: 0.12s; }
+.wave-bar:nth-child(12) { animation-delay: 0.09s; }
+.wave-bar:nth-child(13) { animation-delay: 0.06s; }
+.wave-bar:nth-child(14) { animation-delay: 0.03s; }
+.wave-bar:nth-child(15) { animation-delay: 0s; }
+.wave-bar:nth-child(16) { animation-delay: 0.03s; }
+
+.voice-status {
+	font-size: 0.65rem;
+	color: rgba(255, 255, 255, 0.5);
+	font-weight: 500;
+	margin-left: auto;
+	padding-left: 16px;
+}
+
+/* Sound bar transition */
+.soundbar-fade-enter-active,
+.soundbar-fade-leave-active {
+	transition: all 0.3s ease;
+}
+
+.soundbar-fade-enter-from,
+.soundbar-fade-leave-to {
+	opacity: 0;
+	transform: translateY(10px);
 }
 
 .pre-input {

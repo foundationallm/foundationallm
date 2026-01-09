@@ -9,6 +9,8 @@ using FoundationaLLM.Common.OpenAPI;
 using FoundationaLLM.Core.Interfaces;
 using FoundationaLLM.Core.Models.Configuration;
 using FoundationaLLM.Core.Services;
+using FoundationaLLM.Core.Services.Providers;
+using FoundationaLLM.Core.Services;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -109,6 +111,10 @@ namespace FoundationaLLM.Core.API
             builder.Services.AddScoped<ICoreService, CoreService>();
             builder.AddUserProfileService();
             builder.Services.AddScoped<IOneDriveWorkSchoolService, OneDriveWorkSchoolService>();
+
+            // Realtime Speech services
+            builder.Services.AddScoped<IRealtimeSpeechProviderFactory, RealtimeSpeechProviderFactory>();
+            builder.Services.AddScoped<IRealtimeSpeechService, RealtimeSpeechService>();
 
             builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
             builder.AddOrchestrationContext();
@@ -243,6 +249,12 @@ namespace FoundationaLLM.Core.API
 
             // Set the CORS policy before other middleware.
             app.UseCors(CorsPolicyNames.AllowAllOrigins);
+
+            // Add WebSocket support
+            app.UseWebSockets(new WebSocketOptions
+            {
+                KeepAliveInterval = TimeSpan.FromSeconds(30)
+            });
 
             // For the CoreAPI, we need to make sure that UseAuthentication is called before the UserIdentityMiddleware.
             app.UseAuthentication();

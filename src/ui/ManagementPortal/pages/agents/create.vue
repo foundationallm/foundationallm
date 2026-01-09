@@ -576,6 +576,130 @@
 					</template>
 				</CreateAgentStepItem>
 
+				<!-- Realtime Speech Configuration -->
+				<CreateAgentStepItem focus-query=".realtime-speech-toggle input">
+					<div class="step-container__header">Realtime Speech Configuration</div>
+
+					<div>
+						<span class="step-option__header">Enabled:</span>
+						<span>
+							<span>{{ realtimeSpeechEnabled ? 'Yes' : 'No' }}</span>
+							<span
+								v-if="realtimeSpeechEnabled"
+								class="pi pi-check-circle ml-1"
+								style="color: var(--green-400); font-size: 0.8rem"
+							></span>
+							<span
+								v-else
+								class="pi pi-times-circle ml-1"
+								style="color: var(--red-400); font-size: 0.8rem"
+							></span>
+						</span>
+					</div>
+
+					<template v-if="realtimeSpeechEnabled">
+						<div>
+							<span class="step-option__header">Model:</span>
+							<span>{{
+								realtimeSpeechModelOptions.find((model) => model.object_id === realtimeSpeechAIModel)?.name
+							}}</span>
+						</div>
+
+						<div>
+							<span class="step-option__header">Stop Words:</span>
+							<span>{{ realtimeSpeechStopWords.join(', ') }}</span>
+						</div>
+
+						<div>
+							<span class="step-option__header">Show Transcriptions:</span>
+							<span>{{ realtimeSpeechShowTranscriptions ? 'Yes' : 'No' }}</span>
+						</div>
+
+						<div>
+							<span class="step-option__header">Include Conversation History:</span>
+							<span>{{ realtimeSpeechIncludeHistory ? 'Yes' : 'No' }}</span>
+						</div>
+					</template>
+
+					<template #edit>
+						<div id="aria-realtime-speech-config" class="step-container__header">Realtime Speech Configuration</div>
+
+						<!-- Realtime speech toggle -->
+						<div class="flex items-center mt-2">
+							<span id="aria-realtime-speech-enabled" class="step-option__header">Enabled:</span>
+							<span>
+								<ToggleButton
+									v-model="realtimeSpeechEnabled"
+									on-label="Yes"
+									on-icon="pi pi-check-circle"
+									off-label="No"
+									off-icon="pi pi-times-circle"
+									aria-labelledby="aria-realtime-speech-enabled"
+									class="realtime-speech-toggle"
+								/>
+							</span>
+						</div>
+
+						<!-- Realtime speech model -->
+						<div v-if="realtimeSpeechEnabled" class="mt-2">
+							<span id="aria-realtime-speech-model" class="step-option__header">Model:</span>
+							<Dropdown
+								v-model="realtimeSpeechAIModel"
+								:options="realtimeSpeechModelOptions"
+								option-label="name"
+								option-value="object_id"
+								class="dropdown--agent"
+								placeholder="--Select--"
+								aria-labelledby="aria-realtime-speech-model"
+							/>
+							<div v-if="showValidationErrors && formErrors.realtimeSpeechAIModel" class="error-message">{{ formErrors.realtimeSpeechAIModel }}</div>
+						</div>
+
+						<!-- Stop words -->
+						<div v-if="realtimeSpeechEnabled" class="mt-2">
+							<span id="aria-realtime-speech-stop-words" class="step-option__header">Stop Words (comma-separated):</span>
+							<InputText
+								v-model="realtimeSpeechStopWordsInput"
+								type="text"
+								class="w-full"
+								placeholder="stop, end conversation, goodbye"
+								aria-labelledby="aria-realtime-speech-stop-words"
+								@update:model-value="updateRealtimeSpeechStopWords"
+							/>
+						</div>
+
+						<!-- Show transcriptions -->
+						<div v-if="realtimeSpeechEnabled" class="flex items-center mt-2">
+							<span id="aria-realtime-speech-show-transcriptions" class="step-option__header">Show Transcriptions:</span>
+							<span>
+								<ToggleButton
+									v-model="realtimeSpeechShowTranscriptions"
+									on-label="Yes"
+									on-icon="pi pi-check-circle"
+									off-label="No"
+									off-icon="pi pi-times-circle"
+									aria-labelledby="aria-realtime-speech-show-transcriptions"
+								/>
+							</span>
+						</div>
+
+						<!-- Include conversation history -->
+						<div v-if="realtimeSpeechEnabled" class="flex items-center mt-2">
+							<span id="aria-realtime-speech-include-history" class="step-option__header">Include Conversation History:</span>
+							<span>
+								<ToggleButton
+									v-model="realtimeSpeechIncludeHistory"
+									on-label="Yes"
+									on-icon="pi pi-check-circle"
+									off-label="No"
+									off-icon="pi pi-times-circle"
+									aria-labelledby="aria-realtime-speech-include-history"
+								/>
+							</span>
+						</div>
+					</template>
+				</CreateAgentStepItem>
+
 				<!-- Cost center -->
 				<div id="aria-cost-center" class="step-header col-span-2">
 					Would you like to assign this agent to a cost center?
@@ -1081,6 +1205,13 @@ const getDefaultFormValues = () => {
 		showFileUpload: false as boolean,
 
 		userPromptRewriteEnabled: false as boolean,
+		realtimeSpeechEnabled: false as boolean,
+		realtimeSpeechAIModel: null as string | null,
+		realtimeSpeechModelOptions: [] as Array<{ name: string; object_id: string }>,
+		realtimeSpeechStopWords: ['stop', 'end conversation', 'goodbye'] as string[],
+		realtimeSpeechStopWordsInput: 'stop, end conversation, goodbye' as string,
+		realtimeSpeechShowTranscriptions: true as boolean,
+		realtimeSpeechIncludeHistory: true as boolean,
 		userPromptRewriteAIModel: null as string | null,
 		userPromptRewritePrompt: null as string | null,
 		userPromptRewriteWindowSize: 3 as number,
@@ -1298,6 +1429,12 @@ export default {
 			// Filter the AIModels so we only display the ones where the type is 'completion'.
 			this.aiModelOptions = this.aiModelOptions.filter((model) => model.type === 'completion');
 
+			// Load realtime speech models
+			this.realtimeSpeechModelOptions = aiModelsResult
+				.map((result) => result.resource)
+				.filter((model) => model.type === 'realtime-speech')
+				.map((model) => ({ name: model.name || '', object_id: model.object_id || '' }));
+
 			this.loadingStatusText = 'Retrieving workflows...';
 			this.workflowOptions = [
 				// {
@@ -1479,6 +1616,15 @@ export default {
 
 			const semanticCacheSettings = agent.cache_settings?.semantic_cache_settings;
 			this.semanticCacheEnabled = agent.cache_settings?.semantic_cache_enabled ?? false;
+
+			// Load realtime speech settings
+			const realtimeSpeechSettings = agent.realtime_speech_settings;
+			this.realtimeSpeechEnabled = realtimeSpeechSettings?.enabled ?? false;
+			this.realtimeSpeechAIModel = realtimeSpeechSettings?.realtime_speech_ai_model_object_id ?? null;
+			this.realtimeSpeechStopWords = realtimeSpeechSettings?.stop_words ?? ['stop', 'end conversation', 'goodbye'];
+			this.realtimeSpeechStopWordsInput = this.realtimeSpeechStopWords.join(', ');
+			this.realtimeSpeechShowTranscriptions = realtimeSpeechSettings?.show_transcriptions ?? true;
+			this.realtimeSpeechIncludeHistory = realtimeSpeechSettings?.include_conversation_history ?? true;
 			this.semanticCacheAIModel = semanticCacheSettings?.embedding_ai_model_object_id ?? null;
 			this.semanticCacheEmbeddingDimensions = semanticCacheSettings?.embedding_dimensions ?? 2048;
 			this.semanticCacheMinimumSimilarityThreshold =
@@ -1490,6 +1636,13 @@ export default {
 
 		updateAgentWelcomeMessage(newContent: string) {
 			this.agentWelcomeMessage = newContent;
+		},
+
+		updateRealtimeSpeechStopWords() {
+			this.realtimeSpeechStopWords = this.realtimeSpeechStopWordsInput
+				.split(',')
+				.map((word) => word.trim())
+				.filter((word) => word.length > 0);
 		},
 
 		async checkName() {
@@ -1976,6 +2129,15 @@ export default {
 							embedding_dimensions: this.semanticCacheEmbeddingDimensions,
 							minimum_similarity_threshold: this.semanticCacheMinimumSimilarityThreshold,
 						},
+					},
+
+					realtime_speech_settings: {
+						enabled: this.realtimeSpeechEnabled,
+						realtime_speech_ai_model_object_id: this.realtimeSpeechAIModel,
+						stop_words: this.realtimeSpeechStopWords,
+						max_session_duration_seconds: 0,
+						show_transcriptions: this.realtimeSpeechShowTranscriptions,
+						include_conversation_history: this.realtimeSpeechIncludeHistory,
 					},
 
 					inheritable_authorizable_actions: this.inheritable_authorizable_actions

@@ -187,6 +187,10 @@ export default {
 					label: 'ImageGeneration',
 					value: 'image-generation',
 				},
+				{
+					label: 'Realtime Speech',
+					value: 'realtime-speech',
+				},
 			],
 		};
 	},

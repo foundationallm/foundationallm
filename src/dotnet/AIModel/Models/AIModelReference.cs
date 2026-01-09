@@ -22,6 +22,7 @@ namespace FoundationaLLM.AIModel.Models
                 AIModelTypes.Completion => typeof(CompletionAIModel),
                 AIModelTypes.Embedding => typeof(EmbeddingAIModel),
                 AIModelTypes.ImageGeneration => typeof(ImageGenerationAIModel),
+                AIModelTypes.RealtimeSpeech => typeof(RealtimeSpeechAIModel),
                 _ => throw new ResourceProviderException($"The data source type {Type} is not supported.")
             };
     }

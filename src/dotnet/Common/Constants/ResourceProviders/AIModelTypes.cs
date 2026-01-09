@@ -1,4 +1,4 @@
-﻿namespace FoundationaLLM.Common.Constants.ResourceProviders
+namespace FoundationaLLM.Common.Constants.ResourceProviders
 {
     /// <summary>
     /// AI Model type contants.
@@ -21,5 +21,9 @@
         /// Image generation model type
         /// </summary>
         public const string ImageGeneration = "image-generation";
+        /// <summary>
+        /// Realtime speech-to-speech model type
+        /// </summary>
+        public const string RealtimeSpeech = "realtime-speech";
     }
 }

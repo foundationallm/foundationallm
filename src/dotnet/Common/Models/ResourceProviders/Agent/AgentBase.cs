@@ -1,4 +1,4 @@
-﻿using FoundationaLLM.Common.Exceptions;
+using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows;
 using System.Text.Json.Serialization;
 
@@ -50,6 +50,12 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
         /// </summary>
         [JsonPropertyName("workflow")]
         public AgentWorkflowBase? Workflow { get; set; }
+
+        /// <summary>
+        /// Configuration for realtime speech sessions.
+        /// </summary>
+        [JsonPropertyName("realtime_speech_settings")]
+        public RealtimeSpeechSettings? RealtimeSpeechSettings { get; set; }
 
         /// <summary>
         /// Gets or sets a list of tools that are registered with the agent.
@@ -139,5 +145,13 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
                 || Workflow is LangGraphReactAgentWorkflow
                 || Workflow is ExternalAgentWorkflow
             );
+
+        /// <summary>
+        /// Indicates whether realtime speech capabilities are available for this agent.
+        /// </summary>
+        [JsonIgnore]
+        public bool HasRealtimeSpeechCapabilities =>
+            RealtimeSpeechSettings?.Enabled == true &&
+            !string.IsNullOrWhiteSpace(RealtimeSpeechSettings?.RealtimeSpeechAIModelObjectId);
     }
 }
