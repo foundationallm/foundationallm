@@ -8,12 +8,14 @@ using Microsoft.Extensions.Logging;
 namespace FoundationaLLM.Configuration.Services
 {
     /// <inheritdoc/>
+#pragma warning disable CS9113 // Parameter is unread - preserved for future use
     public class ConfigurationHealthCheckService(
         IConfigurationHealthChecks healthChecks,
         IConfiguration configuration,
         ILogger<ConfigurationHealthCheckService> logger,
         IHostApplicationLifetime appLifetime)
         : IHostedService
+#pragma warning restore CS9113
     {
         private readonly IHostApplicationLifetime _appLifetime = appLifetime;
 
@@ -41,7 +43,7 @@ namespace FoundationaLLM.Configuration.Services
             // App Configuration Check.
             try
             {
-                await healthChecks.ValidateConfigurationsAsync(version);
+                await healthChecks.ValidateConfigurationsAsync(version ?? string.Empty);
             }
             catch (ConfigurationValidationException ex)
             {
@@ -59,7 +61,7 @@ namespace FoundationaLLM.Configuration.Services
             // Key Vault Secrets Check.
             try
             {
-                await healthChecks.ValidateKeyVaultSecretsAsync(version);
+                await healthChecks.ValidateKeyVaultSecretsAsync(version ?? string.Empty);
             }
             catch (ConfigurationValidationException ex)
             {

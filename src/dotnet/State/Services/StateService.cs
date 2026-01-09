@@ -13,10 +13,12 @@ namespace FoundationaLLM.State.Services
     /// <param name="options">Provides the options with the <see cref="StateServiceSettings"/> settings for configuration.</param>
     /// <param name="cosmosDbService">Provides methods to interact with Cosmos DB.</param>
     /// <param name="logger">The <see cref="ILogger"/> used for logging.</param>
+#pragma warning disable CS9113 // Parameter is unread - preserved for future use
     public class StateService(
         IOptions<StateServiceSettings> options,
         IStateCosmosDBService cosmosDbService,
         ILogger<StateService> logger) : IStateService
+#pragma warning restore CS9113
     {
         /// <inheritdoc/>
         public async Task<List<LongRunningOperation>> GetLongRunningOperations()

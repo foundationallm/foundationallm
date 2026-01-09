@@ -99,6 +99,13 @@ namespace FoundationaLLM.Client.Core
             return sessionId;
         }
 
+        /// <summary>
+        /// Rates a message in a session.
+        /// </summary>
+        /// <param name="sessionId">The session ID.</param>
+        /// <param name="messageId">The message ID.</param>
+        /// <param name="rating">The rating request.</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
         public async Task RateMessageAsync(string sessionId, string messageId, MessageRatingRequest rating)
         {
             if (string.IsNullOrWhiteSpace(sessionId))
