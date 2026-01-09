@@ -302,7 +302,7 @@
 							target="_blank"
 							class="p-component csm-only-text-btn-1"
 						>
-							Request permission to manage agents
+							Request permission to create agents
 							<i class="pi pi-external-link ml-1"></i>
 						</nuxt-link>
 					</div>
@@ -613,7 +613,9 @@ import { useAuthStore } from '@/stores/authStore';
 				this.createProcessing = true;
 
 				try {
-				const currentAgent = this.currentSession ? (this.appStore as any).getSessionAgent(this.currentSession) : null;
+				// Use lastSelectedAgent instead of getSessionAgent to handle cases where
+				// the current session has a deleted agent but user just selected a new one
+				const currentAgent = (this.appStore as any).lastSelectedAgent;
 					const mostRecentSession = this.sessions[0];
 					if (mostRecentSession) {
 						const isEmptySession = await (this.appStore as any).isSessionEmpty(mostRecentSession.sessionId);
@@ -621,7 +623,7 @@ import { useAuthStore } from '@/stores/authStore';
 							const timestamp = (this.appStore as any).getDefaultChatSessionProperties().name;
 							await (this.appStore as any).updateConversation(mostRecentSession, timestamp, mostRecentSession.metadata || '');
 							if (currentAgent) {
-								(this.appStore as any).setSessionAgent(mostRecentSession, currentAgent, true);
+								(this.appStore as any).setSessionAgent(mostRecentSession, currentAgent);
 							}
 							this.handleSessionSelected(mostRecentSession);
 							this.debounceTimeout = setTimeout(() => {
@@ -632,7 +634,7 @@ import { useAuthStore } from '@/stores/authStore';
 					}
 					const newSession = await (this.appStore as any).addSession();
 					if (currentAgent) {
-						(this.appStore as any).setSessionAgent(newSession, currentAgent, true);
+						(this.appStore as any).setSessionAgent(newSession, currentAgent);
 					}
 					this.handleSessionSelected(newSession);
 

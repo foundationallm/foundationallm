@@ -84,7 +84,7 @@
 </template>
 
 <script lang="ts">
-import type { Message, Session, ResourceProviderGetResult, Agent } from '@/js/types';
+import type { Message, Session } from '@/js/types';
 import { useAppStore } from '@/stores/appStore';
 import { useAppConfigStore } from '@/stores/appConfigStore';
 
@@ -144,22 +144,24 @@ export default {
 			this.userSentMessage = false;
 
 			try {
+				// getMessages() now handles agent resolution internally via resolveCurrentSessionAgent()
 				await this.appStore.getMessages();
 			} catch (error) {
 				this.loadingFailed = true;
 			}
-			await this.appStore.ensureAgentsLoaded();
-
-			this.appStore.updateSessionAgentFromMessages(newSession);
-			const sessionAgent = this.appStore.getSessionAgent(newSession);
-			this.welcomeMessage = this.getWelcomeMessage(sessionAgent);
+			
+			// Agent is now resolved by appStore, just read the current value
+			this.welcomeMessage = this.getWelcomeMessage(this.appStore.currentSessionAgent);
 			this.isLoading = false;
 			this.scrollToBottom(0, true);
 		},
 
-		lastSelectedAgent(newAgent, oldAgent) {
-			if (newAgent === oldAgent) return;
-			this.welcomeMessage = this.getWelcomeMessage(newAgent);
+		// Watch for agent changes to update welcome message
+		'appStore.currentSessionAgent': {
+			handler(newAgent: any, oldAgent: any) {
+				if (newAgent === oldAgent) return;
+				this.welcomeMessage = this.getWelcomeMessage(newAgent);
+			},
 		},
 
 		pollingSession(newPollingSession, oldPollingSession) {
@@ -191,20 +193,8 @@ export default {
 						(this.currentSession as Session)?.is_temp
 					) {
 						this.isLoading = false;
-						const sessionAgent = this.appStore.getSessionAgent(this.currentSession as Session);
-						if (sessionAgent) {
-							this.welcomeMessage = this.getWelcomeMessage(sessionAgent);
-						} else {
-							// If no agent is selected yet, wait for agents to load
-							this.$watch(
-								() => this.appStore.getSessionAgent(this.currentSession as Session),
-								(newAgent: ResourceProviderGetResult<Agent> | null) => {
-									this.isLoading = false;
-									this.welcomeMessage = this.getWelcomeMessage(newAgent);
-								},
-								{ immediate: true },
-							);
-						}
+						// Agent is resolved by appStore via currentSessionAgent getter
+						this.welcomeMessage = this.getWelcomeMessage(this.appStore.currentSessionAgent);
 					}
 					unwatchInitialized(); // Stop watching after initialization
 				}
@@ -267,7 +257,7 @@ export default {
 			this.isMessagePending = true;
 			this.userSentMessage = true;
 
-			const agent = this.appStore.getSessionAgent(this.currentSession)?.resource;
+			const agent = this.appStore.currentSessionAgent?.resource;
 
 			// Display an error toast message if agent is null or undefined.
 			if (!agent) {
