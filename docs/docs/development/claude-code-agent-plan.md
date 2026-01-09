@@ -6,7 +6,7 @@ This plan describes how to add a new **first-class Agent option** to Foundationa
 Key idea: instead of running a LangChain workflow, this agent runs inside a **sandboxed Ubuntu environment** provisioned via **Azure Container Apps Dynamic Sessions (Custom Containers)**. FoundationaLLM becomes the “operating system” that:
 
 - Authenticates/authorizes the user and the agent
-- Stores durable artifacts in Blob Storage (secured per user/conversation)
+- Stores durable artifacts using the **Context API file store** (Cosmos file records + Blob payloads), scoped per user/conversation
 - Persists multi-turn conversation history (Cosmos) and supplies it to the agent each turn
 - Controls sandbox limits, egress policy, and audit logging
 
@@ -18,7 +18,7 @@ Key idea: instead of running a LangChain workflow, this agent runs inside a **sa
 - **G1 — Selectable agent**: “Claude Code” appears in the agent dropdown like any other agent (User Portal).
 - **G2 — Runs in sandbox**: completion requests invoke the Claude Agent SDK inside a Dynamic Sessions custom container (Ubuntu).
 - **G3 — Multi-turn**: conversation history is persisted by FoundationaLLM and provided to the agent on each invocation.
-- **G4 — Durable artifacts**: files to keep (patches, generated code, reports, logs) are saved to **FoundationaLLM Blob Storage** with access restricted to the initiating user (or conversation ACL).
+- **G4 — Durable artifacts**: files to keep (patches, generated code, reports, logs) are saved as **Context files** (backed by Blob) with access restricted by FoundationaLLM’s file record + authorization rules.
 - **G5 — Tooling**: sandbox supports:
   - Read/edit workspace files
   - Run bash commands
@@ -51,18 +51,12 @@ Key idea: instead of running a LangChain workflow, this agent runs inside a **sa
   - Chooses orchestration service based on `agent.workflow.workflow_host`
   - Adds a new internal orchestration service: **ClaudeCodeOrchestrationService**
 - **Context API (.NET)**:
-  - Already supports Dynamic Sessions “code sessions” via `AzureContainerAppsCustomContainerService`
-  - We will add (or reuse) a provider to create/manage a “Claude Code session” and transfer files in/out
+  - Already supports Dynamic Sessions “code sessions” via `CodeSessionsController` + `CodeSessionService`
+  - Handles **secure file upload into** and **secure file download out of** a code session, using per-user Cosmos records and the file store
 - **Dynamic Sessions Custom Container image (Ubuntu)**:
-  - Runs a small HTTP server (“sandbox control API”)
-  - Embeds/installs **Claude Agent SDK** and a “tool adapter” that maps agent tool calls to:
-    - Local FS operations (within workspace)
-    - Bash command execution (restricted)
-    - GitHub operations (restricted)
-    - Optional web fetch/search (policy-controlled)
-- **Blob Storage**:
-  - Stores durable workspace snapshots, produced artifacts, and execution logs
-  - Scoped by `instanceId / user / conversation / run`
+  - **No custom web server required** (preferred): rely on the existing Dynamic Sessions “execute code + file store” APIs that FoundationaLLM already calls via the Context API.
+  - Image responsibility is primarily **packaging**: Claude Agent SDK + git/gh + runtimes/tools needed by the agent.
+  - The “tool adapter” can live as a local library invoked by the executed code (not a network service).
 
 #### Data flow (single turn)
 - User message → Orchestration API `/completions` (existing)
@@ -70,9 +64,9 @@ Key idea: instead of running a LangChain workflow, this agent runs inside a **sa
 - ClaudeCodeOrchestrationService:
   - Ensures/creates sandbox session (Dynamic Sessions)
   - Restores persisted workspace snapshot into sandbox (if configured)
-  - Sends prompt + conversation history to sandbox “run” endpoint
-  - Streams/collects tool events and final output
-  - Syncs modified/new files back to Blob and produces `ContentArtifacts`
+  - Uploads required conversation files into the session via Context API (same mechanism as Code Interpreter tool)
+  - Executes a “runner” program inside the session (via Dynamic Sessions code execution API)
+  - Downloads produced artifacts from the session via Context API, which materializes them as **new Context file records**
   - Returns standard `CompletionResponse` (so existing UI/API clients work)
 
 #### Data flow (multi-turn)
@@ -129,6 +123,13 @@ Create `ClaudeCodeOrchestrationService : ILLMOrchestrationService` with:
 - **StartCompletionOperation / GetCompletionOperationStatus**:
   - Optional for long-running work; can be implemented early if needed (recommended)
 
+Supporting client work in .NET:
+- Extend `IContextServiceClient`/`ContextServiceClient` (or add a dedicated client) to call:
+  - `POST /codeSessions/{sessionId}/uploadFiles`
+  - `POST /codeSessions/{sessionId}/executeCode`
+  - `POST /codeSessions/{sessionId}/downloadFiles`
+  so the orchestrator can follow the same secure pattern as the existing Python Code Interpreter tool plugin.
+
 #### Request/response mapping
 - Inputs:
   - `LLMCompletionRequest` (already contains agent config, main AI model config, prompts, tool config, conversation history from upstream `CompletionRequest`)
@@ -152,20 +153,48 @@ Represent Claude Code outputs as `ContentArtifact[]`:
 
 ---
 
-### 5) Sandbox runtime (Dynamic Sessions Custom Container)
+### 5) Sandbox runtime (Dynamic Sessions Code Sessions + Custom Containers)
 
-#### Container responsibilities
-Build a new container image (Ubuntu base) that:
-- Exposes a small HTTP API (internal to FoundationaLLM) such as:
-  - `POST /agent/run` — run a single turn with transcript + constraints
-  - `GET /agent/events` — (optional) streaming event channel
-  - `POST /fs/upload` / `POST /fs/download` — bulk file transfer (or reuse existing endpoints)
-  - `POST /cmd/run` — controlled command execution (if needed separately)
-  - `GET /healthz`
+#### Key design principle: reuse the existing Code Interpreter “code session” contract
+FoundationaLLM already has a proven pattern for running code in Dynamic Sessions **and** moving files in/out securely:
+
+- **Upload**: Context API `POST /instances/{instanceId}/codeSessions/{sessionId}/uploadFiles` takes *conversation file names*. The Context API reads file content via `FileService.GetFileContent(...)` using the **current user identity**, then uploads to the Dynamic Session.
+- **Execute**: Context API `POST /instances/{instanceId}/codeSessions/{sessionId}/executeCode` runs code inside the Dynamic Session.
+- **Download**: Context API `POST /instances/{instanceId}/codeSessions/{sessionId}/downloadFiles` downloads newly-created session files and persists them using `FileService.CreateFileForConversation(...)`, producing **new file records** (and thus preserving access control).
+
+Additional mechanics worth copying directly:
+- `uploadFiles` returns an **operation id**; that operation id is then passed into `downloadFiles`, allowing the Context API to correlate “inputs uploaded for this run” vs “outputs produced by this run”.
+- `uploadFiles` currently performs a best-effort upload and also **cleans the session file store first**, so a multi-turn design should assume it needs to re-upload required inputs each turn (or change that behavior explicitly).
+
+For the Claude Code agent we should mirror this end-to-end flow, which means we can likely **avoid implementing a bespoke HTTP server inside the sandbox**.
+
+#### Container responsibilities (what the image needs to provide)
+Build a container image (Ubuntu base) that:
 - Installs:
   - Claude Agent SDK (pinned version)
-  - git + gh CLI (optional, but recommended)
-  - language runtimes as needed (python/node) for common tasks
+  - git + gh CLI (recommended)
+  - language runtimes as needed by the SDK (python/node)
+  - any OS packages needed for common coding tasks (ripgrep, unzip, etc.)
+- Provides a runnable entrypoint/program that can be invoked via “execute code” to:
+  - Accept a request payload (prompt + conversation transcript + policy + file list)
+  - Run the Claude Agent SDK and capture:
+    - final assistant text output
+    - tool event summaries (optional)
+    - artifacts (patches, archives, logs) written to the session file store for download
+
+Implementation note (based on current platform constraints):
+- Code sessions are validated to a small set of languages (currently `Python` and `CSharp`), so the Claude Code agent should start with a **Python-based runner** (which can still execute shell commands via `subprocess` inside the sandbox).
+- Prefer using the existing provider name `AzureContainerAppsCustomContainer` so we can supply an image that contains the Claude Agent SDK and tooling.
+
+#### How “instructions” and “code” should be delivered (copying the Code Interpreter ergonomics)
+To minimize the amount of “inline code” we send over `executeCode`, follow a two-part pattern:
+- **Part A — upload a request payload file** (JSON) to the conversation file store (Context API), then include its filename in the `uploadFiles` list for the session (so the sandbox receives it securely).
+- **Part B — execute a small, stable bootstrap snippet** via `executeCode` whose job is just to run the preinstalled runner, e.g.:
+  - read `/mnt/data/<request>.json`
+  - run Claude Agent SDK
+  - write outputs (summary, patch, logs, artifact manifest) back to the session file store
+
+This mirrors how the existing Code Interpreter tool sends “the real work” as code to execute plus a curated list of input files, and then retrieves outputs through `downloadFiles`.
 
 #### Tool adapter (core)
 Implement a tool adapter layer that the Claude Agent SDK calls for:
@@ -192,7 +221,7 @@ Implement a tool adapter layer that the Claude Agent SDK calls for:
 
 ---
 
-### 6) Durable storage model (Blob Storage)
+### 6) Durable storage model (Context API file store + Blob)
 
 #### What to persist
 Per conversation (and optionally per user), persist:
@@ -201,14 +230,29 @@ Per conversation (and optionally per user), persist:
 - **Execution logs** (tool events, command transcripts) with redaction
 - **Optional agent state** (if the Claude Agent SDK supports resumable state)
 
-#### Naming scheme (example)
-`{upn}/{instanceId}/{conversationId}/claude-code/{yyyy-mm-dd}/{runId}/...`
+#### How this is secured (important)
+The existing file pipeline already provides a strong security boundary:
+- Files are stored with a Cosmos **file record** whose partition key is the user’s UPN, and the Blob path includes `file/users/{upn}/{conversationId}/...`.
+- When the sandbox needs a file, the Context API fetches it using the **current user identity** and conversation/file record checks.
+- When the sandbox produces a file, the Context API writes it back as a **new conversation file record** owned by (or associated with) the initiating user, so subsequent retrieval honors the same access control.
+- Code sessions themselves are also tracked in Cosmos as per-user records (partitioned by UPN), so a caller cannot access another user’s code session record even if they guess a session id.
 
 #### Access control
 Use FoundationaLLM’s existing security model:
 - Writes performed by the service identity
 - Reads gated by the calling user’s permissions (virtual security groups / conversation ACLs)
 - Ensure artifacts are not cross-tenant or cross-user accessible
+
+#### Important constraint discovered (affects “edit repo” scenarios)
+The current `downloadFiles` implementation in the Context API is optimized for the Code Interpreter pattern of “upload inputs → produce new outputs”:
+- It **filters out** files that were uploaded successfully (by name) when those files remain in the root directory, which means it may **not** automatically retrieve “modified in-place” files with the same names as uploaded inputs.
+
+Implication for Claude Code agent:
+- Prefer producing outputs as **new files** (so they are always downloadable), e.g.:
+  - `changes.patch` / `changes.diff`
+  - `workspace.tar.gz` (new name per turn)
+  - `run.log`, `commands.jsonl`, `artifacts.json`
+- If we want “download modified files by same name” semantics, plan a Context API enhancement (e.g., `downloadFiles` supporting `include_uploaded_files=true` or hash-based change detection).
 
 ---
 
@@ -273,7 +317,7 @@ Add/enable:
 #### Security tests
 - Ensure sandbox cannot read outside workspace
 - Ensure egress is blocked by default
-- Ensure artifact blob paths are user-scoped and access-controlled
+- Ensure produced Context file records are user/conversation-scoped and access-controlled
 
 ---
 
@@ -296,8 +340,12 @@ Add/enable:
 #### Phase 1 — MVP (single-turn sandbox + durable artifacts)
 - Add `claude-code-agent-workflow` and `ClaudeCodeAgentWorkflow` model.
 - Add `ClaudeCodeOrchestrationService` (internal orchestrator).
-- Build sandbox container image + minimal HTTP API: `POST /agent/run`.
-- Implement workspace persistence (snapshot in Blob) + artifact extraction.
+- Build sandbox container image that can run the Claude Agent SDK when invoked via Dynamic Sessions “execute code”.
+- Implement “runner invocation” + artifacts capture:
+  - Orchestrator uploads inputs via Context API `uploadFiles`
+  - Orchestrator executes the runner via Context API `executeCode`
+  - Orchestrator downloads outputs via Context API `downloadFiles` (which persists them as Context files)
+- Implement workspace persistence using **Context files** (e.g. `workspace-<turn>.tar.gz`) + patch artifacts (e.g. `changes.patch`).
 - Create a default “Claude Code” agent via deployment template (or documented setup).
 
 #### Phase 2 — Multi-turn workspace continuity + improved artifact UX
@@ -317,7 +365,7 @@ Add/enable:
 ---
 
 ### 12) Key open questions / decisions to lock down early
-- **Dynamic Sessions API shape**: do we standardize on the existing “custom container file/code endpoints”, or define a new sandbox API contract dedicated to Claude Code runs?
+- **Dynamic Sessions API shape**: can the Claude Code agent rely exclusively on the existing Context API code-session endpoints (`uploadFiles`, `executeCode`, `downloadFiles`) and Dynamic Sessions platform APIs, with **no sandbox web server**?
 - **Workspace persistence**: snapshot vs diff. (Snapshot is simpler; diff is cheaper and easier to review.)
 - **Credential strategy**: direct Anthropic key vs Gateway facade; PAT vs GitHub App.
 - **Streaming UX**: do we need live tool event streaming for MVP, or only final response + artifacts?
