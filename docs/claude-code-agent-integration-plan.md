@@ -4,32 +4,37 @@
 
 This document outlines a comprehensive plan to integrate Claude Code agent capabilities into FoundationaLLM. The integration will allow users to access the full power of Claude Code through the familiar FoundationaLLM UI and APIs, with FoundationaLLM serving as the operating system for this AI agent.
 
-The core approach leverages FoundationaLLM's existing Dynamic Sessions Custom Containers infrastructure to provide a secure, sandboxed Ubuntu Linux environment where the Claude Agent SDK runs in service of user requests.
+The core approach leverages FoundationaLLM's existing infrastructure:
+- **Dynamic Sessions Custom Containers** for secure, sandboxed Ubuntu Linux execution environments
+- **Context API** for file management, code session lifecycle, and security
+- **File Service** for secure per-user file persistence with RBAC
+- **Existing tool patterns** from the Code Interpreter tool implementation
 
 ---
 
 ## Table of Contents
 
 1. [Architecture Overview](#1-architecture-overview)
-2. [Component Design](#2-component-design)
-3. [Workflow Implementation](#3-workflow-implementation)
-4. [Sandbox Container Infrastructure](#4-sandbox-container-infrastructure)
-5. [Claude Agent SDK Integration](#5-claude-agent-sdk-integration)
-6. [File Storage & Management](#6-file-storage--management)
-7. [Conversation History & Multi-Turn Support](#7-conversation-history--multi-turn-support)
-8. [Security & Permissions](#8-security--permissions)
+2. [Existing Infrastructure Analysis](#2-existing-infrastructure-analysis)
+3. [Component Design](#3-component-design)
+4. [Workflow Implementation](#4-workflow-implementation)
+5. [Claude Code Tool Implementation](#5-claude-code-tool-implementation)
+6. [Sandbox Container Infrastructure](#6-sandbox-container-infrastructure)
+7. [File Storage & Security](#7-file-storage--security)
+8. [Conversation History & Multi-Turn Support](#8-conversation-history--multi-turn-support)
 9. [UI Integration](#9-ui-integration)
-10. [API Integration](#10-api-integration)
-11. [Configuration & Deployment](#11-configuration--deployment)
-12. [Testing Strategy](#12-testing-strategy)
-13. [Implementation Phases](#13-implementation-phases)
-14. [Open Questions & Decisions](#14-open-questions--decisions)
+10. [Configuration & Deployment](#10-configuration--deployment)
+11. [Testing Strategy](#11-testing-strategy)
+12. [Implementation Phases](#12-implementation-phases)
+13. [Open Questions & Decisions](#13-open-questions--decisions)
 
 ---
 
 ## 1. Architecture Overview
 
 ### 1.1 High-Level Architecture
+
+The Claude Code Agent integrates into FoundationaLLM following the established patterns used by the Code Interpreter tool, leveraging the Context API as a secure middleware layer.
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
@@ -44,244 +49,334 @@ The core approach leverages FoundationaLLM's existing Dynamic Sessions Custom Co
 │  ┌─────────────────────────────────────────────────────────────────────────┐│
 │  │                      Orchestration API                                  ││
 │  │  ┌──────────────────────────────────────────────────────────────────┐   ││
-│  │  │                    Agent Orchestration                           │   ││
+│  │  │           OrchestrationBuilder (creates code sessions)           │   ││
 │  │  │  ┌─────────────┐  ┌─────────────┐  ┌────────────────────────┐   │   ││
-│  │  │  │ LangChain   │  │ OpenAI      │  │  Claude Code Agent     │   │   ││
-│  │  │  │ Workflow    │  │ Assistants  │  │  Workflow (NEW)        │   │   ││
+│  │  │  │ LangChain   │  │ Function    │  │  Claude Code Agent     │   │   ││
+│  │  │  │ Workflow    │  │ Calling WF  │  │  Workflow (NEW)        │   │   ││
 │  │  │  └─────────────┘  └─────────────┘  └────────────────────────┘   │   ││
 │  │  └──────────────────────────────────────────────────────────────────┘   ││
 │  └─────────────────────────────────────────────────────────────────────────┘│
 │                                    │                                        │
 │                                    ▼                                        │
 │  ┌─────────────────────────────────────────────────────────────────────────┐│
-│  │              Azure Container Apps Dynamic Sessions                      ││
+│  │                         Context API                                     ││
+│  │  ┌──────────────────────────────────────────────────────────────────┐   ││
+│  │  │ CodeSessionsController                                           │   ││
+│  │  │  • POST /codeSessions              (create session)              │   ││
+│  │  │  • POST /codeSessions/{id}/uploadFiles                           │   ││
+│  │  │  • POST /codeSessions/{id}/downloadFiles                         │   ││
+│  │  │  • POST /codeSessions/{id}/executeCode                           │   ││
+│  │  └──────────────────────────────────────────────────────────────────┘   ││
+│  │  ┌──────────────────────────────────────────────────────────────────┐   ││
+│  │  │ CodeSessionService                                               │   ││
+│  │  │  • Manages session lifecycle via CosmosDB                        │   ││
+│  │  │  • Routes to appropriate provider (CodeInterpreter/CustomContainer)│  ││
+│  │  │  • Handles file upload/download via FileService                  │   ││
+│  │  └──────────────────────────────────────────────────────────────────┘   ││
+│  │  ┌──────────────────────────────────────────────────────────────────┐   ││
+│  │  │ FileService (Secured file operations)                            │   ││
+│  │  │  • Per-user file isolation (UPN-based)                           │   ││
+│  │  │  • Conversation-scoped storage                                   │   ││
+│  │  │  • Owner verification on access                                  │   ││
+│  │  └──────────────────────────────────────────────────────────────────┘   ││
+│  └─────────────────────────────────────────────────────────────────────────┘│
+│                                    │                                        │
+│                                    ▼                                        │
+│  ┌─────────────────────────────────────────────────────────────────────────┐│
+│  │         Azure Container Apps Dynamic Sessions (Custom Container)        ││
 │  │  ┌────────────────────────────────────────────────────────────────────┐ ││
-│  │  │         Claude Code Agent Sandbox Container (Ubuntu Linux)         │ ││
+│  │  │         Claude Code Sandbox Container (Ubuntu Linux)               │ ││
 │  │  │  ┌──────────────┐  ┌────────────────┐  ┌─────────────────────────┐ │ ││
-│  │  │  │ Claude Agent │  │ File System    │  │ Development Tools       │ │ ││
-│  │  │  │ SDK (Python) │  │ (git, bash)    │  │ (Python, Node, etc.)    │ │ ││
+│  │  │  │ Claude Agent │  │ Dev Tools      │  │ GitHub CLI              │ │ ││
+│  │  │  │ SDK + API    │  │ (Python, git)  │  │ (authenticated)         │ │ ││
 │  │  │  └──────────────┘  └────────────────┘  └─────────────────────────┘ │ ││
-│  │  │  ┌──────────────┐  ┌────────────────┐  ┌─────────────────────────┐ │ ││
-│  │  │  │ Web Search   │  │ GitHub CLI     │  │ Code Execution          │ │ ││
-│  │  │  │ (Optional)   │  │ Integration    │  │ Environment             │ │ ││
-│  │  │  └──────────────┘  └────────────────┘  └─────────────────────────┘ │ ││
+│  │  │  Files mounted at /mnt/data (standard Dynamic Sessions path)       │ ││
 │  │  └────────────────────────────────────────────────────────────────────┘ ││
 │  └─────────────────────────────────────────────────────────────────────────┘│
 │                                    │                                        │
 │                                    ▼                                        │
 │  ┌─────────────────────────────────────────────────────────────────────────┐│
-│  │                    Azure Blob Storage                                   ││
-│  │           (Per-user file persistence with RBAC)                         ││
+│  │               Azure Blob Storage + CosmosDB                             ││
+│  │           (Per-user file persistence with owner verification)           ││
 │  └─────────────────────────────────────────────────────────────────────────┘│
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ### 1.2 Key Design Principles
 
-1. **Leverage Existing Infrastructure**: Build on top of the existing Dynamic Sessions Custom Container infrastructure
-2. **Maintain Security Model**: All file access and permissions flow through FoundationaLLM's security and RBAC system
-3. **Seamless User Experience**: Users select Claude Code agent like any other agent from the dropdown
-4. **Multi-Turn Conversation Support**: Conversation history persisted in FoundationaLLM and passed to Claude agent
-5. **Persistent File Storage**: Files generated by Claude Code persist in Azure Blob Storage, secured per-user
-6. **Configurable Internet Access**: Sandbox can be configured to allow/disallow outbound internet access
+1. **Leverage Existing Infrastructure**: Use the same patterns as the Code Interpreter tool—Context API, CodeSessionService, FileService, and Azure Container Apps Custom Containers
+2. **No Custom Web Server in Sandbox**: Follow the standard Dynamic Sessions API contract (`/code/execute`, `/files/upload`, etc.) rather than building a custom orchestrator
+3. **Security Through Context API**: All file access flows through FileService with UPN-based owner verification
+4. **Session-per-Tool Pattern**: Code sessions are created by OrchestrationBuilder based on tool configuration (`code_session_required: true`)
+5. **Multi-Turn via Conversation Files**: Workspace state persisted to blob storage and restored on subsequent requests
+6. **Configurable Internet Access**: Container network configuration via Azure Container Apps session pool settings
 
 ---
 
-## 2. Component Design
+## 2. Existing Infrastructure Analysis
 
-### 2.1 New Agent Workflow Type
+Understanding how the Code Interpreter tool works is essential for designing the Claude Code agent integration. This section documents the key patterns we will follow.
 
-Create a new workflow type: `ClaudeCodeAgentWorkflow`
+### 2.1 Code Session Lifecycle
 
-**Location**: `src/dotnet/Common/Models/ResourceProviders/Agent/AgentWorkflows/`
+The existing Code Interpreter follows this flow:
 
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                    Code Session Lifecycle (Current Pattern)                 │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  1. OrchestrationBuilder.LoadAgent()                                        │
+│     ├── Detects tool has `code_session_required: true`                      │
+│     ├── Calls ContextServiceClient.CreateCodeSession()                      │
+│     └── Stores session endpoint + ID in exploded objects dictionary         │
+│                                                                             │
+│  2. Tool Execution (e.g., FoundationaLLMCodeInterpreterTool)                │
+│     ├── Retrieves session_id and endpoint from runnable_config              │
+│     ├── Uploads files: POST /codeSessions/{id}/uploadFiles                  │
+│     ├── Executes code: POST /codeSessions/{id}/executeCode                  │
+│     └── Downloads new files: POST /codeSessions/{id}/downloadFiles          │
+│                                                                             │
+│  3. FileService handles file persistence                                    │
+│     ├── Files stored with UPN, conversationId, instanceId                   │
+│     ├── Owner verification on all file access                               │
+│     └── Files accessible via Context API file endpoints                     │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+### 2.2 Key Code References
+
+**Session Creation** (`OrchestrationBuilder.cs` lines 390-426):
 ```csharp
-// ClaudeCodeAgentWorkflow.cs
-namespace FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentWorkflows
+if (tool.TryGetPropertyValue<bool>(AgentToolPropertyNames.CodeSessionRequired, out bool codeSessionRequired)
+    && codeSessionRequired)
 {
-    /// <summary>
-    /// Provides an agent workflow configuration for Claude Code Agent.
-    /// </summary>
-    public class ClaudeCodeAgentWorkflow : AgentWorkflowBase
-    {
-        /// <inheritdoc/>
-        [JsonIgnore]
-        public override string Type => AgentWorkflowTypes.ClaudeCodeAgent;
-
-        /// <summary>
-        /// Whether to allow outbound internet access from the sandbox.
-        /// </summary>
-        [JsonPropertyName("allow_internet_access")]
-        public bool AllowInternetAccess { get; set; } = false;
-
-        /// <summary>
-        /// Maximum execution time for Claude Code operations (in seconds).
-        /// </summary>
-        [JsonPropertyName("max_execution_time_seconds")]
-        public int MaxExecutionTimeSeconds { get; set; } = 300;
-
-        /// <summary>
-        /// GitHub authentication configuration for code operations.
-        /// </summary>
-        [JsonPropertyName("github_config")]
-        public ClaudeCodeGitHubConfig? GitHubConfig { get; set; }
-
-        /// <summary>
-        /// Memory limit for the sandbox container (in MB).
-        /// </summary>
-        [JsonPropertyName("memory_limit_mb")]
-        public int MemoryLimitMb { get; set; } = 2048;
-
-        /// <summary>
-        /// List of allowed tools for this workflow.
-        /// </summary>
-        [JsonPropertyName("allowed_tools")]
-        public List<string> AllowedTools { get; set; } = new()
-        {
-            "read_file",
-            "write_file",
-            "bash",
-            "search",
-            "github"
-        };
-    }
-
-    public class ClaudeCodeGitHubConfig
-    {
-        /// <summary>
-        /// Resource object ID for GitHub credentials in Key Vault.
-        /// </summary>
-        [JsonPropertyName("credentials_object_id")]
-        public string? CredentialsObjectId { get; set; }
-
-        /// <summary>
-        /// Whether to enable PR creation capabilities.
-        /// </summary>
-        [JsonPropertyName("enable_pr_creation")]
-        public bool EnablePRCreation { get; set; } = false;
-    }
+    var contextServiceResponse = await contextServiceClient.CreateCodeSession(
+        instanceId, agentName, originalRequest.SessionId, tool.Name,
+        codeSessionProvider, codeSessionLanguage);
+    
+    toolParameters.Add(AgentToolPropertyNames.CodeSessionEndpoint, codeSession.Endpoint);
+    toolParameters.Add(AgentToolPropertyNames.CodeSessionId, codeSession.SessionId);
 }
 ```
 
-### 2.2 Update AgentWorkflowTypes
+**File Upload/Download** (`CodeSessionService.cs`):
+- `UploadFilesToCodeSession`: Gets file content from FileService, uploads to Dynamic Sessions
+- `DownloadFilesFromCodeSession`: Gets files from Dynamic Sessions, saves via `FileService.CreateFileForConversation()`
 
-**Location**: `src/dotnet/Common/Models/ResourceProviders/Agent/AgentWorkflows/AgentWorkflowTypes.cs`
-
+**File Security** (`FileService.cs`):
 ```csharp
-/// <summary>
-/// The Claude Code Agent workflow.
-/// </summary>
-public const string ClaudeCodeAgent = "claude-code-agent-workflow";
+// Files are stored with user identity
+var fileRecord = new ContextFileRecord(instanceId, origin, conversationId, agentName,
+    fileName, contentType, content.Length, fileProcessingType, userIdentity, metadata);
+
+// Owner verification on retrieval
+var fileRecords = await _cosmosDBService.GetFileRecords(instanceId, conversationId,
+    fileName, userIdentity.UPN!, bypassOwnerCheck);
 ```
 
-### 2.3 New Service: Claude Code Agent Service
+### 2.3 Azure Container Apps Custom Container API
 
-**Location**: `src/dotnet/ContextEngine/Services/ClaudeCodeAgentService.cs`
+The custom container service (`AzureContainerAppsCustomContainerService.cs`) implements these endpoints:
 
-This service manages the lifecycle of Claude Code agent sessions:
+| Endpoint | Method | Purpose |
+|----------|--------|---------|
+| `/files/upload?identifier={sessionId}` | POST | Upload file to session |
+| `/files?identifier={sessionId}` | GET | List files in session |
+| `/files/download?identifier={sessionId}` | POST | Download file from session |
+| `/files/delete?identifier={sessionId}` | POST | Delete files from session |
+| `/code/execute?identifier={sessionId}` | POST | Execute code in session |
 
-```csharp
-public interface IClaudeCodeAgentService
+The response format from `/code/execute`:
+```json
 {
-    Task<ClaudeCodeSession> CreateSessionAsync(
-        string instanceId,
-        string conversationId,
-        string userId,
-        ClaudeCodeAgentWorkflow workflow,
-        UnifiedUserIdentity userIdentity);
-    
-    Task<ClaudeCodeResponse> ExecuteAsync(
-        string sessionId,
-        string userPrompt,
-        List<MessageHistoryItem> messageHistory,
-        List<FileHistoryItem> fileHistory);
-    
-    Task<Stream?> DownloadFileAsync(
-        string sessionId,
-        string filePath);
-    
-    Task TerminateSessionAsync(string sessionId);
+  "detail": {
+    "output": "stdout content",
+    "error": "stderr content", 
+    "results": "execution result"
+  }
 }
 ```
 
-### 2.4 Python Plugin: Claude Code Workflow
+### 2.4 Implications for Claude Code Agent
 
-**Location**: `src/python/plugins/agent_claude_code/`
+Based on this analysis, the Claude Code agent should:
 
-Create a new Python plugin package for the Claude Code workflow:
+1. **Use the same tool pattern**: Create a `FoundationaLLMClaudeCodeTool` similar to `FoundationaLLMCodeInterpreterTool`
+2. **Leverage existing session management**: Set `code_session_required: true` and let OrchestrationBuilder handle session creation
+3. **Build a custom container image**: That accepts the standard Dynamic Sessions API and internally runs the Claude Agent SDK
+4. **Use FileService for persistence**: Files flow through Context API, inheriting security model
+5. **Add a new code session provider**: `AzureContainerAppsClaudeCodeService` or reuse `AzureContainerAppsCustomContainerService` with Claude-specific endpoints
 
+---
+
+## 3. Component Design
+
+### 3.1 Option A: Claude Code as a Tool (Recommended)
+
+Following the Code Interpreter pattern, implement Claude Code as a **tool** that can be added to agents using the `ExternalAgentWorkflow` or `LangChainAgentWorkflow`:
+
+**Benefits**:
+- Minimal changes to existing workflow/orchestration code
+- Can be combined with other tools (Knowledge Search, etc.)
+- Follows established patterns
+
+**Structure**:
 ```
 src/python/plugins/agent_claude_code/
 ├── pkg/
-│   ├── foundationallm_agent_plugins_claude_code/
-│   │   ├── __init__.py
-│   │   ├── _metadata/
-│   │   │   └── foundationallm_manifest.json
-│   │   ├── workflow_plugin_manager.py
-│   │   └── workflows/
-│   │       ├── __init__.py
-│   │       └── claude_code_agent_workflow.py
-│   ├── pyproject.toml
-│   └── README.md
+│   └── foundationallm_agent_plugins_claude_code/
+│       ├── __init__.py
+│       ├── _metadata/
+│       │   └── foundationallm_manifest.json
+│       ├── tool_plugin_manager.py
+│       └── tools/
+│           ├── __init__.py
+│           ├── foundationallm_claude_code_tool.py
+│           └── foundationallm_claude_code_tool_input.py
 ├── requirements.txt
 └── test/
 ```
 
+### 3.2 Option B: Claude Code as a Dedicated Workflow
+
+Create a new workflow type where Claude is the primary orchestrator (not just a tool):
+
+**Benefits**:
+- Full control over the agentic loop
+- Can implement Claude's native tool-use patterns directly
+- Better for pure "Claude Code" experience
+
+**Drawback**:
+- More code to maintain
+- Cannot easily combine with other FoundationaLLM tools
+
+### 3.3 Recommended Approach: Hybrid
+
+Implement **both**:
+1. **FoundationaLLMClaudeCodeTool**: For use within existing workflows (like Function Calling Workflow)
+2. **ClaudeCodeAgentWorkflow**: For dedicated Claude Code agent experience
+
+This allows users to:
+- Add Claude Code capabilities to existing agents
+- Create dedicated Claude Code agents with full capabilities
+
+### 3.4 New Tool: FoundationaLLMClaudeCodeTool
+
+**Location**: `src/python/plugins/agent_claude_code/pkg/foundationallm_agent_plugins_claude_code/tools/`
+
+Tool configuration properties:
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `code_session_required` | bool | Always `true` |
+| `code_session_endpoint_provider` | string | `AzureContainerAppsClaudeCode` |
+| `code_session_language` | string | `ClaudeCode` |
+| `allow_internet_access` | bool | Enable web search capabilities |
+| `allowed_capabilities` | list | `["bash", "file_read", "file_write", "github"]` |
+| `max_turns` | int | Maximum agentic loop iterations |
+
+### 3.5 New Code Session Provider
+
+Add a new provider to handle Claude Code sessions:
+
+**Location**: `src/dotnet/ContextEngine/Constants/CodeSessionProviderNames.cs`
+
+```csharp
+/// <summary>
+/// Azure Container Apps Dynamic Sessions custom container for Claude Code.
+/// </summary>
+public const string AzureContainerAppsClaudeCode = "AzureContainerAppsClaudeCode";
+```
+
+**Location**: `src/dotnet/ContextEngine/Services/AzureContainerAppsClaudeCodeService.cs`
+
+This can extend or adapt `AzureContainerAppsCustomContainerService` with Claude-specific execution logic.
+
 ---
 
-## 3. Workflow Implementation
+## 4. Workflow Implementation
 
-### 3.1 Claude Code Agent Workflow (Python)
+### 4.1 Using Existing Workflow with Claude Code Tool
+
+The simplest integration path is to use the existing `FoundationaLLMFunctionCallingWorkflow` with a new `FoundationaLLMClaudeCodeTool`. This approach:
+
+- Leverages existing router/tool-selection logic
+- Can combine Claude Code with other tools (Knowledge Search, etc.)
+- Follows established patterns
+
+**Agent Configuration Example**:
+```json
+{
+  "type": "agent",
+  "name": "claude-code-assistant",
+  "workflow": {
+    "type": "external-agent-workflow",
+    "package_name": "foundationallm_agent_plugins",
+    "class_name": "FoundationaLLMFunctionCallingWorkflow"
+  },
+  "tools": [
+    {
+      "name": "Claude-Code",
+      "description": "Executes complex coding tasks using Claude's agentic capabilities",
+      "package_name": "foundationallm_agent_plugins_claude_code",
+      "class_name": "FoundationaLLMClaudeCodeTool",
+      "properties": {
+        "code_session_required": true,
+        "code_session_endpoint_provider": "AzureContainerAppsClaudeCode",
+        "code_session_language": "ClaudeCode",
+        "allow_internet_access": true,
+        "max_turns": 20
+      }
+    }
+  ]
+}
+```
+
+### 4.2 Dedicated Claude Code Agent Workflow (Optional)
+
+For a pure Claude Code experience, create a dedicated workflow:
 
 ```python
-# claude_code_agent_workflow.py
+# foundationallm_claude_code_workflow.py
 """
-Class: ClaudeCodeAgentWorkflow
-Description: FoundationaLLM workflow that wraps the Claude Agent SDK
-             running in a secure sandbox container.
+Dedicated workflow where Claude is the primary orchestrator.
 """
 
-from dataclasses import dataclass
 from typing import Dict, List, Optional
 import json
-import httpx
 
 from foundationallm.langchain.common import FoundationaLLMWorkflowBase
 from foundationallm.config import Configuration, UserIdentity
 from foundationallm.models.orchestration import (
-    CompletionResponse,
-    ContentArtifact,
-    OpenAITextMessageContentItem
+    CompletionResponse, ContentArtifact, OpenAITextMessageContentItem
 )
+from foundationallm.models.constants import AgentCapabilityCategories
 from foundationallm.operations import OperationsManager
 
-
-class ClaudeCodeAgentWorkflow(FoundationaLLMWorkflowBase):
+class FoundationaLLMClaudeCodeWorkflow(FoundationaLLMWorkflowBase):
     """
-    FoundationaLLM workflow that orchestrates Claude Code agent 
-    operations within a secure sandbox container.
+    Dedicated Claude Code workflow where Claude handles all orchestration.
     """
 
     def __init__(
         self,
         workflow_config,
         objects: Dict,
-        tools: List,
+        tools: List,  # Tools are built into Claude, not LangChain tools
         operations_manager: OperationsManager,
         user_identity: UserIdentity,
         config: Configuration
     ):
-        super().__init__(
-            workflow_config, objects, tools, 
-            operations_manager, user_identity, config
-        )
-        self.sandbox_endpoint = self._get_sandbox_endpoint()
-        self.allow_internet = workflow_config.properties.get(
-            'allow_internet_access', False
-        )
-        self.max_execution_time = workflow_config.properties.get(
-            'max_execution_time_seconds', 300
-        )
+        super().__init__(workflow_config, objects, tools, 
+                        operations_manager, user_identity, config)
+        
+        # Get session info from exploded objects (set by OrchestrationBuilder)
+        self.session_id = objects.get('Claude-Code', {}).get('code_session_id')
+        self.session_endpoint = objects.get('Claude-Code', {}).get('code_session_endpoint')
+        
+        self.__create_context_client()
 
     async def invoke_async(
         self,
@@ -294,87 +389,324 @@ class ClaudeCodeAgentWorkflow(FoundationaLLMWorkflowBase):
         objects: dict = None
     ) -> CompletionResponse:
         """
-        Invoke the Claude Code agent workflow.
-        """
-        # 1. Prepare the request for the sandbox
-        sandbox_request = self._prepare_sandbox_request(
-            operation_id=operation_id,
-            user_prompt=user_prompt_rewrite or user_prompt,
-            message_history=message_history,
-            file_history=file_history,
-            conversation_id=conversation_id
-        )
-
-        # 2. Execute in sandbox container
-        async with httpx.AsyncClient() as client:
-            response = await client.post(
-                f"{self.sandbox_endpoint}/execute",
-                json=sandbox_request,
-                timeout=self.max_execution_time
-            )
-            result = response.json()
-
-        # 3. Process response and extract artifacts
-        content_artifacts = self._extract_artifacts(result)
+        Invoke the Claude Code workflow.
         
-        # 4. Handle file outputs
-        file_outputs = await self._process_file_outputs(
-            result.get('files', []),
-            conversation_id
+        This sends the user prompt to the Claude Code sandbox container,
+        which runs the Claude Agent SDK in an agentic loop.
+        """
+        llm_prompt = user_prompt_rewrite or user_prompt
+        
+        # 1. Upload conversation files to the sandbox
+        file_names = [f.original_file_name for f in file_history]
+        await self._upload_files_to_session(file_names)
+        
+        # 2. Build the execution request for Claude
+        execution_request = self._build_claude_request(
+            llm_prompt, message_history, file_history, conversation_id
         )
-        content_artifacts.extend(file_outputs)
-
-        # 5. Build completion response
+        
+        # 3. Execute in the Claude sandbox (this runs the full agentic loop)
+        result = await self._execute_in_sandbox(execution_request)
+        
+        # 4. Download any new files created by Claude
+        content_artifacts = await self._download_new_files(operation_id)
+        
+        # 5. Build response
         return CompletionResponse(
             operation_id=operation_id,
             content=[OpenAITextMessageContentItem(
                 value=result.get('response', ''),
-                agent_capability_category='ClaudeCodeAgent'
+                agent_capability_category=AgentCapabilityCategories.FOUNDATIONALLM_KNOWLEDGE_MANAGEMENT
             )],
             content_artifacts=content_artifacts,
             user_prompt=user_prompt,
-            completion_tokens=result.get('tokens', {}).get('output', 0),
-            prompt_tokens=result.get('tokens', {}).get('input', 0)
+            completion_tokens=result.get('output_tokens', 0),
+            prompt_tokens=result.get('input_tokens', 0)
         )
 
-    def _prepare_sandbox_request(
-        self,
-        operation_id: str,
-        user_prompt: str,
-        message_history: List,
-        file_history: List,
-        conversation_id: str
-    ) -> dict:
-        """Prepare the request payload for the sandbox container."""
-        return {
-            'operation_id': operation_id,
-            'conversation_id': conversation_id,
-            'user_prompt': user_prompt,
-            'message_history': [
-                {'role': m.sender.lower(), 'content': m.text}
-                for m in message_history
+    def _build_claude_request(self, prompt, history, files, conversation_id):
+        """Build request for Claude sandbox execution."""
+        return json.dumps({
+            "prompt": prompt,
+            "conversation_history": [
+                {"role": "user" if m.sender == "User" else "assistant", 
+                 "content": m.text}
+                for m in history
             ],
-            'files': [
-                {'name': f.file_name, 'path': f.file_path}
-                for f in file_history
-            ],
-            'config': {
-                'allow_internet': self.allow_internet,
-                'max_execution_time': self.max_execution_time,
-                'tools': self.workflow_config.properties.get('allowed_tools', [])
+            "conversation_id": conversation_id,
+            "config": {
+                "max_turns": self.workflow_config.properties.get('max_turns', 20),
+                "allowed_capabilities": self.workflow_config.properties.get(
+                    'allowed_capabilities', 
+                    ['bash', 'file_read', 'file_write']
+                )
             }
-        }
+        })
+
+    async def _execute_in_sandbox(self, request_json):
+        """Execute request in Claude sandbox via Context API."""
+        response = await self.context_api_client.post_async(
+            endpoint=f"/instances/{self.instance_id}/codeSessions/{self.session_id}/executeCode",
+            data=json.dumps({"code_to_execute": request_json})
+        )
+        return response
 ```
 
 ---
 
-## 4. Sandbox Container Infrastructure
+## 5. Claude Code Tool Implementation
 
-### 4.1 Custom Container Image
+### 5.1 Tool Input Model
 
-Create a new Docker image for the Claude Code agent sandbox:
+**Location**: `src/python/plugins/agent_claude_code/pkg/foundationallm_agent_plugins_claude_code/tools/foundationallm_claude_code_tool_input.py`
 
-**Location**: `src/python/ClaudeCodeSandbox/`
+```python
+from typing import Optional, List
+from pydantic import BaseModel, Field
+
+class FoundationaLLMClaudeCodeToolInput(BaseModel):
+    """Input data model for the Claude Code tool."""
+    prompt: str = Field(
+        description="The task description or question for Claude Code to process."
+    )
+    file_names: List[str] = Field(
+        default=[],
+        description="List of file names from the conversation to provide as context."
+    )
+```
+
+### 5.2 Claude Code Tool
+
+**Location**: `src/python/plugins/agent_claude_code/pkg/foundationallm_agent_plugins_claude_code/tools/foundationallm_claude_code_tool.py`
+
+```python
+"""
+FoundationaLLMClaudeCodeTool: A tool for executing tasks using Claude's agentic capabilities.
+
+This tool follows the same pattern as FoundationaLLMCodeInterpreterTool:
+1. Uses code sessions managed by Context API
+2. Uploads files via uploadFiles endpoint
+3. Executes via executeCode endpoint (which runs Claude's agentic loop)
+4. Downloads results via downloadFiles endpoint
+"""
+
+from typing import Optional, Tuple, Type, List, ClassVar, Any
+from uuid import uuid4
+import json
+
+from langchain_core.callbacks import AsyncCallbackManagerForToolRun
+from langchain_core.runnables import RunnableConfig
+from langchain_core.tools import ToolException
+from pydantic import BaseModel
+
+from foundationallm.config import Configuration, UserIdentity
+from foundationallm.langchain.common import FoundationaLLMToolBase, FoundationaLLMToolResult
+from foundationallm.models.agents import AgentTool
+from foundationallm.models.constants import ContentArtifactTypeNames, RunnableConfigKeys
+from foundationallm.models.orchestration import CompletionRequestObjectKeys, ContentArtifact
+from foundationallm.models.resource_providers.configuration import APIEndpointConfiguration
+from foundationallm.services import HttpClientService
+
+from .foundationallm_claude_code_tool_input import FoundationaLLMClaudeCodeToolInput
+
+
+class FoundationaLLMClaudeCodeTool(FoundationaLLMToolBase):
+    """A tool for executing complex tasks using Claude's agentic capabilities."""
+    
+    args_schema: Type[BaseModel] = FoundationaLLMClaudeCodeToolInput
+    DYNAMIC_SESSION_ENDPOINT: ClassVar[str] = "code_session_endpoint"
+    DYNAMIC_SESSION_ID: ClassVar[str] = "code_session_id"
+
+    def __init__(
+        self,
+        tool_config: AgentTool,
+        objects: dict,
+        user_identity: UserIdentity,
+        config: Configuration,
+        intercept_http_calls: bool = False
+    ):
+        super().__init__(tool_config, objects, user_identity, config)
+        
+        # Get Context API client (same pattern as Code Interpreter)
+        context_api_endpoint_configuration = APIEndpointConfiguration(
+            **objects.get(CompletionRequestObjectKeys.CONTEXT_API_ENDPOINT_CONFIGURATION, None)
+        )
+        if context_api_endpoint_configuration:
+            self.context_api_client = HttpClientService(
+                context_api_endpoint_configuration,
+                user_identity,
+                config
+            )
+        else:
+            raise ToolException("Context API endpoint configuration is required.")
+        
+        self.instance_id = objects.get(CompletionRequestObjectKeys.INSTANCE_ID)
+        
+        # Tool configuration
+        self.max_turns = tool_config.properties.get('max_turns', 20) if tool_config.properties else 20
+        self.allowed_capabilities = tool_config.properties.get(
+            'allowed_capabilities', 
+            ['bash', 'file_read', 'file_write']
+        ) if tool_config.properties else ['bash', 'file_read', 'file_write']
+
+    def _run(self, *args, **kwargs):
+        raise ToolException("This tool does not support synchronous execution.")
+
+    async def _arun(
+        self,
+        prompt: str,
+        file_names: Optional[List[str]] = None,
+        run_manager: Optional[AsyncCallbackManagerForToolRun] = None,
+        runnable_config: RunnableConfig = None,
+        **kwargs
+    ) -> Tuple[str, FoundationaLLMToolResult]:
+        """Execute Claude Code tool asynchronously."""
+        
+        file_names = file_names or []
+        content_artifacts = []
+        input_tokens = 0
+        output_tokens = 0
+        
+        # Get session info from runnable_config (set by OrchestrationBuilder)
+        session_id = runnable_config['configurable'][self.tool_config.name][self.DYNAMIC_SESSION_ID]
+        
+        # Get original prompts for context
+        user_prompt = runnable_config['configurable'].get(RunnableConfigKeys.ORIGINAL_USER_PROMPT)
+        user_prompt_rewrite = runnable_config['configurable'].get(RunnableConfigKeys.ORIGINAL_USER_PROMPT_REWRITE)
+        conversation_id = runnable_config['configurable'].get(RunnableConfigKeys.CONVERSATION_ID)
+        
+        llm_prompt = prompt or user_prompt_rewrite or user_prompt
+        
+        # 1. Upload files to the code session
+        self.context_api_client.headers['X-USER-IDENTITY'] = self.user_identity.model_dump_json()
+        
+        operation_response = await self.context_api_client.post_async(
+            endpoint=f"/instances/{self.instance_id}/codeSessions/{session_id}/uploadFiles",
+            data=json.dumps({"file_names": file_names})
+        )
+        operation_id = operation_response['operation_id']
+        
+        # Get initial file list
+        beginning_files = await self.context_api_client.post_async(
+            endpoint=f"/instances/{self.instance_id}/codeSessions/{session_id}/downloadFiles",
+            data=json.dumps({"operation_id": operation_id})
+        )
+        beginning_files_list = beginning_files.get('file_records', {})
+        
+        # 2. Build Claude execution request
+        # The "code" sent to executeCode is actually a JSON payload for Claude
+        claude_request = self._build_claude_request(
+            llm_prompt, 
+            conversation_id,
+            file_names
+        )
+        
+        try:
+            # 3. Execute via Claude sandbox
+            execution_response = await self.context_api_client.post_async(
+                endpoint=f"/instances/{self.instance_id}/codeSessions/{session_id}/executeCode",
+                data=json.dumps({"code_to_execute": claude_request})
+            )
+            
+            # 4. Get new files created by Claude
+            files_response = await self.context_api_client.post_async(
+                endpoint=f"/instances/{self.instance_id}/codeSessions/{session_id}/downloadFiles",
+                data=json.dumps({"operation_id": operation_id})
+            )
+            files_list = files_response.get('file_records', {})
+            
+            # Filter to only new files
+            new_files = {k: v for k, v in files_list.items() if k not in beginning_files_list}
+            
+            # Create content artifacts for new files
+            for file_name, file_data in new_files.items():
+                content_artifacts.append(ContentArtifact(
+                    id=self.name,
+                    title=f'{self.name} (file)',
+                    type=ContentArtifactTypeNames.FILE,
+                    filepath=file_name,
+                    metadata={
+                        'file_object_id': file_data['file_object_id'],
+                        'original_file_name': file_data['file_name'],
+                        'file_path': file_data['file_path'],
+                        'file_size': str(file_data['file_size_bytes']),
+                        'content_type': file_data['content_type'],
+                        'conversation_id': file_data['conversation_id']
+                    }
+                ))
+            
+            # Extract response
+            final_response = execution_response.get('execution_result', '')
+            if execution_response.get('status') == 'Failed':
+                final_response = f"Claude Code execution failed: {execution_response.get('error_output', 'Unknown error')}"
+            
+            # Extract token usage from response
+            input_tokens = execution_response.get('input_tokens', 0)
+            output_tokens = execution_response.get('output_tokens', 0)
+            
+        except Exception as e:
+            final_response = f"Claude Code execution error: {str(e)}"
+        
+        # Create execution artifact
+        content_artifacts.append(ContentArtifact(
+            id=self.name,
+            title=self.name,
+            type=ContentArtifactTypeNames.TOOL_EXECUTION,
+            filepath=str(uuid4()),
+            metadata={
+                'original_user_prompt': user_prompt_rewrite or user_prompt,
+                'tool_input_prompt': prompt,
+                'tool_input_files': ', '.join(file_names),
+                'tool_result': final_response
+            }
+        ))
+        
+        return final_response, FoundationaLLMToolResult(
+            content=final_response,
+            content_artifacts=content_artifacts,
+            input_tokens=input_tokens,
+            output_tokens=output_tokens
+        )
+
+    def _build_claude_request(
+        self, 
+        prompt: str, 
+        conversation_id: str,
+        file_names: List[str]
+    ) -> str:
+        """Build the JSON request for Claude sandbox execution."""
+        return json.dumps({
+            "prompt": prompt,
+            "conversation_id": conversation_id,
+            "files": file_names,
+            "config": {
+                "max_turns": self.max_turns,
+                "allowed_capabilities": self.allowed_capabilities
+            }
+        })
+```
+
+---
+
+## 6. Sandbox Container Infrastructure
+
+### 6.1 Container Design Philosophy
+
+**Key Insight**: We do NOT need to build a custom web server in the container. Instead, we implement the **standard Azure Container Apps Dynamic Sessions API contract** that the existing `AzureContainerAppsCustomContainerService` already knows how to call.
+
+The container must implement these endpoints:
+
+| Endpoint | Method | Request | Response |
+|----------|--------|---------|----------|
+| `/files/upload` | POST | multipart/form-data | `{"success": true}` |
+| `/files` | GET | `?identifier={sessionId}` | File listing JSON |
+| `/files/download` | POST | `{"file_name": "..."}` | File content stream |
+| `/files/delete` | POST | `?identifier={sessionId}` | `{"success": true}` |
+| `/code/execute` | POST | `{"code": "..."}` | `{"detail": {"output": "...", "error": "...", "results": "..."}}` |
+
+### 6.2 Custom Container Image
+
+**Location**: `src/containers/claude-code-sandbox/`
 
 ```dockerfile
 # Dockerfile
@@ -389,120 +721,226 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # GitHub CLI
-RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg \
-    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
+RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg \
+    | dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg \
+    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" \
+    | tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
     && apt-get update \
     && apt-get install -y gh
 
-# Create sandbox user
-RUN useradd -m -s /bin/bash sandbox
-WORKDIR /home/sandbox
+# Create sandbox user and directories
+RUN useradd -m -s /bin/bash sandbox \
+    && mkdir -p /mnt/data \
+    && chown sandbox:sandbox /mnt/data
 
-# Install Claude Agent SDK
+WORKDIR /app
+
+# Install Python dependencies
 COPY requirements.txt .
 RUN pip3 install --no-cache-dir -r requirements.txt
 
-# Copy sandbox orchestrator
-COPY sandbox_orchestrator/ /app/
-WORKDIR /app
+# Copy the Dynamic Sessions API server
+COPY app/ /app/
 
-# Expose API port
+# Expose API port (standard Dynamic Sessions port)
 EXPOSE 8080
 
-# Run as non-root user
+# Run as non-root
 USER sandbox
 
-CMD ["python3", "main.py"]
+# Start the API server
+CMD ["python3", "server.py"]
 ```
 
-### 4.2 Sandbox Orchestrator
+### 6.3 Dynamic Sessions API Implementation
 
-The sandbox orchestrator manages Claude SDK execution within the container:
+The container implements the Dynamic Sessions API contract, with `/code/execute` running the Claude agentic loop:
 
 ```python
-# sandbox_orchestrator/main.py
+# app/server.py
 """
-Claude Code Sandbox Orchestrator
-Manages Claude SDK execution within the secure container environment.
+Claude Code Sandbox - Dynamic Sessions API Implementation
+
+Implements the Azure Container Apps Dynamic Sessions API contract,
+with /code/execute running Claude's agentic loop.
 """
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, File, UploadFile, Query, HTTPException
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from typing import List, Dict, Optional
 import anthropic
 import asyncio
+import json
 import os
+from pathlib import Path
 
 app = FastAPI(title="Claude Code Sandbox")
 
-class ExecuteRequest(BaseModel):
-    operation_id: str
-    conversation_id: str
-    user_prompt: str
-    message_history: List[Dict[str, str]]
-    files: List[Dict[str, str]]
-    config: Dict
+# Standard Dynamic Sessions file mount point
+DATA_DIR = Path("/mnt/data")
 
-class ExecuteResponse(BaseModel):
-    response: str
-    files: List[Dict[str, str]]
-    tokens: Dict[str, int]
-    tool_calls: List[Dict]
+# ============================================================
+# File Operations (Standard Dynamic Sessions API)
+# ============================================================
 
-@app.post("/execute", response_model=ExecuteResponse)
-async def execute(request: ExecuteRequest):
-    """Execute a Claude Code agent request."""
+@app.post("/files/upload")
+async def upload_file(
+    file: UploadFile = File(...),
+    identifier: str = Query(...)
+):
+    """Upload a file to the session workspace."""
+    session_dir = DATA_DIR / identifier
+    session_dir.mkdir(parents=True, exist_ok=True)
+    
+    file_path = session_dir / file.filename
+    with open(file_path, "wb") as f:
+        content = await file.read()
+        f.write(content)
+    
+    return {"success": True, "filename": file.filename}
+
+@app.get("/files")
+async def list_files(
+    identifier: str = Query(...),
+    path: Optional[str] = Query(default="")
+):
+    """List files in the session workspace."""
+    session_dir = DATA_DIR / identifier
+    if path:
+        session_dir = session_dir / path.lstrip("/")
+    
+    if not session_dir.exists():
+        return {"value": []}
+    
+    items = []
+    for item in session_dir.iterdir():
+        items.append({
+            "name": item.name,
+            "type": "directory" if item.is_dir() else "file",
+            "size": item.stat().st_size if item.is_file() else 0,
+            "contentType": _get_content_type(item.name) if item.is_file() else None
+        })
+    
+    return {"value": items}
+
+@app.post("/files/download")
+async def download_file(
+    identifier: str = Query(...),
+    body: dict = None
+):
+    """Download a file from the session workspace."""
+    file_name = body.get("file_name", "")
+    session_dir = DATA_DIR / identifier
+    file_path = session_dir / file_name.lstrip("/")
+    
+    if not file_path.exists():
+        raise HTTPException(404, f"File not found: {file_name}")
+    
+    return StreamingResponse(
+        open(file_path, "rb"),
+        media_type=_get_content_type(file_name)
+    )
+
+@app.post("/files/delete")
+async def delete_files(identifier: str = Query(...)):
+    """Delete all files from the session workspace."""
+    import shutil
+    session_dir = DATA_DIR / identifier
+    if session_dir.exists():
+        shutil.rmtree(session_dir)
+        session_dir.mkdir(parents=True, exist_ok=True)
+    return {"success": True}
+
+# ============================================================
+# Code Execution (Claude Agentic Loop)
+# ============================================================
+
+class CodeExecuteRequest(BaseModel):
+    code: str  # JSON payload containing prompt and config
+
+@app.post("/code/execute")
+async def execute_code(
+    request: CodeExecuteRequest,
+    identifier: str = Query(...)
+):
+    """
+    Execute Claude's agentic loop.
+    
+    The 'code' field contains a JSON payload with:
+    - prompt: The user's task/question
+    - conversation_id: For context
+    - files: List of available files
+    - config: max_turns, allowed_capabilities
+    """
     try:
-        # Initialize Claude client
-        client = anthropic.Anthropic(
-            api_key=os.environ.get("ANTHROPIC_API_KEY")
+        payload = json.loads(request.code)
+        prompt = payload.get("prompt", "")
+        config = payload.get("config", {})
+        
+        session_dir = DATA_DIR / identifier
+        
+        # Run Claude agentic loop
+        result = await run_claude_agent(
+            prompt=prompt,
+            workspace_dir=session_dir,
+            max_turns=config.get("max_turns", 20),
+            allowed_capabilities=config.get("allowed_capabilities", [])
         )
         
-        # Build conversation history
-        messages = _build_messages(
-            request.message_history,
-            request.user_prompt
-        )
+        # Return in Dynamic Sessions format
+        return {
+            "detail": {
+                "output": result.get("stdout", ""),
+                "error": result.get("stderr", ""),
+                "results": result.get("response", "")
+            },
+            "input_tokens": result.get("input_tokens", 0),
+            "output_tokens": result.get("output_tokens", 0)
+        }
         
-        # Configure tools based on request config
-        tools = _configure_tools(request.config)
-        
-        # Execute Claude agent loop
-        result = await _run_agent_loop(
-            client=client,
-            messages=messages,
-            tools=tools,
-            files=request.files,
-            config=request.config
-        )
-        
-        return ExecuteResponse(
-            response=result['response'],
-            files=result['generated_files'],
-            tokens=result['tokens'],
-            tool_calls=result['tool_calls']
-        )
+    except json.JSONDecodeError:
+        # Fallback: treat as raw Python code (backwards compatible)
+        # This allows the container to also work as a standard code interpreter
+        return await execute_python_code(request.code, identifier)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        return {
+            "detail": {
+                "output": "",
+                "error": str(e),
+                "results": ""
+            }
+        }
 
-async def _run_agent_loop(
-    client,
-    messages: List,
-    tools: List,
-    files: List,
-    config: Dict
+async def run_claude_agent(
+    prompt: str,
+    workspace_dir: Path,
+    max_turns: int,
+    allowed_capabilities: List[str]
 ) -> Dict:
-    """Run the Claude agent agentic loop with tool use."""
-    generated_files = []
-    tool_calls = []
+    """Run Claude's agentic loop with tool use."""
+    
+    client = anthropic.Anthropic(
+        api_key=os.environ.get("ANTHROPIC_API_KEY")
+    )
+    
+    # Configure available tools
+    tools = build_tools(allowed_capabilities, workspace_dir)
+    
+    # System prompt for Claude Code behavior
+    system_prompt = build_system_prompt(workspace_dir, allowed_capabilities)
+    
+    messages = [{"role": "user", "content": prompt}]
+    
     total_input_tokens = 0
     total_output_tokens = 0
+    all_output = []
     
-    while True:
+    for turn in range(max_turns):
         response = client.messages.create(
-            model="claude-sonnet-4-20250514",  # or configured model
+            model=os.environ.get("CLAUDE_MODEL", "claude-sonnet-4-20250514"),
             max_tokens=8192,
-            system=_get_system_prompt(config),
+            system=system_prompt,
             messages=messages,
             tools=tools
         )
@@ -510,902 +948,796 @@ async def _run_agent_loop(
         total_input_tokens += response.usage.input_tokens
         total_output_tokens += response.usage.output_tokens
         
-        # Check if we need to execute tools
-        if response.stop_reason == "tool_use":
-            for block in response.content:
-                if block.type == "tool_use":
-                    tool_result = await _execute_tool(
-                        block.name,
-                        block.input,
-                        files,
-                        config
-                    )
-                    tool_calls.append({
-                        'name': block.name,
-                        'input': block.input,
-                        'result': tool_result
-                    })
-                    
-                    # Track generated files
-                    if block.name in ['write_file', 'bash'] and tool_result.get('files'):
-                        generated_files.extend(tool_result['files'])
-                    
-                    # Add tool result to messages
-                    messages.append({
-                        'role': 'assistant',
-                        'content': response.content
-                    })
-                    messages.append({
-                        'role': 'user',
-                        'content': [{
-                            'type': 'tool_result',
-                            'tool_use_id': block.id,
-                            'content': tool_result['output']
-                        }]
-                    })
-        else:
-            # Final response
-            final_response = ""
+        if response.stop_reason == "end_turn":
+            # Claude is done
+            final_text = ""
             for block in response.content:
                 if hasattr(block, 'text'):
-                    final_response += block.text
+                    final_text += block.text
             
             return {
-                'response': final_response,
-                'generated_files': generated_files,
-                'tokens': {
-                    'input': total_input_tokens,
-                    'output': total_output_tokens
-                },
-                'tool_calls': tool_calls
+                "response": final_text,
+                "stdout": "\n".join(all_output),
+                "stderr": "",
+                "input_tokens": total_input_tokens,
+                "output_tokens": total_output_tokens
             }
-
-def _configure_tools(config: Dict) -> List:
-    """Configure available tools based on request config."""
-    all_tools = {
-        'read_file': {
-            'name': 'read_file',
-            'description': 'Read the contents of a file at the specified path.',
-            'input_schema': {
-                'type': 'object',
-                'properties': {
-                    'path': {'type': 'string', 'description': 'File path to read'}
-                },
-                'required': ['path']
-            }
-        },
-        'write_file': {
-            'name': 'write_file',
-            'description': 'Write content to a file at the specified path.',
-            'input_schema': {
-                'type': 'object',
-                'properties': {
-                    'path': {'type': 'string', 'description': 'File path to write'},
-                    'content': {'type': 'string', 'description': 'Content to write'}
-                },
-                'required': ['path', 'content']
-            }
-        },
-        'bash': {
-            'name': 'bash',
-            'description': 'Execute a bash command in the sandbox environment.',
-            'input_schema': {
-                'type': 'object',
-                'properties': {
-                    'command': {'type': 'string', 'description': 'Bash command to execute'}
-                },
-                'required': ['command']
-            }
-        },
-        'search': {
-            'name': 'web_search',
-            'description': 'Search the web for information.',
-            'input_schema': {
-                'type': 'object',
-                'properties': {
-                    'query': {'type': 'string', 'description': 'Search query'}
-                },
-                'required': ['query']
-            }
-        },
-        'github': {
-            'name': 'github',
-            'description': 'Interact with GitHub repositories.',
-            'input_schema': {
-                'type': 'object',
-                'properties': {
-                    'action': {'type': 'string', 'enum': ['clone', 'commit', 'push', 'create_pr']},
-                    'repo': {'type': 'string'},
-                    'params': {'type': 'object'}
-                },
-                'required': ['action']
-            }
-        }
-    }
-    
-    allowed = config.get('tools', list(all_tools.keys()))
-    return [all_tools[t] for t in allowed if t in all_tools]
-```
-
-### 4.3 Container Configuration
-
-**Location**: `src/dotnet/ContextEngine/Models/Configuration/ClaudeCodeContainerServiceSettings.cs`
-
-```csharp
-namespace FoundationaLLM.Context.Models.Configuration
-{
-    /// <summary>
-    /// Settings for the Claude Code Agent container service.
-    /// </summary>
-    public class ClaudeCodeContainerServiceSettings : AzureContainerAppsServiceSettings
-    {
-        /// <summary>
-        /// Whether containers should allow outbound internet access by default.
-        /// </summary>
-        public bool DefaultAllowInternetAccess { get; set; } = false;
-
-        /// <summary>
-        /// Default memory limit for containers in MB.
-        /// </summary>
-        public int DefaultMemoryLimitMb { get; set; } = 2048;
-
-        /// <summary>
-        /// Default CPU allocation for containers.
-        /// </summary>
-        public double DefaultCpuCores { get; set; } = 1.0;
-
-        /// <summary>
-        /// Maximum execution time before container is terminated (seconds).
-        /// </summary>
-        public int MaxExecutionTimeSeconds { get; set; } = 600;
-
-        /// <summary>
-        /// Container image name for Claude Code sandbox.
-        /// </summary>
-        public string ContainerImage { get; set; } = "foundationallm/claude-code-sandbox:latest";
-    }
-}
-```
-
----
-
-## 5. Claude Agent SDK Integration
-
-### 5.1 SDK Configuration
-
-The Claude Agent SDK will be integrated within the sandbox container with the following capabilities:
-
-| Capability | Description | Configuration |
-|------------|-------------|---------------|
-| **Read Files** | Read file contents from workspace | Always enabled |
-| **Write Files** | Create/modify files in workspace | Always enabled |
-| **Bash Commands** | Execute shell commands | Always enabled |
-| **Code Execution** | Run Python/Node/etc. code | Always enabled |
-| **Web Search** | Search the internet | Requires `allow_internet_access: true` |
-| **GitHub Operations** | Clone, commit, push, create PRs | Requires GitHub config |
-
-### 5.2 Tool Implementation
-
-Each Claude Code tool maps to sandbox operations:
-
-```python
-# sandbox_orchestrator/tools.py
-
-async def execute_read_file(params: dict) -> dict:
-    """Read a file from the sandbox filesystem."""
-    path = params['path']
-    try:
-        with open(f"/workspace/{path}", 'r') as f:
-            content = f.read()
-        return {'output': content, 'success': True}
-    except Exception as e:
-        return {'output': str(e), 'success': False}
-
-async def execute_write_file(params: dict) -> dict:
-    """Write a file to the sandbox filesystem."""
-    path = params['path']
-    content = params['content']
-    try:
-        full_path = f"/workspace/{path}"
-        os.makedirs(os.path.dirname(full_path), exist_ok=True)
-        with open(full_path, 'w') as f:
-            f.write(content)
-        return {
-            'output': f'Successfully wrote to {path}',
-            'success': True,
-            'files': [{'path': path, 'size': len(content)}]
-        }
-    except Exception as e:
-        return {'output': str(e), 'success': False}
-
-async def execute_bash(params: dict, config: dict) -> dict:
-    """Execute a bash command in the sandbox."""
-    command = params['command']
-    timeout = config.get('max_execution_time', 300)
-    
-    # Security: Block dangerous commands if internet disabled
-    if not config.get('allow_internet', False):
-        blocked = ['curl', 'wget', 'nc', 'netcat']
-        if any(cmd in command for cmd in blocked):
-            return {
-                'output': 'Network commands are disabled for this agent.',
-                'success': False
-            }
-    
-    try:
-        result = await asyncio.create_subprocess_shell(
-            command,
-            stdout=asyncio.subprocess.PIPE,
-            stderr=asyncio.subprocess.PIPE,
-            cwd='/workspace'
-        )
-        stdout, stderr = await asyncio.wait_for(
-            result.communicate(),
-            timeout=timeout
-        )
         
-        return {
-            'output': stdout.decode() + stderr.decode(),
-            'success': result.returncode == 0,
-            'return_code': result.returncode
-        }
-    except asyncio.TimeoutError:
-        return {'output': 'Command timed out', 'success': False}
-    except Exception as e:
-        return {'output': str(e), 'success': False}
-
-async def execute_github(params: dict, config: dict) -> dict:
-    """Execute GitHub operations using gh CLI."""
-    action = params['action']
+        elif response.stop_reason == "tool_use":
+            # Execute tool calls
+            tool_results = []
+            
+            for block in response.content:
+                if block.type == "tool_use":
+                    result = await execute_tool(
+                        block.name, 
+                        block.input, 
+                        workspace_dir,
+                        allowed_capabilities
+                    )
+                    all_output.append(f"[{block.name}] {result.get('output', '')[:500]}")
+                    
+                    tool_results.append({
+                        "type": "tool_result",
+                        "tool_use_id": block.id,
+                        "content": result.get("output", "")
+                    })
+            
+            # Add assistant response and tool results to messages
+            messages.append({"role": "assistant", "content": response.content})
+            messages.append({"role": "user", "content": tool_results})
     
-    if action == 'clone':
-        repo = params['repo']
-        cmd = f"gh repo clone {repo} /workspace/repo"
-    elif action == 'create_pr':
-        title = params['params'].get('title', 'PR from Claude Code')
-        body = params['params'].get('body', '')
-        cmd = f'gh pr create --title "{title}" --body "{body}"'
-    else:
-        return {'output': f'Unknown action: {action}', 'success': False}
+    # Max turns reached
+    return {
+        "response": "Maximum turns reached without completion.",
+        "stdout": "\n".join(all_output),
+        "stderr": "",
+        "input_tokens": total_input_tokens,
+        "output_tokens": total_output_tokens
+    }
+
+def build_tools(capabilities: List[str], workspace_dir: Path) -> List[Dict]:
+    """Build Claude tool definitions based on allowed capabilities."""
+    tools = []
     
-    return await execute_bash({'command': cmd}, config)
-```
-
----
-
-## 6. File Storage & Management
-
-### 6.1 File Persistence Strategy
-
-Files created by Claude Code agent are persisted to Azure Blob Storage with the following structure:
-
-```
-{storage-account}/
-└── claude-code-files/
-    └── {instance-id}/
-        └── {user-id}/
-            └── {conversation-id}/
-                ├── workspace/
-                │   ├── file1.py
-                │   ├── file2.txt
-                │   └── subdirectory/
-                │       └── file3.json
-                └── metadata.json
-```
-
-### 6.2 File Service Integration
-
-Extend the existing `FileService` to handle Claude Code files:
-
-**Location**: `src/dotnet/ContextEngine/Services/ClaudeCodeFileService.cs`
-
-```csharp
-public interface IClaudeCodeFileService
-{
-    /// <summary>
-    /// Persist files from a Claude Code session to blob storage.
-    /// </summary>
-    Task<List<ClaudeCodeFileRecord>> PersistSessionFilesAsync(
-        string instanceId,
-        string userId,
-        string conversationId,
-        string sessionId,
-        List<string> filePaths);
-    
-    /// <summary>
-    /// Restore files from blob storage to a new Claude Code session.
-    /// </summary>
-    Task RestoreSessionFilesAsync(
-        string instanceId,
-        string userId,
-        string conversationId,
-        string sessionId);
-    
-    /// <summary>
-    /// Get download URL for a specific file.
-    /// </summary>
-    Task<string> GetFileDownloadUrlAsync(
-        string instanceId,
-        string userId,
-        string conversationId,
-        string filePath);
-    
-    /// <summary>
-    /// Delete all files for a conversation.
-    /// </summary>
-    Task DeleteConversationFilesAsync(
-        string instanceId,
-        string userId,
-        string conversationId);
-}
-```
-
-### 6.3 File Access Security
-
-Files are secured using FoundationaLLM's existing security model:
-
-1. **User Isolation**: Each user can only access their own files
-2. **Conversation Scope**: Files are scoped to specific conversations
-3. **RBAC Integration**: Admin users can access all files for audit purposes
-4. **SAS Token Generation**: Secure, time-limited access URLs for file downloads
-
----
-
-## 7. Conversation History & Multi-Turn Support
-
-### 7.1 Conversation Persistence
-
-Claude Code agent conversations use the existing FoundationaLLM conversation storage:
-
-```csharp
-// Extended MessageHistoryItem for Claude Code
-public class ClaudeCodeMessageHistoryItem : MessageHistoryItem
-{
-    /// <summary>
-    /// Tool calls made during this message.
-    /// </summary>
-    [JsonPropertyName("tool_calls")]
-    public List<ClaudeCodeToolCall>? ToolCalls { get; set; }
-
-    /// <summary>
-    /// Files created/modified during this message.
-    /// </summary>
-    [JsonPropertyName("files_modified")]
-    public List<string>? FilesModified { get; set; }
-}
-
-public class ClaudeCodeToolCall
-{
-    [JsonPropertyName("tool_name")]
-    public string ToolName { get; set; }
-
-    [JsonPropertyName("input")]
-    public Dictionary<string, object> Input { get; set; }
-
-    [JsonPropertyName("output")]
-    public string Output { get; set; }
-
-    [JsonPropertyName("success")]
-    public bool Success { get; set; }
-}
-```
-
-### 7.2 Context Management
-
-The workflow manages conversation context:
-
-1. **Message History**: All previous messages passed to Claude
-2. **File History**: List of files in the workspace with their current state
-3. **Tool History**: Previous tool calls and their results (summarized)
-4. **Workspace State**: Current state of the workspace directory
-
-### 7.3 Context Window Management
-
-For long conversations, implement context windowing:
-
-```python
-def _prepare_context(
-    self,
-    message_history: List[MessageHistoryItem],
-    max_messages: int = 20,
-    max_tokens: int = 100000
-) -> List[Dict]:
-    """Prepare conversation context within token limits."""
-    
-    # Always include system context
-    context = [self._get_workspace_context()]
-    
-    # Add recent messages, respecting token limits
-    recent_messages = message_history[-max_messages:]
-    
-    # Summarize older messages if needed
-    if len(message_history) > max_messages:
-        summary = self._summarize_older_messages(
-            message_history[:-max_messages]
-        )
-        context.insert(0, {'role': 'system', 'content': summary})
-    
-    # Add recent messages
-    for msg in recent_messages:
-        context.append({
-            'role': msg.sender.lower(),
-            'content': msg.text
+    if "bash" in capabilities:
+        tools.append({
+            "name": "bash",
+            "description": "Execute a bash command in the workspace directory.",
+            "input_schema": {
+                "type": "object",
+                "properties": {
+                    "command": {"type": "string", "description": "The bash command to execute"}
+                },
+                "required": ["command"]
+            }
         })
     
-    return context
+    if "file_read" in capabilities:
+        tools.append({
+            "name": "read_file",
+            "description": "Read the contents of a file.",
+            "input_schema": {
+                "type": "object",
+                "properties": {
+                    "path": {"type": "string", "description": "Path to the file (relative to workspace)"}
+                },
+                "required": ["path"]
+            }
+        })
+    
+    if "file_write" in capabilities:
+        tools.append({
+            "name": "write_file",
+            "description": "Write content to a file, creating directories as needed.",
+            "input_schema": {
+                "type": "object",
+                "properties": {
+                    "path": {"type": "string", "description": "Path to the file"},
+                    "content": {"type": "string", "description": "Content to write"}
+                },
+                "required": ["path", "content"]
+            }
+        })
+    
+    if "github" in capabilities:
+        tools.append({
+            "name": "github",
+            "description": "Interact with GitHub using the gh CLI.",
+            "input_schema": {
+                "type": "object",
+                "properties": {
+                    "command": {"type": "string", "description": "gh CLI command (e.g., 'repo clone owner/repo')"}
+                },
+                "required": ["command"]
+            }
+        })
+    
+    return tools
+
+async def execute_tool(
+    tool_name: str, 
+    tool_input: Dict, 
+    workspace_dir: Path,
+    capabilities: List[str]
+) -> Dict:
+    """Execute a tool and return the result."""
+    
+    if tool_name == "bash" and "bash" in capabilities:
+        command = tool_input.get("command", "")
+        try:
+            proc = await asyncio.create_subprocess_shell(
+                command,
+                stdout=asyncio.subprocess.PIPE,
+                stderr=asyncio.subprocess.PIPE,
+                cwd=workspace_dir
+            )
+            stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=300)
+            return {
+                "output": stdout.decode() + (f"\nSTDERR: {stderr.decode()}" if stderr else ""),
+                "success": proc.returncode == 0
+            }
+        except asyncio.TimeoutError:
+            return {"output": "Command timed out", "success": False}
+        except Exception as e:
+            return {"output": str(e), "success": False}
+    
+    elif tool_name == "read_file" and "file_read" in capabilities:
+        path = workspace_dir / tool_input.get("path", "").lstrip("/")
+        try:
+            return {"output": path.read_text(), "success": True}
+        except Exception as e:
+            return {"output": str(e), "success": False}
+    
+    elif tool_name == "write_file" and "file_write" in capabilities:
+        path = workspace_dir / tool_input.get("path", "").lstrip("/")
+        try:
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(tool_input.get("content", ""))
+            return {"output": f"Wrote {len(tool_input.get('content', ''))} bytes to {path.name}", "success": True}
+        except Exception as e:
+            return {"output": str(e), "success": False}
+    
+    elif tool_name == "github" and "github" in capabilities:
+        command = f"gh {tool_input.get('command', '')}"
+        return await execute_tool("bash", {"command": command}, workspace_dir, ["bash"])
+    
+    return {"output": f"Unknown or disabled tool: {tool_name}", "success": False}
+
+def build_system_prompt(workspace_dir: Path, capabilities: List[str]) -> str:
+    """Build the system prompt for Claude."""
+    cap_str = ", ".join(capabilities)
+    return f"""You are Claude Code, an AI assistant that helps with software development tasks.
+
+You have access to a workspace directory at {workspace_dir} where you can read and write files.
+
+Available capabilities: {cap_str}
+
+Guidelines:
+- Use tools to explore and modify files as needed
+- Write clean, well-documented code
+- Test your changes when possible
+- Explain what you're doing and why
+- If you need to install packages, use pip or npm as appropriate
+"""
+
+def _get_content_type(filename: str) -> str:
+    """Get MIME type from filename."""
+    ext = Path(filename).suffix.lower()
+    types = {
+        ".py": "text/x-python",
+        ".js": "application/javascript",
+        ".json": "application/json",
+        ".txt": "text/plain",
+        ".md": "text/markdown",
+        ".html": "text/html",
+        ".css": "text/css",
+        ".png": "image/png",
+        ".jpg": "image/jpeg",
+        ".gif": "image/gif",
+    }
+    return types.get(ext, "application/octet-stream")
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8080)
 ```
 
 ---
 
-## 8. Security & Permissions
+## 7. File Storage & Security
 
-### 8.1 Security Model
+### 7.1 Leveraging Existing FileService
 
-| Layer | Security Measure |
-|-------|------------------|
-| **Authentication** | FoundationaLLM user authentication (Entra ID) |
-| **Authorization** | RBAC for agent access, file access |
-| **Container Isolation** | Each session runs in isolated container |
-| **Network Isolation** | Optional internet access per agent config |
-| **File Isolation** | Per-user, per-conversation file storage |
-| **Secrets Management** | API keys stored in Key Vault |
+The Claude Code tool uses the **existing FileService** for all file persistence. This provides:
 
-### 8.2 Agent Permissions
+1. **UPN-based ownership**: Files are tagged with user's UPN for access control
+2. **Conversation scoping**: Files are associated with conversation IDs
+3. **Automatic security**: Owner verification on all file retrieval operations
 
-New permissions for Claude Code agents:
+### 7.2 File Flow
 
-```csharp
-public static class ClaudeCodePermissions
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                         File Flow in Claude Code                            │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  UPLOAD (User files → Sandbox):                                             │
+│  1. User uploads file via UI                                                │
+│  2. FileService.CreateFileForConversation() stores to blob + CosmosDB       │
+│  3. Tool calls Context API: POST /codeSessions/{id}/uploadFiles             │
+│  4. CodeSessionService.UploadFilesToCodeSession():                          │
+│     - Gets file content via FileService.GetFileContent()                    │
+│     - Uploads to Dynamic Sessions container at /mnt/data/{sessionId}/       │
+│                                                                             │
+│  DOWNLOAD (Sandbox files → User):                                           │
+│  1. Claude creates files at /mnt/data/{sessionId}/                          │
+│  2. Tool calls Context API: POST /codeSessions/{id}/downloadFiles           │
+│  3. CodeSessionService.DownloadFilesFromCodeSession():                      │
+│     - Gets file list from Dynamic Sessions                                  │
+│     - Filters to NEW files only (not originally uploaded)                   │
+│     - For each new file:                                                    │
+│       * Downloads from Dynamic Sessions container                           │
+│       * Saves via FileService.CreateFileForConversation()                   │
+│       * Returns ContextFileRecord with file_object_id                       │
+│  4. Tool creates ContentArtifact with file metadata                         │
+│  5. UI renders download links via Context API file endpoints                │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+### 7.3 File Record Structure
+
+Files are stored in CosmosDB with this structure (from `ContextFileRecord`):
+
+```json
 {
-    /// <summary>
-    /// Permission to use Claude Code agents.
-    /// </summary>
-    public const string UseClaudeCodeAgent = "ClaudeCode.Use";
-
-    /// <summary>
-    /// Permission to configure internet access.
-    /// </summary>
-    public const string ConfigureInternetAccess = "ClaudeCode.ConfigureInternet";
-
-    /// <summary>
-    /// Permission to configure GitHub integration.
-    /// </summary>
-    public const string ConfigureGitHub = "ClaudeCode.ConfigureGitHub";
-
-    /// <summary>
-    /// Permission to access files from all users (admin).
-    /// </summary>
-    public const string AccessAllFiles = "ClaudeCode.AccessAllFiles";
+  "id": "unique-file-id",
+  "instanceId": "fllm-instance-id",
+  "conversationId": "conversation-123",
+  "agentName": "claude-code-assistant",
+  "fileName": "output.py",
+  "filePath": "file/conversations/conversation-123/output.py",
+  "contentType": "text/x-python",
+  "fileSizeBytes": 1234,
+  "fileProcessingType": "None",
+  "upn": "user@example.com",
+  "origin": "CodeSession",
+  "metadata": {
+    "codeSessionFileUploadRecordId": "upload-record-id",
+    "codeSessionFilePath": "/output"
+  }
 }
 ```
 
-### 8.3 Sandbox Security
+### 7.4 Security Enforcement
 
-Container security configuration:
+From `FileService.GetFileContent()`:
 
-```yaml
-# Azure Container Apps configuration
-properties:
-  configuration:
-    secrets:
-      - name: anthropic-api-key
-        keyVaultUrl: https://{keyvault}.vault.azure.net/secrets/AnthropicApiKey
-    activeRevisionsMode: Single
-    ingress:
-      external: false  # Internal only
-      targetPort: 8080
-  template:
-    containers:
-      - name: claude-code-sandbox
-        image: foundationallm/claude-code-sandbox:latest
-        resources:
-          cpu: 1.0
-          memory: 2Gi
-        securityContext:
-          runAsNonRoot: true
-          readOnlyRootFilesystem: false  # Needed for file operations
-          capabilities:
-            drop:
-              - ALL
-    scale:
-      minReplicas: 0
-      maxReplicas: 10
+```csharp
+// Owner verification (unless bypassed by admin role)
+var bypassOwnerCheck = await ShouldBypassOwnerCheck(instanceId, userIdentity);
+
+var fileRecords = await _cosmosDBService.GetFileRecords(
+    instanceId,
+    conversationId,
+    fileName,
+    userIdentity.UPN!,      // <-- Only returns files owned by this user
+    bypassOwnerCheck);       // <-- Unless user is Data Pipeline Execution Manager
 ```
+
+### 7.5 File Access Patterns
+
+| Access Type | Security Check | Method |
+|-------------|----------------|--------|
+| User downloads own file | UPN match required | `FileService.GetFileContent()` |
+| Admin downloads any file | Role-based bypass | `ShouldBypassOwnerCheck()` |
+| Tool accesses file | X-USER-IDENTITY header | Context API middleware |
+| UI downloads file | Session token + UPN | Core API → Context API |
+
+---
+
+## 8. Conversation History & Multi-Turn Support
+
+### 8.1 Leveraging Existing Patterns
+
+FoundationaLLM already provides robust conversation history via:
+
+1. **MessageHistory**: Passed to workflows via `CompletionRequest.MessageHistory`
+2. **FileHistory**: Files associated with the conversation via `CompletionRequest.FileHistory`
+3. **Session ID**: Code sessions are scoped to conversation via `sessionId = conversationId-toolName`
+
+### 8.2 Multi-Turn Flow
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                     Multi-Turn Claude Code Conversation                     │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  Turn 1: "Create a Python script to analyze sales data"                     │
+│  ├─ OrchestrationBuilder creates code session: conv-123-Claude-Code         │
+│  ├─ Files uploaded to /mnt/data/conv-123-Claude-Code/                       │
+│  ├─ Claude creates analyze_sales.py                                         │
+│  └─ New files downloaded & saved via FileService (owner = user UPN)         │
+│                                                                             │
+│  Turn 2: "Add visualization to that script"                                 │
+│  ├─ Same session ID: conv-123-Claude-Code (session persists)                │
+│  ├─ MessageHistory includes Turn 1 exchange                                 │
+│  ├─ FileHistory includes analyze_sales.py from Turn 1                       │
+│  ├─ Claude modifies analyze_sales.py, creates charts.png                    │
+│  └─ Updated/new files saved via FileService                                 │
+│                                                                             │
+│  Turn 3: "Run the script and show me the results"                           │
+│  ├─ Same session, same workspace state preserved                            │
+│  ├─ Claude executes: python analyze_sales.py                                │
+│  └─ Output and generated files returned                                     │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+### 8.3 Session ID Strategy
+
+From existing code (`AzureContainerAppsServiceBase.GetNewSessionId`):
+
+```csharp
+protected virtual string GetNewSessionId(string conversationId, string context) =>
+    $"code-{conversationId}-{context}";  // e.g., "code-conv-123-Claude-Code"
+```
+
+This ensures:
+- **Same conversation**: Same session, workspace persists
+- **Different tools**: Each tool gets its own session
+- **New conversation**: Fresh session with clean workspace
+
+### 8.4 Conversation Context in Claude
+
+The Claude Code tool passes conversation history to the sandbox:
+
+```python
+def _build_claude_request(self, prompt, conversation_id, file_names):
+    """Build request including conversation context."""
+    return json.dumps({
+        "prompt": prompt,
+        "conversation_id": conversation_id,
+        "files": file_names,
+        "config": {
+            "max_turns": self.max_turns,
+            "allowed_capabilities": self.allowed_capabilities
+        }
+        # Note: Full message history is optionally passed for context
+        # But workspace state (files) is the primary form of memory
+    })
+```
+
+### 8.5 Workspace as Memory
+
+Claude Code's primary "memory" is the **workspace filesystem**:
+
+- Files created in previous turns persist in `/mnt/data/{sessionId}/`
+- Claude can read previous files to understand context
+- This is more reliable than summarizing conversation history
+- Matches how developers naturally work (code is the source of truth)
 
 ---
 
 ## 9. UI Integration
 
-### 9.1 User Portal Changes
+### 9.1 User Portal (Minimal Changes)
 
-Update the User Portal to support Claude Code agents:
+The Claude Code tool works within existing UI patterns:
 
-**File**: `src/ui/UserPortal/components/ChatMessage.vue`
+- **File Downloads**: Already supported via ContentArtifact file type
+- **Response Display**: Standard completion response rendering
+- **File Uploads**: Existing file upload mechanism
 
-Add rendering for Claude Code specific content:
+**Optional Enhancements**:
 
 ```vue
+<!-- Enhanced tool execution display in ChatMessage.vue -->
 <template>
-  <!-- Existing message rendering -->
-  
-  <!-- Claude Code specific content -->
-  <div v-if="isClaudeCodeMessage" class="claude-code-content">
-    <!-- Tool calls accordion -->
-    <Accordion v-if="message.toolCalls?.length">
-      <AccordionTab header="Tool Calls">
-        <div v-for="call in message.toolCalls" :key="call.id" class="tool-call">
-          <Tag :value="call.toolName" :severity="call.success ? 'success' : 'danger'" />
-          <pre v-if="call.output">{{ call.output }}</pre>
+  <div v-if="hasToolExecutionArtifacts" class="tool-execution-details">
+    <Accordion>
+      <AccordionTab header="Claude Code Activity">
+        <div v-for="artifact in toolExecutionArtifacts" :key="artifact.id">
+          <div class="tool-input">
+            <strong>Task:</strong> {{ artifact.metadata.tool_input_prompt }}
+          </div>
+          <div class="tool-result">
+            <strong>Result:</strong>
+            <pre>{{ artifact.metadata.tool_result }}</pre>
+          </div>
         </div>
       </AccordionTab>
     </Accordion>
-    
-    <!-- Generated files -->
-    <div v-if="message.filesModified?.length" class="files-section">
-      <h4>Files Modified</h4>
-      <ul>
-        <li v-for="file in message.filesModified" :key="file">
-          <a @click="downloadFile(file)">{{ file }}</a>
-        </li>
-      </ul>
-    </div>
   </div>
 </template>
 ```
 
 ### 9.2 Management Portal Changes
 
-Update agent creation to support Claude Code workflow:
+Add Claude Code tool configuration in agent editing:
 
-**File**: `src/ui/ManagementPortal/pages/agents/edit/[agentName].vue`
+**Tool Configuration Properties**:
 
-Add Claude Code specific configuration options:
+| Property | Type | UI Control |
+|----------|------|------------|
+| `code_session_required` | bool | Hidden (always true) |
+| `code_session_endpoint_provider` | string | Dropdown |
+| `code_session_language` | string | Hidden (ClaudeCode) |
+| `allow_internet_access` | bool | Toggle switch |
+| `max_turns` | int | Number input (1-50) |
+| `allowed_capabilities` | list | Checkbox group |
 
-- Toggle for internet access
-- Memory limit slider
-- Tool selection checkboxes
-- GitHub integration configuration
-- Anthropic model selection
+### 9.3 No New API Endpoints Required
 
-### 9.3 New Components
+Claude Code uses existing APIs:
 
-Create new UI components:
-
-1. **ClaudeCodeFileExplorer.vue**: Browse and manage workspace files
-2. **ClaudeCodeToolCallViewer.vue**: Display tool call details
-3. **ClaudeCodeConfigPanel.vue**: Agent configuration panel
-
----
-
-## 10. API Integration
-
-### 10.1 New API Endpoints
-
-**Core API Extensions**:
-
-```
-POST   /instances/{instanceId}/claude-code/sessions
-       Create a new Claude Code session
-
-GET    /instances/{instanceId}/claude-code/sessions/{sessionId}
-       Get session status and details
-
-DELETE /instances/{instanceId}/claude-code/sessions/{sessionId}
-       Terminate a session
-
-GET    /instances/{instanceId}/claude-code/sessions/{sessionId}/files
-       List files in session workspace
-
-GET    /instances/{instanceId}/claude-code/sessions/{sessionId}/files/{path}
-       Download a specific file
-
-POST   /instances/{instanceId}/claude-code/sessions/{sessionId}/files
-       Upload a file to session workspace
-```
-
-### 10.2 Completion Request Extension
-
-Extend the completion request to support Claude Code specific options:
-
-```csharp
-public class ClaudeCodeCompletionRequest : CompletionRequest
-{
-    /// <summary>
-    /// Whether to restore previous workspace state.
-    /// </summary>
-    [JsonPropertyName("restore_workspace")]
-    public bool RestoreWorkspace { get; set; } = true;
-
-    /// <summary>
-    /// Additional context files to include in the session.
-    /// </summary>
-    [JsonPropertyName("context_files")]
-    public List<string>? ContextFiles { get; set; }
-
-    /// <summary>
-    /// Override allowed tools for this request.
-    /// </summary>
-    [JsonPropertyName("allowed_tools")]
-    public List<string>? AllowedTools { get; set; }
-}
-```
-
-### 10.3 Completion Response Extension
-
-Extend the completion response:
-
-```csharp
-public class ClaudeCodeCompletionResponse : CompletionResponse
-{
-    /// <summary>
-    /// Tool calls made during this completion.
-    /// </summary>
-    [JsonPropertyName("tool_calls")]
-    public List<ClaudeCodeToolCall>? ToolCalls { get; set; }
-
-    /// <summary>
-    /// Files created or modified.
-    /// </summary>
-    [JsonPropertyName("files_modified")]
-    public List<ClaudeCodeFileInfo>? FilesModified { get; set; }
-
-    /// <summary>
-    /// Session ID for subsequent requests.
-    /// </summary>
-    [JsonPropertyName("session_id")]
-    public string? SessionId { get; set; }
-}
-```
+| Operation | Existing Endpoint |
+|-----------|-------------------|
+| Create session | `POST /codeSessions` (Context API) |
+| Upload files | `POST /codeSessions/{id}/uploadFiles` |
+| Execute | `POST /codeSessions/{id}/executeCode` |
+| Download files | `POST /codeSessions/{id}/downloadFiles` |
+| Get file | `GET /files/{fileId}` (Context API) |
 
 ---
 
-## 11. Configuration & Deployment
+## 10. Configuration & Deployment
 
-### 11.1 App Configuration Keys
+### 10.1 App Configuration Keys
 
-Add new configuration keys:
+Add Claude Code endpoints to existing Dynamic Sessions configuration:
+
+**Location**: `src/dotnet/Common/Constants/Data/AppConfiguration.json`
 
 ```json
 {
-  "FoundationaLLM:ClaudeCode:ContainerEndpoint": "https://{container-apps-env}.{region}.azurecontainerapps.io",
-  "FoundationaLLM:ClaudeCode:DefaultMemoryLimitMb": "2048",
-  "FoundationaLLM:ClaudeCode:DefaultCpuCores": "1.0",
-  "FoundationaLLM:ClaudeCode:MaxExecutionTimeSeconds": "600",
-  "FoundationaLLM:ClaudeCode:DefaultAllowInternetAccess": "false",
-  "FoundationaLLM:ClaudeCode:ContainerImage": "foundationallm/claude-code-sandbox:latest"
+  "FoundationaLLM:Context:AzureContainerAppsCustomContainerService:Endpoints:ClaudeCode": [
+    "https://{session-pool-endpoint}.{region}.azurecontainerapps.io"
+  ]
 }
 ```
 
-### 11.2 Key Vault Secrets
+### 10.2 Key Vault Secrets
 
-Required secrets:
+| Secret Name | Description | Used By |
+|-------------|-------------|---------|
+| `AnthropicApiKey` | Anthropic API key for Claude | Container environment variable |
+| `GitHubToken` | GitHub PAT for gh CLI (optional) | Container environment variable |
 
-| Secret Name | Description |
-|-------------|-------------|
-| `AnthropicApiKey` | Anthropic API key for Claude |
-| `GitHubAppPrivateKey` | GitHub App private key (optional) |
-| `GitHubAppId` | GitHub App ID (optional) |
+### 10.3 Container Deployment
 
-### 11.3 Infrastructure Requirements
+Deploy the Claude Code sandbox container to Azure Container Apps Dynamic Sessions:
 
 ```bicep
-// Azure Container Apps Environment for Claude Code
-resource claudeCodeContainerAppsEnv 'Microsoft.App/managedEnvironments@2023-05-01' = {
-  name: 'claude-code-env'
-  location: location
-  properties: {
-    workloadProfiles: [
-      {
-        name: 'Consumption'
-        workloadProfileType: 'Consumption'
-      }
-    ]
-  }
-}
-
-// Session Pool for Claude Code containers
+// Add to existing session pool configuration or create new pool
 resource claudeCodeSessionPool 'Microsoft.App/sessionPools@2024-02-02-preview' = {
   name: 'claude-code-sessions'
   location: location
   properties: {
-    environmentId: claudeCodeContainerAppsEnv.id
+    environmentId: existingContainerAppsEnv.id
     poolManagementType: 'Dynamic'
     containerType: 'CustomContainer'
     customContainerTemplate: {
       containers: [
         {
           name: 'claude-code-sandbox'
-          image: 'foundationallm/claude-code-sandbox:latest'
+          image: '${containerRegistry}/claude-code-sandbox:${version}'
           resources: {
-            cpu: 1
+            cpu: json('1.0')
             memory: '2Gi'
           }
+          env: [
+            {
+              name: 'ANTHROPIC_API_KEY'
+              secretRef: 'anthropic-api-key'
+            }
+            {
+              name: 'CLAUDE_MODEL'
+              value: 'claude-sonnet-4-20250514'
+            }
+          ]
         }
       ]
     }
+    secrets: [
+      {
+        name: 'anthropic-api-key'
+        keyVaultUrl: '${keyVault.properties.vaultUri}secrets/AnthropicApiKey'
+        identity: managedIdentity.id
+      }
+    ]
     scaleConfiguration: {
-      maxConcurrentSessions: 100
-      readySessionInstances: 5
+      maxConcurrentSessions: 50
+      readySessionInstances: 2
     }
     sessionNetworkConfiguration: {
-      status: 'EgressEnabled'  // For internet access
+      status: 'EgressEnabled'  // Enable for web search capability
     }
   }
 }
 ```
 
----
+### 10.4 Code Session Provider Registration
 
-## 12. Testing Strategy
+Register the new provider in `CodeSessionService`:
 
-### 12.1 Unit Tests
+```csharp
+// Add to CodeSessionProviderNames.cs
+public const string AzureContainerAppsClaudeCode = "AzureContainerAppsClaudeCode";
 
-| Component | Test Focus |
-|-----------|------------|
-| `ClaudeCodeAgentWorkflow` | Request preparation, response parsing |
-| `ClaudeCodeFileService` | File persistence, retrieval, deletion |
-| `SandboxOrchestrator` | Tool execution, error handling |
-| `SecurityValidation` | Permission checks, isolation |
-
-### 12.2 Integration Tests
-
-1. **End-to-End Flow**: Create agent → Send message → Receive response
-2. **File Operations**: Create files → Persist → Restore → Download
-3. **Multi-Turn Conversations**: Context preservation across turns
-4. **Tool Execution**: Each tool type individually and in combination
-5. **Error Handling**: Timeout, OOM, permission denied scenarios
-
-### 12.3 Performance Tests
-
-| Test | Target |
-|------|--------|
-| Session creation | < 5 seconds |
-| Simple completion | < 30 seconds |
-| File operations | < 2 seconds |
-| Container scaling | Handle 100 concurrent sessions |
-
-### 12.4 Security Tests
-
-1. **Container escape attempts**
-2. **Unauthorized file access**
-3. **Network isolation verification**
-4. **API key exposure prevention**
+// Option A: Reuse existing CustomContainerService with different endpoint
+// Option B: Create AzureContainerAppsClaudeCodeService extending base class
+```
 
 ---
 
-## 13. Implementation Phases
+## 11. Testing Strategy
 
-### Phase 1: Foundation (Weeks 1-3)
+### 11.1 Unit Tests
 
-- [ ] Create `ClaudeCodeAgentWorkflow` model classes
-- [ ] Update `AgentWorkflowTypes` and `AgentWorkflowBase`
-- [ ] Create sandbox container Dockerfile
-- [ ] Implement basic sandbox orchestrator
-- [ ] Add configuration settings
+**Python Tool Tests** (`src/python/plugins/agent_claude_code/test/`):
 
-### Phase 2: Core Functionality (Weeks 4-6)
+```python
+# test_claude_code_tool.py
+async def test_tool_builds_correct_request():
+    """Verify Claude request payload structure."""
+    tool = FoundationaLLMClaudeCodeTool(...)
+    request = tool._build_claude_request("Write hello world", "conv-123", ["data.csv"])
+    
+    payload = json.loads(request)
+    assert payload["prompt"] == "Write hello world"
+    assert payload["conversation_id"] == "conv-123"
+    assert "data.csv" in payload["files"]
 
-- [ ] Implement Python workflow plugin
-- [ ] Integrate with existing orchestration service
-- [ ] Implement file persistence service
-- [ ] Add tool implementations (read/write/bash)
-- [ ] Basic conversation history support
+async def test_tool_handles_execution_failure():
+    """Verify graceful error handling."""
+    # Mock Context API to return failure
+    ...
+```
 
-### Phase 3: Advanced Features (Weeks 7-9)
+### 11.2 Integration Tests
 
-- [ ] GitHub integration
-- [ ] Web search capability (when internet enabled)
-- [ ] Enhanced context management
-- [ ] File explorer UI component
-- [ ] Tool call visualization
+| Test Scenario | What It Validates |
+|---------------|-------------------|
+| Create agent with Claude Code tool | Tool config parsing, session provider lookup |
+| Simple prompt execution | Full flow: upload → execute → download |
+| Multi-turn conversation | Session persistence, file history |
+| File creation and download | FileService integration, security |
+| Error recovery | Timeout handling, container crashes |
 
-### Phase 4: Security & Polish (Weeks 10-11)
+### 11.3 Container Tests
 
-- [ ] Security hardening
-- [ ] Permission model implementation
-- [ ] Error handling improvements
-- [ ] Documentation
-- [ ] Performance optimization
+```python
+# Test the sandbox container directly
+import httpx
 
-### Phase 5: Testing & Release (Week 12)
+async def test_execute_simple_bash():
+    """Test bash execution via Dynamic Sessions API."""
+    async with httpx.AsyncClient(base_url="http://localhost:8080") as client:
+        response = await client.post(
+            "/code/execute",
+            params={"identifier": "test-session"},
+            json={"code": json.dumps({"prompt": "Run ls -la", "config": {"allowed_capabilities": ["bash"]}})}
+        )
+        result = response.json()
+        assert "detail" in result
+        assert result["detail"]["error"] == ""
+```
 
-- [ ] Comprehensive testing
-- [ ] Bug fixes
+### 11.4 Security Tests
+
+1. **File isolation**: Verify users cannot access other users' files
+2. **Session isolation**: Verify sessions are truly isolated
+3. **Network isolation**: Verify internet access is blocked when disabled
+4. **Secret protection**: Verify API keys are not exposed in responses
+
+---
+
+## 12. Implementation Phases
+
+### Phase 1: Foundation (Weeks 1-2)
+
+- [ ] Create `FoundationaLLMClaudeCodeTool` Python class
+- [ ] Create `FoundationaLLMClaudeCodeToolInput` model
+- [ ] Add plugin manifest and registration
+- [ ] Build basic sandbox container Dockerfile
+- [ ] Implement Dynamic Sessions API in container
+
+### Phase 2: Container & Integration (Weeks 3-4)
+
+- [ ] Complete Claude agentic loop in container
+- [ ] Add code session provider (or configure existing CustomContainer)
+- [ ] Add App Configuration entries
+- [ ] Deploy container to Azure Container Apps
+- [ ] Integration testing with existing orchestration
+
+### Phase 3: Capabilities & Polish (Weeks 5-6)
+
+- [ ] Add GitHub CLI integration
+- [ ] Add web search capability (when internet enabled)
+- [ ] Management Portal UI for tool configuration
+- [ ] User Portal enhancements for tool output display
+- [ ] Documentation and examples
+
+### Phase 4: Testing & Release (Week 7)
+
+- [ ] Comprehensive test suite
+- [ ] Performance testing
+- [ ] Security audit
 - [ ] Documentation finalization
 - [ ] Release preparation
 
 ---
 
-## 14. Open Questions & Decisions
+## 13. Open Questions & Decisions
 
-### 14.1 Technical Decisions Needed
+### 13.1 Technical Decisions
 
 | Question | Options | Recommendation |
 |----------|---------|----------------|
-| **Session persistence** | Per-request vs. Long-lived | Long-lived (within conversation) |
-| **File size limits** | 10MB, 50MB, 100MB | 50MB per file, 500MB per conversation |
-| **Container timeout** | 5min, 10min, 30min | 10min default, configurable |
-| **Default internet access** | Enabled, Disabled | Disabled (opt-in) |
-| **Model selection** | Fixed, Configurable | Configurable per agent |
+| **Provider approach** | New provider vs. Reuse CustomContainer | Reuse with different endpoint |
+| **Claude model** | Fixed vs. Configurable | Configurable via tool properties |
+| **Max turns** | 10, 20, 50 | 20 default, configurable |
+| **Default capabilities** | All vs. Limited | `[bash, file_read, file_write]` |
+| **Internet access** | Default on/off | Default off (security) |
 
-### 14.2 Product Decisions Needed
+### 13.2 Product Decisions
 
-1. **Pricing model**: How to charge for Claude Code agent usage?
-2. **Rate limiting**: What limits to apply to container usage?
-3. **Feature flags**: Which features are available at which tier?
-4. **Audit logging**: What level of detail for Claude Code operations?
+1. **Token tracking**: How to track/report Claude API usage?
+2. **Cost allocation**: How does this integrate with cost centers?
+3. **Feature gating**: Is this available to all users or gated?
 
-### 14.3 Dependencies
+### 13.3 Dependencies
 
-1. **Anthropic API**: Access to Claude API with agent capabilities
-2. **Azure Container Apps**: Dynamic Sessions feature availability
-3. **Container Registry**: Storage for custom sandbox image
-
----
-
-## Appendix A: Claude Agent SDK Reference
-
-The Claude Agent SDK provides the following tool types:
-
-| Tool | Description |
-|------|-------------|
-| `computer` | Screen interaction (not applicable for server) |
-| `text_editor` | File editing with view/create/replace |
-| `bash` | Shell command execution |
-| `web_search` | Internet search capability |
-
-For FoundationaLLM integration, we'll implement equivalent functionality:
-
-- `text_editor` → `read_file` + `write_file`
-- `bash` → `bash` (with restrictions)
-- `web_search` → `web_search` (when internet enabled)
+| Dependency | Status | Notes |
+|------------|--------|-------|
+| Anthropic API access | Required | Need API key provisioning |
+| Azure Container Apps Dynamic Sessions | Required | Already used by Code Interpreter |
+| Container registry | Required | For custom container image |
+| GitHub App (optional) | Optional | For authenticated GitHub operations |
 
 ---
 
-## Appendix B: Example Agent Configuration
+## Appendix A: Example Agent Configuration
+
+### A.1 Agent with Claude Code Tool (Recommended)
+
+Using existing workflow with Claude Code as a tool:
 
 ```json
 {
   "type": "agent",
-  "name": "claude-code-developer",
-  "display_name": "Claude Code Developer",
-  "description": "AI-powered software development assistant",
+  "name": "claude-code-assistant",
+  "display_name": "Claude Code Assistant",
+  "description": "AI-powered software development assistant using Claude Code",
   "workflow": {
-    "type": "claude-code-agent-workflow",
-    "name": "Claude-Code-Workflow",
-    "package_name": "foundationallm_agent_plugins_claude_code",
-    "class_name": "ClaudeCodeAgentWorkflow",
+    "type": "external-agent-workflow",
+    "name": "MAA-Workflow",
+    "package_name": "foundationallm_agent_plugins",
+    "class_name": "FoundationaLLMFunctionCallingWorkflow",
     "workflow_host": "LangChain",
-    "properties": {
-      "allow_internet_access": true,
-      "max_execution_time_seconds": 600,
-      "memory_limit_mb": 4096,
-      "allowed_tools": ["read_file", "write_file", "bash", "search", "github"]
-    },
     "resource_object_ids": {
       "main_model": {
-        "object_id": "/instances/{id}/providers/FoundationaLLM.AIModel/aiModels/claude-sonnet",
+        "object_id": "/instances/{id}/providers/FoundationaLLM.AIModel/aiModels/gpt-4o",
         "properties": {
-          "model_parameters": {
-            "temperature": 0.3,
-            "max_tokens": 8192
-          }
+          "object_role": "main_model",
+          "model_parameters": { "temperature": 0.3 }
         }
       }
     }
   },
+  "tools": [
+    {
+      "name": "Claude-Code",
+      "description": "Executes complex coding tasks including file operations, bash commands, and code generation using Claude's agentic capabilities.",
+      "package_name": "foundationallm_agent_plugins_claude_code",
+      "class_name": "FoundationaLLMClaudeCodeTool",
+      "properties": {
+        "code_session_required": true,
+        "code_session_endpoint_provider": "AzureContainerAppsClaudeCode",
+        "code_session_language": "ClaudeCode",
+        "max_turns": 20,
+        "allowed_capabilities": ["bash", "file_read", "file_write", "github"]
+      },
+      "resource_object_ids": {
+        "router_prompt": {
+          "object_id": "/instances/{id}/providers/FoundationaLLM.Prompt/prompts/claude-code-router",
+          "properties": { "object_role": "router_prompt" }
+        }
+      }
+    }
+  ],
   "conversation_history_settings": {
     "enabled": true,
-    "max_history": 50
-  },
-  "portal_display_options": {
-    "show_file_explorer": true,
-    "show_tool_calls": true,
-    "allow_file_upload": true,
-    "allow_file_download": true
+    "max_history": 20
   }
 }
 ```
+
+### A.2 Claude Code Router Prompt Example
+
+```text
+Use the Claude-Code tool when the user's request involves any of the following:
+- Writing, modifying, or analyzing code
+- Running shell commands or scripts
+- File system operations (create, read, modify files)
+- Software development tasks
+- Debugging or troubleshooting code
+- Working with Git or GitHub repositories
+
+Do NOT use Claude-Code for:
+- Simple questions that don't require code execution
+- General knowledge questions
+- Tasks that other tools handle better (e.g., knowledge search for documents)
+```
+
+---
+
+## Appendix B: Container API Reference
+
+The Claude Code sandbox implements the Azure Container Apps Dynamic Sessions API:
+
+### B.1 File Operations
+
+```
+POST /files/upload?identifier={sessionId}
+  Body: multipart/form-data with 'file' field
+  Response: {"success": true, "filename": "..."}
+
+GET /files?identifier={sessionId}&path={optional_path}
+  Response: {"value": [{"name": "...", "type": "file|directory", "size": 123}]}
+
+POST /files/download?identifier={sessionId}
+  Body: {"file_name": "..."}
+  Response: File stream
+
+POST /files/delete?identifier={sessionId}
+  Response: {"success": true}
+```
+
+### B.2 Code Execution
+
+```
+POST /code/execute?identifier={sessionId}
+  Body: {"code": "{JSON payload with prompt and config}"}
+  Response: {
+    "detail": {
+      "output": "stdout content",
+      "error": "stderr content",
+      "results": "final response from Claude"
+    },
+    "input_tokens": 1234,
+    "output_tokens": 567
+  }
+```
+
+### B.3 JSON Payload Schema
+
+```json
+{
+  "prompt": "The user's task description",
+  "conversation_id": "conv-123",
+  "files": ["file1.py", "data.csv"],
+  "config": {
+    "max_turns": 20,
+    "allowed_capabilities": ["bash", "file_read", "file_write", "github"]
+  }
+}
+```
+
+---
+
+## Appendix C: File Locations Summary
+
+| Component | Location |
+|-----------|----------|
+| Claude Code Tool | `src/python/plugins/agent_claude_code/pkg/foundationallm_agent_plugins_claude_code/tools/` |
+| Tool Input Model | `.../tools/foundationallm_claude_code_tool_input.py` |
+| Plugin Manifest | `.../foundationallm_agent_plugins_claude_code/_metadata/foundationallm_manifest.json` |
+| Sandbox Container | `src/containers/claude-code-sandbox/` |
+| Container API Server | `src/containers/claude-code-sandbox/app/server.py` |
+| Dockerfile | `src/containers/claude-code-sandbox/Dockerfile` |
 
 ---
 
@@ -1414,3 +1746,4 @@ For FoundationaLLM integration, we'll implement equivalent functionality:
 | Version | Date | Author | Changes |
 |---------|------|--------|---------|
 | 1.0 | 2026-01-09 | AI Assistant | Initial draft |
+| 1.1 | 2026-01-09 | AI Assistant | Revised based on Code Interpreter analysis - aligned with existing patterns, removed custom API server approach, added existing infrastructure analysis |
