@@ -1129,7 +1129,10 @@ export default {
 	background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
 	padding: 10px 20px;
 	border-radius: 8px 8px 0 0;
-	margin: 0 0 -2px 0;
+	margin-bottom: -2px;
+	/* Align right edge with send button by accounting for tooltip component width */
+	box-sizing: border-box;
+	width: calc(100% - 24px);
 }
 
 .soundbar-content {
