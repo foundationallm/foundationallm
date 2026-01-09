@@ -705,6 +705,15 @@ export const useAppStore = defineStore('app', {
 					this.calculateMessageProcessingTime();
 
 					if (updatedMessage.status === 'Completed' || updatedMessage.status === 'Failed') {
+						// Check if this is the first message pair and status is Completed
+						// If so, trigger async summarization to generate a conversation title
+						if (updatedMessage.status === 'Completed' && this.currentMessages.length === 2) {
+							const agent = this.getSessionAgent(this.currentSession!);
+							if (agent?.resource?.name) {
+								// Fire-and-forget - don't await
+								this.summarizeConversationAsync(sessionId, agent.resource.name);
+							}
+						}
 						this.stopPolling(sessionId);
 						return;
 					}
@@ -726,6 +735,26 @@ export const useAppStore = defineStore('app', {
 			this.pollingInterval = null;
 			this.pollingSession = null;
 			this.sessionMessagePending = false;
+		},
+
+		/**
+		 * Generates a summary title for a conversation asynchronously.
+		 * This is fire-and-forget - errors are logged but don't affect the UI.
+		 * @param sessionId The conversation ID to summarize.
+		 * @param agentName The agent name to use for summarization.
+		 */
+		async summarizeConversationAsync(sessionId: string, agentName: string) {
+			try {
+				const response = await api.summarizeConversation(sessionId, agentName);
+				// Update the session name in the store (backend already persisted to Cosmos DB)
+				const session = this.sessions.find((s: Session) => s.sessionId === sessionId);
+				if (session && response.summary) {
+					session.display_name = response.summary;
+				}
+			} catch (error) {
+				console.error('Failed to summarize conversation:', error);
+				// Silent failure - keep timestamp name (still persisted in DB)
+			}
 		},
 
 		/**

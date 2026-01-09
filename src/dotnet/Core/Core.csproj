@@ -10,7 +10,10 @@
   </PropertyGroup>
   
 	<ItemGroup>
+		<PackageReference Include="AWSSDK.BedrockRuntime" Version="4.0.0.9" />
+		<PackageReference Include="AWSSDK.SecurityToken" Version="4.0.0.9" />
 		<PackageReference Include="Azure.AI.OpenAI" Version="2.1.0-beta.2" />
+		<PackageReference Include="Google.Cloud.AIPlatform.V1" Version="3.22.0" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
 		<PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.11.1" />
 		<PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="1.11.1" />

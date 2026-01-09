@@ -13,6 +13,13 @@ namespace FoundationaLLM.Core.Models.Configuration
         public required ChatSessionNameSummarizationType SessionSummarization { get; set; }
 
         /// <summary>
+        /// The name of the completion model to use for session summarization via Gateway API.
+        /// This should match a deployment name configured in the Azure OpenAI account used by Gateway.
+        /// If not specified, summarization will attempt to use the agent's main AI model.
+        /// </summary>
+        public string? SessionSummarizationModelName { get; set; }
+
+        /// <summary>
         /// Controls whether the Gatekeeper API will be invoked or not.
         /// </summary>
         public required bool BypassGatekeeper {  get; set; }

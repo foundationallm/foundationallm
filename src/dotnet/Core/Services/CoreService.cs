@@ -1,4 +1,13 @@
+using Amazon;
+using Amazon.BedrockRuntime;
+using Amazon.BedrockRuntime.Model;
+using Amazon.Runtime;
+using Amazon.SecurityToken;
+using Amazon.SecurityToken.Model;
+using Azure.AI.OpenAI;
+using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Constants.Authentication;
 using FoundationaLLM.Common.Constants.Agents;
 using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Constants.Orchestration;
@@ -23,6 +32,8 @@ using FoundationaLLM.Common.Models.ResourceProviders.AzureOpenAI;
 using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
 using FoundationaLLM.Common.Settings;
 using FoundationaLLM.Common.Utils;
+using Google.Api.Gax;
+using Google.Cloud.AIPlatform.V1;
 using FoundationaLLM.Core.Interfaces;
 using FoundationaLLM.Core.Models.Configuration;
 using Microsoft.AspNetCore.Http;
@@ -30,6 +41,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using OpenAI.Chat;
+using System.ClientModel;
+using System.ClientModel.Primitives;
 using System.Text;
 using System.Text.Json;
 using Conversation = FoundationaLLM.Common.Models.Conversation.Conversation;
@@ -79,6 +93,8 @@ public partial class CoreService(
     private readonly CoreServiceSettings _settings = settings.Value;
     private readonly IContextServiceClient _contextServiceClient = contextServiceClient;
     private readonly IUserProfileService _userProfileService = userProfileService;
+    private readonly IHttpClientFactoryService _httpClientFactoryService = httpClientFactory;
+    private readonly IConfiguration _configuration = configuration;
 
     private readonly string _baseUrl = GetBaseUrl(configuration, httpClientFactory, callContext).GetAwaiter().GetResult();
 
@@ -217,6 +233,594 @@ public partial class CoreService(
             instanceId,
             sessionId,
             _userIdentity);
+    }
+
+    /// <inheritdoc/>
+    public async Task<ConversationSummaryResponse> SummarizeConversationAsync(
+        string instanceId,
+        string sessionId,
+        ConversationSummaryRequest request)
+    {
+        ArgumentNullException.ThrowIfNull(instanceId);
+        ArgumentNullException.ThrowIfNull(sessionId);
+        ArgumentNullException.ThrowIfNull(request);
+        ArgumentException.ThrowIfNullOrWhiteSpace(request.AgentName);
+
+        try
+        {
+            // Verify that the conversation exists and that the user has access to it.
+            var conversation = await _conversationResourceProvider.GetResourceAsync<Conversation>(instanceId, sessionId, _userIdentity);
+
+            // Get the agent to find its underlying AI model
+            var agentBase = await _agentResourceProvider.GetResourceAsync<AgentBase>(
+                instanceId,
+                request.AgentName,
+                _userIdentity);
+
+            // Get the AI model object ID from the agent's workflow
+            var aiModelObjectId = agentBase.Workflow?.MainAIModelObjectId;
+            if (string.IsNullOrWhiteSpace(aiModelObjectId))
+            {
+                _logger.LogWarning(
+                    "Agent {AgentName} does not have a main AI model configured. Skipping LLM summarization for conversation {SessionId}.",
+                    request.AgentName, sessionId);
+                return new ConversationSummaryResponse { Summary = conversation.DisplayName ?? sessionId };
+            }
+
+            // Extract the AI model name from the full resource path
+            // The object ID format is: /instances/{instanceId}/providers/FoundationaLLM.AIModel/aiModels/{modelName}
+            var aiModelName = aiModelObjectId.Split('/').LastOrDefault();
+            if (string.IsNullOrWhiteSpace(aiModelName))
+            {
+                _logger.LogWarning(
+                    "Could not extract AI model name from object ID {AIModelObjectId}. Skipping LLM summarization for conversation {SessionId}.",
+                    aiModelObjectId, sessionId);
+                return new ConversationSummaryResponse { Summary = conversation.DisplayName ?? sessionId };
+            }
+
+            // Get the AI model resource
+            var aiModel = await _aiModelResourceProvider.GetResourceAsync<AIModelBase>(
+                instanceId,
+                aiModelName,
+                _userIdentity);
+
+            if (string.IsNullOrWhiteSpace(aiModel.DeploymentName))
+            {
+                _logger.LogWarning(
+                    "AI model {AIModelName} does not have a deployment name. Skipping LLM summarization for conversation {SessionId}.",
+                    aiModelName, sessionId);
+                return new ConversationSummaryResponse { Summary = conversation.DisplayName ?? sessionId };
+            }
+
+            // Get the API endpoint configuration for the AI model
+            var endpointName = aiModel.EndpointObjectId.Split('/').LastOrDefault();
+            if (string.IsNullOrWhiteSpace(endpointName))
+            {
+                _logger.LogWarning(
+                    "Could not extract endpoint name from {EndpointObjectId}. Skipping LLM summarization for conversation {SessionId}.",
+                    aiModel.EndpointObjectId, sessionId);
+                return new ConversationSummaryResponse { Summary = conversation.DisplayName ?? sessionId };
+            }
+
+            var endpointConfig = await _configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
+                instanceId,
+                endpointName,
+                _userIdentity);
+
+            // Get the messages from the conversation
+            var messages = await _cosmosDBService.GetConversationMessagesAsync(sessionId, _userIdentity.UPN ??
+                throw new InvalidOperationException("Failed to retrieve the identity of the signed in user when retrieving chat messages."));
+
+            // Find the first user message and first agent response
+            var firstUserMessage = messages.FirstOrDefault(m => m.Sender == nameof(Participants.User));
+            var firstAgentMessage = messages.FirstOrDefault(m => m.Sender == nameof(Participants.Agent));
+
+            if (firstUserMessage == null || firstAgentMessage == null)
+            {
+                _logger.LogWarning("Cannot summarize conversation {SessionId}: missing user or agent message.", sessionId);
+                return new ConversationSummaryResponse { Summary = conversation.DisplayName ?? sessionId };
+            }
+
+            // Get the text content from messages
+            var userText = GetMessageText(firstUserMessage);
+            var agentText = GetMessageText(firstAgentMessage);
+
+            if (string.IsNullOrWhiteSpace(userText) || string.IsNullOrWhiteSpace(agentText))
+            {
+                _logger.LogWarning("Cannot summarize conversation {SessionId}: empty user or agent message text.", sessionId);
+                return new ConversationSummaryResponse { Summary = conversation.DisplayName ?? sessionId };
+            }
+
+            // Build the summarization prompt
+            var summarizationPrompt = $"""
+                Generate a brief title (3-6 words) that summarizes the main topic of this conversation. Return only the title, no quotes or punctuation.
+
+                User: {userText}
+                Assistant: {agentText}
+
+                Title:
+                """;
+
+            // Route to the appropriate provider based on endpoint configuration
+            var summary = await GetSummarizationFromProvider(
+                endpointConfig,
+                aiModel.DeploymentName,
+                summarizationPrompt,
+                sessionId);
+
+            if (string.IsNullOrWhiteSpace(summary))
+            {
+                _logger.LogWarning("Azure OpenAI returned empty summary for conversation {SessionId}.", sessionId);
+                return new ConversationSummaryResponse { Summary = conversation.DisplayName ?? sessionId };
+            }
+
+            // Limit the summary length to a reasonable size
+            if (summary.Length > 100)
+            {
+                summary = summary[..97] + "...";
+            }
+
+            // Persist the new name to Cosmos DB
+            await UpdateConversationAsync(instanceId, sessionId, new ConversationProperties
+            {
+                Name = summary,
+                Metadata = conversation.Metadata // preserve existing metadata
+            });
+
+            _logger.LogInformation("Successfully summarized conversation {SessionId} with title: {Summary} using deployment {DeploymentName}.",
+                sessionId, summary, aiModel.DeploymentName);
+
+            return new ConversationSummaryResponse { Summary = summary };
+        }
+        catch (ClientResultException crex) when (crex.Status == 429)
+        {
+            _logger.LogWarning(crex, "Rate limit exceeded while summarizing conversation {SessionId}. Keeping default name.", sessionId);
+            return new ConversationSummaryResponse { Summary = "" };
+        }
+        catch (Amazon.Runtime.AmazonClientException awsEx) when (awsEx.Message.Contains("Failed to resolve AWS credentials"))
+        {
+            // AWS credentials not configured - silently keep the timestamp name
+            _logger.LogWarning("AWS credentials not configured for Bedrock. Keeping default conversation name for {SessionId}.", sessionId);
+            return new ConversationSummaryResponse { Summary = "" };
+        }
+        catch (ResourceProviderException rpex)
+        {
+            _logger.LogError(rpex, "Error summarizing conversation {SessionId}.", sessionId);
+            throw;
+        }
+        catch (Exception ex)
+        {
+            // Log the error but don't fail the conversation - just keep the default name
+            _logger.LogWarning(ex, "Error summarizing conversation {SessionId}. Keeping default name.", sessionId);
+            return new ConversationSummaryResponse { Summary = "" };
+        }
+    }
+
+    /// <summary>
+    /// Extracts the text content from a message.
+    /// </summary>
+    private static string GetMessageText(Message message)
+    {
+        // First try to get text from Content array (newer format)
+        if (message.Content is { Count: > 0 })
+        {
+            var textContent = message.Content
+                .Where(c => c.Type == MessageContentItemTypes.Text)
+                .Select(c => c.Value)
+                .FirstOrDefault();
+            if (!string.IsNullOrWhiteSpace(textContent))
+                return textContent;
+        }
+
+        // Fall back to Text property (older format)
+        return message.Text ?? string.Empty;
+    }
+
+    /// <summary>
+    /// Gets a summarization from the appropriate provider based on the endpoint configuration.
+    /// </summary>
+    private async Task<string> GetSummarizationFromProvider(
+        APIEndpointConfiguration endpointConfig,
+        string deploymentName,
+        string prompt,
+        string sessionId)
+    {
+        var provider = ResolveProvider(endpointConfig);
+
+        return provider switch
+        {
+            APIEndpointProviders.MICROSOFT or APIEndpointProviders.OPENAI or APIEndpointProviders.AZUREAI =>
+                await GetAzureOpenAISummarization(endpointConfig, deploymentName, prompt, sessionId),
+            APIEndpointProviders.BEDROCK =>
+                await GetBedrockSummarization(endpointConfig, deploymentName, prompt, sessionId),
+            APIEndpointProviders.VERTEXAI =>
+                await GetVertexAISummarization(endpointConfig, deploymentName, prompt, sessionId),
+            _ => throw new CoreServiceException($"Unsupported provider '{provider}' for conversation summarization.")
+        };
+    }
+
+    private string ResolveProvider(APIEndpointConfiguration endpointConfig)
+    {
+        // First try the configured provider.
+        var normalizedProvider = NormalizeProvider(endpointConfig.Provider);
+
+        // If it isn't recognized, attempt URL-based detection.
+        if (!IsSupportedProvider(normalizedProvider))
+        {
+            normalizedProvider = NormalizeProvider(DetectProviderFromUrl(endpointConfig.Url));
+        }
+
+        if (!IsSupportedProvider(normalizedProvider))
+        {
+            var configured = string.IsNullOrWhiteSpace(endpointConfig.Provider) ? "unspecified" : endpointConfig.Provider;
+            throw new CoreServiceException($"Unsupported provider '{configured}' for endpoint '{endpointConfig.Name}' with URL '{endpointConfig.Url}'.");
+        }
+
+        return normalizedProvider;
+    }
+
+    private static string NormalizeProvider(string? provider) =>
+        (provider ?? string.Empty).Trim().ToLowerInvariant() switch
+        {
+            "" => string.Empty,
+            "azure" or "azureopenai" or "aoai" => APIEndpointProviders.MICROSOFT,
+            APIEndpointProviders.MICROSOFT => APIEndpointProviders.MICROSOFT,
+            APIEndpointProviders.AZUREAI => APIEndpointProviders.AZUREAI,
+            APIEndpointProviders.OPENAI => APIEndpointProviders.OPENAI,
+            "amazon" or "aws" or "amazonbedrock" or "anthropic" => APIEndpointProviders.BEDROCK,
+            APIEndpointProviders.BEDROCK => APIEndpointProviders.BEDROCK,
+            "google" or "googleai" or "vertex" or "vertexai" or "gemini" => APIEndpointProviders.VERTEXAI,
+            _ => provider?.Trim().ToLowerInvariant() ?? string.Empty
+        };
+
+    private static string DetectProviderFromUrl(string url)
+    {
+        if (url.Contains(".openai.azure.com", StringComparison.OrdinalIgnoreCase) ||
+            url.Contains(".cognitiveservices.azure.com", StringComparison.OrdinalIgnoreCase))
+            return APIEndpointProviders.MICROSOFT;
+
+        if (url.Contains("openai.com", StringComparison.OrdinalIgnoreCase))
+            return APIEndpointProviders.OPENAI;
+
+        if (url.Contains("bedrock", StringComparison.OrdinalIgnoreCase) ||
+            (url.Contains("amazonaws.com", StringComparison.OrdinalIgnoreCase) && url.Contains("bedrock", StringComparison.OrdinalIgnoreCase)))
+            return APIEndpointProviders.BEDROCK;
+
+        if (url.Contains("googleapis.com", StringComparison.OrdinalIgnoreCase) ||
+            url.Contains("vertexai", StringComparison.OrdinalIgnoreCase))
+            return APIEndpointProviders.VERTEXAI;
+
+        return string.Empty;
+    }
+
+    private static bool IsSupportedProvider(string provider) =>
+        APIEndpointProviders.All.Contains(provider);
+
+    /// <summary>
+    /// Gets a summarization using Azure OpenAI.
+    /// </summary>
+    private async Task<string> GetAzureOpenAISummarization(
+        APIEndpointConfiguration endpointConfig,
+        string deploymentName,
+        string prompt,
+        string sessionId)
+    {
+        _logger.LogInformation(
+            "Calling Azure OpenAI directly to summarize conversation {SessionId} using deployment {DeploymentName} at {Endpoint}.",
+            sessionId, deploymentName, endpointConfig.Url);
+
+        var azureOpenAIClient = new AzureOpenAIClient(
+            new Uri(endpointConfig.Url),
+            ServiceContext.AzureCredential,
+            new AzureOpenAIClientOptions
+            {
+                NetworkTimeout = TimeSpan.FromSeconds(30),
+                RetryPolicy = new ClientRetryPolicy(1)
+            });
+
+        var chatClient = azureOpenAIClient.GetChatClient(deploymentName);
+
+        var chatCompletionOptions = new ChatCompletionOptions
+        {
+            MaxOutputTokenCount = 50,
+            Temperature = 0.3f
+        };
+
+        var result = await chatClient.CompleteChatAsync(
+            [new UserChatMessage(prompt)],
+            chatCompletionOptions);
+
+        return result.Value.Content[0].Text?.Trim().Trim('"', '\'') ?? string.Empty;
+    }
+
+    /// <summary>
+    /// Gets a summarization using AWS Bedrock (for Claude models).
+    /// </summary>
+    private async Task<string> GetBedrockSummarization(
+        APIEndpointConfiguration endpointConfig,
+        string deploymentName,
+        string prompt,
+        string sessionId)
+    {
+        _logger.LogInformation(
+            "Calling AWS Bedrock directly to summarize conversation {SessionId} using model {ModelId} at {Endpoint}.",
+            sessionId, deploymentName, endpointConfig.Url);
+
+        // Extract region from endpoint URL (e.g., https://bedrock-runtime.us-east-1.amazonaws.com/)
+        var region = ExtractAwsRegionFromUrl(endpointConfig.Url);
+
+        var bedrockConfig = new AmazonBedrockRuntimeConfig
+        {
+            RegionEndpoint = RegionEndpoint.GetBySystemName(region),
+            Timeout = TimeSpan.FromSeconds(30),
+            ServiceURL = endpointConfig.Url
+        };
+
+        // Log all available authentication parameters
+        var authParamsLog = string.Join(", ", endpointConfig.AuthenticationParameters.Select(kvp => $"{kvp.Key}={kvp.Value}"));
+        _logger.LogInformation(
+            "Bedrock endpoint auth config - Type: {AuthType}, Params: [{AuthParams}], URL: {Url}",
+            endpointConfig.AuthenticationType, authParamsLog, endpointConfig.Url);
+
+        AWSCredentials awsCredentials;
+
+        if (endpointConfig.AuthenticationType == AuthenticationTypes.AzureIdentity)
+        {
+            // Use Azure Workload Identity Federation with AWS IAM role assumption
+            awsCredentials = await GetAwsCredentialsFromAzureIdentity(endpointConfig, region);
+        }
+        else
+        {
+            // Fall back to explicit credentials or default credential chain
+            var accessKeyIdConfigName = GetAuthenticationParameter(endpointConfig, "aws_access_key_id_configuration_name");
+            var secretAccessKeyConfigName = GetAuthenticationParameter(endpointConfig, "aws_secret_access_key_configuration_name");
+
+            if (!string.IsNullOrWhiteSpace(accessKeyIdConfigName) && !string.IsNullOrWhiteSpace(secretAccessKeyConfigName))
+            {
+                var accessKeyId = _configuration.GetValue<string>(accessKeyIdConfigName);
+                var secretAccessKey = _configuration.GetValue<string>(secretAccessKeyConfigName);
+
+                if (!string.IsNullOrWhiteSpace(accessKeyId) && !string.IsNullOrWhiteSpace(secretAccessKey))
+                {
+                    awsCredentials = new BasicAWSCredentials(accessKeyId, secretAccessKey);
+                }
+                else
+                {
+                    _logger.LogWarning("AWS credentials not found in configuration. Using default AWS credential chain.");
+                    awsCredentials = FallbackCredentialsFactory.GetCredentials();
+                }
+            }
+            else
+            {
+                awsCredentials = FallbackCredentialsFactory.GetCredentials();
+            }
+        }
+
+        using var bedrockClient = new AmazonBedrockRuntimeClient(awsCredentials, bedrockConfig);
+
+        // Use the Converse API for Claude models
+        var converseRequest = new ConverseRequest
+        {
+            ModelId = deploymentName,
+            Messages =
+            [
+                new Amazon.BedrockRuntime.Model.Message
+                {
+                    Role = ConversationRole.User,
+                    Content = [new ContentBlock { Text = prompt }]
+                }
+            ],
+            InferenceConfig = new InferenceConfiguration
+            {
+                MaxTokens = 50,
+                Temperature = 0.3f
+            }
+        };
+
+        var response = await bedrockClient.ConverseAsync(converseRequest);
+
+        var outputText = response.Output?.Message?.Content?
+            .FirstOrDefault()?.Text?.Trim().Trim('"', '\'') ?? string.Empty;
+
+        _logger.LogInformation("Successfully summarized conversation {SessionId} using AWS Bedrock.", sessionId);
+
+        return outputText;
+    }
+
+    /// <summary>
+    /// Gets AWS credentials by exchanging an Azure AD token for AWS temporary credentials using STS AssumeRoleWithWebIdentity.
+    /// </summary>
+    private async Task<AWSCredentials> GetAwsCredentialsFromAzureIdentity(
+        APIEndpointConfiguration endpointConfig,
+        string region)
+    {
+        // Get the scope and role ARN from the authentication parameters
+        var scopeConfigKey = GetAuthenticationParameter(endpointConfig, "scope");
+        var roleArnConfigKey = GetAuthenticationParameter(endpointConfig, "role_arn");
+
+        if (string.IsNullOrWhiteSpace(scopeConfigKey) || string.IsNullOrWhiteSpace(roleArnConfigKey))
+        {
+            throw new CoreServiceException(
+                "AWS Bedrock endpoint with AzureIdentity authentication requires 'scope' and 'role_arn' parameters.");
+        }
+
+        // Get the actual values from configuration (these config keys point to the actual values)
+        var scope = _configuration.GetValue<string>(scopeConfigKey);
+        var roleArn = _configuration.GetValue<string>(roleArnConfigKey);
+
+        _logger.LogDebug(
+            "AWS config lookup - ScopeKey: {ScopeKey}, ScopeValue: {Scope}, RoleArnKey: {RoleArnKey}, RoleArnValue: {RoleArn}",
+            scopeConfigKey, scope ?? "(null)", roleArnConfigKey, roleArn ?? "(null)");
+
+        if (string.IsNullOrWhiteSpace(scope) || string.IsNullOrWhiteSpace(roleArn))
+        {
+            throw new CoreServiceException(
+                $"AWS Bedrock configuration values not found for scope key '{scopeConfigKey}' or role ARN key '{roleArnConfigKey}'.");
+        }
+
+        _logger.LogDebug("Getting Azure AD token with scope {Scope} for AWS role {RoleArn}", scope, roleArn);
+
+        // Get Azure AD token with the specified scope
+        var tokenRequestContext = new Azure.Core.TokenRequestContext([scope]);
+        var azureToken = await ServiceContext.AzureCredential!.GetTokenAsync(tokenRequestContext, default);
+
+        _logger.LogDebug("Successfully obtained Azure AD token, exchanging for AWS credentials...");
+
+        // Exchange the Azure AD token for AWS temporary credentials
+        var stsConfig = new AmazonSecurityTokenServiceConfig
+        {
+            RegionEndpoint = RegionEndpoint.GetBySystemName(region)
+        };
+
+        using var stsClient = new AmazonSecurityTokenServiceClient(new AnonymousAWSCredentials(), stsConfig);
+
+        var assumeRoleRequest = new AssumeRoleWithWebIdentityRequest
+        {
+            RoleArn = roleArn,
+            RoleSessionName = $"foundationallm-core-{Guid.NewGuid():N}",
+            WebIdentityToken = azureToken.Token,
+            DurationSeconds = 900 // 15 minutes
+        };
+
+        var assumeRoleResponse = await stsClient.AssumeRoleWithWebIdentityAsync(assumeRoleRequest);
+
+        _logger.LogInformation(
+            "Successfully assumed AWS role {RoleArn} using Azure AD token. Credentials expire at {Expiration}.",
+            roleArn, assumeRoleResponse.Credentials.Expiration);
+
+        return new SessionAWSCredentials(
+            assumeRoleResponse.Credentials.AccessKeyId,
+            assumeRoleResponse.Credentials.SecretAccessKey,
+            assumeRoleResponse.Credentials.SessionToken);
+    }
+
+    /// <summary>
+    /// Gets an authentication parameter value from the endpoint configuration.
+    /// </summary>
+    private static string? GetAuthenticationParameter(APIEndpointConfiguration endpointConfig, params string[] keys)
+    {
+        foreach (var key in keys)
+        {
+            if (endpointConfig.AuthenticationParameters.TryGetValue(key, out var value))
+            {
+                return value?.ToString();
+            }
+
+            var match = endpointConfig.AuthenticationParameters
+                .FirstOrDefault(kvp => string.Equals(kvp.Key, key, StringComparison.OrdinalIgnoreCase));
+            if (!string.IsNullOrEmpty(match.Key))
+            {
+                return match.Value?.ToString();
+            }
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// Extracts the AWS region from a Bedrock endpoint URL.
+    /// </summary>
+    private static string ExtractAwsRegionFromUrl(string url)
+    {
+        // URL format: https://bedrock-runtime.{region}.amazonaws.com/
+        var uri = new Uri(url);
+        var parts = uri.Host.Split('.');
+        if (parts.Length >= 3 && parts[0] == "bedrock-runtime")
+        {
+            return parts[1];
+        }
+        // Default to us-east-1 if we can't extract the region
+        return "us-east-1";
+    }
+
+    /// <summary>
+    /// Gets a summarization using Google Vertex AI (for Gemini models).
+    /// </summary>
+    private async Task<string> GetVertexAISummarization(
+        APIEndpointConfiguration endpointConfig,
+        string deploymentName,
+        string prompt,
+        string sessionId)
+    {
+        _logger.LogInformation(
+            "Calling Google Vertex AI directly to summarize conversation {SessionId} using model {ModelId} at {Endpoint}.",
+            sessionId, deploymentName, endpointConfig.Url);
+
+        // Extract project and location from endpoint URL
+        // URL format: https://{location}-aiplatform.googleapis.com/
+        var (projectId, location) = ExtractVertexAIProjectAndLocation(endpointConfig);
+
+        // Build the model resource name
+        var modelResourceName = $"projects/{projectId}/locations/{location}/publishers/google/models/{deploymentName}";
+
+        // Create the prediction service client
+        var predictionServiceClient = await new PredictionServiceClientBuilder
+        {
+            Endpoint = $"{location}-aiplatform.googleapis.com"
+        }.BuildAsync();
+
+        // Create the request using GenerateContent
+        var generateContentRequest = new GenerateContentRequest
+        {
+            Model = modelResourceName,
+            Contents =
+            {
+                new Content
+                {
+                    Role = "user",
+                    Parts = { new Part { Text = prompt } }
+                }
+            },
+            GenerationConfig = new GenerationConfig
+            {
+                MaxOutputTokens = 50,
+                Temperature = 0.3f
+            }
+        };
+
+        var response = await predictionServiceClient.GenerateContentAsync(generateContentRequest);
+
+        var outputText = response.Candidates?
+            .FirstOrDefault()?.Content?.Parts?
+            .FirstOrDefault()?.Text?.Trim().Trim('"', '\'') ?? string.Empty;
+
+        return outputText;
+    }
+
+    /// <summary>
+    /// Extracts the project ID and location from a Vertex AI endpoint configuration.
+    /// </summary>
+    private static (string projectId, string location) ExtractVertexAIProjectAndLocation(APIEndpointConfiguration endpointConfig)
+    {
+        // Try to get project ID from authentication parameters or environment.
+        var projectId = GetAuthenticationParameter(endpointConfig, "project_id", "projectId", "project")
+                         ?? Platform.Instance()?.ProjectId
+                         ?? Environment.GetEnvironmentVariable("GOOGLE_CLOUD_PROJECT")
+                         ?? Environment.GetEnvironmentVariable("GOOGLE_PROJECT_ID")
+                         ?? Environment.GetEnvironmentVariable("GOOGLE_PROJECT_NUMBER")
+                         ?? Environment.GetEnvironmentVariable("GCLOUD_PROJECT")
+                         ?? string.Empty;
+
+        if (string.IsNullOrWhiteSpace(projectId))
+        {
+            throw new CoreServiceException($"Google Vertex AI project id not configured for endpoint '{endpointConfig.Name}'.");
+        }
+
+        // Extract location from authentication parameters or URL (e.g., https://us-central1-aiplatform.googleapis.com/)
+        var location = GetAuthenticationParameter(endpointConfig, "location", "region");
+        if (string.IsNullOrWhiteSpace(location))
+        {
+            location = "us-central1"; // Default
+            var uri = new Uri(endpointConfig.Url);
+            var hostParts = uri.Host.Split('-');
+            if (hostParts.Length >= 2 && hostParts[^1].StartsWith("aiplatform", StringComparison.OrdinalIgnoreCase))
+            {
+                // Reconstruct location from parts before "aiplatform"
+                location = string.Join("-", hostParts.Take(hostParts.Length - 1));
+            }
+        }
+
+        return (projectId, location);
     }
 
     #endregion
