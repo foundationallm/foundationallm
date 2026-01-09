@@ -304,7 +304,7 @@
 							target="_blank"
 							class="p-component csm-only-text-btn-1"
 						>
-							Request permission to manage agents
+							Request permission to create agents
 							<i class="pi pi-external-link ml-1"></i>
 						</nuxt-link>
 					</div>
@@ -406,9 +406,6 @@ import { useAuthStore } from '@/stores/authStore';
 				createProcessing: false,
 				debounceTimeout: null as ReturnType<typeof setTimeout> | null,
 
-				agentOptions: [],
-				emptyAgentsMessage: null,
-
 				agentOptions2: [] as AgentOption[],
 				loadingAgents2: false,
 				agentError2: '',
@@ -456,18 +453,6 @@ import { useAuthStore } from '@/stores/authStore';
 		},
 
 		watch: {
-			'appStore.agents': {
-				handler() {
-					this.setAgentOptions();
-				},
-				deep: true,
-			},
-			'appStore.lastSelectedAgent': {
-				handler() {
-					this.setAgentOptions();
-				},
-				deep: true,
-			},
 			'appConfigStore.isConfigurationLoaded': {
 				handler(newVal) {
 					if (newVal) {
@@ -537,7 +522,6 @@ import { useAuthStore } from '@/stores/authStore';
 				this.startAuthPolling();
 			}
 
-			await this.setAgentOptions();
 			await this.loadAllowedAgents();
 			await this.checkContributorRoles();
 		},
@@ -613,10 +597,6 @@ import { useAuthStore } from '@/stores/authStore';
 
 			handleSessionSelected(session: Session) {
 				(this.appStore as any).changeSession(session);
-				const sessionAgent = (this.appStore as any).getSessionAgent(session);
-				if (sessionAgent) {
-					(this.appStore as any).setSessionAgent(session, sessionAgent, true);
-				}
 			},
 
 			async handleAddSession() {
@@ -635,7 +615,9 @@ import { useAuthStore } from '@/stores/authStore';
 				this.createProcessing = true;
 
 				try {
-				const currentAgent = this.currentSession ? (this.appStore as any).getSessionAgent(this.currentSession) : null;
+				// Use lastSelectedAgent instead of getSessionAgent to handle cases where
+				// the current session has a deleted agent but user just selected a new one
+				const currentAgent = (this.appStore as any).lastSelectedAgent;
 					const mostRecentSession = this.sessions[0];
 					if (mostRecentSession) {
 						const isEmptySession = await (this.appStore as any).isSessionEmpty(mostRecentSession.sessionId);
@@ -643,7 +625,7 @@ import { useAuthStore } from '@/stores/authStore';
 							const timestamp = (this.appStore as any).getDefaultChatSessionProperties().name;
 							await (this.appStore as any).updateConversation(mostRecentSession, timestamp, mostRecentSession.metadata || '');
 							if (currentAgent) {
-								(this.appStore as any).setSessionAgent(mostRecentSession, currentAgent, true);
+								(this.appStore as any).setSessionAgent(mostRecentSession, currentAgent);
 							}
 							this.handleSessionSelected(mostRecentSession);
 							this.debounceTimeout = setTimeout(() => {
@@ -654,7 +636,7 @@ import { useAuthStore } from '@/stores/authStore';
 					}
 					const newSession = await (this.appStore as any).addSession();
 					if (currentAgent) {
-						(this.appStore as any).setSessionAgent(newSession, currentAgent, true);
+						(this.appStore as any).setSessionAgent(newSession, currentAgent);
 					}
 					this.handleSessionSelected(newSession);
 
@@ -739,29 +721,6 @@ import { useAuthStore } from '@/stores/authStore';
 					event.preventDefault();
 					await this.confirmDeleteSession(session);
 				}
-			},
-
-			async setAgentOptions() {
-				const isCurrentAgent = (agent: any): boolean => {
-					return (
-						agent.resource.name ===
-						(this.appStore as any).getSessionAgent(this.currentSession)?.resource?.name
-					);
-				};
-
-				// Filter out expired agents, but keep the currently selected agent even if it is expired
-				const notExpiredOrCurrentAgents = (this.appStore as any).agents.filter(
-					(agent: any) => !isAgentExpired(agent) || isCurrentAgent(agent),
-				);
-
-				this.agentOptions = notExpiredOrCurrentAgents.map((agent: any) => ({
-					label: agent.resource.display_name ? agent.resource.display_name : agent.resource.name,
-					type: agent.resource.type,
-					object_id: agent.resource.object_id,
-					description: agent.resource.description,
-					my_agent: agent.roles.includes('Owner'),
-					value: agent,
-				}));
 			},
 
 			async loadUserProfile() {
