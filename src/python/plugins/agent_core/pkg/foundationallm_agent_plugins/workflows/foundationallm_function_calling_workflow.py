@@ -31,7 +31,11 @@ from foundationallm.models.constants import (
     AgentCapabilityCategories,
     ContentArtifactTypeNames,
     RunnableConfigKeys,
-    TemplateVariables
+    TemplateVariables,
+    AIModelResourceTypeNames,
+    ResourceObjectIdPropertyNames,
+    ResourceObjectIdPropertyValues,
+    ResourceProviderNames
 )
 from foundationallm.models.messages import MessageHistoryItem
 from foundationallm.models.operations import OperationStatus
@@ -42,9 +46,12 @@ from foundationallm.models.orchestration import (
     FileHistoryItem,
     OpenAITextMessageContentItem,
     OpenAIImageFileMessageContentItem,
-    OpenAIFilePathMessageContentItem
+    OpenAIFilePathMessageContentItem,
+    ImageGenerationConfig
 )
 from foundationallm.models.resource_providers.configuration import APIEndpointConfiguration
+from foundationallm.models.language_models import LanguageModelProvider
+from foundationallm.langchain.language_models import LanguageModelFactory
 from foundationallm.operations import OperationsManager
 from foundationallm.services import HttpClientService
 
@@ -131,6 +138,19 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
         if objects is None:
             objects = {}
 
+        # Check for image_config in request and apply to LLM if model supports it
+        image_config = objects.get("ImageConfig")
+        if image_config and isinstance(image_config, dict):
+            image_config = ImageGenerationConfig(**image_config)
+        elif image_config and isinstance(image_config, ImageGenerationConfig):
+            pass  # Already the right type
+        else:
+            image_config = None
+        
+        # If image_config is provided and model supports it, recreate LLM with image config
+        if image_config:
+            await self.__apply_image_config_to_llm(image_config, objects)
+
         workflow_main_prompt = self.create_workflow_main_prompt()
         workflow_router_prompt = self.create_workflow_router_prompt()
         workflow_files_prompt = self.create_workflow_files_prompt()
@@ -201,6 +221,18 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                     usage = self.__get_canonical_usage(llm_response)
                     input_tokens += usage['input_tokens']
                     output_tokens += usage['output_tokens']
+                    
+                    # Process images from LLM response if present
+                    image_content_items, image_artifacts = await self.__process_images_from_response(
+                        llm_response, operation_id, conversation_id, objects
+                    )
+                    if image_content_items:
+                        # If we have images, we'll add them to response_content later
+                        # Store them temporarily
+                        if not hasattr(self, '_temp_image_content_items'):
+                            self._temp_image_content_items = []
+                        self._temp_image_content_items.extend(image_content_items)
+                        content_artifacts.extend(image_artifacts)
                 except Exception as ex:
                     self.logger.error('Error during LLM invocation: %s', str(ex))
                     error_message = str(ex)
@@ -304,6 +336,16 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                         input_tokens += usage['input_tokens']
                         output_tokens += usage['output_tokens']
                         final_response = self.get_text_from_message(final_llm_response)
+                        
+                        # Process images from final LLM response if present
+                        image_content_items, image_artifacts = await self.__process_images_from_response(
+                            final_llm_response, operation_id, conversation_id, objects
+                        )
+                        if image_content_items:
+                            if not hasattr(self, '_temp_image_content_items'):
+                                self._temp_image_content_items = []
+                            self._temp_image_content_items.extend(image_content_items)
+                            content_artifacts.extend(image_artifacts)
                     except Exception as ex:
                         self.logger.error('Error during final LLM invocation: %s', str(ex))
                         error_message = str(ex)
@@ -331,11 +373,20 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
 
             # Initialize response_content with the result, taking final_response as priority.
             response_content = []
-            final_response_content = OpenAITextMessageContentItem(
-                value= final_response or initial_response or failure_response,
-                agent_capability_category=AgentCapabilityCategories.FOUNDATIONALLM_KNOWLEDGE_MANAGEMENT
-            )
-            response_content.append(final_response_content)
+            
+            # Add text response if present
+            text_response = final_response or initial_response or failure_response
+            if text_response:
+                final_response_content = OpenAITextMessageContentItem(
+                    value=text_response,
+                    agent_capability_category=AgentCapabilityCategories.FOUNDATIONALLM_KNOWLEDGE_MANAGEMENT
+                )
+                response_content.append(final_response_content)
+            
+            # Add any generated images from LLM responses
+            if hasattr(self, '_temp_image_content_items') and self._temp_image_content_items:
+                response_content.extend(self._temp_image_content_items)
+                delattr(self, '_temp_image_content_items')
 
             # Process any generated files.
             for artifact in content_artifacts:
@@ -602,3 +653,163 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
             'output_tokens': 0,
             'total_tokens': 0
         }
+
+    async def __apply_image_config_to_llm(
+        self,
+        image_config: ImageGenerationConfig,
+        objects: dict
+    ):
+        """
+        Applies image configuration to the workflow LLM if the model supports it.
+        
+        Parameters
+        ----------
+        image_config : ImageGenerationConfig
+            The image generation configuration from the request.
+        objects : dict
+            The objects dictionary containing model configuration.
+        """
+        try:
+            # Check if the current model is GOOGLE_GENAI
+            model_object_id = self.workflow_config.get_resource_object_id_properties(
+                ResourceProviderNames.FOUNDATIONALLM_AIMODEL,
+                AIModelResourceTypeNames.AI_MODELS,
+                ResourceObjectIdPropertyNames.OBJECT_ROLE,
+                ResourceObjectIdPropertyValues.MAIN_MODEL
+            )
+            if not model_object_id:
+                return
+            
+            from foundationallm.models.resource_providers.ai_models import AIModelBase
+            from foundationallm.utils import ObjectUtils
+            
+            ai_model = ObjectUtils.get_object_by_id(
+                model_object_id.object_id, self.objects, AIModelBase
+            )
+            if not ai_model:
+                return
+            
+            api_endpoint = ObjectUtils.get_object_by_id(
+                ai_model.endpoint_object_id, self.objects, APIEndpointConfiguration
+            )
+            if not api_endpoint or api_endpoint.provider != LanguageModelProvider.GOOGLE_GENAI:
+                return
+            
+            # Recreate LLM with image config
+            language_model_factory = LanguageModelFactory(self.objects, self.config)
+            agent_model_parameter_overrides = {
+                "response_modalities": image_config.response_modalities or ["IMAGE"],
+                "image_config": {
+                    "aspect_ratio": image_config.aspect_ratio or "1:1"
+                }
+            }
+            
+            self.workflow_llm = language_model_factory.get_language_model(
+                model_object_id.object_id,
+                agent_model_parameter_overrides=agent_model_parameter_overrides
+            )
+        except Exception as ex:
+            self.logger.warning(f"Failed to apply image config to LLM: {str(ex)}")
+            # Continue without image config if it fails
+
+    async def __process_images_from_response(
+        self,
+        response: AIMessage,
+        operation_id: str,
+        conversation_id: Optional[str],
+        objects: dict
+    ) -> tuple[List[OpenAIImageFileMessageContentItem], List[ContentArtifact]]:
+        """
+        Processes images from an LLM response by extracting base64 data and uploading via Context API.
+        
+        Parameters
+        ----------
+        response : AIMessage
+            The LLM response message.
+        operation_id : str
+            The operation ID for tracking.
+        conversation_id : Optional[str]
+            The conversation ID for organizing files.
+        objects : dict
+            The objects dictionary containing agent name and other context.
+            
+        Returns
+        -------
+        tuple[List[OpenAIImageFileMessageContentItem], List[ContentArtifact]]
+            Tuple of image content items and artifacts.
+        """
+        content_items = []
+        artifacts = []
+        
+        if not hasattr(response, 'content') or not isinstance(response.content, list):
+            return content_items, artifacts
+        
+        agent_name = objects.get(CompletionRequestObjectKeys.AGENT_NAME, "default")
+        
+        for idx, block in enumerate(response.content):
+            if isinstance(block, dict) and block.get("image_url"):
+                url = block["image_url"].get("url", "")
+                if url.startswith("data:"):
+                    try:
+                        # Extract base64 from data URL
+                        # Format: data:image/png;base64,AAAA...
+                        header, data = url.split(",", 1)
+                        content_type = header.split(":")[1].split(";")[0] if ":" in header else "image/png"
+                        
+                        # Upload via Context API
+                        file_name = f"generated_image_{operation_id}_{idx}.{self.__get_extension_from_content_type(content_type)}"
+                        self.context_api_client.headers['X-USER-IDENTITY'] = self.user_identity.model_dump_json()
+                        
+                        # Context API expects base64 string in file_content
+                        context_file_response = await self.context_api_client.post_async(
+                            endpoint=f"/instances/{self.instance_id}/files",
+                            data=json.dumps({
+                                "agent_name": agent_name,
+                                "conversation_id": conversation_id,
+                                "file_name": file_name,
+                                "file_content_type": content_type,
+                                "file_content": data  # base64 string
+                            })
+                        )
+                        
+                        if context_file_response and hasattr(context_file_response, 'data'):
+                            file_record = context_file_response.data
+                            
+                            # Create content item
+                            content_item = OpenAIImageFileMessageContentItem(
+                                file_id=file_record.object_id if hasattr(file_record, 'object_id') else file_record.get('object_id'),
+                                file_url=file_record.url if hasattr(file_record, 'url') else file_record.get('url'),
+                                agent_capability_category=AgentCapabilityCategories.FOUNDATIONALLM_IMAGE_GENERATION
+                            )
+                            content_items.append(content_item)
+                            
+                            # Create artifact
+                            artifact = ContentArtifact(
+                                id=f"generated_image_{operation_id}_{idx}",
+                                title=f"Generated Image {idx + 1}",
+                                filepath=file_record.object_id if hasattr(file_record, 'object_id') else file_record.get('object_id'),
+                                source="image_generation",
+                                type=ContentArtifactTypeNames.GENERATED_IMAGE,
+                                metadata={
+                                    "content_type": content_type,
+                                    "operation_id": operation_id,
+                                    "file_url": file_record.url if hasattr(file_record, 'url') else file_record.get('url')
+                                }
+                            )
+                            artifacts.append(artifact)
+                    except Exception as ex:
+                        self.logger.error(f"Failed to process image from response: {str(ex)}")
+                        # Continue processing other images
+        
+        return content_items, artifacts
+
+    def __get_extension_from_content_type(self, content_type: str) -> str:
+        """Get file extension from content type."""
+        extensions = {
+            "image/png": "png",
+            "image/jpeg": "jpg",
+            "image/jpg": "jpg",
+            "image/webp": "webp",
+            "image/gif": "gif"
+        }
+        return extensions.get(content_type.lower(), "png")

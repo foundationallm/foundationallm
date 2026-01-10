@@ -1,4 +1,4 @@
-﻿namespace FoundationaLLM.Common.Constants.Configuration
+namespace FoundationaLLM.Common.Constants.Configuration
 {
     /// <summary>
     /// Language Model provider constants.
@@ -30,8 +30,13 @@
         public const string VERTEXAI = "vertexai";
 
         /// <summary>
+        /// Google Gemini Developer API
+        /// </summary>
+        public const string GOOGLE_GENAI = "google_genai";
+
+        /// <summary>
         /// All providers.
         /// </summary>
-        public readonly static string[] All = [AZUREAI, MICROSOFT, OPENAI, BEDROCK, VERTEXAI];
+        public readonly static string[] All = [AZUREAI, MICROSOFT, OPENAI, BEDROCK, VERTEXAI, GOOGLE_GENAI];
     }
 }
