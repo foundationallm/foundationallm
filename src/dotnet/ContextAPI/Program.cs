@@ -69,6 +69,7 @@ builder.AddAzureCosmosDBContextServices();
 builder.AddAzureContainerAppsCodeSessionProviderServices();
 builder.AddKnowledgeGraphService();
 builder.AddAzureCosmosDBService();
+builder.AddAzureContentSafetyService();
 
 // Add authorization services.
 builder.AddIdentitiyManagement();
