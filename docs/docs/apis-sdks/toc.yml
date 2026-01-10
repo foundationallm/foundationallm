@@ -25,6 +25,13 @@ items:
     href: apis/management-api/api-reference.md
   - name: Data Pipelines API
     href: apis/management-api/data-pipelines.md
+- name: Context API
+  href: apis/context-api/index.md
+  items:
+  - name: Overview
+    href: apis/context-api/index.md
+  - name: Content Safety API
+    href: apis/context-api/content-safety.md
 - name: SDKs
   href: sdks/dotnet/index.md
   items:
