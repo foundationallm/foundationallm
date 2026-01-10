@@ -100,6 +100,14 @@ export interface ConversationProperties {
 	metadata: string;
 }
 
+export interface ConversationSummaryRequest {
+	agent_name: string;
+}
+
+export interface ConversationSummaryResponse {
+	summary: string;
+}
+
 export interface LongRunningOperation {
 	id?: string;
 	type: string;

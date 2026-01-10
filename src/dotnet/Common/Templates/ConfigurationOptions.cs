@@ -92,6 +92,9 @@ namespace FoundationaLLM.Common.Constants.Configuration
             options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AzureEventGrid_Configuration);
             options.Select(AppConfigurationKeys.FoundationaLLM_Events_Profiles_CoreAPI);
             options.Select(AppConfigurationKeys.FeatureFlag_FoundationaLLM_Agent_SelfService);
+            // External AI provider endpoint configurations for direct model summarization
+            options.Select("FoundationaLLM:APIEndpoints:AmazonBedrock:*");
+            options.Select("FoundationaLLM:APIEndpoints:GoogleCloudVertexAI:*");
         }
         /// <summary>
         /// Selects configuration options for CoreWorker.

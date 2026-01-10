@@ -109,5 +109,18 @@ namespace FoundationaLLM.Core.API.Controllers
         [HttpDelete("{sessionId}", Name = "DeleteConversation")]
         public async Task DeleteConversation(string instanceId, string sessionId) =>
             await _coreService.DeleteConversationAsync(instanceId, sessionId);
+
+        /// <summary>
+        /// Generates a summary name for a conversation based on its first message exchange.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="sessionId">The conversation identifier to summarize.</param>
+        /// <param name="request">The summarization request containing the agent name.</param>
+        [HttpPost("{sessionId}/summarize", Name = "SummarizeConversation")]
+        public async Task<ConversationSummaryResponse> SummarizeConversation(
+            string instanceId,
+            string sessionId,
+            [FromBody] ConversationSummaryRequest request) =>
+            await _coreService.SummarizeConversationAsync(instanceId, sessionId, request);
     }
 }

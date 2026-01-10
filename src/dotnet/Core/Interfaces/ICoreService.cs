@@ -54,6 +54,18 @@ public interface ICoreService
     /// <param name="sessionId">The session id to delete.</param>
     Task DeleteConversationAsync(string instanceId, string sessionId);
 
+    /// <summary>
+    /// Generates a summary name for a conversation based on its first message exchange.
+    /// </summary>
+    /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+    /// <param name="sessionId">The conversation identifier to summarize.</param>
+    /// <param name="request">The summarization request containing the agent name.</param>
+    /// <returns>The generated conversation summary/title.</returns>
+    Task<ConversationSummaryResponse> SummarizeConversationAsync(
+        string instanceId,
+        string sessionId,
+        ConversationSummaryRequest request);
+
     #endregion
 
     #region Asynchronous completion operations

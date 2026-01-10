@@ -252,6 +252,19 @@ export default {
 	},
 
 	/**
+	 * Generates a summary name for a conversation based on its first message exchange.
+	 * @param sessionId The conversation ID to summarize.
+	 * @param agentName The agent name to use for summarization.
+	 * @returns The generated summary/title.
+	 */
+	async summarizeConversation(sessionId: string, agentName: string): Promise<{ summary: string }> {
+		return await this.fetch<{ summary: string }>(`/instances/${this.instanceId}/sessions/${sessionId}/summarize`, {
+			method: 'POST',
+			body: { agent_name: agentName },
+		});
+	},
+
+	/**
 	 * Deletes a session by its ID.
 	 * @param sessionId The ID of the session to delete.
 	 * @returns A promise that resolves to the deleted session.
