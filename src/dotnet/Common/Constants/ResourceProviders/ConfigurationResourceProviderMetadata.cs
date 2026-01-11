@@ -40,7 +40,8 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                     typeof(AppConfigurationSet))
                 {
                     AllowedTypes = [
-                        new ResourceTypeAllowedTypes(HttpMethod.Get.Method, AuthorizableOperations.Read, [], [], [typeof(ResourceProviderGetResult<AppConfigurationSet>)])
+                        // Add Reader and Contributor role fallbacks to allow authenticated users to access portal configuration
+                        new ResourceTypeAllowedTypes(HttpMethod.Get.Method, $"{AuthorizableOperations.Read}|{RoleDefinitionNames.Reader}|{RoleDefinitionNames.Contributor}", [], [], [typeof(ResourceProviderGetResult<AppConfigurationSet>)])
                     ]
                 }
             },

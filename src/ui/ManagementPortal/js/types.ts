@@ -698,3 +698,47 @@ export type APIEndpointConfiguration = ResourceBase & {
 	apiVersion?: string;
 	operationType?: string;
 };
+
+// Quota types
+export type QuotaType = 'RawRequestRateLimit' | 'AgentRequestRateLimit';
+
+export type QuotaMetricPartitionType = 'None' | 'UserPrincipalName' | 'UserIdentifier';
+
+export type QuotaDefinition = {
+	name: string;
+	description?: string;
+	context: string;
+	quota_type: QuotaType;
+	metric_partition: QuotaMetricPartitionType;
+	metric_limit: number;
+	metric_window_seconds: number;
+	lockout_duration_seconds: number;
+	distributed_enforcement: boolean;
+	object_id?: string;
+	display_name?: string;
+	created_by?: string;
+	created_on?: string;
+	updated_by?: string;
+	updated_on?: string;
+};
+
+export type QuotaUsageMetrics = {
+	quota_name: string;
+	quota_context: string;
+	partition_id: string;
+	current_count: number;
+	limit: number;
+	utilization_percentage: number;
+	lockout_active: boolean;
+	lockout_remaining_seconds: number;
+	timestamp: string;
+};
+
+export type QuotaUsageHistory = {
+	quota_name: string;
+	partition_id: string;
+	time_bucket: string;
+	request_count: number;
+	exceeded_count: number;
+	lockout_count: number;
+};

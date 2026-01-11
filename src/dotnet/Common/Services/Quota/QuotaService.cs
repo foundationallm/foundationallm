@@ -463,5 +463,186 @@ namespace FoundationaLLM.Common.Services.Quota
                     data.QuotaMetricPartitionId);
             }
         }
+
+        #region Quota Definition CRUD Operations
+
+        /// <inheritdoc/>
+        public async Task<List<QuotaDefinition>> GetQuotaDefinitionsAsync()
+        {
+            await EnsureInitialized();
+            return [.. _quotaDefinitions];
+        }
+
+        /// <inheritdoc/>
+        public async Task<QuotaDefinition?> GetQuotaDefinitionAsync(string name)
+        {
+            await EnsureInitialized();
+            return _quotaDefinitions.FirstOrDefault(qd => qd.Name == name);
+        }
+
+        /// <inheritdoc/>
+        public async Task<QuotaDefinition> UpsertQuotaDefinitionAsync(QuotaDefinition quotaDefinition)
+        {
+            await EnsureInitialized();
+
+            var existingIndex = _quotaDefinitions.FindIndex(qd => qd.Name == quotaDefinition.Name);
+            if (existingIndex >= 0)
+            {
+                _quotaDefinitions[existingIndex] = quotaDefinition;
+                _logger.LogInformation("[QuotaService {ServiceIdentifier}] Updated quota definition '{QuotaName}'.",
+                    _serviceIdentifier, quotaDefinition.Name);
+            }
+            else
+            {
+                _quotaDefinitions.Add(quotaDefinition);
+                _logger.LogInformation("[QuotaService {ServiceIdentifier}] Created quota definition '{QuotaName}'.",
+                    _serviceIdentifier, quotaDefinition.Name);
+            }
+
+            await SaveQuotaDefinitions();
+            await RebuildQuotaContexts();
+
+            return quotaDefinition;
+        }
+
+        /// <inheritdoc/>
+        public async Task DeleteQuotaDefinitionAsync(string name)
+        {
+            await EnsureInitialized();
+
+            var removed = _quotaDefinitions.RemoveAll(qd => qd.Name == name);
+            if (removed > 0)
+            {
+                _logger.LogInformation("[QuotaService {ServiceIdentifier}] Deleted quota definition '{QuotaName}'.",
+                    _serviceIdentifier, name);
+                await SaveQuotaDefinitions();
+                await RebuildQuotaContexts();
+            }
+            else
+            {
+                _logger.LogWarning("[QuotaService {ServiceIdentifier}] Quota definition '{QuotaName}' not found for deletion.",
+                    _serviceIdentifier, name);
+            }
+        }
+
+        private async Task SaveQuotaDefinitions()
+        {
+            await _storageService.WriteFileAsync(
+                STORAGE_CONTAINER_NAME,
+                QUOTA_STORE_FILE_PATH,
+                JsonSerializer.Serialize(_quotaDefinitions),
+                default,
+                default);
+        }
+
+        private async Task RebuildQuotaContexts()
+        {
+            _quotaContexts = _quotaDefinitions
+                .Select(qd => qd.MetricPartition switch
+                {
+                    QuotaMetricPartitionType.None => (new SinglePartitionQuotaContext(
+                        _serviceIdentifier, qd, _loggerFactory.CreateLogger<SinglePartitionQuotaContext>())) as QuotaContextBase,
+                    QuotaMetricPartitionType.UserIdentifier => (new UserIdentifierQuotaContext(
+                        _serviceIdentifier, qd, _loggerFactory.CreateLogger<UserIdentifierQuotaContext>())) as QuotaContextBase,
+                    QuotaMetricPartitionType.UserPrincipalName => (new UserPrincipalNameQuotaContext(
+                        _serviceIdentifier, qd, _loggerFactory.CreateLogger<UserPrincipalNameQuotaContext>())) as QuotaContextBase,
+                    _ => throw new QuotaException($"Unsupported metric partition: {qd.MetricPartition}")
+                })
+                .ToDictionary(qc => qc.Quota.Context);
+
+            _enabled = _quotaDefinitions.Count > 0;
+            await Task.CompletedTask;
+        }
+
+        private async Task EnsureInitialized()
+        {
+            if (!_isInitialized)
+            {
+                var result = await _initializationTaskCompletionSource.Task;
+                if (!result)
+                    throw new QuotaException("The quota service failed to initialize.");
+            }
+        }
+
+        #endregion
+
+        #region Quota Usage Metrics
+
+        /// <inheritdoc/>
+        public async Task<List<QuotaUsageMetrics>> GetQuotaUsageMetricsAsync()
+        {
+            await EnsureInitialized();
+            return GetCurrentMetrics();
+        }
+
+        /// <inheritdoc/>
+        public async Task<List<QuotaUsageMetrics>> GetQuotaUsageMetricsAsync(QuotaMetricsFilter filter)
+        {
+            await EnsureInitialized();
+            var metrics = GetCurrentMetrics();
+
+            if (!string.IsNullOrEmpty(filter.QuotaName))
+                metrics = metrics.Where(m => m.QuotaName == filter.QuotaName).ToList();
+
+            if (!string.IsNullOrEmpty(filter.PartitionId))
+                metrics = metrics.Where(m => m.PartitionId == filter.PartitionId).ToList();
+
+            return metrics;
+        }
+
+        /// <inheritdoc/>
+        public async Task<List<QuotaUsageHistory>> GetQuotaUsageHistoryAsync(
+            string quotaName,
+            DateTimeOffset startTime,
+            DateTimeOffset endTime)
+        {
+            await EnsureInitialized();
+
+            // For now, return empty history as we don't have historical storage yet
+            // This would need to be implemented with Cosmos DB or similar for production
+            _logger.LogInformation("[QuotaService {ServiceIdentifier}] Historical data requested for quota '{QuotaName}' from {StartTime} to {EndTime}. Historical storage not yet implemented.",
+                _serviceIdentifier, quotaName, startTime, endTime);
+
+            return [];
+        }
+
+        private List<QuotaUsageMetrics> GetCurrentMetrics()
+        {
+            var metrics = new List<QuotaUsageMetrics>();
+            var now = DateTimeOffset.UtcNow;
+
+            foreach (var kvp in _quotaContexts)
+            {
+                var quotaContext = kvp.Value;
+                var quota = quotaContext.Quota;
+                var partitionStates = quotaContext.GetPartitionStates();
+
+                foreach (var partitionState in partitionStates)
+                {
+                    var currentCount = partitionState.MetricValue;
+                    var utilizationPercentage = quota.MetricLimit > 0
+                        ? (double)currentCount / quota.MetricLimit * 100
+                        : 0;
+
+                    metrics.Add(new QuotaUsageMetrics
+                    {
+                        QuotaName = quota.Name,
+                        QuotaContext = quota.Context,
+                        PartitionId = partitionState.QuotaMetricPartitionId,
+                        CurrentCount = currentCount,
+                        Limit = quota.MetricLimit,
+                        UtilizationPercentage = Math.Round(utilizationPercentage, 2),
+                        LockoutActive = partitionState.IsLockedOut,
+                        LockoutRemainingSeconds = partitionState.LockoutRemainingSeconds,
+                        Timestamp = now
+                    });
+                }
+            }
+
+            return metrics;
+        }
+
+        #endregion
     }
 }
+

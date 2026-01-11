@@ -73,6 +73,12 @@ namespace FoundationaLLM.Common.Constants.Configuration
             "FoundationaLLM:ResourceProviders:DataPipeline:Storage";
         
         /// <summary>
+        /// Dependency injection key used by the FoundationaLLM.Quota resource provider.
+        /// </summary>
+        public const string FoundationaLLM_ResourceProviders_Quota =
+            "FoundationaLLM:ResourceProviders:Quota";
+        
+        /// <summary>
         /// Dependency injection key used by the FoundationaLLM.Plugin resource provider.
         /// </summary>
         public const string FoundationaLLM_ResourceProviders_Plugin =

@@ -75,5 +75,10 @@ namespace FoundationaLLM.Common.Constants.Authorization
         /// </summary>
         public const string Resource_Providers_Administrator = "63b6cc4d-9e1c-4891-8201-cf58286ebfe6";
 
+        /// <summary>
+        /// Create and manage quota definitions.
+        /// </summary>
+        public const string Quotas_Contributor = "b8f0a6ec-8d54-4e15-9c2a-7f4a6e12d3a1";
+
     }
 }

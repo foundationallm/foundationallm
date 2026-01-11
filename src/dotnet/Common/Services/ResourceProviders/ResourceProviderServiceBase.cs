@@ -124,6 +124,13 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// </summary>
         protected readonly bool _proxyMode = false;
 
+        /// <summary>
+        /// Indicates whether the resource provider should bypass authorization checks.
+        /// Override this property to return true in derived classes to skip authorization.
+        /// This is useful for development/testing scenarios.
+        /// </summary>
+        protected virtual bool BypassResourceAuthorization => false;
+
         /// <inheritdoc/>
         public string Name => _name;
 
@@ -1040,6 +1047,20 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             if (userIdentity is null
                 || userIdentity.UserId is null)
                 throw new ResourceProviderException("The provided user identity information cannot be used for authorization.");
+
+            // Check if authorization should be bypassed for this resource provider
+            if (BypassResourceAuthorization)
+            {
+                _logger.LogInformation("Authorization bypassed for resource provider {ResourceProvider} at path {ResourcePath}.",
+                    _name, resourcePath.RawResourcePath);
+                return new ResourcePathAuthorizationResult
+                {
+                    ResourceName = resourcePath.MainResourceId ?? resourcePath.MainResourceTypeName,
+                    ResourcePath = resourcePath.GetObjectId(_instanceSettings.Id, _name),
+                    Authorized = true,
+                    HasRequiredRole = true
+                };
+            }
 
             try
             {

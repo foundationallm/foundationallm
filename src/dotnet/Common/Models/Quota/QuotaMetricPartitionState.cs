@@ -23,7 +23,7 @@ namespace FoundationaLLM.Common.Models.Quota
         /// Gets or sets the identifier of the quota metric partition used for evaluation.
         /// </summary>
         [JsonIgnore]
-        public required string QuotaMetricPartitionId { get; set; }
+        public string QuotaMetricPartitionId { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets a value indicating whether the quota has been exceeded.

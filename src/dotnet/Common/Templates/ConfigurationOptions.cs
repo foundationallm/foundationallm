@@ -43,6 +43,7 @@ namespace FoundationaLLM.Common.Constants.Configuration
             options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Plugin_Storage);
             options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Vector_Storage);
             options.Select(AppConfigurationKeyFilters.FoundationaLLM_ResourceProviders_Context_Storage);
+            options.Select(AppConfigurationKeyFilters.FoundationaLLM_Quota_Storage);
             options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AzureEventGrid_Essentials);
             options.Select(AppConfigurationKeyFilters.FoundationaLLM_APIEndpoints_AzureEventGrid_Configuration);
             options.Select(AppConfigurationKeys.FoundationaLLM_Events_Profiles_ManagementAPI);

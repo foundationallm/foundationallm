@@ -403,6 +403,31 @@ namespace FoundationaLLM.Common.Models.Authorization
                         UpdatedBy = null
                     }
                 },
+                {
+                    "/providers/FoundationaLLM.Authorization/roleDefinitions/b8f0a6ec-8d54-4e15-9c2a-7f4a6e12d3a1",
+                    new RoleDefinition
+                    {
+                        Name = "b8f0a6ec-8d54-4e15-9c2a-7f4a6e12d3a1",
+                        Type = "FoundationaLLM.Authorization/roleDefinitions",
+                        ObjectId = "/providers/FoundationaLLM.Authorization/roleDefinitions/b8f0a6ec-8d54-4e15-9c2a-7f4a6e12d3a1",
+                        DisplayName = "Quotas Contributor",
+                        Description = "Create and manage quota definitions.",
+                        AssignableScopes = [
+                            "/",],
+                        Permissions = [                            
+                            new RoleDefinitionPermissions
+                            {
+                                Actions = [],
+                                NotActions = [],
+                                DataActions = [],
+                                NotDataActions = [],
+                            },],
+                        CreatedOn = DateTimeOffset.Parse("2026-01-10T00:00:00.0000000Z"),
+                        UpdatedOn = DateTimeOffset.Parse("2026-01-10T00:00:00.0000000Z"),
+                        CreatedBy = null,
+                        UpdatedBy = null
+                    }
+                },
             });
     }
 }

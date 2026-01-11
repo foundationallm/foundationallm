@@ -32,8 +32,8 @@ namespace FoundationaLLM.Common.Services.Quota
         private readonly ILogger _logger = logger;
 
         private const int METRIC_TIME_UNIT_SECONDS = 20;
-        private readonly int _actualMetricWindowSeconds = METRIC_TIME_UNIT_SECONDS;
-        private readonly int _actualMetricLimit = metricLimit / (metricWindowSeconds / METRIC_TIME_UNIT_SECONDS);
+        private readonly int _actualMetricWindowSeconds = metricWindowSeconds;
+        private readonly int _actualMetricLimit = metricLimit;
 
         private readonly object _syncRoot = new();
         private int _localMetricUnitsCount = 0;
@@ -45,11 +45,11 @@ namespace FoundationaLLM.Common.Services.Quota
         /// <summary>
         /// Holds the number of local metric units for each one-second interval that passed before <see cref="_metricUnitsLastShiftTime"/>.
         /// </summary>
-        private readonly int[] _localMetricUnits = new int[METRIC_TIME_UNIT_SECONDS];
+        private readonly int[] _localMetricUnits = new int[metricWindowSeconds];
         /// <summary>
         /// Holds the number of remote metric units for each one-second interval that passed before <see cref="_metricUnitsLastShiftTime"/>.
         /// </summary>
-        private readonly int[] _remoteMetricUnits = new int[METRIC_TIME_UNIT_SECONDS];
+        private readonly int[] _remoteMetricUnits = new int[metricWindowSeconds];
         private bool _lockedOut = false;
         private DateTimeOffset _lockoutStartTime = DateTimeOffset.MinValue;
 
@@ -60,6 +60,41 @@ namespace FoundationaLLM.Common.Services.Quota
         /// The value of the identifier is only relevant within the parent quota context (where it is unique).
         /// </remarks>
         public string QuotaMetricPartitionId => _quotaMetricPartitionId;
+
+        /// <summary>
+        /// Gets the current state of the metric partition for reporting purposes.
+        /// </summary>
+        /// <returns>A <see cref="QuotaMetricPartitionDisplayState"/> with the current state.</returns>
+        public QuotaMetricPartitionDisplayState GetCurrentState()
+        {
+            lock (_syncRoot)
+            {
+                var localReferenceTime = DateTimeOffset.UtcNow;
+                var lockoutRemainingSeconds = 0;
+                var isLockedOut = _lockedOut;
+
+                if (_lockedOut)
+                {
+                    var elapsedSinceLockout = (int)(localReferenceTime - _lockoutStartTime).TotalSeconds;
+                    if (elapsedSinceLockout >= _lockoutDurationSeconds)
+                    {
+                        isLockedOut = false;
+                    }
+                    else
+                    {
+                        lockoutRemainingSeconds = _lockoutDurationSeconds - elapsedSinceLockout;
+                    }
+                }
+
+                return new QuotaMetricPartitionDisplayState
+                {
+                    QuotaMetricPartitionId = _quotaMetricPartitionId,
+                    MetricValue = _localMetricUnitsCount + _remoteMetricUnitsCount,
+                    IsLockedOut = isLockedOut,
+                    LockoutRemainingSeconds = lockoutRemainingSeconds
+                };
+            }
+        }
 
         /// <summary>
         /// Adds a local metric unit to the metric partition.

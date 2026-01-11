@@ -1,4 +1,5 @@
 ﻿using FoundationaLLM.Common.Constants.Quota;
+using FoundationaLLM.Common.Models.ResourceProviders;
 using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.Common.Models.Quota
@@ -6,33 +7,27 @@ namespace FoundationaLLM.Common.Models.Quota
     /// <summary>
     /// Represents a quota definition.
     /// </summary>
-    public class QuotaDefinition
+    public class QuotaDefinition : ResourceBase
     {
-        /// <summary>
-        /// Gets or sets the name of the quota.
-        /// </summary>
-        [JsonPropertyName("name")]
-        public required string Name { get; set; }
-
-        /// <summary>
-        /// Gets or sets the description of the quota.
-        /// </summary>
-        [JsonPropertyName("description")]
-        public required string Description { get; set; }
+        /// <inheritdoc/>
+        [JsonIgnore]
+        public override string? Type { get; set; } = "quota-definition";
 
         /// <summary>
         /// Gets or sets the context of the quota.
         /// </summary>
-        /// <remarks></remarks>
+        /// <remarks>
+        /// The context defines where the quota is applied, e.g., "CoreAPI:Completions" or "CoreAPI:Completions:AgentName".
+        /// </remarks>
         [JsonPropertyName("context")]
         public required string Context { get; set; }
 
         /// <summary>
         /// Gets or sets the type of the quota.
         /// </summary>
-        [JsonPropertyName("type")]
+        [JsonPropertyName("quota_type")]
         [JsonConverter(typeof(JsonStringEnumConverter))]
-        public QuotaType Type { get; set; }
+        public QuotaType QuotaType { get; set; }
 
         /// <summary>
         /// Gets or sets the type of partitioning applied to the metric that is used to enforce the quota.

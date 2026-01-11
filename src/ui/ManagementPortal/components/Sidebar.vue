@@ -146,6 +146,28 @@
 					</li>
 				</ul>
 
+				<!-- Quotas -->
+				<h3 class="sidebar__section-header">
+					<span class="pi pi-chart-bar" aria-hidden="true"></span>
+					<span>Quotas</span>
+				</h3>
+				<ul>
+					<li>
+						<NuxtLink
+							to="/quotas"
+							:class="{ 'router-link-active': isRouteActive('/quotas') && !isRouteActive('/quotas/dashboards') }"
+							class="sidebar__item"
+						>Quota Management</NuxtLink>
+					</li>
+					<li>
+						<NuxtLink
+							to="/quotas/dashboards"
+							:class="{ 'router-link-active': isRouteActive('/quotas/dashboards') }"
+							class="sidebar__item"
+						>Quota Dashboards</NuxtLink>
+					</li>
+				</ul>
+
 				<!-- FLLM Deployment -->
 				<h3 class="sidebar__section-header">
 					<span class="pi pi-cloud" aria-hidden="true"></span>
