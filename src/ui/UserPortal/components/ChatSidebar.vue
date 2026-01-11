@@ -345,7 +345,7 @@
 				<div class="flex w-full justify-between items-center px-2">
 					<div class="w-full max-w-[50%] px-2">
 						<nuxt-link
-							v-if="activeTabIndex !== 1 && appConfigStore.agentSelfServiceFeatureEnabled"
+							v-if="activeTabIndex !== 1 && appConfigStore.agentSelfServiceFeatureEnabled && hasManageableAgents"
 							to="/manage-agents"
 							class="p-component csm-only-text-btn-1">
 							Manage Agents <i class="pi pi-external-link ml-1"></i>
@@ -449,6 +449,17 @@ import { useAuthStore } from '@/stores/authStore';
 				}
 
 				return filtered;
+			},
+
+			/**
+			 * Returns true if the user has at least one agent where they have Contributor or Owner role.
+			 */
+			hasManageableAgents(): boolean {
+				const agentsArray = this.appStore.agents || [];
+				return agentsArray.some((agent: any) => {
+					const roles = agent.roles || [];
+					return roles.includes('Contributor') || roles.includes('Owner');
+				});
 			},
 		},
 
