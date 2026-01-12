@@ -10,6 +10,7 @@ local.settings.json
 *.rsuser
 *.suo
 *.user
+*.slnLaunch
 *.userosscache
 *.sln.docstates
 

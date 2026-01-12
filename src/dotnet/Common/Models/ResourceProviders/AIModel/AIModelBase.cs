@@ -1,4 +1,4 @@
-﻿using FoundationaLLM.Common.Constants.Agents;
+using FoundationaLLM.Common.Constants.Agents;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
 using System.Text.Json.Serialization;
@@ -12,6 +12,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.AIModel
     [JsonDerivedType(typeof(EmbeddingAIModel), AIModelTypes.Embedding)]
     [JsonDerivedType(typeof(CompletionAIModel), AIModelTypes.Completion)]
     [JsonDerivedType(typeof(ImageGenerationAIModel), AIModelTypes.ImageGeneration)]
+    [JsonDerivedType(typeof(RealtimeSpeechAIModel), AIModelTypes.RealtimeSpeech)]
     public class AIModelBase : ResourceBase
     {
         /// <inheritdoc/>
