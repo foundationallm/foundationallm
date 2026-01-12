@@ -53,6 +53,25 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                         ])
                     ]
                 }
+            },
+            {
+                QuotaResourceTypeNames.QuotaEvents,
+                new ResourceTypeDescriptor(
+                        QuotaResourceTypeNames.QuotaEvents,
+                        typeof(QuotaEventDocument))
+                {
+                    AllowedTypes = [
+                        new ResourceTypeAllowedTypes(HttpMethod.Get.Method, $"{AuthorizableOperations.Read}|{RoleDefinitionNames.Contributor}", [], [], [typeof(QuotaEventDocument)])
+                    ],
+                    Actions = [
+                        new ResourceTypeAction(ResourceProviderActions.Filter, false, true, [
+                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, $"{AuthorizableOperations.Read}|{RoleDefinitionNames.Contributor}", [], [typeof(QuotaEventFilter)], [typeof(QuotaEventDocument)])
+                        ]),
+                        new ResourceTypeAction("summary", false, true, [
+                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, $"{AuthorizableOperations.Read}|{RoleDefinitionNames.Contributor}", [], [typeof(QuotaEventSummaryRequest)], [typeof(QuotaEventSummary)])
+                        ])
+                    ]
+                }
             }
         };
     }

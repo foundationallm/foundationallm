@@ -101,6 +101,7 @@ namespace FoundationaLLM.Quota.ResourceProviders
                         IncludeRoles = resourcePath.IsResourceTypePath
                     }),
                 QuotaResourceTypeNames.QuotaMetrics => await _quotaService.GetQuotaUsageMetricsAsync(),
+                QuotaResourceTypeNames.QuotaEvents => await _quotaService.GetQuotaEventsAsync(new QuotaEventFilter()),
                 _ => throw new ResourceProviderException(
                     $"The resource type {resourcePath.MainResourceTypeName} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest)
@@ -145,6 +146,14 @@ namespace FoundationaLLM.Quota.ResourceProviders
                     ResourceProviderActions.Filter => await GetFilteredQuotaMetrics(serializedAction),
                     _ => throw new ResourceProviderException(
                             $"The action {resourcePath.Action} is not supported for {QuotaResourceTypeNames.QuotaMetrics} by the {_name} resource provider.",
+                            StatusCodes.Status400BadRequest)
+                },
+                QuotaResourceTypeNames.QuotaEvents => resourcePath.Action switch
+                {
+                    ResourceProviderActions.Filter => await GetFilteredQuotaEvents(serializedAction),
+                    "summary" => await GetQuotaEventSummary(serializedAction),
+                    _ => throw new ResourceProviderException(
+                            $"The action {resourcePath.Action} is not supported for {QuotaResourceTypeNames.QuotaEvents} by the {_name} resource provider.",
                             StatusCodes.Status400BadRequest)
                 },
                 _ => throw new ResourceProviderException(
@@ -208,6 +217,26 @@ namespace FoundationaLLM.Quota.ResourceProviders
                 ?? new QuotaMetricsFilter();
             
             return await _quotaService.GetQuotaUsageMetricsAsync(filter);
+        }
+
+        #endregion
+
+        #region Quota events operations
+
+        private async Task<List<QuotaEventDocument>> GetFilteredQuotaEvents(string serializedFilter)
+        {
+            var filter = JsonSerializer.Deserialize<QuotaEventFilter>(serializedFilter)
+                ?? throw new ResourceProviderException("The filter object is invalid.", StatusCodes.Status400BadRequest);
+            
+            return await _quotaService.GetQuotaEventsAsync(filter);
+        }
+
+        private async Task<List<QuotaEventSummary>> GetQuotaEventSummary(string serializedRequest)
+        {
+            var request = JsonSerializer.Deserialize<QuotaEventSummaryRequest>(serializedRequest)
+                ?? throw new ResourceProviderException("The request object is invalid.", StatusCodes.Status400BadRequest);
+            
+            return await _quotaService.GetQuotaEventSummaryAsync(request.QuotaName, request.StartTime, request.EndTime);
         }
 
         #endregion

@@ -72,12 +72,26 @@ namespace FoundationaLLM
             AddQuotaStorage(services, configuration);
 
             services.AddSingleton<IQuotaService, QuotaService>(sp =>
-                new QuotaService(
+            {
+                // Try to get Cosmos DB service if available (optional)
+                IAzureCosmosDBService? cosmosDBService = null;
+                try
+                {
+                    cosmosDBService = sp.GetService<IAzureCosmosDBService>();
+                }
+                catch
+                {
+                    // Cosmos DB service not available, continue without it
+                }
+
+                return new QuotaService(
                     sp.GetRequiredService<DependencyInjectionContainerSettings>(),
                     sp.GetRequiredService<IEnumerable<IStorageService>>()
                         .Single(s => s.InstanceName == DependencyInjectionKeys.FoundationaLLM_Quota),
                     sp.GetRequiredService<IEventService>(),
-                    sp.GetRequiredService<ILoggerFactory>()));
+                    sp.GetRequiredService<ILoggerFactory>(),
+                    cosmosDBService);
+            });
             services.ActivateSingleton<IQuotaService>();
         }
     }

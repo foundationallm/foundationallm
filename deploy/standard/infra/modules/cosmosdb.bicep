@@ -139,6 +139,15 @@ var containers = [
     defaultTtl: 300
   }
   {
+    name: 'QuotaEvents'
+    defaultTtl: 2592000 // 30 days
+    partitionKey: {
+      paths: [
+        '/quotaName'
+      ]
+    }
+  }
+  {
     name: 'Agents'
     defaultTtl: null
     partitionKey: {

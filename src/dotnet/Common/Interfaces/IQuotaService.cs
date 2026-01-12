@@ -100,5 +100,24 @@ namespace FoundationaLLM.Common.Interfaces
             string quotaName,
             DateTimeOffset startTime,
             DateTimeOffset endTime);
+
+        /// <summary>
+        /// Gets quota events matching the filter criteria.
+        /// </summary>
+        /// <param name="filter">The filter criteria for querying events.</param>
+        /// <returns>A list of quota events matching the filter.</returns>
+        Task<List<QuotaEventDocument>> GetQuotaEventsAsync(QuotaEventFilter filter);
+
+        /// <summary>
+        /// Gets a summary of quota events aggregated by quota.
+        /// </summary>
+        /// <param name="quotaName">Optional quota name to filter by. If null, returns summary for all quotas.</param>
+        /// <param name="startTime">The start time for the summary query.</param>
+        /// <param name="endTime">The end time for the summary query.</param>
+        /// <returns>A list of quota event summaries.</returns>
+        Task<List<QuotaEventSummary>> GetQuotaEventSummaryAsync(
+            string? quotaName,
+            DateTimeOffset startTime,
+            DateTimeOffset endTime);
     }
 }

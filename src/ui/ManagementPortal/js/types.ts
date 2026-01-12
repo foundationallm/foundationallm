@@ -734,6 +734,42 @@ export type QuotaUsageMetrics = {
 	timestamp: string;
 };
 
+export type QuotaEventDocument = {
+	id: string;
+	type: string;
+	event_type: 'quota-exceeded' | 'lockout-expired';
+	quota_name: string;
+	quota_context: string;
+	partition_id: string;
+	limit: number;
+	count_at_event: number;
+	lockout_duration_seconds: number;
+	timestamp: string;
+	ttl: number;
+};
+
+export type QuotaEventFilter = {
+	quota_name?: string;
+	partition_id?: string;
+	event_type?: string;
+	start_time?: string;
+	end_time?: string;
+};
+
+export type QuotaEventSummary = {
+	quota_name: string;
+	quota_context: string;
+	exceeded_event_count: number;
+	expired_event_count: number;
+	unique_partitions_affected: number;
+};
+
+export type QuotaEventSummaryRequest = {
+	quota_name?: string;
+	start_time: string;
+	end_time: string;
+};
+
 export type QuotaUsageHistory = {
 	quota_name: string;
 	partition_id: string;

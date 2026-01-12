@@ -222,7 +222,7 @@
 			@cancel="itemToDelete = null"
 			@update:visible="itemToDelete = null"
 		>
-			Do you want to delete the quota "{{ itemToDelete.name }}"?
+			Do you want to delete the quota "{{ itemToDelete?.name }}"?
 		</ConfirmationDialog>
 	</div>
 </template>
@@ -270,14 +270,21 @@ export default {
 		},
 
 		async handleDelete() {
+			// Store the name before any async operations to avoid race conditions
+			// with the dialog's @update:visible event
+			const quotaName = this.itemToDelete?.name;
+			if (!quotaName) return;
+			
+			// Clear the dialog immediately to prevent race conditions
+			this.itemToDelete = null;
+			
 			try {
-				await api.deleteQuota(this.itemToDelete!.name);
+				await api.deleteQuota(quotaName);
 				this.$toast.add({
 					severity: 'success',
-					detail: `Successfully deleted quota "${this.itemToDelete!.name}"!`,
+					detail: `Successfully deleted quota "${quotaName}"!`,
 					life: 5000,
 				});
-				this.itemToDelete = null;
 			} catch (error) {
 				return this.$toast.add({
 					severity: 'error',

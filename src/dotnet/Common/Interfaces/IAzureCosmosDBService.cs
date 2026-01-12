@@ -3,6 +3,7 @@ using FoundationaLLM.Common.Models.Configuration.Users;
 using FoundationaLLM.Common.Models.Conversation;
 using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.Orchestration.Response;
+using FoundationaLLM.Common.Models.Quota;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles;
 using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
@@ -332,6 +333,14 @@ public interface IAzureCosmosDBService
     /// <param name="vectorDimensions">The length of each vector (the number of dimensions used for embedding).</param>
     /// <param name="cancellationToken">The cancellation token to signal the need to cancel the operation.</param>
     /// <returns></returns>
+    /// <summary>
+    /// Queries quota events from Cosmos DB.
+    /// </summary>
+    /// <param name="filter">The filter criteria for querying events.</param>
+    /// <param name="cancellationToken">Cancellation token for async calls.</param>
+    /// <returns>A list of quota events matching the filter.</returns>
+    Task<List<QuotaEventDocument>> GetQuotaEventsAsync(QuotaEventFilter filter, CancellationToken cancellationToken = default);
+
     Task CreateVectorSearchContainerAsync(
         string containerName,
         string partitionKeyPath,

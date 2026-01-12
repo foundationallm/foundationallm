@@ -30,6 +30,10 @@ import type {
 	QuotaDefinition,
 	QuotaUsageMetrics,
 	QuotaUsageHistory,
+	QuotaEventDocument,
+	QuotaEventFilter,
+	QuotaEventSummary,
+	QuotaEventSummaryRequest,
 } from './types';
 import { convertToDataSource, convertToAppConfigKeyVault, convertToAppConfig } from '@/js/types';
 // import { isEmpty, upperFirst, camelCase } from 'lodash';
@@ -1218,6 +1222,31 @@ export default {
 					start_time: startTime,
 					end_time: endTime,
 				},
+			},
+		);
+	},
+
+	async getQuotaEvents(filter?: QuotaEventFilter): Promise<QuotaEventDocument[]> {
+		if (filter) {
+			return await this.fetch(
+				`/instances/${this.instanceId}/providers/FoundationaLLM.Quota/quotaEvents/filter?api-version=${this.apiVersion}`,
+				{
+					method: 'POST',
+					body: filter,
+				},
+			);
+		}
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Quota/quotaEvents?api-version=${this.apiVersion}`,
+		);
+	},
+
+	async getQuotaEventSummary(request: QuotaEventSummaryRequest): Promise<QuotaEventSummary[]> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Quota/quotaEvents/summary?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: request,
 			},
 		);
 	},
