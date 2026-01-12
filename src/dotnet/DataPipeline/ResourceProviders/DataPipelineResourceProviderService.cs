@@ -155,6 +155,7 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
                 DataPipelineResourceTypeNames.DataPipelines =>
                     resourcePath.Action switch
                     {
+                        ResourceProviderActions.CheckName => await CheckDataPipelineName(authorizationResult, serializedAction),
                         ResourceProviderActions.Trigger => (await CreateDataPipelineRun(
                             resourcePath,
                             DataPipelineRun.FromTriggerRequest(
@@ -198,7 +199,19 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
                         StatusCodes.Status400BadRequest)
             };
 
-        #region Helpers for UpsertResourceAsync
+        #region Helpers
+
+        private async Task<ResourceNameCheckResult> CheckDataPipelineName(
+            ResourcePathAuthorizationResult authorizationResult,
+            string serializedAction)
+        {
+            if (!authorizationResult.Authorized
+                && !authorizationResult.HasRequiredRole)
+                throw new ResourceProviderException("Access is not authorized.",
+                    StatusCodes.Status403Forbidden);
+            return await CheckResourceName<DataPipelineDefinition>(
+                JsonSerializer.Deserialize<ResourceName>(serializedAction)!);
+        }
 
         private async Task<List<ResourceProviderGetResult<DataPipelineRun>>> GetDataPipelineRun(
             ResourcePath resourcePath,

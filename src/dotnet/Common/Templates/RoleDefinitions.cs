@@ -226,13 +226,10 @@ namespace FoundationaLLM.Common.Models.Authorization
                             new RoleDefinitionPermissions
                             {
                                 Actions = [
-                                    "FoundationaLLM.DataPipeline/dataPipelines/read",
-                                    "FoundationaLLM.Vectorization/vectorizationPipelines/read",
-                                    "FoundationaLLM.DataSource/dataSources/read",
-                                    "FoundationaLLM.Vectorization/textPartitioningProfiles/read",
-                                    "FoundationaLLM.Vectorization/textEmbeddingProfiles/read",
-                                    "FoundationaLLM.Vectorization/indexingProfiles/read",
-                                    "FoundationaLLM.Plugin/plugins/read",],
+                                    "FoundationaLLM.Configuration/apiEndpointConfigurations/read",
+                                    "FoundationaLLM.AIModel/aiModels/read",
+                                    "FoundationaLLM.Plugin/plugins/read",
+                                    "FoundationaLLM.Vector/vectorDatabases/read",],
                                 NotActions = [],
                                 DataActions = [],
                                 NotDataActions = [],
