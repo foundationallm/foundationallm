@@ -1,14 +1,51 @@
 name: Orchestration API Release
 
 on:
+  push:
+    tags:
+    - "orchestration_api-0.*.*"
+    - "orchestration_api-0.*.*-alpha*"
+    - "orchestration_api-0.*.*-beta*"
+    - "orchestration_api-0.*.*-rc*"
+    - "orchestration_api-0.*.*-post*"
+    - "orchestration_api-1.*.*"
+    - "orchestration_api-1.*.*-alpha*"
+    - "orchestration_api-1.*.*-beta*"
+    - "orchestration_api-1.*.*-rc*"
+    - "orchestration_api-1.*.*-post*"
+    - "orchestration_api-2.*.*"
+    - "orchestration_api-2.*.*-alpha*"
+    - "orchestration_api-2.*.*-beta*"
+    - "orchestration_api-2.*.*-rc*"
+    - "orchestration_api-2.*.*-post*"
   workflow_dispatch:
     inputs: {}
 
 jobs:
-  release_docker_image:
-    name: Release Docker Image
-    uses: ./.github/workflows/release-docker-image.yml
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      docker_tag: ${{ steps.docker-tag.outputs.docker_tag }}
+    steps:
+    - name: Set Docker Tag
+      id: docker-tag
+      run: |
+        DOCKER_TAG="${GITHUB_REF_NAME#orchestration_api-}"
+        echo "DOCKER_TAG=$DOCKER_TAG" >> $GITHUB_ENV
+        echo "docker_tag: Latest Tag is : $DOCKER_TAG"
+        echo "docker_tag=$DOCKER_TAG" >> $GITHUB_OUTPUT
+  docker_build:
+    name: Build Docker Image
+    needs:
+      - prepare
+    uses: ./.github/workflows/build-docker-image.yml
     with:
       image: orchestration-api
       context: ./src
       dockerfile: ./src/dotnet/OrchestrationAPI/Dockerfile
+      registry: foundationallm.azurecr.io
+      tag: ${{ needs.prepare.outputs.docker_tag }}
+      username: foundationallm
+      target: sandbox
+    secrets: inherit
+
