@@ -74,6 +74,9 @@ function Send-AgentFile {
     )
 
     $bytes = $FileContent.Content
+    if ($bytes -is [string]) {
+        $bytes = [System.Text.Encoding]::UTF8.GetBytes($bytes)
+    }
     $stream = [System.IO.MemoryStream]::new($bytes)
     $streamContent = [System.Net.Http.StreamContent]::new($stream)
     $streamContent.Headers.ContentType = [System.Net.Http.Headers.MediaTypeHeaderValue]::Parse($FileContent.ContentType)
