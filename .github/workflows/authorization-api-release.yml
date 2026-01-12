@@ -1,14 +1,51 @@
 name: Authorization API Release
 
 on:
+  push:
+    tags:
+    - "authorization_api-0.*.*"
+    - "authorization_api-0.*.*-alpha*"
+    - "authorization_api-0.*.*-beta*"
+    - "authorization_api-0.*.*-rc*"
+    - "authorization_api-0.*.*-post*"
+    - "authorization_api-1.*.*"
+    - "authorization_api-1.*.*-alpha*"
+    - "authorization_api-1.*.*-beta*"
+    - "authorization_api-1.*.*-rc*"
+    - "authorization_api-1.*.*-post*"
+    - "authorization_api-2.*.*"
+    - "authorization_api-2.*.*-alpha*"
+    - "authorization_api-2.*.*-beta*"
+    - "authorization_api-2.*.*-rc*"
+    - "authorization_api-2.*.*-post*"
   workflow_dispatch:
     inputs: {}
 
 jobs:
-  release_docker_image:
-    name: Release Docker Image
-    uses: ./.github/workflows/release-docker-image.yml
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      docker_tag: ${{ steps.docker-tag.outputs.docker_tag }}
+    steps:
+    - name: Set Docker Tag
+      id: docker-tag
+      run: |
+        DOCKER_TAG="${GITHUB_REF_NAME#authorization_api-}"
+        echo "DOCKER_TAG=$DOCKER_TAG" >> $GITHUB_ENV
+        echo "docker_tag: Latest Tag is : $DOCKER_TAG"
+        echo "docker_tag=$DOCKER_TAG" >> $GITHUB_OUTPUT
+  docker_build:
+    name: Build Docker Image
+    needs:
+      - prepare
+    uses: ./.github/workflows/build-docker-image.yml
     with:
       image: authorization-api
       context: ./src
       dockerfile: ./src/dotnet/AuthorizationAPI/Dockerfile
+      registry: foundationallm.azurecr.io
+      tag: ${{ needs.prepare.outputs.docker_tag }}
+      username: foundationallm
+      target: sandbox
+    secrets: inherit
+
