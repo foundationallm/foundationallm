@@ -63,7 +63,7 @@
 
 		<!-- Actions -->
 		<div class="actions">
-			<Button @click="handleDelete" severity="danger" outlined v-if="canDelete">
+			<Button @click="showDeleteConfirmation" severity="danger" outlined v-if="canDelete">
 				<i class="pi pi-trash"></i>
 				Delete
 			</Button>
@@ -77,6 +77,16 @@
 				Update
 			</Button>
 		</div>
+
+		<!-- Delete confirmation dialog -->
+		<ConfirmationDialog
+			:visible="deleteConfirmationVisible"
+			@confirm="handleDelete"
+			@cancel="deleteConfirmationVisible = false"
+			@update:visible="deleteConfirmationVisible = false"
+		>
+			Do you want to delete the knowledge unit "{{ knowledgeUnit.name }}"?
+		</ConfirmationDialog>
 	</main>
 </template>
 
@@ -97,6 +107,7 @@ export default {
 			loading: false,
 			loadingStatusText: 'Loading...',
 			canDelete: false,
+			deleteConfirmationVisible: false,
 		};
 	},
 
@@ -161,13 +172,9 @@ export default {
 		},
 
 		async handleDelete() {
-			// Confirm deletion
-			if (!confirm(`Are you sure you want to delete the knowledge unit "${this.knowledgeUnit.name}"?`)) {
-				return;
-			}
-
 			this.loading = true;
 			this.loadingStatusText = 'Deleting knowledge unit...';
+			this.deleteConfirmationVisible = false;
 			
 			try {
 				await api.deleteKnowledgeUnit(this.knowledgeUnit.name);
@@ -185,6 +192,10 @@ export default {
 				});
 			}
 			this.loading = false;
+		},
+
+		showDeleteConfirmation() {
+			this.deleteConfirmationVisible = true;
 		},
 
 		handleCancel() {

@@ -3,28 +3,11 @@
 		<div style="display: flex">
 			<!-- Title -->
 			<div style="flex: 1">
-				<h2 class="page-header">
-					{{ editKnowledgeUnit ? 'Edit Knowledge Unit' : 'Create New Knowledge Unit' }}
-				</h2>
+				<h2 class="page-header">Create New Knowledge Unit</h2>
 				<div class="page-subheader">
-					{{
-						editKnowledgeUnit
-							? 'Edit your knowledge unit below.'
-							: 'Complete the settings below to create a new knowledge unit.'
-					}}
+					Complete the settings below to create a new knowledge unit.
 				</div>
 			</div>
-
-			<!-- Edit access control -->
-			<AccessControl
-				v-if="editKnowledgeUnit"
-				:scopes="[
-					{
-						label: 'Knowledge Unit',
-						value: `providers/FoundationaLLM.Context/knowledgeUnits/${knowledgeUnit.name}`,
-					},
-				]"
-			/>
 		</div>
 
 		<div class="steps">
@@ -44,7 +27,6 @@
 				<div class="input-wrapper">
 					<InputText
 						v-model="knowledgeUnit.name"
-						:disabled="editKnowledgeUnit"
 						type="text"
 						class="w-full"
 						placeholder="Enter knowledge unit name"
@@ -75,7 +57,7 @@
 			</Button>
 			<Button @click="handleSave">
 				<i class="pi pi-check"></i>
-				{{ editKnowledgeUnit ? 'Update' : 'Create' }}
+				Create
 			</Button>
 		</div>
 	</main>
@@ -95,40 +77,12 @@ export default {
 				type: 'knowledge-unit',
 				object_id: ''
 			},
-			editKnowledgeUnit: false,
 			loading: false,
 			loadingStatusText: 'Loading...',
 		};
 	},
 
-	async created() {
-		// Check if we're editing an existing knowledge unit
-		const knowledgeUnitName = this.$route.params.knowledgeUnitName;
-		if (knowledgeUnitName) {
-			this.editKnowledgeUnit = true;
-			await this.loadKnowledgeUnit(knowledgeUnitName);
-		}
-	},
-
 	methods: {
-		async loadKnowledgeUnit(knowledgeUnitName: string) {
-			this.loading = true;
-			this.loadingStatusText = 'Loading knowledge unit...';
-			try {
-				const result = await api.getKnowledgeUnit(knowledgeUnitName);
-				if (result && result.length > 0) {
-					this.knowledgeUnit = result[0].resource;
-				}
-			} catch (error) {
-				this.$toast.add({
-					severity: 'error',
-					detail: error?.response?._data || error,
-					life: 5000,
-				});
-			}
-			this.loading = false;
-		},
-
 		async handleSave() {
 			// Validate required fields
 			if (!this.knowledgeUnit.name) {
@@ -141,13 +95,13 @@ export default {
 			}
 
 			this.loading = true;
-			this.loadingStatusText = this.editKnowledgeUnit ? 'Updating knowledge unit...' : 'Creating knowledge unit...';
+			this.loadingStatusText = 'Creating knowledge unit...';
 			
 			try {
 				await api.createOrUpdateKnowledgeUnit(this.knowledgeUnit.name, this.knowledgeUnit);
 				this.$toast.add({
 					severity: 'success',
-					detail: `Knowledge unit ${this.editKnowledgeUnit ? 'updated' : 'created'} successfully.`,
+					detail: 'Knowledge unit created successfully.',
 					life: 3000,
 				});
 				this.$router.push('/knowledge-units');
