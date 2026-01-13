@@ -200,12 +200,17 @@
 					}"
 				>
 					<template #body="slotProps">
-						<span
-							class="success-pill"
-							:class="slotProps.data.successful ? 'success-pill--true' : 'success-pill--false'"
-						>
-							{{ slotProps.data.successful ? 'Success' : 'Failure' }}
-						</span>
+						<template v-if="slotProps.data.completed">
+							<span
+								class="success-pill"
+								:class="slotProps.data.successful ? 'success-pill--true' : 'success-pill--false'"
+							>
+								{{ slotProps.data.successful ? 'Success' : 'Failure' }}
+							</span>
+						</template>
+						<template v-else>
+							<span class="success-pill success-pill--pending">—</span>
+						</template>
 					</template>
 				</Column>
 
@@ -762,6 +767,11 @@ export default {
 .success-pill--false {
 	background-color: #fce8e6;
 	color: #c5221f;
+}
+
+.success-pill--pending {
+	background-color: #f1f3f4;
+	color: #5f6368;
 }
 
 .filters {
