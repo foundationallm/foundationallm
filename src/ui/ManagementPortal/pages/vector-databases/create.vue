@@ -3,7 +3,9 @@
 		<div style="display: flex">
 			<!-- Title -->
 			<div style="flex: 1">
-				<h2 class="page-header">{{ editId ? 'Edit Vector Database' : 'Create Vector Database' }}</h2>
+				<h2 class="page-header">
+					{{ editId ? 'Edit Vector Database' : 'Create Vector Database' }}
+				</h2>
 				<div class="page-subheader">
 					{{
 						editId
@@ -29,7 +31,12 @@
 		<div class="steps">
 			<!-- Loading overlay -->
 			<template v-if="loading">
-				<div class="steps__loading-overlay" role="status" aria-live="polite" aria-label="Loading vector database form">
+				<div
+					class="steps__loading-overlay"
+					role="status"
+					aria-live="polite"
+					aria-label="Loading vector database form"
+				>
 					<LoadingGrid />
 					<div>{{ loadingStatusText }}</div>
 				</div>
@@ -195,9 +202,12 @@
 					aria-labelledby="aria-metadata-prop"
 				/>
 
-				<div id="aria-metadata-props" class="mb-2">Metadata properties (comma-separated name|type pairs):</div>
+				<div id="aria-metadata-props" class="mb-2">
+					Metadata properties (comma-separated name|type pairs):
+				</div>
 				<div id="aria-metadata-props-desc" class="mb-2">
-					Enter metadata properties as comma-separated name|type pairs, e.g., "title|Edm.String,timestamp|Edm.DateTimeOffset"
+					Enter metadata properties as comma-separated name|type pairs, e.g.,
+					"title|Edm.String,timestamp|Edm.DateTimeOffset"
 				</div>
 				<Textarea
 					v-model="vectorDatabase.metadata_properties"
@@ -309,7 +319,8 @@ export default {
 			this.loadingStatusText = 'Retrieving API endpoints...';
 			const response = await api.getOrchestrationServices();
 			const filteredData = response.filter(
-				(item) => item.resource.category === 'General' && item.resource.subcategory === 'VectorDatabase',
+				(item) =>
+					item.resource.category === 'General' && item.resource.subcategory === 'VectorDatabase',
 			);
 
 			filteredData.forEach((item) => {
@@ -410,7 +421,10 @@ export default {
 				errors.push('Please specify an embedding model.');
 			}
 
-			if (!this.vectorDatabase.embedding_dimensions || this.vectorDatabase.embedding_dimensions < 1) {
+			if (
+				!this.vectorDatabase.embedding_dimensions ||
+				this.vectorDatabase.embedding_dimensions < 1
+			) {
 				errors.push('Please specify valid embedding dimensions.');
 			}
 

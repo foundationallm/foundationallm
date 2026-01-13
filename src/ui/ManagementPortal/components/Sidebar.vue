@@ -201,7 +201,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<!-- Tooltip outside sidebar to avoid overflow issues -->
 		<div
 			v-if="$authStore.currentAccount?.name && showTooltip && tooltipReady"
@@ -211,7 +211,7 @@
 			:aria-hidden="!showTooltip"
 			:style="{
 				top: tooltipPosition.top + 'px',
-				left: tooltipPosition.left + 'px'
+				left: tooltipPosition.left + 'px',
 			}"
 		>
 			Logged in as {{ $authStore.currentAccount?.username }}
@@ -250,34 +250,36 @@ export default {
 		},
 		updateTooltipPosition() {
 			this.$nextTick(() => {
-				const trigger = document.getElementById(`username-tooltip-trigger-${this.$authStore.currentAccount?.username}`);
+				const trigger = document.getElementById(
+					`username-tooltip-trigger-${this.$authStore.currentAccount?.username}`,
+				);
 				if (trigger) {
 					const rect = trigger.getBoundingClientRect();
 					const viewportWidth = window.innerWidth;
 					const tooltipWidth = 300; // Conservative estimate
 					const margin = 35;
-					
+
 					// Try to center on username first
-					let left = rect.left + (rect.width / 2);
-					
+					let left = rect.left + rect.width / 2;
+
 					// Ensure tooltip doesn't go off the left edge
 					const minLeft = tooltipWidth / 2 + margin;
 					if (left < minLeft) {
 						left = minLeft;
 					}
-					
+
 					// Ensure tooltip doesn't go off the right edge
 					const maxLeft = viewportWidth - tooltipWidth / 2 - margin;
 					if (left > maxLeft) {
 						left = maxLeft;
 					}
-					
+
 					// Position tooltip above the username
 					this.tooltipPosition = {
 						top: rect.top - 40,
 						left: left,
 					};
-					
+
 					this.tooltipReady = true;
 					this.showTooltip = true;
 				}
@@ -405,23 +407,25 @@ a {
 }
 
 .sidebar__avatar {
-	   margin-right: 12px;
-	   height: 61px;
-	   width: 61px;
-	   border-radius: 50%; /* circular crop */
-	   background: transparent;
-	   overflow: hidden;
-	   display: flex;
-	   align-items: center;
-	   justify-content: center;
+	margin-right: 12px;
+	height: 61px;
+	width: 61px;
+	border-radius: 50%; /* circular crop */
+	background: transparent;
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
-.sidebar__avatar img, .sidebar__avatar picture, .sidebar__avatar svg {
-	   width: 100%;
-	   height: 100%;
-	   object-fit: cover;
-	   border-radius: 50%;
-	   display: block;
+.sidebar__avatar img,
+.sidebar__avatar picture,
+.sidebar__avatar svg {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	border-radius: 50%;
+	display: block;
 }
 
 .sidebar__username-container {
@@ -437,7 +441,7 @@ a {
 	vertical-align: super;
 	cursor: pointer;
 	outline: none;
-	
+
 	&:focus {
 		outline: 2px solid var(--primary-text);
 		outline-offset: 2px;
@@ -455,13 +459,13 @@ a {
 	z-index: 9999 !important;
 	pointer-events: none;
 	transform: translateX(-50%);
-	
-	&[aria-hidden="true"] {
+
+	&[aria-hidden='true'] {
 		visibility: hidden;
 		opacity: 0;
 	}
-	
-	&[aria-hidden="false"] {
+
+	&[aria-hidden='false'] {
 		visibility: visible;
 		opacity: 1;
 	}

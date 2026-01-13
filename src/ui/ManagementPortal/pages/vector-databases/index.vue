@@ -19,7 +19,12 @@
 		<div :class="{ 'grid--loading': loading }">
 			<!-- Loading overlay -->
 			<template v-if="loading">
-				<div class="grid__loading-overlay" role="status" aria-live="polite" aria-label="Loading vector databases">
+				<div
+					class="grid__loading-overlay"
+					role="status"
+					aria-live="polite"
+					aria-label="Loading vector databases"
+				>
 					<LoadingGrid />
 					<div>{{ loadingStatusText }}</div>
 				</div>
@@ -45,11 +50,7 @@
 				<template #header>
 					<div class="w-full flex justify-between">
 						<TableSearch v-model="filters" placeholder="Search vector databases" />
-						<Button
-							type="button"
-							icon="pi pi-refresh"
-							@click="getVectorDatabases"
-						/>
+						<Button type="button" icon="pi pi-refresh" @click="getVectorDatabases" />
 					</div>
 				</template>
 
@@ -113,7 +114,11 @@
 							</NuxtLink>
 						</template>
 						<template v-else>
-							<span aria-disabled="true" class="table__button" style="opacity:.6; cursor: default;">
+							<span
+								aria-disabled="true"
+								class="table__button"
+								style="opacity: 0.6; cursor: default"
+							>
 								<i class="pi pi-cog" style="font-size: 1.2rem" aria-hidden="true"></i>
 							</span>
 						</template>
@@ -135,7 +140,11 @@
 					<template #body="{ data }">
 						<template v-if="data.actions.includes('FoundationaLLM.Vector/vectorDatabases/delete')">
 							<VTooltip :auto-hide="false" :popper-triggers="['hover']">
-								<Button link :aria-label="`Delete ${data.resource.name}`" @click="vectorDatabaseToDelete = data.resource">
+								<Button
+									link
+									:aria-label="`Delete ${data.resource.name}`"
+									@click="vectorDatabaseToDelete = data.resource"
+								>
 									<i class="pi pi-trash" style="font-size: 1.2rem" aria-hidden="true"></i>
 								</Button>
 								<template #popper
@@ -144,7 +153,7 @@
 							</VTooltip>
 						</template>
 						<template v-else>
-							<span aria-disabled="true" style="opacity:.6; cursor: default;">
+							<span aria-disabled="true" style="opacity: 0.6; cursor: default">
 								<i class="pi pi-trash" style="font-size: 1.2rem" aria-hidden="true"></i>
 							</span>
 						</template>
@@ -183,7 +192,7 @@ export default {
 			loading: false as boolean,
 			loadingStatusText: 'Retrieving data...' as string,
 			filters: {
-				global: { value: null, matchMode: 'contains' }
+				global: { value: null, matchMode: 'contains' },
 			},
 			vectorDatabaseToDelete: null as VectorDatabase | null,
 		};

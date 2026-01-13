@@ -272,7 +272,7 @@ export type DataSource =
 export enum VectorDatabaseType {
 	AzureAISearch = 'AzureAISearch',
 	AzureCosmosDBNoSQL = 'AzureCosmosDBNoSQL',
-	AzurePostgreSQL = 'AzurePostgreSQL'
+	AzurePostgreSQL = 'AzurePostgreSQL',
 }
 
 export interface VectorDatabase extends ResourceBase {

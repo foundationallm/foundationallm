@@ -1154,9 +1154,7 @@ export default {
 		);
 	},
 
-	async getKnowledgeUnit(
-		knowledgeUnitName: string
-	): Promise<ResourceProviderGetResult<any>[]> {
+	async getKnowledgeUnit(knowledgeUnitName: string): Promise<ResourceProviderGetResult<any>[]> {
 		return await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Context/knowledgeUnits/${knowledgeUnitName}?api-version=${this.apiVersion}`,
 		);
@@ -1181,10 +1179,7 @@ export default {
 		);
 	},
 
-	async queryKnowledgeSource(
-		knowledgeSourceName: string,
-		queryRequest: any
-	): Promise<any> {
+	async queryKnowledgeSource(knowledgeSourceName: string, queryRequest: any): Promise<any> {
 		return await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Context/knowledgeSources/${knowledgeSourceName}/query?api-version=${this.apiVersion}`,
 			{
@@ -1194,10 +1189,7 @@ export default {
 		);
 	},
 
-	async renderKnowledgeUnitGraph(
-		knowledgeUnitName: string,
-		queryRequest: any
-	): Promise<any> {
+	async renderKnowledgeUnitGraph(knowledgeUnitName: string, queryRequest: any): Promise<any> {
 		return await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Context/knowledgeUnits/${knowledgeUnitName}/render-graph?api-version=${this.apiVersion}`,
 			{
@@ -1205,5 +1197,5 @@ export default {
 				body: queryRequest,
 			},
 		);
-	}
+	},
 };
