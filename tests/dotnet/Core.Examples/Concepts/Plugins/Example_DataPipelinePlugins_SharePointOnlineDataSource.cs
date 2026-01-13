@@ -67,7 +67,7 @@ namespace FoundationaLLM.Core.Examples.Concepts.Plugins
                 {
                     {
                         PluginParameterNames.SHAREPOINTONLINE_DATASOURCE_DOCUMENTLIBRARIES,
-                        new List<string>
+                        new List<object>
                         {
                             "/sites/foundationallm-test-01/documents05"
                         }

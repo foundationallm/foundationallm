@@ -198,7 +198,9 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource
         /// <returns>An array of folder paths.</returns>
         private string[] GetFoldersFromParameters()
         {
-            var foldersList = _pluginParameters[PluginParameterNames.AZUREDATALAKE_DATASOURCE_FOLDERS] as List<string>
+            var foldersList = (_pluginParameters[PluginParameterNames.AZUREDATALAKE_DATASOURCE_FOLDERS] as List<object>)?
+                    .Select(dl => dl.ToString()!)
+                    .ToList()
                 ?? throw new PluginException($"The {PluginParameterNames.AZUREDATALAKE_DATASOURCE_FOLDERS} parameter is required by the {Name} plugin.");
 
             return foldersList.ToArray();

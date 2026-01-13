@@ -58,7 +58,9 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource
         /// <inheritdoc/>
         public async Task<List<DataPipelineContentItem>> GetContentItems()
         {
-            var documentLibraryPathsList = _pluginParameters[PluginParameterNames.SHAREPOINTONLINE_DATASOURCE_DOCUMENTLIBRARIES] as List<string>
+            var documentLibraryPathsList = (_pluginParameters[PluginParameterNames.SHAREPOINTONLINE_DATASOURCE_DOCUMENTLIBRARIES] as List<object>)?
+                    .Select(dl => dl.ToString()!)
+                    .ToList()
                 ?? throw new PluginException($"The {PluginParameterNames.SHAREPOINTONLINE_DATASOURCE_DOCUMENTLIBRARIES} parameter is required by the {Name} plugin.");
 
             var dataSourceBase = await _dataSourceResourceProvider!.GetResourceAsync<DataSourceBase>(
