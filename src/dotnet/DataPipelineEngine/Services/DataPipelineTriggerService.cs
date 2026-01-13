@@ -1,4 +1,5 @@
 ﻿using Cronos;
+using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
@@ -216,20 +217,11 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                 // Wait for initialization to complete
                 await _initializationTask;
 
-                // Get all instances - in a multi-tenant system, we'd need to iterate through all instances
-                // For now, we'll use a system identity to query all pipelines
-                var systemIdentity = new UnifiedUserIdentity
-                {
-                    Name = "System",
-                    Username = "system",
-                    UPN = "system@foundationallm.ai"
-                };
-
-                // Query all data pipelines
+                // Query all data pipelines using the service identity
                 var pipelinesResult = await _dataPipelineResourceProvider.GetResourcesAsync<DataPipelineDefinition>(
-                    "*", // All instances
-                    systemIdentity,
-                    new ResourceProviderGetOptions());
+                    instanceId: "*", // All instances
+                    userIdentity: ServiceContext.ServiceIdentity!,
+                    options: new ResourceProviderGetOptions());
 
                 var newScheduledPipelines = new ConcurrentDictionary<string, ScheduledPipelineInfo>();
 
@@ -399,40 +391,35 @@ namespace FoundationaLLM.DataPipelineEngine.Services
             ScheduledPipelineInfo scheduledInfo,
             CancellationToken cancellationToken)
         {
-            // Use system identity for scheduled executions
-            var systemIdentity = new UnifiedUserIdentity
-            {
-                Name = "System Scheduler",
-                Username = "system-scheduler",
-                UPN = "system-scheduler@foundationallm.ai"
-            };
+            // Use service identity for scheduled executions
+            var serviceIdentity = ServiceContext.ServiceIdentity!;
 
             // Create a DataPipelineRun for the scheduled execution using the factory method
             var dataPipelineRun = DataPipelineRun.Create(
                 dataPipelineObjectId: scheduledInfo.Pipeline.ObjectId!,
                 triggerName: scheduledInfo.Trigger.Name,
                 triggerParameterValues: new Dictionary<string, object>(scheduledInfo.Trigger.ParameterValues),
-                upn: systemIdentity.UPN!,
+                upn: serviceIdentity.UPN!,
                 processor: "Backend"); // Scheduled pipelines always use Backend Worker
 
-            // Create a snapshot of the pipeline definition
-            var snapshot = new DataPipelineDefinitionSnapshot
-            {
-                Name = $"{scheduledInfo.Pipeline.Name}-snapshot-{DateTimeOffset.UtcNow:yyyyMMddHHmmss}",
-                ObjectId = scheduledInfo.Pipeline.ObjectId,
-                DataPipelineDefinition = scheduledInfo.Pipeline
-            };
+            // Get the existing snapshot from the data pipeline object ID
+            var snapshot = await _dataPipelineResourceProvider.GetResourceAsync<DataPipelineDefinitionSnapshot>(
+                scheduledInfo.Pipeline.ObjectId!,
+                serviceIdentity);
 
-            // Extract instance ID from the pipeline's object ID
-            // Object ID format: instances/{instanceId}/providers/...
-            var instanceId = ExtractInstanceIdFromObjectId(scheduledInfo.Pipeline.ObjectId!);
+            // Extract instance ID from the pipeline's object ID using ResourcePath
+            if (!ResourcePath.TryParseInstanceId(scheduledInfo.Pipeline.ObjectId!, out var instanceId) || string.IsNullOrWhiteSpace(instanceId))
+            {
+                _logger.LogWarning("Could not extract instance ID from object ID: {ObjectId}. Using '*' as fallback.", scheduledInfo.Pipeline.ObjectId);
+                instanceId = "*";
+            }
 
             // Trigger the pipeline through the existing TriggerDataPipeline method
             await TriggerDataPipeline(
                 instanceId,
                 dataPipelineRun,
                 snapshot,
-                systemIdentity);
+                serviceIdentity);
         }
 
         /// <summary>
