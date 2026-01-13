@@ -86,6 +86,7 @@ builder.Services.AddAzureEventGridEvents(
 builder.AddDataPipelineStateService();
 builder.AddDataPipelineTriggerService();
 builder.AddDataPipelineRunnerService();
+builder.AddDataPipelineSchedulerService();
 builder.AddTokenizers();
 
 //---------------------------
