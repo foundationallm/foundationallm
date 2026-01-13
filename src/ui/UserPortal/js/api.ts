@@ -1113,6 +1113,38 @@ export default {
 	},
 
 	/**
+	 * Deletes a role assignment.
+	 * @param roleAssignmentName - The name/ID of the role assignment to delete.
+	 * @returns Promise resolving to the deletion result.
+	 */
+	async deleteRoleAssignment(roleAssignmentName: string): Promise<any> {
+		try {
+			// Extract just the GUID from the name if it contains a path
+			let nameToUse = roleAssignmentName;
+			if (nameToUse.includes('/')) {
+				// Extract the last part (GUID) from a path like /instances/.../roleAssignments/GUID
+				const parts = nameToUse.split('/');
+				nameToUse = parts[parts.length - 1];
+			}
+			
+			// URL encode the name to handle any special characters
+			const encodedName = encodeURIComponent(nameToUse);
+			
+			// HTTP DELETE /management/instances/{instanceId}/providers/FoundationaLLM.Authorization/roleAssignments/{roleAssignmentName}
+			const result = await this.fetch(
+				`/management/instances/${this.instanceId}/providers/FoundationaLLM.Authorization/roleAssignments/${encodedName}`,
+				{
+					method: 'DELETE',
+				}
+			);
+			return result;
+		} catch (error) {
+			console.error('Error deleting role assignment:', error);
+			throw error;
+		}
+	},
+
+	/**
 	 * Sets the primary owner for an agent.
 	 * @param instanceId - The FoundationaLLM instance identifier.
 	 * @param agentName - The name of the agent.

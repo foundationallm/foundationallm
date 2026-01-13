@@ -570,6 +570,54 @@
                                                         {{ slotProps.data.resource.scope_name || 'Direct Assignment' }}
                                                     </template>
                                                 </Column>
+
+                                                <Column
+                                                    header="Edit"
+                                                    :sortable="false"
+                                                    style="min-width: 80px; text-align: center"
+                                                >
+                                                    <template #body="slotProps">
+                                                        <Button
+                                                            v-if="canEditRoleAssignment(slotProps.data)"
+                                                            icon="pi pi-pencil"
+                                                            class="p-button-text"
+                                                            @click="openEditRoleAssignmentModal(slotProps.data)"
+                                                            :aria-label="`Edit role assignment for ${slotProps.data.resource.principal_details?.name || slotProps.data.resource.principal_id}`"
+                                                        />
+                                                        <span
+                                                            v-else
+                                                            aria-disabled="true"
+                                                            style="opacity: 0.3; cursor: default;"
+                                                            :aria-label="`Edit not available for ${slotProps.data.resource.principal_details?.name || slotProps.data.resource.principal_id}`"
+                                                        >
+                                                            <i class="pi pi-pencil" style="font-size: 1.2rem" aria-hidden="true"></i>
+                                                        </span>
+                                                    </template>
+                                                </Column>
+
+                                                <Column
+                                                    header="Delete"
+                                                    :sortable="false"
+                                                    style="min-width: 80px; text-align: center"
+                                                >
+                                                    <template #body="slotProps">
+                                                        <Button
+                                                            v-if="canDeleteRoleAssignment(slotProps.data)"
+                                                            icon="pi pi-trash"
+                                                            class="p-button-text"
+                                                            @click="roleAssignmentToDelete = slotProps.data"
+                                                            :aria-label="`Delete role assignment for ${slotProps.data.resource.principal_details?.name || slotProps.data.resource.principal_id}`"
+                                                        />
+                                                        <span
+                                                            v-else
+                                                            aria-disabled="true"
+                                                            style="opacity: 0.3; cursor: default;"
+                                                            :aria-label="`Delete not available for ${slotProps.data.resource.principal_details?.name || slotProps.data.resource.principal_id}`"
+                                                        >
+                                                            <i class="pi pi-trash" style="font-size: 1.2rem" aria-hidden="true"></i>
+                                                        </span>
+                                                    </template>
+                                                </Column>
                                             </DataTable>
                                         </div>
                                     </div>
@@ -705,6 +753,84 @@
             </template>
         </Dialog>
 
+        <!-- Edit Role Assignment Modal -->
+        <Dialog
+            v-model:visible="showEditRoleAssignmentModal"
+            modal
+            class="csm-roleDialog-modal-1"
+            header="Edit Role Assignment"
+            :style="{ width: '30rem' }"
+            :breakpoints="{ '1199px': '50vw', '575px': '90vw' }"
+        >
+            <div class="mb-4" v-if="roleAssignmentToEdit">
+                <!-- User Info Display (read-only) -->
+                <div class="mb-5 p-3 bg-gray-50 border border-gray-200 rounded-md">
+                    <label class="block text-sm font-medium text-[#898989] mb-2">
+                        User
+                    </label>
+                    <div class="text-sm text-[#334581]">
+                        {{ roleAssignmentToEdit.resource.principal_details?.name || roleAssignmentToEdit.resource.principal_id }}
+                        <span v-if="roleAssignmentToEdit.resource.principal_details?.email" class="ml-2 text-gray-500">
+                            ({{ roleAssignmentToEdit.resource.principal_details.email }})
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Role Selection -->
+                <div class="relative mb-5">
+                    <label for="editRoleSelect" class="block text-sm font-medium text-[#898989] mb-2">
+                        Select Role
+                    </label>
+                    <Dropdown
+                        id="editRoleSelect"
+                        v-model="editRoleAssignmentForm.selectedRole"
+                        :options="availableRoles"
+                        optionLabel="display_name"
+                        optionValue="object_id"
+                        placeholder="Select a role..."
+                        class="w-full"
+                        :loading="rolesLoading"
+                    />
+                </div>
+            </div>
+
+            <template #footer>
+                <div class="flex justify-between items-center w-full">
+                    <div class="w-full max-w-[50%]">
+                        <Button
+                            label="Cancel"
+                            class="w-full"
+                            @click="closeEditModal"
+                            text
+                        />
+                    </div>
+
+                    <div class="w-full max-w-[50%]">
+                        <Button
+                            label="Update Role Assignment"
+                            severity="primary"
+                            @click="editRoleAssignment"
+                            :disabled="!editRoleAssignmentForm.selectedRole || editingRoleAssignment"
+                            :loading="editingRoleAssignment"
+                            class="w-full"
+                        />
+                    </div>
+                </div>
+            </template>
+        </Dialog>
+
+        <!-- Delete Role Assignment Confirmation Dialog -->
+        <ConfirmationDialog
+            :visible="roleAssignmentToDelete !== null"
+            header="Delete Role Assignment"
+            :message="deleteConfirmationMessage"
+            confirmText="Yes"
+            cancelText="Cancel"
+            confirm-button-severity="danger"
+            @cancel="roleAssignmentToDelete = null"
+            @confirm="deleteRoleAssignment"
+        />
+
         <!-- Delete file confirmation dialog -->
     </main>
     </div>
@@ -723,6 +849,7 @@ import '@/styles/loading.scss';
 import mime from 'mime';
 import { defineComponent } from 'vue';
 import NavBarSettings from '~/components/NavBarSettings.vue';
+import ConfirmationDialog from '@/components/ConfirmationDialog.vue';
 
 import Checkbox from 'primevue/checkbox';
 import Column from 'primevue/column';
@@ -741,6 +868,7 @@ export default defineComponent({
         Column,
         Dropdown,
         Checkbox,
+        ConfirmationDialog,
     },
 
 
@@ -801,6 +929,16 @@ export default defineComponent({
                 addingRoleAssignment: false as boolean,
                 showAddRoleAssignmentModal: false as boolean,
 
+                // Edit/Delete role assignment state
+                roleAssignmentToEdit: null as any,
+                roleAssignmentToDelete: null as any,
+                showEditRoleAssignmentModal: false as boolean,
+                editingRoleAssignment: false as boolean,
+                deletingRoleAssignment: false as boolean,
+                editRoleAssignmentForm: {
+                    selectedRole: null as string | null,
+                },
+
                 // Loading states for edit mode
                 loadingAgentData: false as boolean,
                 agentLoadError: '' as string,
@@ -837,6 +975,16 @@ export default defineComponent({
                            principalType.toLowerCase().includes(filter) ||
                            roleName.toLowerCase().includes(filter);
                 });
+            },
+
+            deleteConfirmationMessage() {
+                if (!this.roleAssignmentToDelete) {
+                    return '';
+                }
+                const principalName = this.roleAssignmentToDelete.resource.principal_details?.name || 
+                                     this.roleAssignmentToDelete.resource.principal_id || 
+                                     'this user';
+                return `Are you sure you want to delete the role assignment for "${principalName}"?`;
             },
 
             canAddRoleAssignment() {
@@ -1839,13 +1987,19 @@ export default defineComponent({
                     } catch (ownerError: any) {
                         // Log the error but don't fail the entire operation
                         console.error('Failed to set primary owner:', ownerError);
-                        this.$toast.add({
-                            severity: 'warn',
-                            summary: 'Role Assignment Added',
-                            detail: `Role assignment added successfully, but failed to set as primary owner: ${ownerError.message || 'Unknown error'}`,
-                            life: 5000
-                        });
-                        return; // Exit early to avoid showing success message
+                this.$toast.add({
+                    severity: 'warn',
+                    summary: 'Role Assignment Added',
+                    detail: `Role assignment added successfully, but failed to set as primary owner: ${ownerError.message || 'Unknown error'}`,
+                    life: 5000
+                });
+                // Refresh the list and reset form
+                await this.loadRoleAssignments();
+                this.newRoleAssignment.selectedUser = null;
+                this.newRoleAssignment.selectedRole = null;
+                this.newRoleAssignment.setAsPrimaryOwner = false;
+                this.showAddRoleAssignmentModal = false;
+                return; // Exit early to avoid showing success message
                     }
                 }
 
@@ -1861,6 +2015,7 @@ export default defineComponent({
                 this.newRoleAssignment.selectedUser = null;
                 this.newRoleAssignment.selectedRole = null;
                 this.newRoleAssignment.setAsPrimaryOwner = false;
+                this.showAddRoleAssignmentModal = false;
             } catch (e: any) {
                 let errorMessage = 'Failed to add role assignment';
 
@@ -1930,6 +2085,175 @@ export default defineComponent({
 
         closeAddModal() {
             this.showAddRoleAssignmentModal = false;
+        },
+
+        canEditRoleAssignment(assignment: any): boolean {
+            // Check if user has Owner role for the agent
+            // For now, we'll check if the user can manage role assignments
+            // This should be enhanced to check actual permissions
+            if (!assignment || !this.selectedAgentName) return false;
+            
+            // Check if current user has Owner role on this agent
+            // This is a simplified check - in production, you'd check the actual role assignments
+            // For now, we'll allow editing if the user is in edit mode (which implies they have permissions)
+            return this.isEditMode;
+        },
+
+        canDeleteRoleAssignment(assignment: any): boolean {
+            // Similar to canEditRoleAssignment
+            if (!assignment || !this.selectedAgentName) return false;
+            return this.isEditMode;
+        },
+
+        openEditRoleAssignmentModal(assignment: any) {
+            this.roleAssignmentToEdit = assignment;
+            this.editRoleAssignmentForm.selectedRole = assignment.resource.role_definition_id || assignment.resource.role_definition_id;
+            this.showEditRoleAssignmentModal = true;
+        },
+
+        closeEditModal() {
+            this.showEditRoleAssignmentModal = false;
+            this.roleAssignmentToEdit = null;
+            this.editRoleAssignmentForm.selectedRole = null;
+        },
+
+        async editRoleAssignment() {
+            if (!this.roleAssignmentToEdit || !this.selectedAgentName || !this.editRoleAssignmentForm.selectedRole) {
+                return;
+            }
+
+            // Check if role actually changed
+            const currentRoleId = this.roleAssignmentToEdit.resource.role_definition_id;
+            if (currentRoleId === this.editRoleAssignmentForm.selectedRole) {
+                this.closeEditModal();
+                return;
+            }
+
+            this.editingRoleAssignment = true;
+            try {
+                const assignment = this.roleAssignmentToEdit;
+                const oldRoleAssignmentName = assignment.resource.name;
+
+                // Delete the old role assignment
+                await api.deleteRoleAssignment(oldRoleAssignmentName);
+
+                // Create new role assignment with updated role
+                const scope = api.getAgentScope(this.selectedAgentName);
+                const roleAssignmentId = this.generateGuid();
+
+                const payload = {
+                    name: roleAssignmentId,
+                    description: assignment.resource.description || "",
+                    principal_id: assignment.resource.principal_id,
+                    role_definition_id: this.editRoleAssignmentForm.selectedRole,
+                    type: api.getRoleAssignmentType(),
+                    principal_type: assignment.resource.principal_type,
+                    scope: scope
+                };
+
+                await api.createRoleAssignment(payload);
+
+                this.$toast.add({
+                    severity: 'success',
+                    summary: 'Role Assignment Updated',
+                    detail: `Role assignment for ${assignment.resource.principal_details?.name || assignment.resource.principal_id} updated successfully.`,
+                    life: 3000
+                });
+
+                // Refresh the list
+                await this.loadRoleAssignments();
+                this.closeEditModal();
+            } catch (e: any) {
+                let errorMessage = 'Failed to update role assignment';
+
+                if (e.message?.includes('Access is not authorized') || e.message?.includes('403')) {
+                    errorMessage = 'You do not have permission to update role assignments. Please contact your administrator or use the Management Portal.';
+                } else if (e.message) {
+                    errorMessage = e.message;
+                }
+
+                this.$toast.add({
+                    severity: 'error',
+                    summary: 'Update Failed',
+                    detail: errorMessage,
+                    life: 8000
+                });
+            } finally {
+                this.editingRoleAssignment = false;
+            }
+        },
+
+        async deleteRoleAssignment() {
+            if (!this.roleAssignmentToDelete || !this.selectedAgentName) {
+                return;
+            }
+
+            // Store the assignment and close the dialog immediately
+            const assignment = this.roleAssignmentToDelete;
+            this.roleAssignmentToDelete = null;
+
+            this.deletingRoleAssignment = true;
+            try {
+                // Extract just the GUID from the name (in case it contains a full path)
+                // The name should be just the GUID, but we'll extract it to be safe
+                let roleAssignmentName = assignment.resource.name;
+                
+                // If name is not available, try to extract from object_id
+                if (!roleAssignmentName && assignment.resource.object_id) {
+                    // Extract GUID from object_id like /instances/.../roleAssignments/GUID
+                    const objectIdParts = assignment.resource.object_id.split('/');
+                    roleAssignmentName = objectIdParts[objectIdParts.length - 1];
+                }
+                
+                // If the name contains a path, extract just the last part (the GUID)
+                if (roleAssignmentName && roleAssignmentName.includes('/')) {
+                    roleAssignmentName = roleAssignmentName.split('/').pop() || roleAssignmentName;
+                }
+                
+                // Trim any whitespace
+                roleAssignmentName = roleAssignmentName?.trim();
+                
+                if (!roleAssignmentName) {
+                    throw new Error('Unable to determine role assignment name for deletion');
+                }
+
+                console.log('Deleting role assignment with name:', roleAssignmentName);
+                await api.deleteRoleAssignment(roleAssignmentName);
+
+                this.$toast.add({
+                    severity: 'success',
+                    summary: 'Role Assignment Deleted',
+                    detail: `Role assignment for ${assignment.resource.principal_details?.name || assignment.resource.principal_id} deleted successfully.`,
+                    life: 3000
+                });
+
+                // Refresh the list
+                await this.loadRoleAssignments();
+            } catch (e: any) {
+                let errorMessage = 'Failed to delete role assignment';
+
+                // Extract error message from various possible formats
+                if (e?.response?._data) {
+                    errorMessage = e.response._data;
+                } else if (e?.data?.message) {
+                    errorMessage = e.data.message;
+                } else if (e?.data) {
+                    errorMessage = typeof e.data === 'string' ? e.data : JSON.stringify(e.data);
+                } else if (e.message?.includes('Access is not authorized') || e.message?.includes('403')) {
+                    errorMessage = 'You do not have permission to delete role assignments. Please contact your administrator or use the Management Portal.';
+                } else if (e.message) {
+                    errorMessage = e.message;
+                }
+
+                this.$toast.add({
+                    severity: 'error',
+                    summary: 'Delete Failed',
+                    detail: errorMessage,
+                    life: 8000
+                });
+            } finally {
+                this.deletingRoleAssignment = false;
+            }
         },
     },
 });
