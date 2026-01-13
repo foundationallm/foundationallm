@@ -1,14 +1,50 @@
 name: Data Pipeline Backend Worker Release
 
 on:
+  push:
+    tags:
+    - "datapipeline_backendworker-0.*.*"
+    - "datapipeline_backendworker-0.*.*-alpha*"
+    - "datapipeline_backendworker-0.*.*-beta*"
+    - "datapipeline_backendworker-0.*.*-rc*"
+    - "datapipeline_backendworker-0.*.*-post*"
+    - "datapipeline_backendworker-1.*.*"
+    - "datapipeline_backendworker-1.*.*-alpha*"
+    - "datapipeline_backendworker-1.*.*-beta*"
+    - "datapipeline_backendworker-1.*.*-rc*"
+    - "datapipeline_backendworker-1.*.*-post*"
+    - "datapipeline_backendworker-2.*.*"
+    - "datapipeline_backendworker-2.*.*-alpha*"
+    - "datapipeline_backendworker-2.*.*-beta*"
+    - "datapipeline_backendworker-2.*.*-rc*"
+    - "datapipeline_backendworker-2.*.*-post*"
   workflow_dispatch:
     inputs: {}
 
 jobs:
-  release_docker_image:
-    name: Release Docker Image
-    uses: ./.github/workflows/release-docker-image.yml
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      docker_tag: ${{ steps.docker-tag.outputs.docker_tag }}
+    steps:
+    - name: Set Docker Tag
+      id: docker-tag
+      run: |
+        DOCKER_TAG="${GITHUB_REF_NAME#datapipeline_backendworker-}"
+        echo "DOCKER_TAG=$DOCKER_TAG" >> $GITHUB_ENV
+        echo "docker_tag: Latest Tag is : $DOCKER_TAG"
+        echo "docker_tag=$DOCKER_TAG" >> $GITHUB_OUTPUT
+  docker_build:
+    name: Build Docker Image
+    needs:
+      - prepare
+    uses: ./.github/workflows/build-docker-image.yml
     with:
-      image: datapipeline-backendworker
+      image: datapipeline-backendendworker
       context: ./src
       dockerfile: ./src/dotnet/DataPipelineBackendWorker/Dockerfile
+      registry: foundationallm.azurecr.io
+      tag: ${{ needs.prepare.outputs.docker_tag }}
+      username: foundationallm
+      target: sandbox
+    secrets: inherit
