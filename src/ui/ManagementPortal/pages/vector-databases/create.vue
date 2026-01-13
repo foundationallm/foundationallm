@@ -403,7 +403,7 @@ export default {
 				errors.push('Please give the vector database a name.');
 			}
 			if (this.nameValidationStatus === 'invalid') {
-				errors.push(this.validationMessage);
+				errors.push(this.validationMessage || 'The vector database name is not available.');
 			}
 
 			if (!this.vectorDatabase.database_type) {
@@ -511,7 +511,7 @@ export default {
 	gap: 16px;
 	z-index: 10;
 	background-color: rgba(255, 255, 255, 0.9);
-	pointer-events: auto;
+	pointer-events: none;
 }
 
 .step-header {
