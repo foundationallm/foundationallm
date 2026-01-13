@@ -3,6 +3,7 @@ using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
+using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.Common.Validation;
@@ -13,6 +14,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System.Collections.Concurrent;
 using System.Security.Cryptography;
 using System.Text;
@@ -23,10 +25,12 @@ namespace FoundationaLLM.DataPipelineEngine.Services
     /// <summary>
     /// Provides capabilities for triggering data pipeline runs and scheduling automatic execution based on configured cron schedules.
     /// </summary>
+    /// <param name="instanceOptions">The options providing the FoundationaLLM instance settings.</param>
     /// <param name="resourceValidatorFactory">The factory used to create resource validators.</param>
     /// <param name="serviceProvider">The service collection provided by the dependency injection container.</param>
     /// <param name="logger">The logger used for logging.</param>
     public class DataPipelineTriggerService(
+        IOptions<InstanceSettings> instanceOptions,
         IResourceValidatorFactory resourceValidatorFactory,
         IServiceProvider serviceProvider,
         ILogger<DataPipelineTriggerService> logger) :
@@ -38,6 +42,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
     {
         protected override string ServiceName => "Data Pipeline Trigger Service";
 
+        private readonly InstanceSettings _instanceSettings = instanceOptions.Value;
         private readonly StandardValidator _validator = new(
             resourceValidatorFactory,
             s => new DataPipelineServiceException(s, StatusCodes.Status400BadRequest));
@@ -217,9 +222,9 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                 // Wait for initialization to complete
                 await _initializationTask;
 
-                // Query all data pipelines using the service identity
+                // Query all data pipelines for the current instance using the service identity
                 var pipelinesResult = await _dataPipelineResourceProvider.GetResourcesAsync<DataPipelineDefinition>(
-                    instanceId: "*", // All instances
+                    instanceId: _instanceSettings.Id,
                     userIdentity: ServiceContext.ServiceIdentity!,
                     options: new ResourceProviderGetOptions());
 
