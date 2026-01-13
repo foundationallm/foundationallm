@@ -125,13 +125,14 @@
 
 <script lang="ts">
 import api from '@/js/api';
+import type { ResourceProviderGetResult } from '@/js/types';
 
 export default {
 	name: 'KnowledgeUnits',
 
 	data() {
 		return {
-			knowledgeUnits: [] as any[],
+			knowledgeUnits: [] as ResourceProviderGetResult<any>[],
 			loading: false as boolean,
 			loadingStatusText: 'Retrieving data...' as string,
 			filters: {

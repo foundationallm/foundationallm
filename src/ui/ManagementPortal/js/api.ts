@@ -1107,7 +1107,7 @@ export default {
 		);
 	},
 
-	async getKnowledgeUnits(): Promise<any> {
+	async getKnowledgeUnits(): Promise<ResourceProviderGetResult<any>[]> {
 		return await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Context/knowledgeUnits?api-version=${this.apiVersion}`,
 		);
@@ -1115,7 +1115,7 @@ export default {
 
 	async getKnowledgeUnit(
 		knowledgeUnitName: string
-	): Promise<any> {
+	): Promise<ResourceProviderGetResult<any>[]> {
 		return await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Context/knowledgeUnits/${knowledgeUnitName}?api-version=${this.apiVersion}`,
 		);
