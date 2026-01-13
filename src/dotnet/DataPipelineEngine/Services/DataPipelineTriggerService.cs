@@ -1,5 +1,6 @@
 ﻿using Cronos;
 using FoundationaLLM.Common.Authentication;
+using FoundationaLLM.Common.Constants.DataPipelines;
 using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
@@ -405,7 +406,7 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                 triggerName: scheduledInfo.Trigger.Name,
                 triggerParameterValues: new Dictionary<string, object>(scheduledInfo.Trigger.ParameterValues),
                 upn: serviceIdentity.UPN!,
-                processor: "Backend"); // Scheduled pipelines always use Backend Worker
+                processor: DataPipelineRunProcessors.Backend); // Scheduled pipelines always use Backend Worker
 
             // Get the existing snapshot from the data pipeline object ID
             var snapshot = await _dataPipelineResourceProvider.GetResourceAsync<DataPipelineDefinitionSnapshot>(
@@ -447,22 +448,6 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                 _logger.LogError(ex, "Failed to parse cron expression: {CronExpression}", cronExpression);
                 return null;
             }
-        }
-
-        /// <summary>
-        /// Extracts the instance ID from a resource object ID.
-        /// </summary>
-        private string ExtractInstanceIdFromObjectId(string objectId)
-        {
-            // Object ID format: instances/{instanceId}/providers/...
-            var parts = objectId.Split('/');
-            if (parts.Length >= 2 && parts[0] == "instances")
-            {
-                return parts[1];
-            }
-
-            _logger.LogWarning("Could not extract instance ID from object ID: {ObjectId}. Using '*' as fallback.", objectId);
-            return "*";
         }
 
         #endregion
