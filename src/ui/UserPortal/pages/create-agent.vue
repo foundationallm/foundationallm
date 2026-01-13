@@ -127,7 +127,7 @@
                                                 <i class="pi pi-times-circle text-red-500"></i>
                                             </span>
                                         </div>
-                                        <p class="text-xs text-[#898989]">(50 Characters)</p>
+                                        <p class="text-xs text-[#898989]">({{ displayNameCharacterCount }} / 50 characters)</p>
                                     </div>
 
                                     <div class="w-full max-w-full md:max-w-[50%] px-4 mb-6">
@@ -153,7 +153,7 @@
                                         <Textarea class="w-full resize-none" name="agentDescription"
                                             id="agentDescription" aria-labelledby="aria-description" rows="5"
                                             maxlength="150" v-model="agentDescription" />
-                                        <p class="text-xs text-[#898989]">(150 Characters)</p>
+                                        <p class="text-xs text-[#898989]">({{ descriptionCharacterCount }} / 150 characters)</p>
                                     </div>
 
                                     <div class="w-full max-w-full px-4 mb-6">
@@ -183,8 +183,7 @@
                                         />
 
                                         <p class="text-xs text-[#898989]">(<span class="charectersControl">{{
-                                            characterCount }}</span>
-                                            Characters)</p>
+                                            characterCount }}</span> / 180 characters)</p>
                                     </div>
                                 </div>
                             </div>
@@ -254,6 +253,7 @@
                                                 v-model="systemPrompt"
                                                 :readonly="!isEditMode"
                                             />
+                                            <p class="text-xs text-[#898989]">({{ systemPromptCharacterCount }} characters)</p>
                                             <Button
                                                 v-if="isEditMode"
                                                 label="Save System Prompt"
@@ -927,6 +927,18 @@ export default defineComponent({
                 }
                 // Active if no expiration date or expiration date hasn't passed yet
                 return 'Active';
+            },
+
+            displayNameCharacterCount() {
+                return (this.agentDisplayName || '').length;
+            },
+
+            descriptionCharacterCount() {
+                return (this.agentDescription || '').length;
+            },
+
+            systemPromptCharacterCount() {
+                return (this.systemPrompt || '').length;
             }
         },
 
@@ -982,7 +994,7 @@ export default defineComponent({
                     // Load welcome message from properties
                     if (this.createdAgent.properties?.welcome_message) {
                         this.welcomeMessage = this.createdAgent.properties.welcome_message;
-                        this.characterCount = this.welcomeMessage.length;
+                        this.characterCount = this.getTextCharacterCount(this.welcomeMessage);
                     }
 
                     // Load expiration date
@@ -1196,9 +1208,18 @@ export default defineComponent({
             return null;
         },
 
+        getTextCharacterCount(html: string): number {
+            if (!html) return 0;
+            // Create a temporary DOM element to extract text content
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = html;
+            const textContent = tempDiv.textContent || tempDiv.innerText || '';
+            return textContent.length;
+        },
+
         updateAgentWelcomeMessage(newContent: string) {
 			this.welcomeMessage = newContent;
-            this.characterCount = this.welcomeMessage.length;
+            this.characterCount = this.getTextCharacterCount(this.welcomeMessage);
 		},
 
 
