@@ -8,7 +8,6 @@ using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
-using FoundationaLLM.Common.Models.Context;
 using FoundationaLLM.Common.Models.Context.Knowledge;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
@@ -22,7 +21,6 @@ using FoundationaLLM.Context.Models;
 using FoundationaLLM.Context.Models.Configuration;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
-using Microsoft.Graph.Models.Partners.Billing;
 using OpenAI.Embeddings;
 using System.ClientModel.Primitives;
 
@@ -77,6 +75,7 @@ namespace FoundationaLLM.Context.Services
             string instanceId,
             string knowledgeUnitId,
             string? agentName,
+            ResourceProviderGetOptions? options,
             UnifiedUserIdentity userIdentity)
         {
             try
@@ -93,6 +92,7 @@ namespace FoundationaLLM.Context.Services
                     instanceId,
                     knowledgeUnitId,
                     userIdentity,
+                    options: options,
                     parentResourceInstance: agent);
                 return Result<ResourceProviderGetResult<KnowledgeUnit>>.Success(
                     new ResourceProviderGetResult<KnowledgeUnit>
@@ -115,6 +115,7 @@ namespace FoundationaLLM.Context.Services
             string instanceId,
             string knowledgeSourceId,
             string? agentName,
+            ResourceProviderGetOptions? options,
             UnifiedUserIdentity userIdentity)
         {
             try
@@ -131,6 +132,7 @@ namespace FoundationaLLM.Context.Services
                     instanceId,
                     knowledgeSourceId,
                     userIdentity,
+                    options: options,
                     parentResourceInstance: agent);
                 return Result<ResourceProviderGetResult<KnowledgeSource>>.Success(
                     new ResourceProviderGetResult<KnowledgeSource>
@@ -151,13 +153,15 @@ namespace FoundationaLLM.Context.Services
         public async Task<Result<IEnumerable<ResourceProviderGetResult<KnowledgeUnit>>>> GetKnowledgeUnits(
             string instanceId,
             ContextKnowledgeResourceListRequest listRequest,
+            ResourceProviderGetOptions? options,
             UnifiedUserIdentity userIdentity)
         {
             try
             {
                 var knowledgeUnitResults = await _contextResourceProvider.GetResourcesAsync<KnowledgeUnit>(
                     instanceId,
-                    userIdentity);
+                    userIdentity,
+                    options: options);
                 return Result<IEnumerable<ResourceProviderGetResult<KnowledgeUnit>>>.Success(
                     listRequest.KnowledgeResourceNames is null
                         ? knowledgeUnitResults
@@ -178,13 +182,15 @@ namespace FoundationaLLM.Context.Services
         public async Task<Result<IEnumerable<ResourceProviderGetResult<KnowledgeSource>>>> GetKnowledgeSources(
             string instanceId,
             ContextKnowledgeResourceListRequest listRequest,
+            ResourceProviderGetOptions? options,
             UnifiedUserIdentity userIdentity)
         {
             try
             {
                 var knowledgeSourceResults = await _contextResourceProvider.GetResourcesAsync<KnowledgeSource>(
                     instanceId,
-                    userIdentity);
+                    userIdentity,
+                    options: options);
                 return Result<IEnumerable<ResourceProviderGetResult<KnowledgeSource>>>.Success(
                     listRequest.KnowledgeResourceNames is null
                         ? knowledgeSourceResults

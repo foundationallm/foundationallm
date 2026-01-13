@@ -100,11 +100,13 @@ namespace FoundationaLLM.Common.Interfaces
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="knowledgeUnitId">The knowledge unit identifier.</param>
         /// <param name="agentName">The agent name if the request is being made on behalf of an agent.</param>
+        /// <param name="options">The loading options for the knowledge unit.</param>
         /// <returns>The requested knowledge unit.</returns>
         Task<Result<ResourceProviderGetResult<KnowledgeUnit>>> GetKnowledgeUnit(
             string instanceId,
             string knowledgeUnitId,
-            string? agentName = null);
+            string? agentName = null,
+            ResourceProviderGetOptions? options = null);
 
         /// <summary>
         /// Call the Context API to retrieve a knowledge source.
@@ -112,31 +114,37 @@ namespace FoundationaLLM.Common.Interfaces
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="knowledgeSourceId">The knowledge source identifier.</param>
         /// <param name="agentName">The agent name if the request is being made on behalf of an agent.</param>
+        /// <param name="options">The loading options for the knowledge source.</param>
         /// <returns>The requested knowledge source.</returns>
         Task<Result<ResourceProviderGetResult<KnowledgeSource>>> GetKnowledgeSource(
             string instanceId,
             string knowledgeSourceId,
-            string? agentName = null);
+            string? agentName = null,
+            ResourceProviderGetOptions? options = null);
 
         /// <summary>
         /// Call the Context API to retrieve the list of knowledge units.
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="knowledgeUnitNames">An optional list of specific knowledge units to retrieve.</param>
+        /// <param name="options">The loading options for the knowledge units.</param>
         /// <returns>The list of knowledge units.</returns>
         Task<Result<IEnumerable<ResourceProviderGetResult<KnowledgeUnit>>>> GetKnowledgeUnits(
             string instanceId,
-            IEnumerable<string>? knowledgeUnitNames = null);
+            IEnumerable<string>? knowledgeUnitNames = null,
+            ResourceProviderGetOptions? options = null);
 
         /// <summary>
         /// Call the Context API to retrieve the list of knowledge sources.
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="knowledgeSourceNames">An optional list of specific knowledge sources to retrieve.</param>
+        /// <param name="options">The loading options for the knowledge sources.</param>
         /// <returns>The list of knowledge sources.</returns>
         Task<Result<IEnumerable<ResourceProviderGetResult<KnowledgeSource>>>> GetKnowledgeSources(
             string instanceId,
-            IEnumerable<string>? knowledgeSourceNames = null);
+            IEnumerable<string>? knowledgeSourceNames = null,
+            ResourceProviderGetOptions? options = null);
 
         /// <summary>
         /// Creates or updates a knowledge unit in the context service.

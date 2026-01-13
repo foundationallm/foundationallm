@@ -90,5 +90,25 @@
 
             return options;
         }
+
+        /// <summary>
+        /// Converts the current options instance to a query parameter dictionary.
+        /// </summary>
+        /// <returns>A dictionary containing query parameter names and their corresponding string values.</returns>
+        public Dictionary<string, string> ToQueryParams()
+        {
+            var queryParams = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
+            if (LoadContent)
+                queryParams["loadContent"] = LoadContent.ToString().ToLowerInvariant();
+
+            if (IncludeRoles)
+                queryParams["includeRoles"] = IncludeRoles.ToString().ToLowerInvariant();
+
+            if (IncludeActions)
+                queryParams["includeActions"] = IncludeActions.ToString().ToLowerInvariant();
+
+            return queryParams;
+        }
     }
 }

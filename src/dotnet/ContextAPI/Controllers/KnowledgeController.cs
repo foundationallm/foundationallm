@@ -1,6 +1,7 @@
 ﻿using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Context.Knowledge;
+using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Context;
 using FoundationaLLM.Context.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -32,17 +33,20 @@ namespace FoundationaLLM.Context.API.Controllers
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="knowledgeUnitId">The knowledge unit identifier.</param>
         /// <param name="agentName">The agent name if the request is being made on behalf of an agent.</param>
+        /// <param name="queryParams">The query parameters.</param>
         /// <returns></returns>
         [HttpGet("knowledgeUnits/{knowledgeUnitId}")]
         public async Task<IActionResult> GetKnowledgeUnit(
             string instanceId,
             string knowledgeUnitId,
-            string? agentName)
+            string? agentName,
+            [FromQuery] Dictionary<string, string> queryParams)
         {
             var result = await _knowledgeService.GetKnowledgeUnit(
                 instanceId,
                 knowledgeUnitId,
                 agentName,
+                ResourceProviderGetOptions.FromQueryParams(queryParams, false, false),
                 _callContext.CurrentUserIdentity!);
 
             return
@@ -55,17 +59,20 @@ namespace FoundationaLLM.Context.API.Controllers
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="knowledgeSourceId">The knowledge source identifier.</param>
         /// <param name="agentName">The agent name if the request is being made on behalf of an agent.</param>
+        /// <param name="queryParams">The query parameters.</param>
         /// <returns></returns>
         [HttpGet("knowledgeSources/{knowledgeSourceId}")]
         public async Task<IActionResult> GetKnowledgeSource(
             string instanceId,
             string knowledgeSourceId,
-            string? agentName)
+            string? agentName,
+            [FromQuery] Dictionary<string, string> queryParams)
         {
             var result = await _knowledgeService.GetKnowledgeSource(
                 instanceId,
                 knowledgeSourceId,
                 agentName,
+                ResourceProviderGetOptions.FromQueryParams(queryParams, false, false),
                 _callContext.CurrentUserIdentity!);
 
             return
@@ -77,15 +84,18 @@ namespace FoundationaLLM.Context.API.Controllers
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="listRequest"> The request containing the information used to filter the knowledge resources.</param>
+        /// <param name="queryParams">The query parameters.</param>
         /// <returns></returns>
         [HttpPost("knowledgeUnits/list")]
         public async Task<IActionResult> GetKnowledgeUnits(
             string instanceId,
-            [FromBody] ContextKnowledgeResourceListRequest listRequest)
+            [FromBody] ContextKnowledgeResourceListRequest listRequest,
+            [FromQuery] Dictionary<string, string> queryParams)
         {
             var result = await _knowledgeService.GetKnowledgeUnits(
                 instanceId,
                 listRequest,
+                ResourceProviderGetOptions.FromQueryParams(queryParams, false, false),
                 _callContext.CurrentUserIdentity!);
 
             return
@@ -97,15 +107,18 @@ namespace FoundationaLLM.Context.API.Controllers
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="listRequest"> The request containing the information used to filter the knowledge resources.</param>
+        /// <param name="queryParams">The query parameters.</param>
         /// <returns></returns>
         [HttpPost("knowledgeSources/list")]
         public async Task<IActionResult> GetKnowledgeSources(
             string instanceId,
-            [FromBody] ContextKnowledgeResourceListRequest listRequest)
+            [FromBody] ContextKnowledgeResourceListRequest listRequest,
+            [FromQuery] Dictionary<string, string> queryParams)
         {
             var result = await _knowledgeService.GetKnowledgeSources(
                 instanceId,
                 listRequest,
+                ResourceProviderGetOptions.FromQueryParams(queryParams, false, false),
                 _callContext.CurrentUserIdentity!);
 
             return

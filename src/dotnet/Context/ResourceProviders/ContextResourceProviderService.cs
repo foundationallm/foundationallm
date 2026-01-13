@@ -341,19 +341,22 @@ namespace FoundationaLLM.Context.ResourceProviders
             {
                 contextResponse = await contextServiceClient!.GetKnowledgeSources(
                     resourcePath.InstanceId!,
-                    [resourcePath.MainResourceId!]);
+                    [resourcePath.MainResourceId!],
+                    options: options);
             }
             else
             {
                 contextResponse = authorizationResult.Authorized
                     ? await contextServiceClient!.GetKnowledgeSources(
-                        resourcePath.InstanceId!)
+                        resourcePath.InstanceId!,
+                        options: options)
                     : await contextServiceClient!.GetKnowledgeSources(
                         resourcePath.InstanceId!,
                         authorizationResult.SubordinateResourcePathsAuthorizationResults.Values
                                    .Where(sarp => !string.IsNullOrWhiteSpace(sarp.ResourceName) && sarp.Authorized)
                                    .Select(sarp => sarp.ResourceName!)
-                                   .ToList());
+                                   .ToList(),
+                        options: options);
             }
             if (contextResponse.TryGetValue(out var resourceProviderResults))
                 return [..
@@ -383,19 +386,22 @@ namespace FoundationaLLM.Context.ResourceProviders
             {
                 contextResponse = await contextServiceClient!.GetKnowledgeUnits(
                     resourcePath.InstanceId!,
-                    [resourcePath.MainResourceId!]);
+                    [resourcePath.MainResourceId!],
+                    options: options);
             }
             else
             {
                 contextResponse = authorizationResult.Authorized
                     ? await contextServiceClient!.GetKnowledgeUnits(
-                        resourcePath.InstanceId!)
+                        resourcePath.InstanceId!,
+                        options: options)
                     : await contextServiceClient!.GetKnowledgeUnits(
                         resourcePath.InstanceId!,
                         authorizationResult.SubordinateResourcePathsAuthorizationResults.Values
                                    .Where(sarp => !string.IsNullOrWhiteSpace(sarp.ResourceName) && sarp.Authorized)
                                    .Select(sarp => sarp.ResourceName!)
-                                   .ToList());
+                                   .ToList(),
+                        options: options);
             }
 
             if (contextResponse.TryGetValue(out var resourceProviderResults))

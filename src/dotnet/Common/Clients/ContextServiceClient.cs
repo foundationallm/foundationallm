@@ -5,6 +5,7 @@ using FoundationaLLM.Common.Models.CodeExecution;
 using FoundationaLLM.Common.Models.Context;
 using FoundationaLLM.Common.Models.Context.Knowledge;
 using FoundationaLLM.Common.Models.ResourceProviders;
+using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Models.ResourceProviders.Context;
 using FoundationaLLM.Common.Models.Services;
 using Microsoft.Extensions.Logging;
@@ -279,29 +280,34 @@ namespace FoundationaLLM.Common.Clients
         public async Task<Result<ResourceProviderGetResult<KnowledgeUnit>>> GetKnowledgeUnit(
             string instanceId,
             string knowledgeUnitId,
-            string? agentName = null) =>
+            string? agentName = null,
+            ResourceProviderGetOptions? options = null) =>
             await GetKnowledgeResource<KnowledgeUnit>(
                 instanceId,
                 ContextResourceTypeNames.KnowledgeUnits,
                 knowledgeUnitId,
-                agentName);
+                agentName: agentName,
+                options: options);
 
         /// <inheritdoc/>
         public async Task<Result<ResourceProviderGetResult<KnowledgeSource>>> GetKnowledgeSource(
             string instanceId,
             string knowledgeSourceId,
-            string? agentName = null) =>
+            string? agentName = null,
+            ResourceProviderGetOptions? options = null) =>
             await GetKnowledgeResource<KnowledgeSource>(
                 instanceId,
                 ContextResourceTypeNames.KnowledgeSources,
                 knowledgeSourceId,
-                agentName);
+                agentName: agentName,
+                options: options);
 
         private async Task<Result<ResourceProviderGetResult<T>>> GetKnowledgeResource<T>(
             string instanceId,
             string knowledgeResourceType,
             string knowledgeResourceId,
-            string? agentName = null)
+            string? agentName = null,
+            ResourceProviderGetOptions? options = null)
             where T : ResourceBase
         {
             try
@@ -310,10 +316,20 @@ namespace FoundationaLLM.Common.Clients
                     instanceId,
                     HttpClientNames.ContextAPI,
                     _callContext.CurrentUserIdentity!);
-                var responseMessage = await client.GetAsync(
-                    agentName is null
-                        ? $"instances/{instanceId}/{knowledgeResourceType}/{knowledgeResourceId}"
-                        : $"instances/{instanceId}/{knowledgeResourceType}/{knowledgeResourceId}?agentName={agentName}");
+
+                var queryParameters = options is null
+                    ? new Dictionary<string, string>()
+                    : options.ToQueryParams();
+                if (agentName is not null)
+                    queryParameters["agentName"] = agentName;
+                var queryParametersString = queryParameters.Count == 0
+                    ? string.Empty
+                    : "?" + string.Join("&", queryParameters.Select(kvp => $"{kvp.Key}={kvp.Value}"));
+
+                var requestUrl =
+                    $"instances/{instanceId}/{knowledgeResourceType}/{knowledgeResourceId}{queryParametersString}";
+
+                var responseMessage = await client.GetAsync(requestUrl);
                 if (responseMessage.IsSuccessStatusCode)
                 {
                     var responseContent = await responseMessage.Content.ReadAsStringAsync();
@@ -343,25 +359,30 @@ namespace FoundationaLLM.Common.Clients
         /// <inheritdoc/>
         public async Task<Result<IEnumerable<ResourceProviderGetResult<KnowledgeSource>>>> GetKnowledgeSources(
             string instanceId,
-            IEnumerable<string>? knowledgeSourceNames = null) =>
+            IEnumerable<string>? knowledgeSourceNames = null,
+            ResourceProviderGetOptions? options = null) =>
             await GetKnowledgeResources<KnowledgeSource>(
                 instanceId,
                 ContextResourceTypeNames.KnowledgeSources,
-                knowledgeSourceNames);
+                knowledgeSourceNames,
+                options: options);
 
         /// <inheritdoc/>
         public async Task<Result<IEnumerable<ResourceProviderGetResult<KnowledgeUnit>>>> GetKnowledgeUnits(
             string instanceId,
-            IEnumerable<string>? knowledgeUnitNames = null) =>
+            IEnumerable<string>? knowledgeUnitNames = null,
+            ResourceProviderGetOptions? options = null) =>
             await GetKnowledgeResources<KnowledgeUnit>(
                 instanceId,
                 ContextResourceTypeNames.KnowledgeUnits,
-                knowledgeUnitNames);
+                knowledgeUnitNames,
+                options: options);
 
         private async Task<Result<IEnumerable<ResourceProviderGetResult<T>>>> GetKnowledgeResources<T>(
             string instanceId,
             string knowledgeResourceType,
-            IEnumerable<string>? knowledgeResourceNames = null)
+            IEnumerable<string>? knowledgeResourceNames = null,
+            ResourceProviderGetOptions? options = null)
             where T: ResourceBase
         {
             try
@@ -370,8 +391,16 @@ namespace FoundationaLLM.Common.Clients
                     instanceId,
                     HttpClientNames.ContextAPI,
                     _callContext.CurrentUserIdentity!);
+
+                var queryParameters = options is null
+                    ? new Dictionary<string, string>()
+                    : options.ToQueryParams();
+                var queryParametersString = queryParameters.Count == 0
+                    ? string.Empty
+                    : "?" + string.Join("&", queryParameters.Select(kvp => $"{kvp.Key}={kvp.Value}"));
+
                 var responseMessage = await client.PostAsJsonAsync(
-                    $"instances/{instanceId}/{knowledgeResourceType}/list",
+                    $"instances/{instanceId}/{knowledgeResourceType}/list{queryParametersString}",
                     new ContextKnowledgeResourceListRequest
                     {
                         KnowledgeResourceNames = knowledgeResourceNames?.ToList()
