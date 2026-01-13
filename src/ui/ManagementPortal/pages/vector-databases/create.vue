@@ -272,6 +272,7 @@ export default {
 
 			nameValidationStatus: null as string | null, // 'valid', 'invalid', or null
 			validationMessage: null as string | null,
+			debouncedCheckName: null as any,
 
 			vectorDatabase: {
 				type: 'vector-database',
@@ -386,7 +387,7 @@ export default {
 			}
 		},
 
-		handleNameInput(event) {
+		handleNameInput(event: Event) {
 			const sanitizedValue = this.$filters.sanitizeNameInput(event);
 			this.vectorDatabase.name = sanitizedValue;
 

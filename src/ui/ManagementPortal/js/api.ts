@@ -1084,19 +1084,21 @@ export default {
 	/*
 		Vector Databases
 	*/
-	async getVectorDatabases(): Promise<any> {
+	async getVectorDatabases(): Promise<ResourceProviderGetResult<VectorDatabase>[]> {
 		return await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Vector/vectorDatabases?api-version=${this.apiVersion}`,
 		);
 	},
 
-	async getVectorDatabase(vectorDatabaseName: string): Promise<any> {
+	async getVectorDatabase(
+		vectorDatabaseName: string,
+	): Promise<ResourceProviderGetResult<VectorDatabase>> {
 		return await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Vector/vectorDatabases/${vectorDatabaseName}?api-version=${this.apiVersion}`,
 		);
 	},
 
-	async upsertVectorDatabase(request: any): Promise<any> {
+	async upsertVectorDatabase(request: VectorDatabase): Promise<ResourceProviderUpsertResult> {
 		return await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Vector/vectorDatabases/${request.name}?api-version=${this.apiVersion}`,
 			{
@@ -1106,7 +1108,7 @@ export default {
 		);
 	},
 
-	async deleteVectorDatabase(vectorDatabaseName: string): Promise<any> {
+	async deleteVectorDatabase(vectorDatabaseName: string): Promise<ResourceProviderActionResult> {
 		return await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Vector/vectorDatabases/${vectorDatabaseName}?api-version=${this.apiVersion}`,
 			{
