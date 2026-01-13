@@ -59,34 +59,81 @@
 					aria-labelledby="aria-description"
 				/>
 			</div>
+
+			<!-- Vector Database -->
+			<div class="col-span-2">
+				<div class="step-header !mb-2">Vector Database:</div>
+				<div id="aria-vector-database" class="mb-2">
+					Select the vector database associated with this knowledge unit.
+				</div>
+				<Dropdown
+					v-model="knowledgeUnit.vector_database_object_id"
+					:options="vectorDatabaseOptions"
+					option-label="label"
+					option-value="value"
+					placeholder="Select a vector database"
+					class="w-full"
+					aria-labelledby="aria-vector-database"
+				/>
+			</div>
+
+			<!-- Vector Store ID -->
+			<div class="col-span-2">
+				<div class="step-header !mb-2">Vector Store ID:</div>
+				<div id="aria-vector-store-id" class="mb-2">
+					The identifier of the vector store within the selected vector database. If not specified, queries must provide this explicitly.
+				</div>
+				<InputText
+					v-model="knowledgeUnit.vector_store_id"
+					type="text"
+					class="w-full"
+					placeholder="Enter vector store ID (optional)"
+					aria-labelledby="aria-vector-store-id"
+				/>
+			</div>
+
+			<!-- Has Knowledge Graph -->
+			<div class="col-span-2">
+				<div class="step-header !mb-2">Has Knowledge Graph:</div>
+				<div id="aria-has-knowledge-graph" class="mb-2">
+					Enable if this knowledge unit also has an associated knowledge graph.
+				</div>
+				<InputSwitch
+					v-model="knowledgeUnit.has_knowledge_graph"
+					aria-labelledby="aria-has-knowledge-graph"
+				/>
+			</div>
+
+			<!-- Knowledge Graph Vector Database (shown when has_knowledge_graph is true) -->
+			<div v-if="knowledgeUnit.has_knowledge_graph" class="col-span-2">
+				<div class="step-header !mb-2">Knowledge Graph Vector Database:</div>
+				<div id="aria-kg-vector-database" class="mb-2">
+					Select the vector database used to store knowledge graph embeddings.
+				</div>
+				<Dropdown
+					v-model="knowledgeUnit.knowledge_graph_vector_database_object_id"
+					:options="vectorDatabaseOptions"
+					option-label="label"
+					option-value="value"
+					placeholder="Select a vector database for knowledge graph"
+					class="w-full"
+					aria-labelledby="aria-kg-vector-database"
+				/>
+			</div>
 		</div>
 
-		<!-- Actions -->
-		<div class="actions">
-			<Button @click="showDeleteConfirmation" severity="danger" outlined v-if="canDelete">
-				<i class="pi pi-trash"></i>
-				Delete
-			</Button>
-			<div style="flex: 1"></div>
-			<Button @click="handleCancel" severity="secondary" outlined>
-				<i class="pi pi-times"></i>
-				Cancel
-			</Button>
-			<Button @click="handleSave">
-				<i class="pi pi-check"></i>
-				Update
-			</Button>
-		</div>
+		<!-- Buttons -->
+		<div class="flex justify-end gap-4 mt-6">
+			<!-- Save changes -->
+			<Button
+				label="Save Changes"
+				severity="primary"
+				@click="handleSave"
+			/>
 
-		<!-- Delete confirmation dialog -->
-		<ConfirmationDialog
-			:visible="deleteConfirmationVisible"
-			@confirm="handleDelete"
-			@cancel="deleteConfirmationVisible = false"
-			@update:visible="deleteConfirmationVisible = false"
-		>
-			Do you want to delete the knowledge unit "{{ knowledgeUnit.name }}"?
-		</ConfirmationDialog>
+			<!-- Cancel -->
+			<Button label="Cancel" severity="secondary" @click="handleCancel" />
+		</div>
 	</main>
 </template>
 
@@ -102,12 +149,15 @@ export default {
 				name: '',
 				description: '',
 				type: 'knowledge-unit',
-				object_id: ''
+				object_id: '',
+				vector_database_object_id: '',
+				vector_store_id: '',
+				has_knowledge_graph: false,
+				knowledge_graph_vector_database_object_id: '',
 			},
+			vectorDatabaseOptions: [] as { label: string; value: string }[],
 			loading: false,
 			loadingStatusText: 'Loading...',
-			canDelete: false,
-			deleteConfirmationVisible: false,
 		};
 	},
 
@@ -123,11 +173,26 @@ export default {
 			this.loading = true;
 			this.loadingStatusText = 'Loading knowledge unit...';
 			try {
-				const result = await api.getKnowledgeUnit(knowledgeUnitName);
-				if (result && result.length > 0) {
-					this.knowledgeUnit = result[0].resource;
-					// Check if user has delete permissions
-					this.canDelete = result[0].actions?.includes('FoundationaLLM.Context/knowledgeUnits/delete') || false;
+				// Load vector databases and knowledge unit in parallel
+				const [vectorDbResult, knowledgeUnitResult] = await Promise.all([
+					api.getVectorDatabases(),
+					api.getKnowledgeUnit(knowledgeUnitName),
+				]);
+
+				// Process vector database options
+				if (vectorDbResult && Array.isArray(vectorDbResult)) {
+					this.vectorDatabaseOptions = vectorDbResult.map((item: any) => ({
+						label: item.resource?.name || item.name || 'Unknown',
+						value: item.resource?.object_id || item.object_id || '',
+					}));
+				}
+
+				// Process knowledge unit
+				if (knowledgeUnitResult && knowledgeUnitResult.length > 0) {
+					this.knowledgeUnit = {
+						...this.knowledgeUnit,
+						...knowledgeUnitResult[0].resource,
+					};
 				}
 			} catch (error) {
 				this.$toast.add({
@@ -150,11 +215,26 @@ export default {
 				return;
 			}
 
+			if (!this.knowledgeUnit.vector_database_object_id) {
+				this.$toast.add({
+					severity: 'warn',
+					detail: 'Vector database is required.',
+					life: 3000,
+				});
+				return;
+			}
+
+			// Clear knowledge graph vector database if not using knowledge graph
+			const knowledgeUnitToSave = { ...this.knowledgeUnit };
+			if (!knowledgeUnitToSave.has_knowledge_graph) {
+				knowledgeUnitToSave.knowledge_graph_vector_database_object_id = null;
+			}
+
 			this.loading = true;
 			this.loadingStatusText = 'Updating knowledge unit...';
 			
 			try {
-				await api.createOrUpdateKnowledgeUnit(this.knowledgeUnit.name, this.knowledgeUnit);
+				await api.createOrUpdateKnowledgeUnit(this.knowledgeUnit.name, knowledgeUnitToSave);
 				this.$toast.add({
 					severity: 'success',
 					detail: 'Knowledge unit updated successfully.',
@@ -169,33 +249,6 @@ export default {
 				});
 			}
 			this.loading = false;
-		},
-
-		async handleDelete() {
-			this.loading = true;
-			this.loadingStatusText = 'Deleting knowledge unit...';
-			this.deleteConfirmationVisible = false;
-			
-			try {
-				await api.deleteKnowledgeUnit(this.knowledgeUnit.name);
-				this.$toast.add({
-					severity: 'success',
-					detail: 'Knowledge unit deleted successfully.',
-					life: 3000,
-				});
-				this.$router.push('/knowledge-units');
-			} catch (error) {
-				this.$toast.add({
-					severity: 'error',
-					detail: error?.response?._data || error,
-					life: 5000,
-				});
-			}
-			this.loading = false;
-		},
-
-		showDeleteConfirmation() {
-			this.deleteConfirmationVisible = true;
 		},
 
 		handleCancel() {
@@ -234,12 +287,6 @@ export default {
 	position: relative;
 	display: flex;
 	align-items: center;
-}
-
-.actions {
-	display: flex;
-	gap: 1rem;
-	margin-top: 2rem;
 }
 
 .col-span-2 {

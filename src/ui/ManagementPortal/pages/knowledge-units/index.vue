@@ -118,8 +118,54 @@
 						</template>
 					</template>
 				</Column>
+
+				<!-- Delete -->
+				<Column
+					header="Delete"
+					header-style="width:6rem"
+					style="text-align: center"
+					:pt="{
+						headerCell: {
+							style: { backgroundColor: 'var(--primary-color)', color: 'var(--primary-text)' },
+						},
+						headerContent: { style: { justifyContent: 'center' } },
+					}"
+				>
+					<template #body="{ data }">
+						<template v-if="data.actions.includes('FoundationaLLM.Context/knowledgeUnits/delete')">
+							<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+								<Button link :aria-label="`Delete ${data.resource.name}`" @click="knowledgeUnitToDelete = data.resource">
+									<i class="pi pi-trash" style="font-size: 1.2rem" aria-hidden="true"></i>
+								</Button>
+								<template #popper
+									><div role="tooltip">Delete {{ data.resource.name }}</div></template
+								>
+							</VTooltip>
+						</template>
+						<template v-else>
+							<span aria-disabled="true" style="opacity:.6; cursor: default;">
+								<i class="pi pi-trash" style="font-size: 1.2rem" aria-hidden="true"></i>
+							</span>
+						</template>
+					</template>
+				</Column>
 			</DataTable>
 		</div>
+
+		<!-- Delete knowledge unit dialog -->
+		<ConfirmationDialog
+			v-if="knowledgeUnitToDelete !== null"
+			:visible="knowledgeUnitToDelete !== null"
+			header="Delete Knowledge Unit"
+			confirm-text="Yes"
+			cancel-text="Cancel"
+			confirm-button-severity="danger"
+			@confirm="handleDeleteKnowledgeUnit"
+			@cancel="knowledgeUnitToDelete = null"
+			@update:visible="knowledgeUnitToDelete = null"
+		>
+			Do you want to delete the knowledge unit "{{ knowledgeUnitToDelete.name }}"?
+		</ConfirmationDialog>
 	</main>
 </template>
 
@@ -138,6 +184,7 @@ export default {
 			filters: {
 				global: { value: null, matchMode: 'contains' }
 			},
+			knowledgeUnitToDelete: null as any | null,
 		};
 	},
 
@@ -163,6 +210,21 @@ export default {
 				});
 			}
 			this.loading = false;
+		},
+
+		async handleDeleteKnowledgeUnit() {
+			try {
+				await api.deleteKnowledgeUnit(this.knowledgeUnitToDelete!.name);
+				this.knowledgeUnitToDelete = null;
+			} catch (error) {
+				return this.$toast.add({
+					severity: 'error',
+					detail: error?.response?._data || error,
+					life: 5000,
+				});
+			}
+
+			await this.getKnowledgeUnits();
 		},
 	},
 };
