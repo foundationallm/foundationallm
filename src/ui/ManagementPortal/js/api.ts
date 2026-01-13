@@ -3,6 +3,7 @@ import type {
 	ResourceProviderGetResult,
 	Agent,
 	DataSource,
+	VectorDatabase,
 	AppConfigUnion,
 	// AppConfigKeyVault,
 	AgentIndex,
@@ -1086,6 +1087,46 @@ export default {
 	async getVectorDatabases(): Promise<any> {
 		return await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Vector/vectorDatabases?api-version=${this.apiVersion}`,
+		);
+	},
+
+	async getVectorDatabase(vectorDatabaseName: string): Promise<any> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Vector/vectorDatabases/${vectorDatabaseName}?api-version=${this.apiVersion}`,
+		);
+	},
+
+	async upsertVectorDatabase(request: any): Promise<any> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Vector/vectorDatabases/${request.name}?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: request,
+			},
+		);
+	},
+
+	async deleteVectorDatabase(vectorDatabaseName: string): Promise<any> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Vector/vectorDatabases/${vectorDatabaseName}?api-version=${this.apiVersion}`,
+			{
+				method: 'DELETE',
+			},
+		);
+	},
+
+	async checkVectorDatabaseName(name: string): Promise<CheckNameResponse> {
+		const payload = {
+			name,
+			type: 'vector-database',
+		};
+
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Vector/vectorDatabases/checkname?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: payload,
+			},
 		);
 	},
 

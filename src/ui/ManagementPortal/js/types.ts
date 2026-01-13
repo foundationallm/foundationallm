@@ -268,6 +268,28 @@ export type DataSource =
 	| AzureSQLDatabaseDataSource;
 // End data sources
 
+// Vector databases
+export enum VectorDatabaseType {
+	AzureAISearch = 'AzureAISearch',
+	AzureCosmosDBNoSQL = 'AzureCosmosDBNoSQL',
+	AzurePostgreSQL = 'AzurePostgreSQL'
+}
+
+export interface VectorDatabase extends ResourceBase {
+	type: 'vector-database';
+	database_type: VectorDatabaseType;
+	database_name: string;
+	embedding_model: string;
+	embedding_dimensions: number;
+	embedding_property_name: string;
+	content_property_name: string;
+	vector_store_id_property_name: string;
+	metadata_property_name: string;
+	metadata_properties: string;
+	api_endpoint_configuration_object_id: string;
+}
+// End vector databases
+
 // App Configuration
 export interface AppConfigBase extends ResourceBase {
 	key: string;

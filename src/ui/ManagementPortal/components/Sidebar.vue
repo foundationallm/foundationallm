@@ -75,14 +75,14 @@
 							>Data Sources</NuxtLink
 						>
 					</li>
-					<!-- <li>
+					<li>
 						<NuxtLink
-							to="/vector-stores"
-							:class="{ 'router-link-active': isRouteActive('/vector-stores') }"
+							to="/vector-databases"
+							:class="{ 'router-link-active': isRouteActive('/vector-databases') }"
 							class="sidebar__item"
-							>Vector Stores</NuxtLink
+							>Vector Databases</NuxtLink
 						>
-					</li> -->
+					</li>
 					<li>
 						<NuxtLink
 							to="/pipelines"
