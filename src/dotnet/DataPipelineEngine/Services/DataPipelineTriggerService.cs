@@ -415,8 +415,12 @@ namespace FoundationaLLM.DataPipelineEngine.Services
             // Extract instance ID from the pipeline's object ID using ResourcePath
             if (!ResourcePath.TryParseInstanceId(scheduledInfo.Pipeline.ObjectId!, out var instanceId) || string.IsNullOrWhiteSpace(instanceId))
             {
-                _logger.LogWarning("Could not extract instance ID from object ID: {ObjectId}. Using '*' as fallback.", scheduledInfo.Pipeline.ObjectId);
-                instanceId = "*";
+                _logger.LogError(
+                    "Could not extract instance ID from object ID: {ObjectId}. Skipping scheduled pipeline {PipelineName} with trigger {TriggerName}.",
+                    scheduledInfo.Pipeline.ObjectId,
+                    scheduledInfo.Pipeline.Name,
+                    scheduledInfo.Trigger.Name);
+                return;
             }
 
             // Trigger the pipeline through the existing TriggerDataPipeline method
