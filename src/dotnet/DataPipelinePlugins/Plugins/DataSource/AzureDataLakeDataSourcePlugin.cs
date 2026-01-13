@@ -52,25 +52,8 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource
         /// <inheritdoc/>
         public async Task<List<DataPipelineContentItem>> GetContentItems()
         {
-            var foldersList = _pluginParameters[PluginParameterNames.AZUREDATALAKE_DATASOURCE_FOLDERS]?.ToString()
-                ?? throw new PluginException($"The {PluginParameterNames.AZUREDATALAKE_DATASOURCE_FOLDERS} parameter is required by the {Name} plugin.");
-
-            var folders = foldersList.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
-
-            var dataSourceBase = await _dataSourceResourceProvider!.GetResourceAsync<DataSourceBase>(
-                _dataSourceObjectId,
-                ServiceContext.ServiceIdentity!)
-                ?? throw new PluginException($"The Azure Data Lake data source with object ID '{_dataSourceObjectId}' cannot be found.");
-
-            var dataSource = dataSourceBase as AzureDataLakeDataSource
-                ?? throw new PluginException($"The data source [{_dataSourceObjectId}] is not a valid Azure Data Lake data source.");
-
-            var dataLakeSettings = dataSource.ConfigurationReferences!
-                .ToDictionary(
-                    kvp => kvp.Key,
-                    kvp => _configuration[kvp.Value]);
-
-            var storageService = GetStorageService(dataLakeSettings!);
+            var folders = GetFoldersFromParameters();
+            var storageService = await GetConfiguredStorageService();
 
             List<DataPipelineContentItem> contentItems = [];
 
@@ -128,24 +111,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource
             ContentIdentifier contentItemIdentifier)
         {
             var contentItemCanonicalId = contentItemIdentifier.CanonicalId;
-
-            var foldersList = _pluginParameters[PluginParameterNames.AZUREDATALAKE_DATASOURCE_FOLDERS]?.ToString()
-                ?? throw new PluginException($"The {PluginParameterNames.AZUREDATALAKE_DATASOURCE_FOLDERS} parameter is required by the {Name} plugin.");
-
-            var dataSourceBase = await _dataSourceResourceProvider!.GetResourceAsync<DataSourceBase>(
-                _dataSourceObjectId,
-                ServiceContext.ServiceIdentity!)
-                ?? throw new PluginException($"The Azure Data Lake data source with object ID '{_dataSourceObjectId}' cannot be found.");
-
-            var dataSource = dataSourceBase as AzureDataLakeDataSource
-                ?? throw new PluginException($"The data source [{_dataSourceObjectId}] is not a valid Azure Data Lake data source.");
-
-            var dataLakeSettings = dataSource.ConfigurationReferences!
-                .ToDictionary(
-                    kvp => kvp.Key,
-                    kvp => _configuration[kvp.Value]);
-
-            var storageService = GetStorageService(dataLakeSettings!);
+            var storageService = await GetConfiguredStorageService();
 
             // Parse canonical ID: format is [container_name]/[file_path]
             var parts = contentItemCanonicalId.Split('/', 2);
@@ -220,6 +186,40 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource
                 canonicalContentItemIdentifier);
 
             await Task.CompletedTask;
+        }
+
+        /// <summary>
+        /// Retrieves and parses the folders parameter from plugin parameters.
+        /// </summary>
+        /// <returns>An array of folder paths.</returns>
+        private string[] GetFoldersFromParameters()
+        {
+            var foldersList = _pluginParameters[PluginParameterNames.AZUREDATALAKE_DATASOURCE_FOLDERS]?.ToString()
+                ?? throw new PluginException($"The {PluginParameterNames.AZUREDATALAKE_DATASOURCE_FOLDERS} parameter is required by the {Name} plugin.");
+
+            return foldersList.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+        }
+
+        /// <summary>
+        /// Retrieves the data source configuration and creates a configured DataLakeStorageService.
+        /// </summary>
+        /// <returns>A configured DataLakeStorageService instance.</returns>
+        private async Task<DataLakeStorageService> GetConfiguredStorageService()
+        {
+            var dataSourceBase = await _dataSourceResourceProvider!.GetResourceAsync<DataSourceBase>(
+                _dataSourceObjectId,
+                ServiceContext.ServiceIdentity!)
+                ?? throw new PluginException($"The Azure Data Lake data source with object ID '{_dataSourceObjectId}' cannot be found.");
+
+            var dataSource = dataSourceBase as AzureDataLakeDataSource
+                ?? throw new PluginException($"The data source [{_dataSourceObjectId}] is not a valid Azure Data Lake data source.");
+
+            var dataLakeSettings = dataSource.ConfigurationReferences!
+                .ToDictionary(
+                    kvp => kvp.Key,
+                    kvp => _configuration[kvp.Value]);
+
+            return GetStorageService(dataLakeSettings!);
         }
 
         /// <summary>
