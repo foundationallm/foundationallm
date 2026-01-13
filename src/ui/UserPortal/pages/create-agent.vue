@@ -932,23 +932,6 @@ export default defineComponent({
                     return isUser && isAllowedRole && hasPrincipalDetails && isPrincipalDetailsUser;
                 });
 
-                // Log filtered assignments being displayed in the table
-                console.group('✅ Filtered Role Assignments (Displayed in Table)');
-                console.log(`Total assignments displayed: ${userAssignments.length}`);
-                userAssignments.forEach((assignment, index) => {
-                    console.group(`Displayed Assignment ${index + 1}:`);
-                    console.log('Full resource object:', JSON.parse(JSON.stringify(assignment.resource)));
-                    console.log('Principal Name:', assignment.resource?.principal_details?.name || assignment.resource?.principal_id);
-                    console.log('Principal Email:', assignment.resource?.principal_details?.email || '-');
-                    console.log('Principal NetID:', assignment.resource?.principal_details?.onPremisesAccountName || '-');
-                    console.log('Principal Type:', assignment.resource?.principal_type);
-                    console.log('Principal Details Type:', assignment.resource?.principal_details?.type || 'N/A');
-                    console.log('Role:', assignment.resource?.role_definition?.display_name || assignment.resource?.role_definition_id);
-                    console.log('Scope:', assignment.resource?.scope);
-                    console.groupEnd();
-                });
-                console.groupEnd();
-
                 if (!this.globalFilter) {
                     return userAssignments;
                 }
@@ -1901,28 +1884,6 @@ export default defineComponent({
                         }
                     };
                 });
-
-                // Log all loaded role assignments for debugging
-                console.group('📋 Role Assignments Loaded');
-                console.log(`Total assignments loaded: ${this.roleAssignments.length}`);
-                this.roleAssignments.forEach((assignment, index) => {
-                    console.group(`Assignment ${index + 1}:`);
-                    console.log('Full assignment object:', JSON.parse(JSON.stringify(assignment)));
-                    console.log('Resource:', assignment.resource);
-                    console.log('Principal Type:', assignment.resource?.principal_type);
-                    console.log('Principal Details:', assignment.resource?.principal_details);
-                    console.log('Principal Details Type:', assignment.resource?.principal_details?.type || 'N/A');
-                    console.log('Principal Name:', assignment.resource?.principal_details?.name || assignment.resource?.principal_id);
-                    console.log('Principal Email:', assignment.resource?.principal_details?.email || 'N/A');
-                    console.log('Principal NetID:', assignment.resource?.principal_details?.onPremisesAccountName || 'N/A');
-                    console.log('Role Definition:', assignment.resource?.role_definition);
-                    console.log('Role Name:', assignment.resource?.role_definition?.display_name || assignment.resource?.role_definition_id);
-                    console.log('Scope:', assignment.resource?.scope);
-                    console.log('Has Principal Details:', !!assignment.resource?.principal_details);
-                    console.log('Is Principal Details User:', assignment.resource?.principal_details?.type === 'User');
-                    console.groupEnd();
-                });
-                console.groupEnd();
             } catch (e: any) {
                 this.roleAssignmentsError = e?.message || 'Failed to load role assignments.';
                 this.roleAssignments = [];
