@@ -107,6 +107,14 @@
 							>Knowledge Sources</NuxtLink
 						>
 					</li>
+					<li>
+						<NuxtLink
+							to="/knowledge-units"
+							:class="{ 'router-link-active': isRouteActive('/knowledge-units') }"
+							class="sidebar__item"
+							>Knowledge Units</NuxtLink
+						>
+					</li>
 				</ul>
 
 				<!-- Models and Endpoints -->
