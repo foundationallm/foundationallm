@@ -68,7 +68,7 @@ namespace FoundationaLLM.Core.Examples.Concepts.Plugins
                 {
                     {
                         PluginParameterNames.AZUREDATALAKE_DATASOURCE_FOLDERS,
-                        "testcontainer/documents"
+                        new List<string> { "testcontainer/documents" }
                     }
                 }
             }
