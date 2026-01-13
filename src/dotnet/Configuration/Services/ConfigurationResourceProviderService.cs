@@ -82,6 +82,12 @@ namespace FoundationaLLM.Configuration.Services
         /// <inheritdoc/>
         protected override string _name => ResourceProviderNames.FoundationaLLM_Configuration;
 
+        /// <summary>
+        /// Temporarily bypass authorization for the Configuration resource provider to allow
+        /// portal access during development. This should be removed in production.
+        /// </summary>
+        protected override bool BypassResourceAuthorization => true;
+
         /// <inheritdoc/>
         protected override async Task InitializeInternal() =>
             await Task.CompletedTask;

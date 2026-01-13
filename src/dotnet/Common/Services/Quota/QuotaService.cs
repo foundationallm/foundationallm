@@ -1,4 +1,5 @@
 ﻿using Azure.Messaging;
+using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Events;
 using FoundationaLLM.Common.Constants.Quota;
 using FoundationaLLM.Common.Exceptions;
@@ -10,6 +11,7 @@ using FoundationaLLM.Common.Models.Events;
 using FoundationaLLM.Common.Models.Orchestration.Request;
 using FoundationaLLM.Common.Models.Quota;
 using FoundationaLLM.Common.Services.Events;
+using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
 using System.Text;
 using System.Text.Json;
@@ -46,9 +48,13 @@ namespace FoundationaLLM.Common.Services.Quota
         private readonly IEventService _eventService;
         private readonly ILoggerFactory _loggerFactory;
         private readonly ILogger<QuotaService> _logger;
+        private readonly IAzureCosmosDBService? _cosmosDBService;
 
         private List<QuotaDefinition> _quotaDefinitions = [];
         private Dictionary<string, QuotaContextBase> _quotaContexts = [];
+        
+        // Track lockout state per partition to detect new lockouts
+        private readonly Dictionary<string, bool> _partitionLockoutState = [];
 
         private readonly object _distributedEnfocementQueueLock = new();
         private LocalEventService? _localEventService;
@@ -69,11 +75,13 @@ namespace FoundationaLLM.Common.Services.Quota
         /// <param name="storageService">The storage service used for storing quota configuration.</param>
         /// <param name="eventService">The <see cref="IEventService"/> providing event services to the quota service.</param>
         /// <param name="loggerFactory">The logger factory used to create loggers.</param>
+        /// <param name="cosmosDBService">Optional Cosmos DB service for persisting quota events.</param>
         public QuotaService(
             DependencyInjectionContainerSettings dependencyInjectionContainerSettings,
             IStorageService storageService,
             IEventService eventService,
-            ILoggerFactory loggerFactory)
+            ILoggerFactory loggerFactory,
+            IAzureCosmosDBService? cosmosDBService = null)
         {
             _dependencyInjectionContainerSettings = dependencyInjectionContainerSettings;
             _serviceIdentifier = $"{_dependencyInjectionContainerSettings.Id:D3}";
@@ -81,6 +89,7 @@ namespace FoundationaLLM.Common.Services.Quota
             _eventService = eventService;
             _loggerFactory = loggerFactory;
             _logger = _loggerFactory.CreateLogger<QuotaService>();
+            _cosmosDBService = cosmosDBService;
 
             // Kicks off the initialization on a separate thread and does not wait for it to complete.
             // The completion of the initialization process will be signaled by setting the _isInitialized property.
@@ -414,6 +423,39 @@ namespace FoundationaLLM.Common.Services.Quota
                     userIdentifier,
                     userPrincipalName);
 
+                // Track lockout state changes and persist events
+                var partitionKey = $"{quotaContext.Quota.Name}_{evaluationResult.QuotaMetricPartitionId}";
+                var wasLockedOut = _partitionLockoutState.GetValueOrDefault(partitionKey, false);
+                var isLockedOut = evaluationResult.QuotaExceeded;
+
+                if (isLockedOut && !wasLockedOut)
+                {
+                    // New lockout triggered - persist quota-exceeded event
+                    _partitionLockoutState[partitionKey] = true;
+                    _ = PersistQuotaEventAsync(
+                        "quota-exceeded",
+                        quotaContext.Quota,
+                        evaluationResult.QuotaMetricPartitionId,
+                        evaluationResult.TotalMetricCount,
+                        referenceTime);
+                }
+                else if (!isLockedOut && wasLockedOut)
+                {
+                    // Lockout expired - persist lockout-expired event
+                    _partitionLockoutState[partitionKey] = false;
+                    _ = PersistQuotaEventAsync(
+                        "lockout-expired",
+                        quotaContext.Quota,
+                        evaluationResult.QuotaMetricPartitionId,
+                        evaluationResult.TotalMetricCount,
+                        referenceTime);
+                }
+                else
+                {
+                    // Update state tracking
+                    _partitionLockoutState[partitionKey] = isLockedOut;
+                }
+
                 if (quotaContext.Quota.DistributedEnforcement)
                     RegisterForDistributedEnforcement(
                         referenceTime,
@@ -463,5 +505,339 @@ namespace FoundationaLLM.Common.Services.Quota
                     data.QuotaMetricPartitionId);
             }
         }
+
+        #region Quota Definition CRUD Operations
+
+        /// <inheritdoc/>
+        public async Task<List<QuotaDefinition>> GetQuotaDefinitionsAsync()
+        {
+            await EnsureInitialized();
+            return [.. _quotaDefinitions];
+        }
+
+        /// <inheritdoc/>
+        public async Task<QuotaDefinition?> GetQuotaDefinitionAsync(string name)
+        {
+            await EnsureInitialized();
+            return _quotaDefinitions.FirstOrDefault(qd => qd.Name == name);
+        }
+
+        /// <inheritdoc/>
+        public async Task<QuotaDefinition> UpsertQuotaDefinitionAsync(QuotaDefinition quotaDefinition)
+        {
+            await EnsureInitialized();
+
+            var existingIndex = _quotaDefinitions.FindIndex(qd => qd.Name == quotaDefinition.Name);
+            if (existingIndex >= 0)
+            {
+                _quotaDefinitions[existingIndex] = quotaDefinition;
+                _logger.LogInformation("[QuotaService {ServiceIdentifier}] Updated quota definition '{QuotaName}'.",
+                    _serviceIdentifier, quotaDefinition.Name);
+            }
+            else
+            {
+                _quotaDefinitions.Add(quotaDefinition);
+                _logger.LogInformation("[QuotaService {ServiceIdentifier}] Created quota definition '{QuotaName}'.",
+                    _serviceIdentifier, quotaDefinition.Name);
+            }
+
+            await SaveQuotaDefinitions();
+            await RebuildQuotaContexts();
+
+            return quotaDefinition;
+        }
+
+        /// <inheritdoc/>
+        public async Task DeleteQuotaDefinitionAsync(string name)
+        {
+            await EnsureInitialized();
+
+            var removed = _quotaDefinitions.RemoveAll(qd => qd.Name == name);
+            if (removed > 0)
+            {
+                _logger.LogInformation("[QuotaService {ServiceIdentifier}] Deleted quota definition '{QuotaName}'.",
+                    _serviceIdentifier, name);
+                await SaveQuotaDefinitions();
+                await RebuildQuotaContexts();
+            }
+            else
+            {
+                _logger.LogWarning("[QuotaService {ServiceIdentifier}] Quota definition '{QuotaName}' not found for deletion.",
+                    _serviceIdentifier, name);
+            }
+        }
+
+        private async Task SaveQuotaDefinitions()
+        {
+            await _storageService.WriteFileAsync(
+                STORAGE_CONTAINER_NAME,
+                QUOTA_STORE_FILE_PATH,
+                JsonSerializer.Serialize(_quotaDefinitions),
+                default,
+                default);
+        }
+
+        private async Task RebuildQuotaContexts()
+        {
+            _quotaContexts = _quotaDefinitions
+                .Select(qd => qd.MetricPartition switch
+                {
+                    QuotaMetricPartitionType.None => (new SinglePartitionQuotaContext(
+                        _serviceIdentifier, qd, _loggerFactory.CreateLogger<SinglePartitionQuotaContext>())) as QuotaContextBase,
+                    QuotaMetricPartitionType.UserIdentifier => (new UserIdentifierQuotaContext(
+                        _serviceIdentifier, qd, _loggerFactory.CreateLogger<UserIdentifierQuotaContext>())) as QuotaContextBase,
+                    QuotaMetricPartitionType.UserPrincipalName => (new UserPrincipalNameQuotaContext(
+                        _serviceIdentifier, qd, _loggerFactory.CreateLogger<UserPrincipalNameQuotaContext>())) as QuotaContextBase,
+                    _ => throw new QuotaException($"Unsupported metric partition: {qd.MetricPartition}")
+                })
+                .ToDictionary(qc => qc.Quota.Context);
+
+            _enabled = _quotaDefinitions.Count > 0;
+            await Task.CompletedTask;
+        }
+
+        private async Task EnsureInitialized()
+        {
+            if (!_isInitialized)
+            {
+                var result = await _initializationTaskCompletionSource.Task;
+                if (!result)
+                    throw new QuotaException("The quota service failed to initialize.");
+            }
+        }
+
+        #endregion
+
+        #region Quota Usage Metrics
+
+        /// <inheritdoc/>
+        public async Task<List<QuotaUsageMetrics>> GetQuotaUsageMetricsAsync()
+        {
+            await EnsureInitialized();
+            return GetCurrentMetrics();
+        }
+
+        /// <inheritdoc/>
+        public async Task<List<QuotaUsageMetrics>> GetQuotaUsageMetricsAsync(QuotaMetricsFilter filter)
+        {
+            await EnsureInitialized();
+            var metrics = GetCurrentMetrics();
+
+            if (!string.IsNullOrEmpty(filter.QuotaName))
+                metrics = metrics.Where(m => m.QuotaName == filter.QuotaName).ToList();
+
+            if (!string.IsNullOrEmpty(filter.PartitionId))
+                metrics = metrics.Where(m => m.PartitionId == filter.PartitionId).ToList();
+
+            return metrics;
+        }
+
+        /// <inheritdoc/>
+        public async Task<List<QuotaUsageHistory>> GetQuotaUsageHistoryAsync(
+            string quotaName,
+            DateTimeOffset startTime,
+            DateTimeOffset endTime)
+        {
+            await EnsureInitialized();
+
+            // For now, return empty history as we don't have historical storage yet
+            // This would need to be implemented with Cosmos DB or similar for production
+            _logger.LogInformation("[QuotaService {ServiceIdentifier}] Historical data requested for quota '{QuotaName}' from {StartTime} to {EndTime}. Historical storage not yet implemented.",
+                _serviceIdentifier, quotaName, startTime, endTime);
+
+            return [];
+        }
+
+        private List<QuotaUsageMetrics> GetCurrentMetrics()
+        {
+            var metrics = new List<QuotaUsageMetrics>();
+            var now = DateTimeOffset.UtcNow;
+
+            foreach (var kvp in _quotaContexts)
+            {
+                var quotaContext = kvp.Value;
+                var quota = quotaContext.Quota;
+                var partitionStates = quotaContext.GetPartitionStates();
+
+                foreach (var partitionState in partitionStates)
+                {
+                    var currentCount = partitionState.MetricValue;
+                    var utilizationPercentage = quota.MetricLimit > 0
+                        ? (double)currentCount / quota.MetricLimit * 100
+                        : 0;
+
+                    metrics.Add(new QuotaUsageMetrics
+                    {
+                        QuotaName = quota.Name,
+                        QuotaContext = quota.Context,
+                        PartitionId = partitionState.QuotaMetricPartitionId,
+                        CurrentCount = currentCount,
+                        Limit = quota.MetricLimit,
+                        UtilizationPercentage = Math.Round(utilizationPercentage, 2),
+                        LockoutActive = partitionState.IsLockedOut,
+                        LockoutRemainingSeconds = partitionState.LockoutRemainingSeconds,
+                        Timestamp = now
+                    });
+                }
+            }
+
+            return metrics;
+        }
+
+        #endregion
+
+        #region Quota Event Persistence
+
+        /// <summary>
+        /// Persists a quota event to Cosmos DB asynchronously (fire-and-forget).
+        /// </summary>
+        /// <param name="eventType">The type of event: "quota-exceeded" or "lockout-expired".</param>
+        /// <param name="quota">The quota definition.</param>
+        /// <param name="partitionId">The partition identifier.</param>
+        /// <param name="countAtEvent">The request count when the event occurred.</param>
+        /// <param name="timestamp">The timestamp when the event occurred.</param>
+        private async Task PersistQuotaEventAsync(
+            string eventType,
+            QuotaDefinition quota,
+            string partitionId,
+            int countAtEvent,
+            DateTimeOffset timestamp)
+        {
+            if (_cosmosDBService == null)
+                return; // Cosmos DB service not available, skip persistence
+
+            try
+            {
+                var eventId = $"{quota.Name}_{partitionId}_{timestamp:yyyyMMddHHmmssfff}_{eventType}";
+                var eventDoc = new QuotaEventDocument
+                {
+                    Id = eventId,
+                    Type = "quota-event",
+                    EventType = eventType,
+                    QuotaName = quota.Name,
+                    QuotaContext = quota.Context,
+                    PartitionId = partitionId,
+                    Limit = quota.MetricLimit,
+                    CountAtEvent = countAtEvent,
+                    LockoutDurationSeconds = quota.LockoutDurationSeconds,
+                    Timestamp = timestamp,
+                    Ttl = 2592000 // 30 days
+                };
+
+                // Fire-and-forget: don't await, don't block quota enforcement
+                _ = Task.Run(async () =>
+                {
+                    try
+                    {
+                        await _cosmosDBService.UpsertItemAsync(
+                            AzureCosmosDBContainers.QuotaEvents,
+                            quota.Name, // Partition key
+                            eventDoc,
+                            default);
+
+                        _logger.LogDebug("[QuotaService {ServiceIdentifier}] Persisted quota event: {EventType} for quota {QuotaName}, partition {PartitionId}",
+                            _serviceIdentifier,
+                            eventType,
+                            quota.Name,
+                            partitionId);
+                    }
+                    catch (Exception ex)
+                    {
+                        // Log but don't throw - event persistence failure shouldn't affect quota enforcement
+                        _logger.LogWarning(ex, "[QuotaService {ServiceIdentifier}] Failed to persist quota event: {EventType} for quota {QuotaName}, partition {PartitionId}",
+                            _serviceIdentifier,
+                            eventType,
+                            quota.Name,
+                            partitionId);
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                // Log but don't throw - event persistence failure shouldn't affect quota enforcement
+                _logger.LogWarning(ex, "[QuotaService {ServiceIdentifier}] Error creating quota event document: {EventType} for quota {QuotaName}, partition {PartitionId}",
+                    _serviceIdentifier,
+                    eventType,
+                    quota.Name,
+                    partitionId);
+            }
+        }
+
+        #endregion
+
+        #region Quota Event Queries
+
+        /// <inheritdoc/>
+        public async Task<List<QuotaEventDocument>> GetQuotaEventsAsync(QuotaEventFilter filter)
+        {
+            if (_cosmosDBService == null)
+            {
+                _logger.LogWarning("[QuotaService {ServiceIdentifier}] Cosmos DB service not available. Cannot retrieve quota events.",
+                    _serviceIdentifier);
+                return [];
+            }
+
+            try
+            {
+                return await _cosmosDBService.GetQuotaEventsAsync(filter);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "[QuotaService {ServiceIdentifier}] Failed to query quota events from Cosmos DB.",
+                    _serviceIdentifier);
+                return [];
+            }
+        }
+
+        /// <inheritdoc/>
+        public async Task<List<QuotaEventSummary>> GetQuotaEventSummaryAsync(
+            string? quotaName,
+            DateTimeOffset startTime,
+            DateTimeOffset endTime)
+        {
+            if (_cosmosDBService == null)
+            {
+                _logger.LogWarning("[QuotaService {ServiceIdentifier}] Cosmos DB service not available. Cannot retrieve quota event summary.",
+                    _serviceIdentifier);
+                return [];
+            }
+
+            try
+            {
+                // First, get all events in the time range
+                var filter = new QuotaEventFilter
+                {
+                    QuotaName = quotaName,
+                    StartTime = startTime,
+                    EndTime = endTime
+                };
+
+                var events = await GetQuotaEventsAsync(filter);
+
+                // Aggregate by quota
+                var summary = events
+                    .GroupBy(e => new { e.QuotaName, e.QuotaContext })
+                    .Select(g => new QuotaEventSummary
+                    {
+                        QuotaName = g.Key.QuotaName,
+                        QuotaContext = g.Key.QuotaContext,
+                        ExceededEventCount = g.Count(e => e.EventType == "quota-exceeded"),
+                        ExpiredEventCount = g.Count(e => e.EventType == "lockout-expired"),
+                        UniquePartitionsAffected = g.Select(e => e.PartitionId).Distinct().Count()
+                    })
+                    .ToList();
+
+                return summary;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "[QuotaService {ServiceIdentifier}] Failed to get quota event summary from Cosmos DB.",
+                    _serviceIdentifier);
+                return [];
+            }
+        }
+
+        #endregion
     }
 }
+

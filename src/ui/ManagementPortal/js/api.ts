@@ -27,6 +27,13 @@ import type {
 	UpdateAgentFileToolAssociationRequest,
 	Workflow,
 	AgentTool,
+	QuotaDefinition,
+	QuotaUsageMetrics,
+	QuotaUsageHistory,
+	QuotaEventDocument,
+	QuotaEventFilter,
+	QuotaEventSummary,
+	QuotaEventSummaryRequest,
 } from './types';
 import { convertToDataSource, convertToAppConfigKeyVault, convertToAppConfig } from '@/js/types';
 // import { isEmpty, upperFirst, camelCase } from 'lodash';
@@ -1139,5 +1146,108 @@ export default {
 				body: queryRequest,
 			},
 		);
-	}
+	},
+
+	/*
+		Quotas
+	*/
+	async getQuotas(): Promise<ResourceProviderGetResult<QuotaDefinition>[]> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Quota/quotaDefinitions?api-version=${this.apiVersion}`,
+		);
+	},
+
+	async getQuota(quotaName: string): Promise<ResourceProviderGetResult<QuotaDefinition>[]> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Quota/quotaDefinitions/${quotaName}?api-version=${this.apiVersion}`,
+		);
+	},
+
+	async createQuota(quota: QuotaDefinition): Promise<ResourceProviderUpsertResult> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Quota/quotaDefinitions/${quota.name}?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: quota,
+			},
+		);
+	},
+
+	async deleteQuota(quotaName: string): Promise<void> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Quota/quotaDefinitions/${quotaName}?api-version=${this.apiVersion}`,
+			{
+				method: 'DELETE',
+			},
+		);
+	},
+
+	async checkQuotaName(name: string): Promise<CheckNameResponse> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Quota/quotaDefinitions/checkname?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: { name },
+			},
+		);
+	},
+
+	async getQuotaMetrics(): Promise<QuotaUsageMetrics[]> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Quota/quotaMetrics?api-version=${this.apiVersion}`,
+		);
+	},
+
+	async getQuotaMetricsFiltered(filter: { quota_name?: string; partition_id?: string }): Promise<QuotaUsageMetrics[]> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Quota/quotaMetrics/filter?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: filter,
+			},
+		);
+	},
+
+	async getQuotaMetricsHistory(
+		quotaName: string,
+		startTime: string,
+		endTime: string
+	): Promise<QuotaUsageHistory[]> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Quota/quotaMetrics/history?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: {
+					quota_name: quotaName,
+					start_time: startTime,
+					end_time: endTime,
+				},
+			},
+		);
+	},
+
+	async getQuotaEvents(filter?: QuotaEventFilter): Promise<QuotaEventDocument[]> {
+		if (filter) {
+			return await this.fetch(
+				`/instances/${this.instanceId}/providers/FoundationaLLM.Quota/quotaEvents/filter?api-version=${this.apiVersion}`,
+				{
+					method: 'POST',
+					body: filter,
+				},
+			);
+		}
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Quota/quotaEvents?api-version=${this.apiVersion}`,
+		);
+	},
+
+	async getQuotaEventSummary(request: QuotaEventSummaryRequest): Promise<QuotaEventSummary[]> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Quota/quotaEvents/summary?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: request,
+			},
+		);
+	},
 };

@@ -49,5 +49,75 @@ namespace FoundationaLLM.Common.Interfaces
             string controllerName,
             UnifiedUserIdentity? userIdentity,
             CompletionRequest completionRequest);
+
+        /// <summary>
+        /// Gets all quota definitions.
+        /// </summary>
+        /// <returns>A list of all quota definitions.</returns>
+        Task<List<QuotaDefinition>> GetQuotaDefinitionsAsync();
+
+        /// <summary>
+        /// Gets a quota definition by name.
+        /// </summary>
+        /// <param name="name">The name of the quota definition to retrieve.</param>
+        /// <returns>The quota definition if found, null otherwise.</returns>
+        Task<QuotaDefinition?> GetQuotaDefinitionAsync(string name);
+
+        /// <summary>
+        /// Creates or updates a quota definition.
+        /// </summary>
+        /// <param name="quotaDefinition">The quota definition to create or update.</param>
+        /// <returns>The created or updated quota definition.</returns>
+        Task<QuotaDefinition> UpsertQuotaDefinitionAsync(QuotaDefinition quotaDefinition);
+
+        /// <summary>
+        /// Deletes a quota definition.
+        /// </summary>
+        /// <param name="name">The name of the quota definition to delete.</param>
+        Task DeleteQuotaDefinitionAsync(string name);
+
+        /// <summary>
+        /// Gets current usage metrics for all quotas.
+        /// </summary>
+        /// <returns>A list of current quota usage metrics.</returns>
+        Task<List<QuotaUsageMetrics>> GetQuotaUsageMetricsAsync();
+
+        /// <summary>
+        /// Gets usage metrics for quotas matching the filter criteria.
+        /// </summary>
+        /// <param name="filter">The filter criteria.</param>
+        /// <returns>A list of quota usage metrics matching the filter.</returns>
+        Task<List<QuotaUsageMetrics>> GetQuotaUsageMetricsAsync(QuotaMetricsFilter filter);
+
+        /// <summary>
+        /// Gets usage history for a specific quota.
+        /// </summary>
+        /// <param name="quotaName">The name of the quota.</param>
+        /// <param name="startTime">The start time for the history query.</param>
+        /// <param name="endTime">The end time for the history query.</param>
+        /// <returns>A list of historical usage data.</returns>
+        Task<List<QuotaUsageHistory>> GetQuotaUsageHistoryAsync(
+            string quotaName,
+            DateTimeOffset startTime,
+            DateTimeOffset endTime);
+
+        /// <summary>
+        /// Gets quota events matching the filter criteria.
+        /// </summary>
+        /// <param name="filter">The filter criteria for querying events.</param>
+        /// <returns>A list of quota events matching the filter.</returns>
+        Task<List<QuotaEventDocument>> GetQuotaEventsAsync(QuotaEventFilter filter);
+
+        /// <summary>
+        /// Gets a summary of quota events aggregated by quota.
+        /// </summary>
+        /// <param name="quotaName">Optional quota name to filter by. If null, returns summary for all quotas.</param>
+        /// <param name="startTime">The start time for the summary query.</param>
+        /// <param name="endTime">The end time for the summary query.</param>
+        /// <returns>A list of quota event summaries.</returns>
+        Task<List<QuotaEventSummary>> GetQuotaEventSummaryAsync(
+            string? quotaName,
+            DateTimeOffset startTime,
+            DateTimeOffset endTime);
     }
 }

@@ -89,6 +89,8 @@ namespace FoundationaLLM.Management.API
             builder.AddPluginResourceProvider();
             builder.AddVectorResourceProvider();
             builder.AddContextResourceProvider(proxyMode: true);
+            builder.AddQuotaService(); // Required by the Quota resource provider to access quota metrics (also registers quota storage)
+            builder.AddQuotaResourceProvider();
 
             builder.AddAzureCosmosDBService();
 

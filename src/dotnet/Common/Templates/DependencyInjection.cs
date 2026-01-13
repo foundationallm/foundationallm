@@ -380,6 +380,57 @@ namespace FoundationaLLM
         }
         
         /// <summary>
+        /// Add the named <see cref="IStorageService"/> implementation for the FoundationaLLM.Quota resource provider.
+        /// </summary>
+        /// <param name="builder">The application builder.</param>
+        public static void AddQuotaResourceProviderStorage(this IHostApplicationBuilder builder)
+        {
+            builder.Services.AddOptions<BlobStorageServiceSettings>(
+                DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Quota)
+                .Bind(builder.Configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_ResourceProviders_Quota_Storage));
+
+            builder.Services.AddSingleton<IStorageService, BlobStorageService>(sp =>
+            {
+                var settings = sp.GetRequiredService<IOptionsMonitor<BlobStorageServiceSettings>>()
+                    .Get(DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Quota);
+                var logger = sp.GetRequiredService<ILogger<BlobStorageService>>();
+
+                return new BlobStorageService(
+                    Options.Create<BlobStorageServiceSettings>(settings),
+                    logger)
+                {
+                    InstanceName = DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Quota
+                };
+            });
+        }
+
+        /// <summary>
+        /// Add the named <see cref="IStorageService"/> implementation for the FoundationaLLM.Quota resource provider.
+        /// </summary>
+        /// <param name="services">The <see cref="IServiceCollection"/> dependency injection container service collection.</param>
+        /// <param name="configuration">The <see cref="IConfiguration"/> application configuration provider.</param>
+        public static void AddQuotaResourceProviderStorage(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddOptions<BlobStorageServiceSettings>(
+                DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Quota)
+                .Bind(configuration.GetSection(AppConfigurationKeySections.FoundationaLLM_ResourceProviders_Quota_Storage));
+
+            services.AddSingleton<IStorageService, BlobStorageService>(sp =>
+            {
+                var settings = sp.GetRequiredService<IOptionsMonitor<BlobStorageServiceSettings>>()
+                    .Get(DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Quota);
+                var logger = sp.GetRequiredService<ILogger<BlobStorageService>>();
+
+                return new BlobStorageService(
+                    Options.Create<BlobStorageServiceSettings>(settings),
+                    logger)
+                {
+                    InstanceName = DependencyInjectionKeys.FoundationaLLM_ResourceProviders_Quota
+                };
+            });
+        }
+        
+        /// <summary>
         /// Add the named <see cref="IStorageService"/> implementation for the FoundationaLLM.DataPipeline resource provider.
         /// </summary>
         /// <param name="builder">The application builder.</param>

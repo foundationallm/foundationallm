@@ -251,6 +251,12 @@ module cosmosDb './shared/cosmosdb.bicep' = {
         defaultTtl: null
       }
       {
+        name: 'QuotaEvents'
+        partitionKeyPath: ['/quotaName']
+        maxThroughput: 1000
+        defaultTtl: 2592000 // 30 days
+      }
+      {
         name: 'Agents'
         partitionKeyPath: [
           '/instanceId'

@@ -244,6 +244,13 @@ function Initialize-CommonStorage {
             TTL = -1
         },
         @{
+            Name = "QuotaEvents"
+            HierarchicalPartitionKey = $false
+            PartitionKeyPath = "/quotaName"
+            MaxThroughput = 1000
+            TTL = 2592000  # 30 days
+        },
+        @{
             Name = "ExternalResources"
             HierarchicalPartitionKey = $false
             PartitionKeyPath = "/partitionKey"

@@ -59,5 +59,10 @@
         /// Stores objects managed by the FoundationaLLM.DataPipeline resource provider.
         /// </summary>
         public const string DataPipelines = "DataPipelines";
+
+        /// <summary>
+        /// Stores quota events (quota exceeded and lockout expired events).
+        /// </summary>
+        public const string QuotaEvents = "QuotaEvents";
     }
 }

@@ -698,3 +698,83 @@ export type APIEndpointConfiguration = ResourceBase & {
 	apiVersion?: string;
 	operationType?: string;
 };
+
+// Quota types
+export type QuotaType = 'RawRequestRateLimit' | 'AgentRequestRateLimit';
+
+export type QuotaMetricPartitionType = 'None' | 'UserPrincipalName' | 'UserIdentifier';
+
+export type QuotaDefinition = {
+	name: string;
+	description?: string;
+	context: string;
+	quota_type: QuotaType;
+	metric_partition: QuotaMetricPartitionType;
+	metric_limit: number;
+	metric_window_seconds: number;
+	lockout_duration_seconds: number;
+	distributed_enforcement: boolean;
+	object_id?: string;
+	display_name?: string;
+	created_by?: string;
+	created_on?: string;
+	updated_by?: string;
+	updated_on?: string;
+};
+
+export type QuotaUsageMetrics = {
+	quota_name: string;
+	quota_context: string;
+	partition_id: string;
+	current_count: number;
+	limit: number;
+	utilization_percentage: number;
+	lockout_active: boolean;
+	lockout_remaining_seconds: number;
+	timestamp: string;
+};
+
+export type QuotaEventDocument = {
+	id: string;
+	type: string;
+	event_type: 'quota-exceeded' | 'lockout-expired';
+	quota_name: string;
+	quota_context: string;
+	partition_id: string;
+	limit: number;
+	count_at_event: number;
+	lockout_duration_seconds: number;
+	timestamp: string;
+	ttl: number;
+};
+
+export type QuotaEventFilter = {
+	quota_name?: string;
+	partition_id?: string;
+	event_type?: string;
+	start_time?: string;
+	end_time?: string;
+};
+
+export type QuotaEventSummary = {
+	quota_name: string;
+	quota_context: string;
+	exceeded_event_count: number;
+	expired_event_count: number;
+	unique_partitions_affected: number;
+};
+
+export type QuotaEventSummaryRequest = {
+	quota_name?: string;
+	start_time: string;
+	end_time: string;
+};
+
+export type QuotaUsageHistory = {
+	quota_name: string;
+	partition_id: string;
+	time_bucket: string;
+	request_count: number;
+	exceeded_count: number;
+	lockout_count: number;
+};

@@ -20,6 +20,7 @@ import ToggleButton from 'primevue/togglebutton';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import FileUpload from 'primevue/fileupload';
+import Tag from 'primevue/tag';
 import Badge from 'primevue/badge';
 import BadgeDirective from 'primevue/badgedirective';
 import ProgressBar from 'primevue/progressbar';
@@ -57,6 +58,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 	nuxtApp.vueApp.component('DataTable', DataTable);
 	nuxtApp.vueApp.component('Column', Column);
 	nuxtApp.vueApp.component('FileUpload', FileUpload);
+	nuxtApp.vueApp.component('Tag', Tag);
 	nuxtApp.vueApp.component('Badge', Badge);
 	nuxtApp.vueApp.directive('badge', BadgeDirective);
 	nuxtApp.vueApp.component('ProgressBar', ProgressBar);

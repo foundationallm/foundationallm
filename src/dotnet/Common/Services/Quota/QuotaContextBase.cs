@@ -49,6 +49,35 @@ namespace FoundationaLLM.Common.Services.Quota
         public QuotaDefinition Quota => _quota;
 
         /// <summary>
+        /// Gets the current state of all metric partitions for reporting purposes.
+        /// </summary>
+        /// <returns>A list of <see cref="QuotaMetricPartitionDisplayState"/> instances.</returns>
+        public List<QuotaMetricPartitionDisplayState> GetPartitionStates()
+        {
+            lock (_syncRoot)
+            {
+                if (_metricPartitions.Count == 0)
+                {
+                    // Return a default partition state when no partitions exist yet
+                    return
+                    [
+                        new QuotaMetricPartitionDisplayState
+                        {
+                            QuotaMetricPartitionId = "__default__",
+                            MetricValue = 0,
+                            IsLockedOut = false,
+                            LockoutRemainingSeconds = 0
+                        }
+                    ];
+                }
+
+                return _metricPartitions.Values
+                    .Select(mp => mp.GetCurrentState())
+                    .ToList();
+            }
+        }
+
+        /// <summary>
         /// Gets the quota metric partition that corresponds to the specified user identifier and/or user principal name.
         /// </summary>
         /// <param name="userIdentifier">The user identifier used to get the quota metric partition</param>

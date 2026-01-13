@@ -6,6 +6,7 @@ using FoundationaLLM.Common.Models.Configuration.Users;
 using FoundationaLLM.Common.Models.Conversation;
 using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.Orchestration.Response;
+using FoundationaLLM.Common.Models.Quota;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles;
 using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
@@ -34,6 +35,7 @@ namespace FoundationaLLM.Common.Services.Azure
         private Container _externalResources;
         private Container _completionsCache;
         private Container _dataPipelines;
+        private Container _quotaEvents;
         private readonly Lazy<Task<Container>> _userProfiles;
         private Task<Container> _userProfilesTask => _userProfiles.Value;
         private readonly Database _database;
@@ -131,6 +133,16 @@ namespace FoundationaLLM.Common.Services.Azure
                 ?? throw new ArgumentException(
                     $"Unable to connect to existing Azure Cosmos DB container ({AzureCosmosDBContainers.DataPipelines}).");
 
+            // QuotaEvents container is optional - quota event persistence will be skipped if not available
+            try
+            {
+                _quotaEvents = database?.GetContainer(AzureCosmosDBContainers.QuotaEvents)!;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "QuotaEvents container not available. Quota event persistence will be disabled.");
+            }
+
             _containers[AzureCosmosDBContainers.Sessions] = _sessions;
             _containers[AzureCosmosDBContainers.UserSessions] = _userSessions;
             _containers[AzureCosmosDBContainers.Operations] = _operations;
@@ -138,6 +150,8 @@ namespace FoundationaLLM.Common.Services.Azure
             _containers[AzureCosmosDBContainers.ExternalResources] = _externalResources;
             _containers[AzureCosmosDBContainers.CompletionsCache] = _completionsCache;
             _containers[AzureCosmosDBContainers.DataPipelines] = _dataPipelines;
+            if (_quotaEvents != null)
+                _containers[AzureCosmosDBContainers.QuotaEvents] = _quotaEvents;
 
             _logger.LogInformation("Cosmos DB service initialized.");
         }
@@ -292,7 +306,13 @@ namespace FoundationaLLM.Common.Services.Azure
         /// <inheritdoc/>
         public async Task<T?> UpsertItemAsync<T>(string containerName, string partitionKey, T item, CancellationToken cancellationToken = default)
         {
-            var response = await _containers[containerName].UpsertItemAsync(
+            if (!_containers.TryGetValue(containerName, out var container))
+            {
+                _logger.LogWarning("Container {ContainerName} not available. Skipping upsert operation.", containerName);
+                return default;
+            }
+
+            var response = await container.UpsertItemAsync(
                 item: item,
                 partitionKey: new PartitionKey(partitionKey),
                 cancellationToken: cancellationToken
@@ -825,6 +845,85 @@ namespace FoundationaLLM.Common.Services.Azure
             }
 
             return null;
+        }
+
+        /// <inheritdoc/>
+        public async Task<List<QuotaEventDocument>> GetQuotaEventsAsync(QuotaEventFilter filter, CancellationToken cancellationToken = default)
+        {
+            if (_quotaEvents == null)
+            {
+                _logger.LogWarning("QuotaEvents container not available. Cannot retrieve quota events.");
+                return [];
+            }
+
+            var queryParts = new List<string> { "SELECT * FROM c WHERE c.type = 'quota-event'" };
+            var parameters = new Dictionary<string, object>();
+
+            if (!string.IsNullOrEmpty(filter.QuotaName))
+            {
+                // If no quota name specified, we need to query across all partitions
+                // This requires a cross-partition query
+            }
+            else
+            {
+                // Query within specific quota partition for efficiency
+            }
+
+            if (!string.IsNullOrEmpty(filter.QuotaName))
+            {
+                queryParts.Add("AND c.quota_name = @quotaName");
+                parameters["@quotaName"] = filter.QuotaName;
+            }
+
+            if (!string.IsNullOrEmpty(filter.PartitionId))
+            {
+                queryParts.Add("AND c.partition_id = @partitionId");
+                parameters["@partitionId"] = filter.PartitionId;
+            }
+
+            if (!string.IsNullOrEmpty(filter.EventType))
+            {
+                queryParts.Add("AND c.event_type = @eventType");
+                parameters["@eventType"] = filter.EventType;
+            }
+
+            if (filter.StartTime.HasValue)
+            {
+                queryParts.Add("AND c.timestamp >= @startTime");
+                parameters["@startTime"] = filter.StartTime.Value;
+            }
+
+            if (filter.EndTime.HasValue)
+            {
+                queryParts.Add("AND c.timestamp <= @endTime");
+                parameters["@endTime"] = filter.EndTime.Value;
+            }
+
+            queryParts.Add("ORDER BY c.timestamp DESC");
+
+            var queryText = string.Join(" ", queryParts);
+            var query = new QueryDefinition(queryText);
+            foreach (var param in parameters)
+            {
+                query.WithParameter(param.Key, param.Value);
+            }
+
+            QueryRequestOptions? requestOptions = null;
+            if (!string.IsNullOrEmpty(filter.QuotaName))
+            {
+                requestOptions = new QueryRequestOptions { PartitionKey = new PartitionKey(filter.QuotaName) };
+            }
+
+            var iterator = _quotaEvents.GetItemQueryIterator<QuotaEventDocument>(query, requestOptions: requestOptions);
+
+            var events = new List<QuotaEventDocument>();
+            while (iterator.HasMoreResults)
+            {
+                var response = await iterator.ReadNextAsync(cancellationToken);
+                events.AddRange(response);
+            }
+
+            return events;
         }
 
         private async Task EnsureContainerAvailability(string containerName)

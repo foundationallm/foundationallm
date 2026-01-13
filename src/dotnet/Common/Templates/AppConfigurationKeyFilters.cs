@@ -97,6 +97,12 @@ namespace FoundationaLLM.Common.Constants.Configuration
             "FoundationaLLM:ResourceProviders:DataPipeline:Storage:*";
         
         /// <summary>
+        /// Filter for the configuration section used to identify the storage settings for the FoundationaLLM.Quota resource provider.
+        /// </summary>
+        public const string FoundationaLLM_ResourceProviders_Quota_Storage =
+            "FoundationaLLM:ResourceProviders:Quota:Storage:*";
+        
+        /// <summary>
         /// Filter for the configuration section used to identify the storage settings for the FoundationaLLM.Plugin resource provider.
         /// </summary>
         public const string FoundationaLLM_ResourceProviders_Plugin_Storage =
