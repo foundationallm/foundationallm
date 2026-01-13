@@ -198,33 +198,10 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource
         /// <returns>An array of folder paths.</returns>
         private string[] GetFoldersFromParameters()
         {
-            if (!_pluginParameters.TryGetValue(PluginParameterNames.AZUREDATALAKE_DATASOURCE_FOLDERS, out var foldersParam))
-                throw new PluginException($"The {PluginParameterNames.AZUREDATALAKE_DATASOURCE_FOLDERS} parameter is required by the {Name} plugin.");
+            var foldersList = _pluginParameters[PluginParameterNames.AZUREDATALAKE_DATASOURCE_FOLDERS] as List<string>
+                ?? throw new PluginException($"The {PluginParameterNames.AZUREDATALAKE_DATASOURCE_FOLDERS} parameter is required by the {Name} plugin.");
 
-            // Handle array of strings
-            if (foldersParam is List<string> foldersList)
-                return foldersList.ToArray();
-
-            if (foldersParam is string[] foldersArray)
-                return foldersArray;
-
-            // Handle JSON array (JsonElement)
-            if (foldersParam is System.Text.Json.JsonElement jsonElement && jsonElement.ValueKind == System.Text.Json.JsonValueKind.Array)
-            {
-                var folders = new List<string>();
-                foreach (var element in jsonElement.EnumerateArray())
-                {
-                    if (element.ValueKind == System.Text.Json.JsonValueKind.String)
-                        folders.Add(element.GetString()!);
-                }
-                return folders.ToArray();
-            }
-
-            // Fallback: handle comma-separated string for backward compatibility
-            if (foldersParam is string foldersString)
-                return foldersString.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
-
-            throw new PluginException($"The {PluginParameterNames.AZUREDATALAKE_DATASOURCE_FOLDERS} parameter must be an array of strings.");
+            return foldersList.ToArray();
         }
 
         /// <summary>
