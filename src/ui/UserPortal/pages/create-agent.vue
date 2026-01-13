@@ -470,7 +470,7 @@
                                                 name="searchTabelInput1"
                                                 id="searchTabelInput1"
                                                 v-model="globalFilter"
-                                                placeholder="Search by principal name, email, role, or type..."
+                                                placeholder="Search by user name, email, NetID, or role..."
                                             />
 
                                             <Button aria-label="Search Users" severity="primary" icon="pi pi-search" class="min-h-[40px] min-w-[40px] w-auto absolute top-0 right-0 z-[2]"/>
@@ -506,7 +506,7 @@
                                             >
                                                 <Column
                                                     field="resource.principal_details.name"
-                                                    header="Principal Name"
+                                                    header="User"
                                                     :sortable="true"
                                                     style="min-width: 200px"
                                                 >
@@ -516,35 +516,24 @@
                                                 </Column>
 
                                                 <Column
-                                                    field="resource.principal_type"
-                                                    header="Principal Type"
-                                                    :sortable="true"
-                                                    style="min-width: 200px"
-                                                >
-                                                    <template #body="slotProps">
-                                                        {{ slotProps.data.resource.principal_type || '-' }}
-                                                    </template>
-                                                </Column>
-
-                                                <Column
-                                                    field="resource.principal_details.email"
-                                                    header="Principal Email"
-                                                    :sortable="false"
-                                                    style="min-width: 150px"
-                                                >
-                                                    <template #body="slotProps">
-                                                        {{ slotProps.data.resource.principal_details?.email || '-' }}
-                                                    </template>
-                                                </Column>
-
-                                                <Column
                                                     field="resource.principal_details.onPremisesAccountName"
-                                                    header="On-premises account"
+                                                    header="NetID"
                                                     :sortable="false"
                                                     style="min-width: 150px"
                                                 >
                                                     <template #body="slotProps">
                                                         {{ slotProps.data.resource.principal_details?.onPremisesAccountName || '-' }}
+                                                    </template>
+                                                </Column>
+
+                                                <Column
+                                                    field="resource.principal_details.email"
+                                                    header="Email"
+                                                    :sortable="false"
+                                                    style="min-width: 150px"
+                                                >
+                                                    <template #body="slotProps">
+                                                        {{ slotProps.data.resource.principal_details?.email || '-' }}
                                                     </template>
                                                 </Column>
 
@@ -561,61 +550,43 @@
                                                 </Column>
 
                                                 <Column
-                                                    field="resource.scope_name"
-                                                    header="Scope"
+                                                    header="Actions"
                                                     :sortable="false"
-                                                    style="min-width: 120px"
+                                                    style="min-width: 120px; text-align: center"
                                                 >
                                                     <template #body="slotProps">
-                                                        {{ slotProps.data.resource.scope_name || 'Direct Assignment' }}
-                                                    </template>
-                                                </Column>
-
-                                                <Column
-                                                    header="Edit"
-                                                    :sortable="false"
-                                                    style="min-width: 80px; text-align: center"
-                                                >
-                                                    <template #body="slotProps">
-                                                        <Button
-                                                            v-if="canEditRoleAssignment(slotProps.data)"
-                                                            icon="pi pi-pencil"
-                                                            class="p-button-text"
-                                                            @click="openEditRoleAssignmentModal(slotProps.data)"
-                                                            :aria-label="`Edit role assignment for ${slotProps.data.resource.principal_details?.name || slotProps.data.resource.principal_id}`"
-                                                        />
-                                                        <span
-                                                            v-else
-                                                            aria-disabled="true"
-                                                            style="opacity: 0.3; cursor: default;"
-                                                            :aria-label="`Edit not available for ${slotProps.data.resource.principal_details?.name || slotProps.data.resource.principal_id}`"
-                                                        >
-                                                            <i class="pi pi-pencil" style="font-size: 1.2rem" aria-hidden="true"></i>
-                                                        </span>
-                                                    </template>
-                                                </Column>
-
-                                                <Column
-                                                    header="Delete"
-                                                    :sortable="false"
-                                                    style="min-width: 80px; text-align: center"
-                                                >
-                                                    <template #body="slotProps">
-                                                        <Button
-                                                            v-if="canDeleteRoleAssignment(slotProps.data)"
-                                                            icon="pi pi-trash"
-                                                            class="p-button-text"
-                                                            @click="roleAssignmentToDelete = slotProps.data"
-                                                            :aria-label="`Delete role assignment for ${slotProps.data.resource.principal_details?.name || slotProps.data.resource.principal_id}`"
-                                                        />
-                                                        <span
-                                                            v-else
-                                                            aria-disabled="true"
-                                                            style="opacity: 0.3; cursor: default;"
-                                                            :aria-label="`Delete not available for ${slotProps.data.resource.principal_details?.name || slotProps.data.resource.principal_id}`"
-                                                        >
-                                                            <i class="pi pi-trash" style="font-size: 1.2rem" aria-hidden="true"></i>
-                                                        </span>
+                                                        <div class="flex justify-content-center gap-2">
+                                                            <Button
+                                                                v-if="canEditRoleAssignment(slotProps.data)"
+                                                                icon="pi pi-pencil"
+                                                                class="p-button-text"
+                                                                @click="openEditRoleAssignmentModal(slotProps.data)"
+                                                                :aria-label="`Edit role assignment for ${slotProps.data.resource.principal_details?.name || slotProps.data.resource.principal_id}`"
+                                                            />
+                                                            <span
+                                                                v-else
+                                                                aria-disabled="true"
+                                                                style="opacity: 0.3; cursor: default;"
+                                                                :aria-label="`Edit not available for ${slotProps.data.resource.principal_details?.name || slotProps.data.resource.principal_id}`"
+                                                            >
+                                                                <i class="pi pi-pencil" style="font-size: 1.2rem" aria-hidden="true"></i>
+                                                            </span>
+                                                            <Button
+                                                                v-if="canDeleteRoleAssignment(slotProps.data)"
+                                                                icon="pi pi-trash"
+                                                                class="p-button-text"
+                                                                @click="roleAssignmentToDelete = slotProps.data"
+                                                                :aria-label="`Delete role assignment for ${slotProps.data.resource.principal_details?.name || slotProps.data.resource.principal_id}`"
+                                                            />
+                                                            <span
+                                                                v-else
+                                                                aria-disabled="true"
+                                                                style="opacity: 0.3; cursor: default;"
+                                                                :aria-label="`Delete not available for ${slotProps.data.resource.principal_details?.name || slotProps.data.resource.principal_id}`"
+                                                            >
+                                                                <i class="pi pi-trash" style="font-size: 1.2rem" aria-hidden="true"></i>
+                                                            </span>
+                                                        </div>
                                                     </template>
                                                 </Column>
                                             </DataTable>
@@ -948,12 +919,42 @@ export default defineComponent({
 
         computed: {
             filteredRoleAssignments() {
+                // Filter to only show entries with Principal Type of 'User', Role being Reader/Contributor/Owner, 
+                // principal_details exists, and principal_details.type is 'User' (human users only)
+                const userAssignments = this.roleAssignments.filter(assignment => {
+                    const isUser = assignment.resource?.principal_type === 'User';
+                    const roleName = assignment.resource?.role_definition?.display_name || '';
+                    const isAllowedRole = ALLOWED_ROLE_NAMES.includes(roleName);
+                    // Filter out service accounts - check that principal_details exists and its type is 'User'
+                    const principalDetails = assignment.resource?.principal_details;
+                    const hasPrincipalDetails = !!principalDetails;
+                    const isPrincipalDetailsUser = principalDetails?.type === 'User';
+                    return isUser && isAllowedRole && hasPrincipalDetails && isPrincipalDetailsUser;
+                });
+
+                // Log filtered assignments being displayed in the table
+                console.group('✅ Filtered Role Assignments (Displayed in Table)');
+                console.log(`Total assignments displayed: ${userAssignments.length}`);
+                userAssignments.forEach((assignment, index) => {
+                    console.group(`Displayed Assignment ${index + 1}:`);
+                    console.log('Full resource object:', JSON.parse(JSON.stringify(assignment.resource)));
+                    console.log('Principal Name:', assignment.resource?.principal_details?.name || assignment.resource?.principal_id);
+                    console.log('Principal Email:', assignment.resource?.principal_details?.email || '-');
+                    console.log('Principal NetID:', assignment.resource?.principal_details?.onPremisesAccountName || '-');
+                    console.log('Principal Type:', assignment.resource?.principal_type);
+                    console.log('Principal Details Type:', assignment.resource?.principal_details?.type || 'N/A');
+                    console.log('Role:', assignment.resource?.role_definition?.display_name || assignment.resource?.role_definition_id);
+                    console.log('Scope:', assignment.resource?.scope);
+                    console.groupEnd();
+                });
+                console.groupEnd();
+
                 if (!this.globalFilter) {
-                    return this.roleAssignments;
+                    return userAssignments;
                 }
 
                 const filter = this.globalFilter.toLowerCase();
-                return this.roleAssignments.filter(assignment => {
+                return userAssignments.filter(assignment => {
                     const resource = assignment.resource || {};
 
                     // Search in basic fields
@@ -963,7 +964,7 @@ export default defineComponent({
                     // Search in principal details
                     const principalName = resource.principal_details?.name || '';
                     const principalEmail = resource.principal_details?.email || '';
-                    const principalType = resource.principal_type || '';
+                    const netId = resource.principal_details?.onPremisesAccountName || '';
 
                     // Search in role definition
                     const roleName = resource.role_definition?.display_name || '';
@@ -972,7 +973,7 @@ export default defineComponent({
                            displayName.toLowerCase().includes(filter) ||
                            principalName.toLowerCase().includes(filter) ||
                            principalEmail.toLowerCase().includes(filter) ||
-                           principalType.toLowerCase().includes(filter) ||
+                           netId.toLowerCase().includes(filter) ||
                            roleName.toLowerCase().includes(filter);
                 });
             },
@@ -1900,6 +1901,28 @@ export default defineComponent({
                         }
                     };
                 });
+
+                // Log all loaded role assignments for debugging
+                console.group('📋 Role Assignments Loaded');
+                console.log(`Total assignments loaded: ${this.roleAssignments.length}`);
+                this.roleAssignments.forEach((assignment, index) => {
+                    console.group(`Assignment ${index + 1}:`);
+                    console.log('Full assignment object:', JSON.parse(JSON.stringify(assignment)));
+                    console.log('Resource:', assignment.resource);
+                    console.log('Principal Type:', assignment.resource?.principal_type);
+                    console.log('Principal Details:', assignment.resource?.principal_details);
+                    console.log('Principal Details Type:', assignment.resource?.principal_details?.type || 'N/A');
+                    console.log('Principal Name:', assignment.resource?.principal_details?.name || assignment.resource?.principal_id);
+                    console.log('Principal Email:', assignment.resource?.principal_details?.email || 'N/A');
+                    console.log('Principal NetID:', assignment.resource?.principal_details?.onPremisesAccountName || 'N/A');
+                    console.log('Role Definition:', assignment.resource?.role_definition);
+                    console.log('Role Name:', assignment.resource?.role_definition?.display_name || assignment.resource?.role_definition_id);
+                    console.log('Scope:', assignment.resource?.scope);
+                    console.log('Has Principal Details:', !!assignment.resource?.principal_details);
+                    console.log('Is Principal Details User:', assignment.resource?.principal_details?.type === 'User');
+                    console.groupEnd();
+                });
+                console.groupEnd();
             } catch (e: any) {
                 this.roleAssignmentsError = e?.message || 'Failed to load role assignments.';
                 this.roleAssignments = [];
