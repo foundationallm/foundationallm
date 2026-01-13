@@ -1957,7 +1957,13 @@ export default defineComponent({
             this.userSearchLoading = true;
             try {
                 const results = await api.filterSecurityPrincipalsByName(this.newRoleAssignment.userSearch);
-                this.userSearchResults = Array.isArray(results) ? results : [];
+                // Filter to only show actual users (not service accounts, groups, or other types)
+                // Check that the type property indicates it's a User
+                this.userSearchResults = (Array.isArray(results) ? results : []).filter(principal => {
+                    // Filter by type property - should be exactly 'User' or end with '/User'
+                    const principalType = principal?.type || '';
+                    return principalType === 'User' || principalType.endsWith('/User');
+                });
             } catch (e) {
                 this.userSearchResults = [];
             } finally {
