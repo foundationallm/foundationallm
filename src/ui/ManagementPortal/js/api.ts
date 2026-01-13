@@ -1107,11 +1107,36 @@ export default {
 		);
 	},
 
+	async getKnowledgeUnits(): Promise<any> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Context/knowledgeUnits?api-version=${this.apiVersion}`,
+		);
+	},
+
 	async getKnowledgeUnit(
 		knowledgeUnitName: string
 	): Promise<any> {
 		return await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Context/knowledgeUnits/${knowledgeUnitName}?api-version=${this.apiVersion}`,
+		);
+	},
+
+	async createOrUpdateKnowledgeUnit(knowledgeUnitName: string, request: any): Promise<any> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Context/knowledgeUnits/${knowledgeUnitName}?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: request,
+			},
+		);
+	},
+
+	async deleteKnowledgeUnit(knowledgeUnitName: string): Promise<any> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Context/knowledgeUnits/${knowledgeUnitName}?api-version=${this.apiVersion}`,
+			{
+				method: 'DELETE',
+			},
 		);
 	},
 
