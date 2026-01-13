@@ -21,6 +21,7 @@ namespace FoundationaLLM.Common.Extensions
                 JsonValueKind.True => true,
                 JsonValueKind.False => false,
                 JsonValueKind.Null => null,
+                JsonValueKind.Array => GetArray(jsonElement),
                 _ => throw new NotSupportedException($"Unsupported JSON value kind: {jsonElement.ValueKind}")
             };
 
@@ -40,5 +41,8 @@ namespace FoundationaLLM.Common.Extensions
             }
             throw new NotSupportedException($"Unsupported JSON number kind: {jsonElement.ValueKind}");
         }
+
+        private static List<object?> GetArray(JsonElement jsonElement) =>
+            [.. jsonElement.EnumerateArray().Select(e => e.ToObject())];
     }
 }

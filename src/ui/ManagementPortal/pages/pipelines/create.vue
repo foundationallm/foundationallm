@@ -133,25 +133,28 @@
 						</div>
 						<div class="input-wrapper">
 							<div
-								v-for="(param, index) in selectedDataSourcePlugin?.parameters"
+								v-for="(param, index) in pipeline.data_source.plugin_parameters"
 								:key="index"
 								style="width: 100%"
 							>
-								<label>{{ param.name }}:</label>
+								<label>{{ param.parameter_metadata.name }}:</label>
+								<div class="parameter-description">
+									{{ param.parameter_metadata.description }}
+								</div>
 								<template
 									v-if="
-										param.type === 'string' ||
-										param.type === 'int' ||
-										param.type === 'float' ||
-										param.type === 'datetime'
+										param.parameter_metadata.type === 'string' ||
+										param.parameter_metadata.type === 'int' ||
+										param.parameter_metadata.type === 'float' ||
+										param.parameter_metadata.type === 'datetime'
 									"
 								>
 									<InputText v-model="param.default_value" style="width: 100%" />
 								</template>
-								<template v-else-if="param.type === 'bool'">
+								<template v-else-if="param.parameter_metadata.type === 'bool'">
 									<InputSwitch v-model="param.default_value" />
 								</template>
-								<template v-else-if="param.type === 'array'">
+								<template v-else-if="param.parameter_metadata.type === 'array'">
 									<Chips
 										v-model="param.default_value"
 										style="width: 100%"
@@ -159,10 +162,12 @@
 										separator=","
 									></Chips>
 								</template>
-								<template v-else-if="param.type === 'resource-object-id'">
+								<template v-else-if="param.parameter_metadata.type === 'resource-object-id'">
 									<Dropdown
 										v-model="param.default_value"
-										:options="param.parameter_metadata.parameter_selection_hints_options"
+										:options="
+											getDataSourceParameterOptions(param.parameter_metadata.name)
+										"
 										option-label="display_name"
 										option-value="value"
 										class="w-full"
@@ -648,14 +653,33 @@ export default {
 			async handler(newVal) {
 				if (newVal) {
 					this.pipeline.data_source.plugin_object_id = newVal.object_id;
-					this.pipeline.data_source.plugin_parameters = newVal.parameters.map((param: any) => ({
-						parameter_metadata: {
-							name: param.name,
-							type: param.type,
-							description: param.description,
-						},
-						default_value: param.default_value,
-					}));
+					
+					// Only initialize plugin parameters if they don't already exist
+					// (prevents overwriting existing values when editing a pipeline)
+					const existingParams = this.pipeline.data_source.plugin_parameters;
+					const hasExistingParams = existingParams && existingParams.length > 0 &&
+						existingParams.some((p: any) => p.parameter_metadata?.name);
+
+					if (!hasExistingParams) {
+						// Initialize plugin parameters with proper type conversion
+						this.pipeline.data_source.plugin_parameters = newVal.parameters.map((param: any) => ({
+							parameter_metadata: {
+								name: param.name,
+								type: param.type,
+								description: param.description,
+							},
+							default_value: this.convertParameterValue(param.default_value, param.type),
+						}));
+					} else {
+						// Ensure existing parameters have proper type conversion
+						this.pipeline.data_source.plugin_parameters = existingParams.map((param: any) => ({
+							...param,
+							default_value: this.convertParameterValue(
+								param.default_value,
+								param.parameter_metadata?.type
+							),
+						}));
+					}
 
 					// Avoid multiple API requests
 					const paramsToFetch = newVal.parameter_selection_hints
@@ -669,12 +693,9 @@ export default {
 						),
 					);
 
-					// Assign options efficiently
+					// Store options in a map for efficient lookup
 					resourceOptions.forEach(({ key, options }) => {
-						const param = this.selectedDataSourcePlugin.parameters.find((p) => p.name === key);
-						if (param) {
-							param.parameter_selection_hints_options = options;
-						}
+							this.resourceOptionsCache[`${key}-${newVal.object_id}`] = options;
 					});
 				}
 				this.buildTriggerParameters();
@@ -738,6 +759,8 @@ export default {
 				this.selectedDataSourcePlugin = this.dataSourcePluginOptions.find(
 					(plugin) => plugin.object_id === this.pipeline.data_source.plugin_object_id,
 				);
+
+				// Note: Data source parameter type conversion is handled by the selectedDataSourcePlugin watcher
 
 				await this.handleNextStages(this.pipeline.starting_stages);
 				this.buildTriggerParameters();
@@ -809,7 +832,7 @@ export default {
 				selectedPlugin.parameters.map(
 					(param) => ({
 						parameter_metadata: param,
-						default_value: null,
+						default_value: this.convertParameterValue(param.default_value, param.type),
 					}))
 				?? [];
 			this.selectedStagePlugins[stageIndex].plugin_dependencies = [{ plugin_object_id: null }];
@@ -954,8 +977,8 @@ export default {
 		async handleCancel() {
 			const confirmationStore = useConfirmationStore();
 			const confirmed = await confirmationStore.confirmAsync({
-				title: 'Cancel Pipeline Creation',
-				message: 'Are you sure you want to cancel?',
+				title: this.isEditing ? 'Cancel Pipeline Editing' : 'Cancel Pipeline Creation',
+				message: 'Are you sure you want to cancel? Any unsaved changes will be lost.',
 				confirmText: 'Yes',
 				cancelText: 'Cancel',
 				confirmButtonSeverity: 'danger',
@@ -996,14 +1019,44 @@ export default {
 		},
 
 		async handleCreatePipeline() {
+			// Deep clone and convert parameter types before saving
+			const convertPluginParameters = (params: any[]) => {
+				return params?.map((param) => ({
+					...param,
+					default_value: this.convertParameterValue(
+						param.default_value,
+						param.parameter_metadata.type
+					),
+				})) || [];
+			};
+
+			const convertStages = (stages: any[]): any[] => {
+				return stages.map((stage) => ({
+					...stage,
+					plugin_parameters: convertPluginParameters(stage.plugin_parameters),
+					plugin_dependencies: stage.plugin_dependencies?.map((dep: any) => ({
+						...dep,
+						plugin_parameters: convertPluginParameters(dep.plugin_parameters),
+					})) || [],
+					next_stages: stage.next_stages ? convertStages(stage.next_stages) : [],
+				}));
+			};
+
 			const pipeline = {
 				name: this.pipeline.name,
 				type: 'data-pipeline',
 				display_name: this.pipeline.display_name,
 				description: this.pipeline.description,
 				active: false,
-				data_source: this.pipeline.data_source,
-				starting_stages: this.pipeline.starting_stages,
+				data_source: {
+					...this.pipeline.data_source,
+					plugin_parameters: convertPluginParameters(this.pipeline.data_source.plugin_parameters),
+					plugin_dependencies: this.pipeline.data_source.plugin_dependencies?.map((dep: any) => ({
+						...dep,
+						plugin_parameters: convertPluginParameters(dep.plugin_parameters),
+					})) || [],
+				},
+				starting_stages: convertStages(this.pipeline.starting_stages),
 				triggers: this.pipeline.triggers,
 			};
 			try {
@@ -1035,12 +1088,33 @@ export default {
 
 		async handleNextStages(stages: any[], parentName: string | null = null) {
 			for (const stage of stages) {
+				// Convert parameter values to proper types when loading
+				const convertedPluginParameters = stage.plugin_parameters?.map((param: any) => ({
+					...param,
+					default_value: this.convertParameterValue(
+						param.default_value,
+						param.parameter_metadata.type
+					),
+				})) || [];
+
+				// Convert dependency parameter values
+				const convertedPluginDependencies = stage.plugin_dependencies?.map((dep: any) => ({
+					...dep,
+					plugin_parameters: dep.plugin_parameters?.map((param: any) => ({
+						...param,
+						default_value: this.convertParameterValue(
+							param.default_value,
+							param.parameter_metadata.type
+						),
+					})) || [],
+				})) || [];
+
 				this.selectedStagePlugins.push({
 					name: stage.name,
 					description: stage.description,
 					plugin_object_id: stage.plugin_object_id,
-					plugin_parameters: stage.plugin_parameters,
-					plugin_dependencies: stage.plugin_dependencies,
+					plugin_parameters: convertedPluginParameters,
+					plugin_dependencies: convertedPluginDependencies,
 					collapsed: true,
 					parentName,
 				});
@@ -1380,6 +1454,42 @@ export default {
 				this.previousTriggerNames[triggerIndex] = newName;
 			}
 		},
+
+		convertParameterValue(value: any, type: string): any {
+			if (value === null || value === undefined || value === '') {
+				return null;
+			}
+
+			switch (type) {
+				case 'int':
+					return typeof value === 'number' ? value : parseInt(value, 10) || null;
+				case 'float':
+					return typeof value === 'number' ? value : parseFloat(value) || null;
+				case 'bool':
+					if (typeof value === 'boolean') return value;
+					if (typeof value === 'string') {
+						return value.toLowerCase() === 'true';
+					}
+					return Boolean(value);
+				case 'array':
+					if (Array.isArray(value)) return value;
+					if (typeof value === 'string') {
+						return value.split(',').map(v => v.trim()).filter(v => v.length > 0);
+					}
+					return [];
+				case 'string':
+				case 'datetime':
+				case 'resource-object-id':
+				default:
+					return String(value);
+			}
+		},
+
+		getDataSourceParameterOptions(paramName: string): any[] {
+			if (!this.selectedDataSourcePlugin) return [];
+			const cacheKey = `${paramName}-${this.selectedDataSourcePlugin.object_id}`;
+			return this.resourceOptionsCache[cacheKey] || [];
+		},
 	},
 };
 </script>
@@ -1583,6 +1693,7 @@ input {
 	font-size: 12px;
 	color: #6b7280;
 	line-height: 1.4;
+	margin-bottom: 4px;
 }
 
 .trigger-item {

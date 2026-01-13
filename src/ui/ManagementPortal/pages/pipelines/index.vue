@@ -285,15 +285,47 @@
 					/>
 				</div>
 
-				<div v-for="(value, key) in selectedPipelineParameters" :key="key" class="form-group">
+				<div v-for="(param, key) in selectedPipelineParameters" :key="key" class="form-group">
 					<div style="margin-bottom: 1rem">
-						<label :for="key">{{ value.path }}</label>
-						<InputText
-							type="text"
-							:id="key"
-							v-model="selectedPipelineParameters[key].default_value"
-							class="w-full"
-						/>
+						<label :for="key">{{ param.path }}</label>
+						<div v-if="param.parameter_metadata?.description" style="font-size: 12px; color: #666; margin-bottom: 4px;">
+							{{ param.parameter_metadata.description }}
+						</div>
+						<template
+							v-if="
+								param.parameter_metadata?.type === 'string' ||
+								param.parameter_metadata?.type === 'int' ||
+								param.parameter_metadata?.type === 'float' ||
+								param.parameter_metadata?.type === 'datetime' ||
+								!param.parameter_metadata?.type
+							"
+						>
+							<InputText
+								:type="param.parameter_metadata?.type === 'int' || param.parameter_metadata?.type === 'float' ? 'number' : 'text'"
+								:id="key"
+								v-model="selectedPipelineParameters[key].default_value"
+								class="w-full"
+							/>
+						</template>
+						<template v-else-if="param.parameter_metadata?.type === 'bool'">
+							<InputSwitch v-model="selectedPipelineParameters[key].default_value" />
+						</template>
+						<template v-else-if="param.parameter_metadata?.type === 'array'">
+							<Chips
+								v-model="selectedPipelineParameters[key].default_value"
+								style="width: 100%"
+								placeholder="Enter values separated by commas"
+								separator=","
+							></Chips>
+						</template>
+						<template v-else-if="param.parameter_metadata?.type === 'resource-object-id'">
+							<InputText
+								type="text"
+								:id="key"
+								v-model="selectedPipelineParameters[key].default_value"
+								class="w-full"
+							/>
+						</template>
 					</div>
 				</div>
 
@@ -370,7 +402,15 @@ export default {
 		openTriggerPipeline(resource) {
 			this.selectedPipelineResource = resource;
 
-			this.selectedPipelineParameters = this.extractPluginParameters(resource);
+			// Extract and convert parameter values to proper types for the UI
+			const extractedParams = this.extractPluginParameters(resource);
+			this.selectedPipelineParameters = extractedParams.map(param => ({
+				...param,
+				default_value: this.convertParameterValue(
+					param.default_value, 
+					param.parameter_metadata?.type
+				)
+			}));
 			//console.log('extractPluginParameters result', JSON.parse(JSON.stringify(this.selectedPipelineParameters)));
 		},
 
@@ -423,10 +463,18 @@ export default {
 				return;
 			}
 
+			// Convert parameter values to proper types based on parameter_metadata.type
+			const convertedParameters = Object.fromEntries(
+				this.selectedPipelineParameters.map(x => [
+					x.path,
+					this.convertParameterValue(x.default_value, x.parameter_metadata?.type)
+				])
+			);
+
 			const payload = {
 				data_pipeline_object_id: this.selectedPipelineResource.object_id,
 				trigger_name: this.selectedPipelineResource.triggers[0].name,
-				trigger_parameter_values: Object.fromEntries(this.selectedPipelineParameters.map(x => [x.path, x.default_value])),
+				trigger_parameter_values: convertedParameters,
 				processor: this.selectedProcessor,
 			};
 
@@ -536,6 +584,36 @@ export default {
 			if (obj.name) return obj.name
 			if (obj.plugin_object_id) return obj.plugin_object_id.split('/').pop()?.split('-').pop()
 			return 'Undefined'
+		},
+
+		convertParameterValue(value: any, type: string): any {
+			if (value === null || value === undefined || value === '') {
+				return null;
+			}
+
+			switch (type) {
+				case 'int':
+					return typeof value === 'number' ? Math.floor(value) : parseInt(value, 10) || null;
+				case 'float':
+					return typeof value === 'number' ? value : parseFloat(value) || null;
+				case 'bool':
+					if (typeof value === 'boolean') return value;
+					if (typeof value === 'string') {
+						return value.toLowerCase() === 'true';
+					}
+					return Boolean(value);
+				case 'array':
+					if (Array.isArray(value)) return value;
+					if (typeof value === 'string') {
+						return value.split(',').map(v => v.trim()).filter(v => v.length > 0);
+					}
+					return [];
+				case 'string':
+				case 'datetime':
+				case 'resource-object-id':
+				default:
+					return String(value);
+			}
 		},
 
 		// async getPipeline(pipelineName: string) {
