@@ -77,11 +77,15 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource
                     foreach (var filePath in filePaths)
                     {
                         var fileName = Path.GetFileName(filePath);
+                        if (string.IsNullOrEmpty(fileName))
+                            continue;
+
                         var canonicalId = $"{containerName}/{filePath}";
+                        var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fileName);
 
                         contentItems.Add(new DataPipelineContentItem
                         {
-                            Id = $"content-item-{Path.GetFileNameWithoutExtension(fileName)}-{Guid.NewGuid().ToBase64String()}",
+                            Id = $"content-item-{fileNameWithoutExtension}-{Guid.NewGuid().ToBase64String()}",
                             DataSourceObjectId = _dataSourceObjectId,
                             ContentIdentifier = new ContentIdentifier
                             {
@@ -232,43 +236,54 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource
             var loggerFactory = _serviceProvider.GetRequiredService<ILoggerFactory>();
             var logger = loggerFactory.CreateLogger<DataLakeStorageService>();
 
-            // Determine authentication type based on available configuration keys
-            BlobStorageServiceSettings storageSettings;
+            var storageSettings = DetermineAuthenticationSettings(settings);
 
-            if (settings.ContainsKey("AccountName") && !settings.ContainsKey("AccountKey") && !settings.ContainsKey("ConnectionString"))
+            return new DataLakeStorageService(storageSettings, logger);
+        }
+
+        /// <summary>
+        /// Determines the authentication settings based on available configuration keys.
+        /// </summary>
+        /// <param name="settings">The configuration settings dictionary.</param>
+        /// <returns>Configured BlobStorageServiceSettings.</returns>
+        private static BlobStorageServiceSettings DetermineAuthenticationSettings(Dictionary<string, string> settings)
+        {
+            var hasAccountName = settings.ContainsKey("AccountName");
+            var hasAccountKey = settings.ContainsKey("AccountKey");
+            var hasConnectionString = settings.ContainsKey("ConnectionString");
+
+            if (hasConnectionString)
             {
-                // Azure Identity authentication
-                storageSettings = new BlobStorageServiceSettings
+                // Connection String authentication takes precedence
+                return new BlobStorageServiceSettings
                 {
-                    AuthenticationType = AuthenticationTypes.AzureIdentity,
-                    AccountName = settings["AccountName"]
+                    AuthenticationType = AuthenticationTypes.ConnectionString,
+                    ConnectionString = settings["ConnectionString"]
                 };
             }
-            else if (settings.ContainsKey("AccountName") && settings.ContainsKey("AccountKey"))
+
+            if (hasAccountName && hasAccountKey)
             {
                 // Account Key authentication
-                storageSettings = new BlobStorageServiceSettings
+                return new BlobStorageServiceSettings
                 {
                     AuthenticationType = AuthenticationTypes.AccountKey,
                     AccountName = settings["AccountName"],
                     AccountKey = settings["AccountKey"]
                 };
             }
-            else if (settings.ContainsKey("ConnectionString"))
+
+            if (hasAccountName)
             {
-                // Connection String authentication
-                storageSettings = new BlobStorageServiceSettings
+                // Azure Identity authentication
+                return new BlobStorageServiceSettings
                 {
-                    AuthenticationType = AuthenticationTypes.ConnectionString,
-                    ConnectionString = settings["ConnectionString"]
+                    AuthenticationType = AuthenticationTypes.AzureIdentity,
+                    AccountName = settings["AccountName"]
                 };
             }
-            else
-            {
-                throw new PluginException("Invalid Azure Data Lake configuration. Must provide either AccountName (for Azure Identity), AccountName and AccountKey, or ConnectionString.");
-            }
 
-            return new DataLakeStorageService(storageSettings, logger);
+            throw new PluginException("Invalid Azure Data Lake configuration. Must provide either AccountName (for Azure Identity), AccountName and AccountKey, or ConnectionString.");
         }
     }
 }

@@ -48,11 +48,12 @@ namespace FoundationaLLM.Core.Examples.Concepts.Plugins
 
             var contentItems = await dataSourcePlugin.GetContentItems();
 
+            Assert.NotEmpty(contentItems);
+            Assert.True(contentItems.Count > 0);
+
             var contentItemContent = await dataSourcePlugin.GetContentItemRawContent(
                 contentItems[0].ContentIdentifier);
 
-            Assert.NotEmpty(contentItems);
-            Assert.True(contentItems.Count > 0);
             Assert.NotNull(contentItemContent);
             Assert.NotNull(contentItemContent.Value);
             Assert.True(contentItemContent.Value.RawContent.ToArray().Length > 0);
