@@ -23,3 +23,8 @@ export function debounce<T extends (...args: any[]) => any>(func: T, wait: numbe
 export function isAgentReadonly(roles: string[] = []): boolean {
 	return roles.includes('Reader') && !roles.includes('Owner') && !roles.includes('Contributor');
 }
+
+// Returns true if the user has Owner or Contributor role (can edit the agent)
+export function canEditAgent(roles: string[] = []): boolean {
+	return roles.includes('Owner') || roles.includes('Contributor');
+}

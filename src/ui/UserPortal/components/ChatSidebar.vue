@@ -261,11 +261,10 @@
 											<i v-if="getAgents.enabled" class="pi pi-check"></i>
 										</div>
 									</td>
-									<td v-if="appConfigStore.agentSelfServiceFeatureEnabled">
+									<td v-if="appConfigStore.agentSelfServiceFeatureEnabled && userCanEditAgent(getAgents.roles || [])">
 										<Button
 											link
 											class="csm-table-edit-btn-1"
-											:disabled="getAgents.isReadonly"
 											:class="{'csm-table-edit-btn-strong': getAgents.enabled, 'csm-table-edit-btn-faded': !getAgents.enabled}"
 											@click="editAgent(getAgents)"
 										>
@@ -368,7 +367,7 @@
 
 <script lang="ts">
 import eventBus from '@/js/eventBus';
-import { isAgentExpired, isAgentReadonly } from '@/js/helpers';
+import { isAgentExpired, isAgentReadonly, canEditAgent } from '@/js/helpers';
 import type { AgentOption, Session } from '@/js/types';
 import '@/styles/loading.scss';
 import { hideAllPoppers } from 'floating-vue';
@@ -780,6 +779,7 @@ import { useAuthStore } from '@/stores/authStore';
 							description: agent.description,
 							enabled: isAgentSelected,
 							isReadonly: isAgentReadonly(ResourceProviderGetResult.roles || []),
+							roles: ResourceProviderGetResult.roles || [],
 							isFeatured: isFeaturedAgent, // Add featured flag for UI logic
 							isPinnedFeatured: isPinnedFeaturedAgent
 						};
@@ -921,6 +921,10 @@ import { useAuthStore } from '@/stores/authStore';
 					this.hasAgentsContributorRole = false;
 					this.hasPromptsContributorRole = false;
 				}
+			},
+
+			userCanEditAgent(roles: string[] = []): boolean {
+				return canEditAgent(roles);
 			},
 		},
 	};

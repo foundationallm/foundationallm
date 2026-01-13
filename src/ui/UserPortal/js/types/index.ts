@@ -200,6 +200,7 @@ export interface AgentOption {
 	isReadonly?: boolean;
 	isFeatured?: boolean;
 	isPinnedFeatured?: boolean;
+	roles?: string[];
 }
 
 export interface FileStoreConnector {
