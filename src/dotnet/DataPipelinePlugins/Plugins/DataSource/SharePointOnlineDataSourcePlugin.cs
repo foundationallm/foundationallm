@@ -58,10 +58,8 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource
         /// <inheritdoc/>
         public async Task<List<DataPipelineContentItem>> GetContentItems()
         {
-            var documentLibraryPathsList = _pluginParameters[PluginParameterNames.SHAREPOINTONLINE_DATASOURCE_DOCUMENTLIBRARIES]?.ToString()
+            var documentLibraryPathsList = _pluginParameters[PluginParameterNames.SHAREPOINTONLINE_DATASOURCE_DOCUMENTLIBRARIES] as List<string>
                 ?? throw new PluginException($"The {PluginParameterNames.SHAREPOINTONLINE_DATASOURCE_DOCUMENTLIBRARIES} parameter is required by the {Name} plugin.");
-
-            var documentLibraryPaths = documentLibraryPathsList.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
 
             var dataSourceBase = await _dataSourceResourceProvider!.GetResourceAsync<DataSourceBase>(
                 _dataSourceObjectId,
@@ -86,7 +84,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataSource
                 var pnpContextFactory = scope.ServiceProvider.GetRequiredService<IPnPContextFactory>();
 
                 using var context = await pnpContextFactory.CreateAsync("Default");
-                foreach (var documentLibraryPath in documentLibraryPaths)
+                foreach (var documentLibraryPath in documentLibraryPathsList)
                 {
                     var documentLibrary = await context.Web.Lists.GetByServerRelativeUrlAsync(
                         documentLibraryPath);

@@ -329,10 +329,12 @@
 					</div>
 				</div>
 
-				<div>
+				<div class="trigger-actions">
 					<Button
 						class="sidebar-dialog__button"
-						label="Trigger"
+						:label="triggering ? 'Triggering...' : 'Trigger'"
+						:loading="triggering"
+						:disabled="triggering"
 						text
 						@click="triggerPipeline"
 					/>
@@ -340,6 +342,7 @@
 						class="sidebar-dialog__button"
 						label="Close"
 						text
+						:disabled="triggering"
 						@click="closeTriggerPipeline"
 					/>
 				</div>
@@ -364,6 +367,7 @@ export default {
 			selectedPipelineResource: null,
 			selectedPipelineParameters: [],
 			loading: false as boolean,
+			triggering: false as boolean,
 			loadingStatusText: 'Retrieving data...' as string,
 			filters: {
 				global: { value: null, matchMode: 'contains' }
@@ -419,7 +423,7 @@ export default {
 			this.selectedPipelineParameters = [];
 		},
 
-		triggerPipeline() {
+		async triggerPipeline() {
 			let errorCount = 0;
 			if (!this.selectedPipelineResource) { 
 				this.$toast.add({
@@ -480,27 +484,24 @@ export default {
 
 			//console.log('Triggering pipeline with payload:', JSON.stringify(payload));
 
-			this.loading = true;
-			const existingLoadingStatusText = this.loadingStatusText;
-			this.loadingStatusText = 'Triggering pipeline...';
-			api.triggerPipeline(this.selectedPipelineResource.name, payload)
-				.then(() => {
-					this.$toast.add({
-						severity: 'success',
-						detail: `Pipeline ${this.selectedPipelineResource.name} triggered successfully.`,
-						life: 3000,
-					});
-					this.closeTriggerPipeline();
-				})
-				.catch(error => {
-					this.$toast.add({
-						severity: 'error',
-						detail: error?.response?._data || error,
-						life: 5000,
-					});
+			this.triggering = true;
+			try {
+				await api.triggerPipeline(this.selectedPipelineResource.name, payload);
+				this.$toast.add({
+					severity: 'success',
+					detail: `Pipeline ${this.selectedPipelineResource.name} triggered successfully.`,
+					life: 3000,
 				});
-			this.loading = false;
-			this.loadingStatusText = existingLoadingStatusText;
+				this.closeTriggerPipeline();
+			} catch (error) {
+				this.$toast.add({
+					severity: 'error',
+					detail: error?.response?._data || error,
+					life: 5000,
+				});
+			} finally {
+				this.triggering = false;
+			}
 		},
 
 		// extractPluginParameters(obj, results = []) {
