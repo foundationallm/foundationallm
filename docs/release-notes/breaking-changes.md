@@ -3,6 +3,65 @@
 > [!NOTE]
 > This section is for changes that are not yet released but will affect future releases.
 
+## Starting from 0.9.8
+
+### Configuration changes
+
+A new `FoundationaLLM:Analytics` configuration namespace has been added to support the FoundationaLLM Analytics service and abuse detection features.
+
+The following App Configuration values have been added:
+
+| Name | Default value | Description |
+| --- | --- | --- |
+| `FoundationaLLM:Analytics:Enabled` | `false` | The flag indicating whether analytics is enabled. |
+| `FoundationaLLM:Analytics:AnonymizationSalt` | N/A | Salt value used for anonymization. This value must be stored as a Key Vault secret. |
+| `FoundationaLLM:Analytics:LogAnalyticsWorkspaceId` | N/A | The identifier of the Log Analytics workspace. |
+| `FoundationaLLM:Analytics:LogAnalyticsSharedKey` | N/A | The shared key of the Log Analytics workspace. This value must be stored as a Key Vault secret. |
+| `FoundationaLLM:Analytics:CacheDurationMinutes` | `5` | The duration of caching in minutes. |
+| `FoundationaLLM:Analytics:RetentionDays` | `90` | The duration of retention in days. |
+| `FoundationaLLM:Analytics:EnableRealTimeUpdates` | `false` | The flag indicating whether real time updates are enabled. |
+| `FoundationaLLM:Analytics:AbuseDetection:Enabled` | `true` | Enable or disable the abuse detection subsystem (true/false). |
+| `FoundationaLLM:Analytics:AbuseDetection:HighRequestRateThreshold` | `100` | Number of requests within the monitored interval considered a high request rate and subject to mitigation. |
+| `FoundationaLLM:Analytics:AbuseDetection:ExtremeRequestRateThreshold` | `500` | Number of requests within the monitored interval considered an extreme request rate for aggressive throttling or blocking. |
+| `FoundationaLLM:Analytics:AbuseDetection:RapidFireThreshold` | `20` | Count of rapid consecutive requests from the same source that, when exceeded within the RapidFireWindowMinutes, indicate rapid-fire abuse. |
+| `FoundationaLLM:Analytics:AbuseDetection:RapidFireWindowMinutes` | `1` | Time window in minutes used to evaluate rapid-fire request behavior for the RapidFireThreshold. |
+| `FoundationaLLM:Analytics:AbuseDetection:ContinuousUsageHours` | `20` | Number of continuous hours of activity from a single user or client considered suspicious and subject to further checks. |
+| `FoundationaLLM:Analytics:AbuseDetection:AgentHoppingThreshold` | `10` | Number of distinct agents accessed within the AgentHoppingWindowMinutes that indicates agent-hopping abuse. |
+| `FoundationaLLM:Analytics:AbuseDetection:AgentHoppingWindowMinutes` | `60` | Time window in minutes used to evaluate agent-hopping behavior for the AgentHoppingThreshold. |
+| `FoundationaLLM:Analytics:AbuseDetection:FileUploadAbuseCount` | `50` | Maximum number of file uploads within the monitored period considered abusive and subject to rate limiting. |
+| `FoundationaLLM:Analytics:AbuseDetection:FileUploadAbuseSizeGB` | `1` | Total uploaded file size in gigabytes within the monitored period that, when exceeded, is considered abusive. |
+| `FoundationaLLM:Analytics:AbuseDetection:HighErrorRateThreshold` | `30` | Percentage (0-100) of error responses within the monitored interval considered a high error rate that may indicate abuse or system issues. |
+
+### Key Vault secrets
+
+The following Key Vault secrets must be added:
+
+- `foundationallm-analytics-anonymizationsalt` - Salt value used for anonymization in the analytics service.
+- `foundationallm-analytics-loganalytics-sharedkey` - The shared key of the Log Analytics workspace used by the analytics service.
+
+### API changes
+
+New analytics endpoints have been added to the Management API under the `/api/analytics` route:
+
+- `GET /api/analytics/overview` - Gets analytics overview for the platform
+- `GET /api/analytics/agents` - Gets analytics summary for all agents
+- `GET /api/analytics/agents/{agentName}` - Gets analytics summary for a specific agent
+- `GET /api/analytics/agents/{agentName}/tool-combinations` - Gets tool combinations used with an agent
+- `GET /api/analytics/agents/{agentName}/files` - Gets file analytics for an agent
+- `GET /api/analytics/tools` - Gets analytics summary for all tools
+- `GET /api/analytics/models` - Gets analytics summary for all models
+- `GET /api/analytics/users` - Gets analytics summary for all users
+- `GET /api/analytics/users/{username}` - Gets analytics summary for a specific user
+- `GET /api/analytics/users/{username}/timeline` - Gets activity timeline for a specific user
+- `GET /api/analytics/users/{username}/abuse-indicators` - Gets abuse indicators for a specific user
+- `GET /api/analytics/users/top` - Gets top users by specified criteria
+- `GET /api/analytics/anomalies` - Gets user anomalies detected by the abuse detection system
+- `GET /api/analytics/daily-active-user-counts` - Gets daily active user counts
+- `GET /api/analytics/daily-message-counts` - Gets daily message counts per agent
+- `GET /api/analytics/daily-user-counts` - Gets daily user counts per agent
+
+All analytics endpoints require authentication and appropriate authorization.
+
 ## Starting from 0.9.7
 
 ### Configuration changes
