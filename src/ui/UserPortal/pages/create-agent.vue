@@ -607,6 +607,7 @@
             header="Add New Role Assignment"
             :style="{ width: '30rem' }"
             :breakpoints="{ '1199px': '50vw', '575px': '90vw' }"
+            @hide="resetAddRoleAssignmentForm"
         >
             <!-- Add New Role Assignment Section -->
             <div class="mb-4">
@@ -1985,9 +1986,7 @@ export default defineComponent({
                 });
                 // Refresh the list and reset form
                 await this.loadRoleAssignments();
-                this.newRoleAssignment.selectedUser = null;
-                this.newRoleAssignment.selectedRole = null;
-                this.newRoleAssignment.setAsPrimaryOwner = false;
+                this.resetAddRoleAssignmentForm();
                 this.showAddRoleAssignmentModal = false;
                 return; // Exit early to avoid showing success message
                     }
@@ -2002,9 +2001,7 @@ export default defineComponent({
 
                 // Refresh the list and reset form
                 await this.loadRoleAssignments();
-                this.newRoleAssignment.selectedUser = null;
-                this.newRoleAssignment.selectedRole = null;
-                this.newRoleAssignment.setAsPrimaryOwner = false;
+                this.resetAddRoleAssignmentForm();
                 this.showAddRoleAssignmentModal = false;
             } catch (e: any) {
                 let errorMessage = 'Failed to add role assignment';
@@ -2074,7 +2071,19 @@ export default defineComponent({
         },
 
         closeAddModal() {
+            this.resetAddRoleAssignmentForm();
             this.showAddRoleAssignmentModal = false;
+        },
+
+        resetAddRoleAssignmentForm() {
+            if (this.newRoleAssignment) {
+                this.newRoleAssignment.userSearch = '';
+                this.newRoleAssignment.selectedRole = null;
+                this.newRoleAssignment.selectedUser = null;
+                this.newRoleAssignment.setAsPrimaryOwner = false;
+            }
+            this.userSearchResults = [];
+            this.userSearchLoading = false;
         },
 
         canEditRoleAssignment(assignment: any): boolean {
