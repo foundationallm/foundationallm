@@ -127,7 +127,13 @@
                                                 <i class="pi pi-times-circle text-red-500"></i>
                                             </span>
                                         </div>
-                                        <p class="text-xs text-[#898989]">(50 Characters)</p>
+                                        <div class="flex justify-between items-center text-xs mt-1">
+                                            <p class="text-[#898989]">({{ displayNameCharacterCount }} / 50 characters)</p>
+                                            <p v-if="displayNameStatus === 'error' && displayNameErrorMessage" 
+                                                class="text-red-500">
+                                                {{ displayNameErrorMessage }}
+                                            </p>
+                                        </div>
                                     </div>
 
                                     <div class="w-full max-w-full md:max-w-[50%] px-4 mb-6">
@@ -153,7 +159,7 @@
                                         <Textarea class="w-full resize-none" name="agentDescription"
                                             id="agentDescription" aria-labelledby="aria-description" rows="5"
                                             maxlength="150" v-model="agentDescription" />
-                                        <p class="text-xs text-[#898989]">(150 Characters)</p>
+                                        <p class="text-xs text-[#898989]">({{ descriptionCharacterCount }} / 150 characters)</p>
                                     </div>
 
                                     <div class="w-full max-w-full px-4 mb-6">
@@ -183,8 +189,7 @@
                                         />
 
                                         <p class="text-xs text-[#898989]">(<span class="charectersControl">{{
-                                            characterCount }}</span>
-                                            Characters)</p>
+                                            characterCount }}</span> / 180 characters)</p>
                                     </div>
                                 </div>
                             </div>
@@ -254,6 +259,7 @@
                                                 v-model="systemPrompt"
                                                 :readonly="!isEditMode"
                                             />
+                                            <p class="text-xs text-[#898989]">({{ systemPromptCharacterCount }} characters)</p>
                                             <Button
                                                 v-if="isEditMode"
                                                 label="Save System Prompt"
@@ -266,6 +272,8 @@
                                     </div>
 
                                     <div class="w-full max-w-full md:max-w-[50%] px-4 mb-6">
+                                        <!-- Image Generation section hidden for now - default value remains false -->
+                                        <!--
                                         <div class="flex flex-wrap items-center mt-8 max-w-[275px] m-auto">
                                             <div class="w-full max-w-[calc(100%-50px)] pr-4">
                                                 <p class="block text-base text-[#898989] my-0">
@@ -286,6 +294,7 @@
                                                     class="csm-input-switch-1" />
                                             </div>
                                         </div>
+                                        -->
 
                                         <div class="flex flex-wrap items-center mt-8 max-w-[275px] m-auto">
                                             <div class="w-full max-w-[calc(100%-50px)] pr-4">
@@ -337,12 +346,12 @@
                                         <div class="upload-content">
                                             <i class="pi pi-upload text-3xl text-[#94a3b8] mb-3 block"></i>
                                             <p class="text-lg text-[#64748b] font-normal mb-2">Drop and drag or <span
-                                                    class="text-[#5472d4] underline">choose file</span> to
+                                                    class="text-[#5472d4] underline">choose files</span> to
                                                 upload</p>
                                             <p class="text-sm text-[#94a3b8] font-medium italic">(Any file type)</p>
                                         </div>
                                         <input ref="fileInput" type="file" @change="onFileSelect"
-                                            class="hidden">
+                                            class="hidden" multiple>
                                     </div>
 
                                     <!-- Selected files preview list -->
@@ -470,7 +479,7 @@
                                                 name="searchTabelInput1"
                                                 id="searchTabelInput1"
                                                 v-model="globalFilter"
-                                                placeholder="Search by principal name, email, role, or type..."
+                                                placeholder="Search by user name, email, NetID, or role..."
                                             />
 
                                             <Button aria-label="Search Users" severity="primary" icon="pi pi-search" class="min-h-[40px] min-w-[40px] w-auto absolute top-0 right-0 z-[2]"/>
@@ -506,7 +515,7 @@
                                             >
                                                 <Column
                                                     field="resource.principal_details.name"
-                                                    header="Principal Name"
+                                                    header="User"
                                                     :sortable="true"
                                                     style="min-width: 200px"
                                                 >
@@ -516,35 +525,24 @@
                                                 </Column>
 
                                                 <Column
-                                                    field="resource.principal_type"
-                                                    header="Principal Type"
-                                                    :sortable="true"
-                                                    style="min-width: 200px"
-                                                >
-                                                    <template #body="slotProps">
-                                                        {{ slotProps.data.resource.principal_type || '-' }}
-                                                    </template>
-                                                </Column>
-
-                                                <Column
-                                                    field="resource.principal_details.email"
-                                                    header="Principal Email"
-                                                    :sortable="false"
-                                                    style="min-width: 150px"
-                                                >
-                                                    <template #body="slotProps">
-                                                        {{ slotProps.data.resource.principal_details?.email || '-' }}
-                                                    </template>
-                                                </Column>
-
-                                                <Column
                                                     field="resource.principal_details.onPremisesAccountName"
-                                                    header="On-premises account"
+                                                    header="NetID"
                                                     :sortable="false"
                                                     style="min-width: 150px"
                                                 >
                                                     <template #body="slotProps">
                                                         {{ slotProps.data.resource.principal_details?.onPremisesAccountName || '-' }}
+                                                    </template>
+                                                </Column>
+
+                                                <Column
+                                                    field="resource.principal_details.email"
+                                                    header="Email"
+                                                    :sortable="false"
+                                                    style="min-width: 150px"
+                                                >
+                                                    <template #body="slotProps">
+                                                        {{ slotProps.data.resource.principal_details?.email || '-' }}
                                                     </template>
                                                 </Column>
 
@@ -561,13 +559,43 @@
                                                 </Column>
 
                                                 <Column
-                                                    field="resource.scope_name"
-                                                    header="Scope"
+                                                    header="Actions"
                                                     :sortable="false"
-                                                    style="min-width: 120px"
+                                                    style="min-width: 120px; text-align: center"
                                                 >
                                                     <template #body="slotProps">
-                                                        {{ slotProps.data.resource.scope_name || 'Direct Assignment' }}
+                                                        <div class="flex justify-content-center gap-2">
+                                                            <Button
+                                                                v-if="canEditRoleAssignment(slotProps.data)"
+                                                                icon="pi pi-pencil"
+                                                                class="p-button-text"
+                                                                @click="openEditRoleAssignmentModal(slotProps.data)"
+                                                                :aria-label="`Edit role assignment for ${slotProps.data.resource.principal_details?.name || slotProps.data.resource.principal_id}`"
+                                                            />
+                                                            <span
+                                                                v-else
+                                                                aria-disabled="true"
+                                                                style="opacity: 0.3; cursor: default;"
+                                                                :aria-label="`Edit not available for ${slotProps.data.resource.principal_details?.name || slotProps.data.resource.principal_id}`"
+                                                            >
+                                                                <i class="pi pi-pencil" style="font-size: 1.2rem" aria-hidden="true"></i>
+                                                            </span>
+                                                            <Button
+                                                                v-if="canDeleteRoleAssignment(slotProps.data)"
+                                                                icon="pi pi-trash"
+                                                                class="p-button-text"
+                                                                @click="roleAssignmentToDelete = slotProps.data"
+                                                                :aria-label="`Delete role assignment for ${slotProps.data.resource.principal_details?.name || slotProps.data.resource.principal_id}`"
+                                                            />
+                                                            <span
+                                                                v-else
+                                                                aria-disabled="true"
+                                                                style="opacity: 0.3; cursor: default;"
+                                                                :aria-label="`Delete not available for ${slotProps.data.resource.principal_details?.name || slotProps.data.resource.principal_id}`"
+                                                            >
+                                                                <i class="pi pi-trash" style="font-size: 1.2rem" aria-hidden="true"></i>
+                                                            </span>
+                                                        </div>
                                                     </template>
                                                 </Column>
                                             </DataTable>
@@ -588,6 +616,7 @@
             header="Add New Role Assignment"
             :style="{ width: '30rem' }"
             :breakpoints="{ '1199px': '50vw', '575px': '90vw' }"
+            @hide="resetAddRoleAssignmentForm"
         >
             <!-- Add New Role Assignment Section -->
             <div class="mb-4">
@@ -705,6 +734,84 @@
             </template>
         </Dialog>
 
+        <!-- Edit Role Assignment Modal -->
+        <Dialog
+            v-model:visible="showEditRoleAssignmentModal"
+            modal
+            class="csm-roleDialog-modal-1"
+            header="Edit Role Assignment"
+            :style="{ width: '30rem' }"
+            :breakpoints="{ '1199px': '50vw', '575px': '90vw' }"
+        >
+            <div class="mb-4" v-if="roleAssignmentToEdit">
+                <!-- User Info Display (read-only) -->
+                <div class="mb-5 p-3 bg-gray-50 border border-gray-200 rounded-md">
+                    <label class="block text-sm font-medium text-[#898989] mb-2">
+                        User
+                    </label>
+                    <div class="text-sm text-[#334581]">
+                        {{ roleAssignmentToEdit.resource.principal_details?.name || roleAssignmentToEdit.resource.principal_id }}
+                        <span v-if="roleAssignmentToEdit.resource.principal_details?.email" class="ml-2 text-gray-500">
+                            ({{ roleAssignmentToEdit.resource.principal_details.email }})
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Role Selection -->
+                <div class="relative mb-5">
+                    <label for="editRoleSelect" class="block text-sm font-medium text-[#898989] mb-2">
+                        Select Role
+                    </label>
+                    <Dropdown
+                        id="editRoleSelect"
+                        v-model="editRoleAssignmentForm.selectedRole"
+                        :options="availableRoles"
+                        optionLabel="display_name"
+                        optionValue="object_id"
+                        placeholder="Select a role..."
+                        class="w-full"
+                        :loading="rolesLoading"
+                    />
+                </div>
+            </div>
+
+            <template #footer>
+                <div class="flex justify-between items-center w-full">
+                    <div class="w-full max-w-[50%]">
+                        <Button
+                            label="Cancel"
+                            class="w-full"
+                            @click="closeEditModal"
+                            text
+                        />
+                    </div>
+
+                    <div class="w-full max-w-[50%]">
+                        <Button
+                            label="Update Role Assignment"
+                            severity="primary"
+                            @click="editRoleAssignment"
+                            :disabled="!editRoleAssignmentForm.selectedRole || editingRoleAssignment"
+                            :loading="editingRoleAssignment"
+                            class="w-full"
+                        />
+                    </div>
+                </div>
+            </template>
+        </Dialog>
+
+        <!-- Delete Role Assignment Confirmation Dialog -->
+        <ConfirmationDialog
+            :visible="roleAssignmentToDelete !== null"
+            header="Delete Role Assignment"
+            :message="deleteConfirmationMessage"
+            confirmText="Yes"
+            cancelText="Cancel"
+            confirm-button-severity="danger"
+            @cancel="roleAssignmentToDelete = null"
+            @confirm="deleteRoleAssignment"
+        />
+
         <!-- Delete file confirmation dialog -->
     </main>
     </div>
@@ -723,6 +830,7 @@ import '@/styles/loading.scss';
 import mime from 'mime';
 import { defineComponent } from 'vue';
 import NavBarSettings from '~/components/NavBarSettings.vue';
+import ConfirmationDialog from '@/components/ConfirmationDialog.vue';
 
 import Checkbox from 'primevue/checkbox';
 import Column from 'primevue/column';
@@ -741,6 +849,7 @@ export default defineComponent({
         Column,
         Dropdown,
         Checkbox,
+        ConfirmationDialog,
     },
 
 
@@ -763,6 +872,7 @@ export default defineComponent({
                 agentFiles: [] as any[],
                 agentDisplayName: '',
                 displayNameStatus: '', // '', 'loading', 'success', 'error'
+                displayNameErrorMessage: '' as string,
                 displayNameDebouncedCheck: null as null | ((name: string) => void),
                 aiModels: [] as ResourceBase[],
                 selectedAIModel: null as string | null,
@@ -801,6 +911,16 @@ export default defineComponent({
                 addingRoleAssignment: false as boolean,
                 showAddRoleAssignmentModal: false as boolean,
 
+                // Edit/Delete role assignment state
+                roleAssignmentToEdit: null as any,
+                roleAssignmentToDelete: null as any,
+                showEditRoleAssignmentModal: false as boolean,
+                editingRoleAssignment: false as boolean,
+                deletingRoleAssignment: false as boolean,
+                editRoleAssignmentForm: {
+                    selectedRole: null as string | null,
+                },
+
                 // Loading states for edit mode
                 loadingAgentData: false as boolean,
                 agentLoadError: '' as string,
@@ -810,12 +930,25 @@ export default defineComponent({
 
         computed: {
             filteredRoleAssignments() {
+                // Filter to only show entries with Principal Type of 'User', Role being Reader/Contributor/Owner, 
+                // principal_details exists, and principal_details.type is 'User' (human users only)
+                const userAssignments = this.roleAssignments.filter(assignment => {
+                    const isUser = assignment.resource?.principal_type === 'User';
+                    const roleName = assignment.resource?.role_definition?.display_name || '';
+                    const isAllowedRole = ALLOWED_ROLE_NAMES.includes(roleName);
+                    // Filter out service accounts - check that principal_details exists and its type is 'User'
+                    const principalDetails = assignment.resource?.principal_details;
+                    const hasPrincipalDetails = !!principalDetails;
+                    const isPrincipalDetailsUser = principalDetails?.type === 'User';
+                    return isUser && isAllowedRole && hasPrincipalDetails && isPrincipalDetailsUser;
+                });
+
                 if (!this.globalFilter) {
-                    return this.roleAssignments;
+                    return userAssignments;
                 }
 
                 const filter = this.globalFilter.toLowerCase();
-                return this.roleAssignments.filter(assignment => {
+                return userAssignments.filter(assignment => {
                     const resource = assignment.resource || {};
 
                     // Search in basic fields
@@ -825,7 +958,7 @@ export default defineComponent({
                     // Search in principal details
                     const principalName = resource.principal_details?.name || '';
                     const principalEmail = resource.principal_details?.email || '';
-                    const principalType = resource.principal_type || '';
+                    const netId = resource.principal_details?.onPremisesAccountName || '';
 
                     // Search in role definition
                     const roleName = resource.role_definition?.display_name || '';
@@ -834,9 +967,19 @@ export default defineComponent({
                            displayName.toLowerCase().includes(filter) ||
                            principalName.toLowerCase().includes(filter) ||
                            principalEmail.toLowerCase().includes(filter) ||
-                           principalType.toLowerCase().includes(filter) ||
+                           netId.toLowerCase().includes(filter) ||
                            roleName.toLowerCase().includes(filter);
                 });
+            },
+
+            deleteConfirmationMessage() {
+                if (!this.roleAssignmentToDelete) {
+                    return '';
+                }
+                const principalName = this.roleAssignmentToDelete.resource.principal_details?.name || 
+                                     this.roleAssignmentToDelete.resource.principal_id || 
+                                     'this user';
+                return `Are you sure you want to delete the role assignment for "${principalName}"?`;
             },
 
             canAddRoleAssignment() {
@@ -927,6 +1070,18 @@ export default defineComponent({
                 }
                 // Active if no expiration date or expiration date hasn't passed yet
                 return 'Active';
+            },
+
+            displayNameCharacterCount() {
+                return (this.agentDisplayName || '').length;
+            },
+
+            descriptionCharacterCount() {
+                return (this.agentDescription || '').length;
+            },
+
+            systemPromptCharacterCount() {
+                return (this.systemPrompt || '').length;
             }
         },
 
@@ -982,7 +1137,7 @@ export default defineComponent({
                     // Load welcome message from properties
                     if (this.createdAgent.properties?.welcome_message) {
                         this.welcomeMessage = this.createdAgent.properties.welcome_message;
-                        this.characterCount = this.welcomeMessage.length;
+                        this.characterCount = this.getTextCharacterCount(this.welcomeMessage);
                     }
 
                     // Load expiration date
@@ -1038,9 +1193,11 @@ export default defineComponent({
             // Do not derive name and do not check name for an existing agent (edit mode)
             if (this.isEditMode) {
                 this.displayNameStatus = '';
+                this.displayNameErrorMessage = '';
                 return;
             }
             this.displayNameStatus = this.agentDisplayName ? 'loading' : '';
+            this.displayNameErrorMessage = '';
             if (this.displayNameDebouncedCheck) {
                 this.displayNameDebouncedCheck(this.agentDisplayName);
             }
@@ -1049,11 +1206,14 @@ export default defineComponent({
         async checkDisplayName(name: string) {
             if (!name) {
                 this.displayNameStatus = '';
+                this.displayNameErrorMessage = '';
                 return;
             }
 
-            if (!this.isValidDisplayName(name)) {
+            const errorMessage = this.getDisplayNameErrorMessage(name);
+            if (errorMessage) {
                 this.displayNameStatus = 'error';
+                this.displayNameErrorMessage = errorMessage;
                 return;
             }
 
@@ -1061,9 +1221,20 @@ export default defineComponent({
                 // Check the availability of the generated agent name, not the display name
                 const generatedAgentName = this.generateAgentName(name);
                 const res = await api.checkAgentNameAvailability(generatedAgentName);
-                this.displayNameStatus = (res.status === 'Allowed' && !res.exists && !res.deleted) ? 'success' : 'error';
+                if (res.status === 'Allowed' && !res.exists && !res.deleted) {
+                    this.displayNameStatus = 'success';
+                    this.displayNameErrorMessage = '';
+                } else {
+                    this.displayNameStatus = 'error';
+                    this.displayNameErrorMessage = res.exists 
+                        ? 'An agent with this name already exists.' 
+                        : res.deleted 
+                        ? 'This agent name was previously deleted and cannot be reused.'
+                        : 'This agent name is not available.';
+                }
             } catch (e) {
                 this.displayNameStatus = 'error';
+                this.displayNameErrorMessage = 'Unable to verify agent name availability. Please try again.';
             }
         },
 
@@ -1091,6 +1262,38 @@ export default defineComponent({
             }
 
             return true;
+        },
+
+        getDisplayNameErrorMessage(name: string): string {
+            if (!name || !name.trim()) {
+                return 'Display name is required.';
+            }
+
+            const trimmedName = name.trim();
+
+            // Check length
+            if (trimmedName.length < 2) {
+                return 'Display name must be at least 2 characters long.';
+            }
+            if (trimmedName.length > 50) {
+                return 'Display name must be no more than 50 characters long.';
+            }
+
+            // Check for valid characters (allow letters, numbers, spaces, hyphens, and common punctuation)
+            const validPattern = /^[a-zA-Z0-9\s\-.,!?()]+$/;
+            if (!validPattern.test(trimmedName)) {
+                return 'Display name can only contain letters, numbers, spaces, hyphens, and common punctuation (.,!?()).';
+            }
+
+            // Check that it doesn't start or end with special characters
+            if (/^[\s\-.,!?()]/.test(trimmedName)) {
+                return 'Display name cannot start with a space or special character.';
+            }
+            if (/[\s\-.,!?()]$/.test(trimmedName)) {
+                return 'Display name cannot end with a space or special character.';
+            }
+
+            return '';
         },
 
         async validateAgentNameAvailability(): Promise<boolean> {
@@ -1196,9 +1399,18 @@ export default defineComponent({
             return null;
         },
 
+        getTextCharacterCount(html: string): number {
+            if (!html) return 0;
+            // Create a temporary DOM element to extract text content
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = html;
+            const textContent = tempDiv.textContent || tempDiv.innerText || '';
+            return textContent.length;
+        },
+
         updateAgentWelcomeMessage(newContent: string) {
 			this.welcomeMessage = newContent;
-            this.characterCount = this.welcomeMessage.length;
+            this.characterCount = this.getTextCharacterCount(this.welcomeMessage);
 		},
 
 
@@ -1360,7 +1572,35 @@ export default defineComponent({
 
                 this.$toast.add({ severity: 'success', summary: 'Agent Updated', detail: 'Agent changes saved successfully.', life: 3000 });
             } catch (err: any) {
-                this.$toast.add({ severity: 'error', summary: 'Error', detail: err.message || 'Failed to update agent', life: 5000 });
+                // Improved error handling to show backend error details
+                console.error('Error updating agent:', err);
+                console.error('Error data:', err.data);
+                console.error('Error response:', err.response);
+                let errorMessage = 'Failed to update agent';
+                
+                // Check multiple error sources
+                if (err.data) {
+                    if (typeof err.data === 'string') {
+                        errorMessage = err.data;
+                    } else {
+                        errorMessage = err.data.message || err.data.title || err.data.detail || err.data.error || JSON.stringify(err.data);
+                    }
+                } else if (err.response?.data) {
+                    if (typeof err.response.data === 'string') {
+                        errorMessage = err.response.data;
+                    } else {
+                        errorMessage = err.response.data.message || err.response.data.title || err.response.data.detail || err.response.data.error || JSON.stringify(err.response.data);
+                    }
+                } else if (err.message) {
+                    errorMessage = err.message;
+                }
+                
+                this.$toast.add({ 
+                    severity: 'error', 
+                    summary: 'Error', 
+                    detail: errorMessage, 
+                    life: 8000 
+                });
             }
         },
 
@@ -1472,6 +1712,7 @@ export default defineComponent({
             let associationsFailed = 0;
             const uploadErrors: string[] = [];
             const associationErrors: string[] = [];
+            const processedFiles = new Set<File>(); // Track all processed files (successful or failed)
 
             for (const file of this.uploadedFiles) {
                 try {
@@ -1493,6 +1734,7 @@ export default defineComponent({
                         const errorMessage = uploadResult.error_message || 'Unknown upload error';
                         uploadErrors.push(`${errorMessage}`);
                         filesFailed++;
+                        processedFiles.add(file); // Mark file as processed (failed)
                         continue;
                     }
 
@@ -1519,8 +1761,10 @@ export default defineComponent({
                                 const errorMessage = associationResult.error_message || 'Unknown association error';
                                 associationErrors.push(`${file.name}: ${errorMessage}`);
                                 associationsFailed++;
+                                processedFiles.add(file); // Mark file as processed (association failed but upload succeeded)
                             } else {
                                 filesUploaded++;
+                                processedFiles.add(file); // Mark file as processed (successful)
                             }
                         } catch (associationError: any) {
                             console.error('File association error:', associationError);
@@ -1528,9 +1772,11 @@ export default defineComponent({
                             const errorMessage = associationError?.message || associationError?.error_message || 'Association failed';
                             associationErrors.push(`${file.name}: ${errorMessage}`);
                             associationsFailed++;
+                            processedFiles.add(file); // Mark file as processed (association failed but upload succeeded)
                         }
                     } else {
                         filesUploaded++;
+                        processedFiles.add(file); // Mark file as processed (successful)
                     }
 
                 } catch (error: any) {
@@ -1539,11 +1785,14 @@ export default defineComponent({
                     // Extract error message from the error object
                     const errorMessage = error?.message || error?.error_message || 'Upload failed';
                     uploadErrors.push(`${file.name}: ${errorMessage}`);
+                    processedFiles.add(file); // Mark file as processed (failed)
                 }
             }
 
+            // Remove all processed files (both successful and failed) from the upload queue
+            this.uploadedFiles = this.uploadedFiles.filter(file => !processedFiles.has(file));
+
             if (filesUploaded > 0) {
-                this.uploadedFiles = [];
                 await this.loadAgentFiles();
 
                 // Show appropriate success/error messages
@@ -1765,7 +2014,13 @@ export default defineComponent({
             this.userSearchLoading = true;
             try {
                 const results = await api.filterSecurityPrincipalsByName(this.newRoleAssignment.userSearch);
-                this.userSearchResults = Array.isArray(results) ? results : [];
+                // Filter to only show actual users (not service accounts, groups, or other types)
+                // Check that the type property indicates it's a User
+                this.userSearchResults = (Array.isArray(results) ? results : []).filter(principal => {
+                    // Filter by type property - should be exactly 'User' or end with '/User'
+                    const principalType = principal?.type || '';
+                    return principalType === 'User' || principalType.endsWith('/User');
+                });
             } catch (e) {
                 this.userSearchResults = [];
             } finally {
@@ -1818,13 +2073,17 @@ export default defineComponent({
                     } catch (ownerError: any) {
                         // Log the error but don't fail the entire operation
                         console.error('Failed to set primary owner:', ownerError);
-                        this.$toast.add({
-                            severity: 'warn',
-                            summary: 'Role Assignment Added',
-                            detail: `Role assignment added successfully, but failed to set as primary owner: ${ownerError.message || 'Unknown error'}`,
-                            life: 5000
-                        });
-                        return; // Exit early to avoid showing success message
+                this.$toast.add({
+                    severity: 'warn',
+                    summary: 'Role Assignment Added',
+                    detail: `Role assignment added successfully, but failed to set as primary owner: ${ownerError.message || 'Unknown error'}`,
+                    life: 5000
+                });
+                // Refresh the list and reset form
+                await this.loadRoleAssignments();
+                this.resetAddRoleAssignmentForm();
+                this.showAddRoleAssignmentModal = false;
+                return; // Exit early to avoid showing success message
                     }
                 }
 
@@ -1837,9 +2096,8 @@ export default defineComponent({
 
                 // Refresh the list and reset form
                 await this.loadRoleAssignments();
-                this.newRoleAssignment.selectedUser = null;
-                this.newRoleAssignment.selectedRole = null;
-                this.newRoleAssignment.setAsPrimaryOwner = false;
+                this.resetAddRoleAssignmentForm();
+                this.showAddRoleAssignmentModal = false;
             } catch (e: any) {
                 let errorMessage = 'Failed to add role assignment';
 
@@ -1908,7 +2166,187 @@ export default defineComponent({
         },
 
         closeAddModal() {
+            this.resetAddRoleAssignmentForm();
             this.showAddRoleAssignmentModal = false;
+        },
+
+        resetAddRoleAssignmentForm() {
+            if (this.newRoleAssignment) {
+                this.newRoleAssignment.userSearch = '';
+                this.newRoleAssignment.selectedRole = null;
+                this.newRoleAssignment.selectedUser = null;
+                this.newRoleAssignment.setAsPrimaryOwner = false;
+            }
+            this.userSearchResults = [];
+            this.userSearchLoading = false;
+        },
+
+        canEditRoleAssignment(assignment: any): boolean {
+            // Check if user has Owner role for the agent
+            // For now, we'll check if the user can manage role assignments
+            // This should be enhanced to check actual permissions
+            if (!assignment || !this.selectedAgentName) return false;
+            
+            // Check if current user has Owner role on this agent
+            // This is a simplified check - in production, you'd check the actual role assignments
+            // For now, we'll allow editing if the user is in edit mode (which implies they have permissions)
+            return this.isEditMode;
+        },
+
+        canDeleteRoleAssignment(assignment: any): boolean {
+            // Similar to canEditRoleAssignment
+            if (!assignment || !this.selectedAgentName) return false;
+            return this.isEditMode;
+        },
+
+        openEditRoleAssignmentModal(assignment: any) {
+            this.roleAssignmentToEdit = assignment;
+            this.editRoleAssignmentForm.selectedRole = assignment.resource.role_definition_id || assignment.resource.role_definition_id;
+            this.showEditRoleAssignmentModal = true;
+        },
+
+        closeEditModal() {
+            this.showEditRoleAssignmentModal = false;
+            this.roleAssignmentToEdit = null;
+            this.editRoleAssignmentForm.selectedRole = null;
+        },
+
+        async editRoleAssignment() {
+            if (!this.roleAssignmentToEdit || !this.selectedAgentName || !this.editRoleAssignmentForm.selectedRole) {
+                return;
+            }
+
+            // Check if role actually changed
+            const currentRoleId = this.roleAssignmentToEdit.resource.role_definition_id;
+            if (currentRoleId === this.editRoleAssignmentForm.selectedRole) {
+                this.closeEditModal();
+                return;
+            }
+
+            this.editingRoleAssignment = true;
+            try {
+                const assignment = this.roleAssignmentToEdit;
+                const oldRoleAssignmentName = assignment.resource.name;
+
+                // Delete the old role assignment
+                await api.deleteRoleAssignment(oldRoleAssignmentName);
+
+                // Create new role assignment with updated role
+                const scope = api.getAgentScope(this.selectedAgentName);
+                const roleAssignmentId = this.generateGuid();
+
+                const payload = {
+                    name: roleAssignmentId,
+                    description: assignment.resource.description || "",
+                    principal_id: assignment.resource.principal_id,
+                    role_definition_id: this.editRoleAssignmentForm.selectedRole,
+                    type: api.getRoleAssignmentType(),
+                    principal_type: assignment.resource.principal_type,
+                    scope: scope
+                };
+
+                await api.createRoleAssignment(payload);
+
+                this.$toast.add({
+                    severity: 'success',
+                    summary: 'Role Assignment Updated',
+                    detail: `Role assignment for ${assignment.resource.principal_details?.name || assignment.resource.principal_id} updated successfully.`,
+                    life: 3000
+                });
+
+                // Refresh the list
+                await this.loadRoleAssignments();
+                this.closeEditModal();
+            } catch (e: any) {
+                let errorMessage = 'Failed to update role assignment';
+
+                if (e.message?.includes('Access is not authorized') || e.message?.includes('403')) {
+                    errorMessage = 'You do not have permission to update role assignments. Please contact your administrator or use the Management Portal.';
+                } else if (e.message) {
+                    errorMessage = e.message;
+                }
+
+                this.$toast.add({
+                    severity: 'error',
+                    summary: 'Update Failed',
+                    detail: errorMessage,
+                    life: 8000
+                });
+            } finally {
+                this.editingRoleAssignment = false;
+            }
+        },
+
+        async deleteRoleAssignment() {
+            if (!this.roleAssignmentToDelete || !this.selectedAgentName) {
+                return;
+            }
+
+            // Store the assignment and close the dialog immediately
+            const assignment = this.roleAssignmentToDelete;
+            this.roleAssignmentToDelete = null;
+
+            this.deletingRoleAssignment = true;
+            try {
+                // Extract just the GUID from the name (in case it contains a full path)
+                // The name should be just the GUID, but we'll extract it to be safe
+                let roleAssignmentName = assignment.resource.name;
+                
+                // If name is not available, try to extract from object_id
+                if (!roleAssignmentName && assignment.resource.object_id) {
+                    // Extract GUID from object_id like /instances/.../roleAssignments/GUID
+                    const objectIdParts = assignment.resource.object_id.split('/');
+                    roleAssignmentName = objectIdParts[objectIdParts.length - 1];
+                }
+                
+                // If the name contains a path, extract just the last part (the GUID)
+                if (roleAssignmentName && roleAssignmentName.includes('/')) {
+                    roleAssignmentName = roleAssignmentName.split('/').pop() || roleAssignmentName;
+                }
+                
+                // Trim any whitespace
+                roleAssignmentName = roleAssignmentName?.trim();
+                
+                if (!roleAssignmentName) {
+                    throw new Error('Unable to determine role assignment name for deletion');
+                }
+
+                await api.deleteRoleAssignment(roleAssignmentName);
+
+                this.$toast.add({
+                    severity: 'success',
+                    summary: 'Role Assignment Deleted',
+                    detail: `Role assignment for ${assignment.resource.principal_details?.name || assignment.resource.principal_id} deleted successfully.`,
+                    life: 3000
+                });
+
+                // Refresh the list
+                await this.loadRoleAssignments();
+            } catch (e: any) {
+                let errorMessage = 'Failed to delete role assignment';
+
+                // Extract error message from various possible formats
+                if (e?.response?._data) {
+                    errorMessage = e.response._data;
+                } else if (e?.data?.message) {
+                    errorMessage = e.data.message;
+                } else if (e?.data) {
+                    errorMessage = typeof e.data === 'string' ? e.data : JSON.stringify(e.data);
+                } else if (e.message?.includes('Access is not authorized') || e.message?.includes('403')) {
+                    errorMessage = 'You do not have permission to delete role assignments. Please contact your administrator or use the Management Portal.';
+                } else if (e.message) {
+                    errorMessage = e.message;
+                }
+
+                this.$toast.add({
+                    severity: 'error',
+                    summary: 'Delete Failed',
+                    detail: errorMessage,
+                    life: 8000
+                });
+            } finally {
+                this.deletingRoleAssignment = false;
+            }
         },
     },
 });

@@ -150,10 +150,12 @@ export default {
 			if (error.data?.quota_exceeded) {
 				throw error;
 			}
-			// For other errors, format them
+			// Preserve full error data for better debugging
 			const formattedError = new Error(formatError(error));
 			(formattedError as any).status = error.status;
 			(formattedError as any).statusText = error.statusText;
+			(formattedError as any).data = error.data;
+			(formattedError as any).response = error.response;
 			throw formattedError;
 		}
 	},
@@ -623,10 +625,48 @@ export default {
 	 */
 	async updateAgent(agent: AgentBase): Promise<AgentBase> {
 		const url = `/management/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agent.name}`;
+		
+		// Create a clean copy without frontend-only properties
+		const agentCopy = { ...agent } as any;
+		delete agentCopy.isReadonly;
+		
+		// Clean up empty strings and invalid dates
+		// Convert empty strings to null for optional fields
+		if (agentCopy.expiration_date === '') {
+			agentCopy.expiration_date = null;
+		}
+		if (agentCopy.cost_center === '') {
+			agentCopy.cost_center = null;
+		}
+		
+		// Remove invalid created_on date (backend will set this)
+		if (agentCopy.created_on === '0001-01-01T00:00:00+00:00' || agentCopy.created_on === '0001-01-01T00:00:00Z') {
+			delete agentCopy.created_on;
+		}
+		
 		return await this.fetch<AgentBase>(url, {
 			method: 'POST',
-			body: agent,
+			body: agentCopy,
 		});
+	},
+
+	/**
+	 * Deletes an agent by name.
+	 * @param agentName The name of the agent to delete.
+	 * @returns A promise that resolves when the agent is deleted.
+	 */
+	async deleteAgent(agentName: string): Promise<void> {
+		try {
+			await this.fetch(
+				`/management/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentName}`,
+				{
+					method: 'DELETE',
+				}
+			);
+		} catch (error) {
+			console.error('Error deleting agent:', error);
+			throw error;
+		}
 	},
 
 	/**
@@ -1108,6 +1148,38 @@ export default {
 			return result;
 		} catch (error) {
 			console.error('Error creating role assignment:', error);
+			throw error;
+		}
+	},
+
+	/**
+	 * Deletes a role assignment.
+	 * @param roleAssignmentName - The name/ID of the role assignment to delete.
+	 * @returns Promise resolving to the deletion result.
+	 */
+	async deleteRoleAssignment(roleAssignmentName: string): Promise<any> {
+		try {
+			// Extract just the GUID from the name if it contains a path
+			let nameToUse = roleAssignmentName;
+			if (nameToUse.includes('/')) {
+				// Extract the last part (GUID) from a path like /instances/.../roleAssignments/GUID
+				const parts = nameToUse.split('/');
+				nameToUse = parts[parts.length - 1];
+			}
+			
+			// URL encode the name to handle any special characters
+			const encodedName = encodeURIComponent(nameToUse);
+			
+			// HTTP DELETE /management/instances/{instanceId}/providers/FoundationaLLM.Authorization/roleAssignments/{roleAssignmentName}
+			const result = await this.fetch(
+				`/management/instances/${this.instanceId}/providers/FoundationaLLM.Authorization/roleAssignments/${encodedName}`,
+				{
+					method: 'DELETE',
+				}
+			);
+			return result;
+		} catch (error) {
+			console.error('Error deleting role assignment:', error);
 			throw error;
 		}
 	},

@@ -141,6 +141,13 @@ namespace FoundationaLLM.Core.Services
                                 }
                             }
                         }
+                    },
+                    [ResourceProviderNames.FoundationaLLM_Authorization] = new Dictionary<string, ResourceTypeAvailability>(StringComparer.OrdinalIgnoreCase)
+                    {
+                        [AuthorizationResourceTypeNames.RoleAssignments] = new ResourceTypeAvailability
+                        {
+                            IsResourceTypeAvailable = true
+                        }
                     }
                 }
             };
