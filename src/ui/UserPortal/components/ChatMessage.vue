@@ -87,7 +87,7 @@
 						<ChatMessageContentBlock v-else-if="content.type !== 'file_path'" :value="content" />
 					</div>
 
-					<div v-for="artifact in message.contentArtifacts" :key="artifact.id">
+					<div v-for="(artifact, artifactIndex) in message.contentArtifacts" :key="`${artifact.id}-${artifactIndex}`">
 						<ChatMessageContentArtifactBlock v-if="artifact.type === 'image'" :value="artifact" />
 					</div>
 
@@ -126,8 +126,8 @@
 					<div v-if="message.contentArtifacts?.length" class="content-artifacts">
 						<span><b>Content Artifacts: </b></span>
 						<span
-							v-for="artifact in message.contentArtifacts"
-							:key="artifact.id"
+							v-for="(artifact, artifactIndex) in message.contentArtifacts"
+							:key="`${artifact.id}-${artifactIndex}`"
 							v-tooltip.top="{ content: 'Click to view content', showDelay: 500, hideDelay: 300 }"
 							class="content-artifact"
 							@click="selectedContentArtifact = artifact"

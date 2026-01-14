@@ -2,7 +2,7 @@
 
 import copy
 import json
-from typing import Optional, Tuple, Type
+from typing import List, Optional, Tuple, Type
 
 from pydantic import BaseModel
 
@@ -51,14 +51,14 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
 
     def _run(self,
             prompt: str,
-            file_name: Optional[str] = None,
+            file_names: Optional[List[str]],
             run_manager: Optional[CallbackManagerForToolRun] = None
             ) -> str:
         raise ToolException("This tool does not support synchronous execution. Please use the async version of the tool.")
 
     async def _arun(self,
             prompt: str,
-            file_name: Optional[str] = None,
+            file_names: Optional[List[str]],
             run_manager: Optional[AsyncCallbackManagerForToolRun] = None,
             runnable_config: RunnableConfig = None,
     ) -> Tuple[str, FoundationaLLMToolResult]:
@@ -90,6 +90,10 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
             if RunnableConfigKeys.ORIGINAL_USER_PROMPT_REWRITE in runnable_config['configurable'] \
             else None
         original_prompt = user_prompt_rewrite or user_prompt or prompt
+
+        file_name = None
+        if file_names and len(file_names) > 0:
+            file_name = file_names[0]
 
         # Prepare the knowledge source query request
         query_request = {
@@ -165,7 +169,7 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
             'prompt_tokens': str(input_tokens),
             'completion_tokens': str(output_tokens),
             'input_prompt': prompt,
-            'input_file_name': file_name
+            'input_file_names': ', '.join(file_names) if file_names else ''
         }
         content_artifacts.append(ContentArtifact(
             id = self.name,
