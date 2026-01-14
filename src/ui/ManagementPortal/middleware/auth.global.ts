@@ -119,6 +119,6 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 
 	// If user is not authenticated and trying to access protected pages, redirect to login
 	if (!isAuthenticated && to.name !== 'auth/login') {
-		return navigateTo({ name: 'auth/login', query: from.query });
+		return navigateTo({ name: 'auth/login', query: { redirect: to.fullPath } });
 	}
 });

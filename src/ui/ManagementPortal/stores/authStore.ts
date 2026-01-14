@@ -28,7 +28,7 @@ export const useAuthStore = defineStore('auth', {
 
 		currentAccount(): AccountInfo | null {
 			// Force reactivity by accessing trigger
-			this.accountUpdateTrigger;
+			void this.accountUpdateTrigger; // Intentional: triggers reactive updates when forceAccountUpdate() is called
 			const accountsArray = this.accounts;
 			
 			if (this.msalInstance) {
@@ -43,7 +43,7 @@ export const useAuthStore = defineStore('auth', {
 
 		isAuthenticated(): boolean {
 			const hasAccount = !!this.currentAccount && !this.isExpired;
-			this.accounts.length; // Force reactivity
+			void this.accounts.length; // Intentional: ensures reactivity when accounts array changes
 			return hasAccount;
 		},
 
