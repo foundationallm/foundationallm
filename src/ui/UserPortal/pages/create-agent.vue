@@ -266,6 +266,8 @@
                                     </div>
 
                                     <div class="w-full max-w-full md:max-w-[50%] px-4 mb-6">
+                                        <!-- Image Generation section hidden for now - default value remains false -->
+                                        <!--
                                         <div class="flex flex-wrap items-center mt-8 max-w-[275px] m-auto">
                                             <div class="w-full max-w-[calc(100%-50px)] pr-4">
                                                 <p class="block text-base text-[#898989] my-0">
@@ -286,6 +288,7 @@
                                                     class="csm-input-switch-1" />
                                             </div>
                                         </div>
+                                        -->
 
                                         <div class="flex flex-wrap items-center mt-8 max-w-[275px] m-auto">
                                             <div class="w-full max-w-[calc(100%-50px)] pr-4">
