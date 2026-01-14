@@ -100,7 +100,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 		await nextTick();
 
 		// Emit a global event to notify components
-		if (process.client && window) {
+		if (process.client) {
 			const authDetail = {
 				isAuthenticated: isAuthenticated,
 				currentAccount: authStore.currentAccount,
