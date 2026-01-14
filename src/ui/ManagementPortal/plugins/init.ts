@@ -24,6 +24,20 @@ export default defineNuxtPlugin(async (nuxtApp: any) => {
 	const authStore = await useAuthStore(nuxtApp.$pinia).init();
 	nuxtApp.provide('authStore', authStore);
 
+	if (authStore.isAuthenticated) {
+		try {
+			// After authentication is complete, load the full configuration
+			// This includes the app configuration set that replaces individual API calls
+			await appConfigStore.loadFullConfiguration();
+
+		} catch (error: any) {
+			console.warn('Failed to load app configuration set during init, will be loaded later:', error);
+			// Don't throw error here, let the app continue loading
+			// Configuration will be loaded when user authenticates
+			// If it's a 403 error, the error state will be preserved in the store
+		}
+	}
+
 	const appStore = useAppStore(nuxtApp.$pinia);
 	nuxtApp.provide('appStore', appStore);
 });

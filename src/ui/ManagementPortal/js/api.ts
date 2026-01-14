@@ -82,6 +82,16 @@ export default {
 		});
 	},
 
+	/**
+	 * Retrieves the ManagementPortal app configuration set from the management endpoint.
+	 * @returns A promise that resolves to the ManagementPortal app configuration set.
+	 */
+	async getManagementPortalAppConfigurationSet() {
+		return await this.fetch<ResourceProviderGetResult<any>[]>(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Configuration/appConfigurationSets/ManagementPortal`
+		);
+	},
+
 	/*
 		Data Sources
 	 */

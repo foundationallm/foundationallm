@@ -88,7 +88,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 
 	if (isAuthenticated) {
 		// Load full configuration after successful authentication
-		// Only load if we haven't loaded it yet (check if logoUrl and logoText are still null)
+		// Only load if we haven't loaded it yet.
 		if (!appConfigStore.isAppConfigurationSetLoaded) {
 			try {
 				await appConfigStore.loadConfigurationAfterAuth();
