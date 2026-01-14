@@ -7,10 +7,10 @@ import {
 
 export const useAuthStore = defineStore('auth', {
 	state: () => ({
-		msalInstance: null,
+		msalInstance: null as PublicClientApplication | null,
 		tokenExpirationTimerId: null as number | null,
 		isExpired: false,
-		apiToken: null,
+		apiToken: null as any,
 		// Reactive trigger to force updates when account changes
 		accountUpdateTrigger: 0,
 	}),
@@ -63,7 +63,6 @@ export const useAuthStore = defineStore('auth', {
 					clientId: this.authConfig.clientId,
 					authority: `${this.authConfig.instance}${this.authConfig.tenantId}`,
 					redirectUri: this.authConfig.callbackPath,
-					scopes: this.apiScopes,
 					// Must be registered as a SPA redirectURI on your app registration.
 					postLogoutRedirectUri: '/',
 				},

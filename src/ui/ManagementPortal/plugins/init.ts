@@ -7,9 +7,10 @@ import { useAppStore } from '@/stores/appStore';
 export default defineNuxtPlugin(async (nuxtApp: any) => {
 	
 	// Create a promise that resolves when authentication initialization is complete
-	let resolveAuthReady: () => void;
-	const authReadyPromise = new Promise<void>((resolve) =>
-		(resolveAuthReady = resolve));
+	let resolveAuthReady!: () => void;
+	const authReadyPromise = new Promise<void>((resolve) => {
+		resolveAuthReady = resolve;
+	});
 	nuxtApp.provide('authReady', authReadyPromise);
 
 	// Initialize and provide the appConfigStore and authStore
@@ -27,8 +28,12 @@ export default defineNuxtPlugin(async (nuxtApp: any) => {
 	const localApiUrl = config.public.LOCAL_API_URL;
 	const apiUrl = localApiUrl || appConfigStore.apiUrl;
 
-	api.setApiUrl(apiUrl);
-	api.setInstanceId(appConfigStore.instanceId);
+	if (apiUrl) {
+		api.setApiUrl(apiUrl);
+	}
+	if (appConfigStore.instanceId) {
+		api.setInstanceId(appConfigStore.instanceId);
+	}
 
 	const authStore = await useAuthStore(nuxtApp.$pinia).init();
 	nuxtApp.provide('authStore', authStore);
