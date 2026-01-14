@@ -127,7 +127,13 @@
                                                 <i class="pi pi-times-circle text-red-500"></i>
                                             </span>
                                         </div>
-                                        <p class="text-xs text-[#898989]">({{ displayNameCharacterCount }} / 50 characters)</p>
+                                        <div class="flex justify-between items-center text-xs mt-1">
+                                            <p class="text-[#898989]">({{ displayNameCharacterCount }} / 50 characters)</p>
+                                            <p v-if="displayNameStatus === 'error' && displayNameErrorMessage" 
+                                                class="text-red-500">
+                                                {{ displayNameErrorMessage }}
+                                            </p>
+                                        </div>
                                     </div>
 
                                     <div class="w-full max-w-full md:max-w-[50%] px-4 mb-6">
@@ -866,6 +872,7 @@ export default defineComponent({
                 agentFiles: [] as any[],
                 agentDisplayName: '',
                 displayNameStatus: '', // '', 'loading', 'success', 'error'
+                displayNameErrorMessage: '' as string,
                 displayNameDebouncedCheck: null as null | ((name: string) => void),
                 aiModels: [] as ResourceBase[],
                 selectedAIModel: null as string | null,
@@ -1186,9 +1193,11 @@ export default defineComponent({
             // Do not derive name and do not check name for an existing agent (edit mode)
             if (this.isEditMode) {
                 this.displayNameStatus = '';
+                this.displayNameErrorMessage = '';
                 return;
             }
             this.displayNameStatus = this.agentDisplayName ? 'loading' : '';
+            this.displayNameErrorMessage = '';
             if (this.displayNameDebouncedCheck) {
                 this.displayNameDebouncedCheck(this.agentDisplayName);
             }
@@ -1197,11 +1206,14 @@ export default defineComponent({
         async checkDisplayName(name: string) {
             if (!name) {
                 this.displayNameStatus = '';
+                this.displayNameErrorMessage = '';
                 return;
             }
 
-            if (!this.isValidDisplayName(name)) {
+            const errorMessage = this.getDisplayNameErrorMessage(name);
+            if (errorMessage) {
                 this.displayNameStatus = 'error';
+                this.displayNameErrorMessage = errorMessage;
                 return;
             }
 
@@ -1209,9 +1221,20 @@ export default defineComponent({
                 // Check the availability of the generated agent name, not the display name
                 const generatedAgentName = this.generateAgentName(name);
                 const res = await api.checkAgentNameAvailability(generatedAgentName);
-                this.displayNameStatus = (res.status === 'Allowed' && !res.exists && !res.deleted) ? 'success' : 'error';
+                if (res.status === 'Allowed' && !res.exists && !res.deleted) {
+                    this.displayNameStatus = 'success';
+                    this.displayNameErrorMessage = '';
+                } else {
+                    this.displayNameStatus = 'error';
+                    this.displayNameErrorMessage = res.exists 
+                        ? 'An agent with this name already exists.' 
+                        : res.deleted 
+                        ? 'This agent name was previously deleted and cannot be reused.'
+                        : 'This agent name is not available.';
+                }
             } catch (e) {
                 this.displayNameStatus = 'error';
+                this.displayNameErrorMessage = 'Unable to verify agent name availability. Please try again.';
             }
         },
 
@@ -1239,6 +1262,38 @@ export default defineComponent({
             }
 
             return true;
+        },
+
+        getDisplayNameErrorMessage(name: string): string {
+            if (!name || !name.trim()) {
+                return 'Display name is required.';
+            }
+
+            const trimmedName = name.trim();
+
+            // Check length
+            if (trimmedName.length < 2) {
+                return 'Display name must be at least 2 characters long.';
+            }
+            if (trimmedName.length > 50) {
+                return 'Display name must be no more than 50 characters long.';
+            }
+
+            // Check for valid characters (allow letters, numbers, spaces, hyphens, and common punctuation)
+            const validPattern = /^[a-zA-Z0-9\s\-.,!?()]+$/;
+            if (!validPattern.test(trimmedName)) {
+                return 'Display name can only contain letters, numbers, spaces, hyphens, and common punctuation (.,!?()).';
+            }
+
+            // Check that it doesn't start or end with special characters
+            if (/^[\s\-.,!?()]/.test(trimmedName)) {
+                return 'Display name cannot start with a space or special character.';
+            }
+            if (/[\s\-.,!?()]$/.test(trimmedName)) {
+                return 'Display name cannot end with a space or special character.';
+            }
+
+            return '';
         },
 
         async validateAgentNameAvailability(): Promise<boolean> {
