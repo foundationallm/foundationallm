@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import List, Optional
 
 from pydantic import BaseModel, Field
 
@@ -7,7 +7,7 @@ class FoundationaLLMKnowledgeToolInput(BaseModel):
     prompt: str = Field(
         description="The prompt to search for relevant documents and answer the question."
     )
-    file_name: Optional[str] = Field(
+    file_names: Optional[List[str]] = Field(
         default=None,
-        description="Optional file name of a document to be used for answering the question."
+        description="Optional list of file names of documents to be used for answering the question."
     )
