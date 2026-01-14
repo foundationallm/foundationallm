@@ -261,8 +261,9 @@
 											<i v-if="getAgents.enabled" class="pi pi-check"></i>
 										</div>
 									</td>
-									<td v-if="appConfigStore.agentSelfServiceFeatureEnabled && userCanEditAgent(getAgents.roles || [])">
+									<td v-if="appConfigStore.agentSelfServiceFeatureEnabled">
 										<Button
+											v-if="userCanEditAgent(getAgents.roles || [])"
 											link
 											class="csm-table-edit-btn-1"
 											:class="{'csm-table-edit-btn-strong': getAgents.enabled, 'csm-table-edit-btn-faded': !getAgents.enabled}"
