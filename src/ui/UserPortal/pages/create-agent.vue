@@ -1514,7 +1514,35 @@ export default defineComponent({
 
                 this.$toast.add({ severity: 'success', summary: 'Agent Updated', detail: 'Agent changes saved successfully.', life: 3000 });
             } catch (err: any) {
-                this.$toast.add({ severity: 'error', summary: 'Error', detail: err.message || 'Failed to update agent', life: 5000 });
+                // Improved error handling to show backend error details
+                console.error('Error updating agent:', err);
+                console.error('Error data:', err.data);
+                console.error('Error response:', err.response);
+                let errorMessage = 'Failed to update agent';
+                
+                // Check multiple error sources
+                if (err.data) {
+                    if (typeof err.data === 'string') {
+                        errorMessage = err.data;
+                    } else {
+                        errorMessage = err.data.message || err.data.title || err.data.detail || err.data.error || JSON.stringify(err.data);
+                    }
+                } else if (err.response?.data) {
+                    if (typeof err.response.data === 'string') {
+                        errorMessage = err.response.data;
+                    } else {
+                        errorMessage = err.response.data.message || err.response.data.title || err.response.data.detail || err.response.data.error || JSON.stringify(err.response.data);
+                    }
+                } else if (err.message) {
+                    errorMessage = err.message;
+                }
+                
+                this.$toast.add({ 
+                    severity: 'error', 
+                    summary: 'Error', 
+                    detail: errorMessage, 
+                    life: 8000 
+                });
             }
         },
 

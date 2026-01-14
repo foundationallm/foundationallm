@@ -150,10 +150,12 @@ export default {
 			if (error.data?.quota_exceeded) {
 				throw error;
 			}
-			// For other errors, format them
+			// Preserve full error data for better debugging
 			const formattedError = new Error(formatError(error));
 			(formattedError as any).status = error.status;
 			(formattedError as any).statusText = error.statusText;
+			(formattedError as any).data = error.data;
+			(formattedError as any).response = error.response;
 			throw formattedError;
 		}
 	},
@@ -623,9 +625,31 @@ export default {
 	 */
 	async updateAgent(agent: AgentBase): Promise<AgentBase> {
 		const url = `/management/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agent.name}`;
+		
+		// Create a clean copy without frontend-only properties
+		const agentCopy = { ...agent } as any;
+		delete agentCopy.isReadonly;
+		
+		// Clean up empty strings and invalid dates
+		// Convert empty strings to null for optional fields
+		if (agentCopy.expiration_date === '') {
+			agentCopy.expiration_date = null;
+		}
+		if (agentCopy.cost_center === '') {
+			agentCopy.cost_center = null;
+		}
+		
+		// Remove invalid created_on date (backend will set this)
+		if (agentCopy.created_on === '0001-01-01T00:00:00+00:00' || agentCopy.created_on === '0001-01-01T00:00:00Z') {
+			delete agentCopy.created_on;
+		}
+		
+		// Log the payload for debugging (remove in production if needed)
+		console.log('Updating agent with payload:', JSON.stringify(agentCopy, null, 2));
+		
 		return await this.fetch<AgentBase>(url, {
 			method: 'POST',
-			body: agent,
+			body: agentCopy,
 		});
 	},
 
