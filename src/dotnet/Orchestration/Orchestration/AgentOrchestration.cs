@@ -615,14 +615,6 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
         private async Task<CompletionResponse> GetCompletionResponse(string operationId, LLMCompletionResponse llmCompletionResponse)
         {
-            if (llmCompletionResponse.ContentArtifacts != null)
-            {
-                llmCompletionResponse.ContentArtifacts = llmCompletionResponse.ContentArtifacts
-                    .GroupBy(c => new { c.Title, c.Filepath })
-                    .Select(g => g.First())
-                    .ToArray();
-            }
-
             if(llmCompletionResponse.Errors!=null && llmCompletionResponse.Errors.Length>0)
             {
                 string errorString = string.Join(Environment.NewLine, llmCompletionResponse.Errors);
