@@ -1,7 +1,6 @@
 ﻿using FoundationaLLM.Common.Constants.Authorization;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Vector;
-using FoundationaLLM.Common.Models.Vectorization;
 
 namespace FoundationaLLM.Common.Constants.ResourceProviders
 {
@@ -27,6 +26,9 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                         new ResourceTypeAllowedTypes(HttpMethod.Delete.Method, AuthorizableOperations.Delete, [], [], [])
                     ],
                     Actions = [
+                        new ResourceTypeAction(ResourceProviderActions.CheckName, false, true, [
+                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, $"{AuthorizableOperations.Read}|{RoleDefinitionNames.Vector_Databases_Contributor}", [], [typeof(ResourceName)], [typeof(ResourceNameCheckResult)])
+                        ]),
                         new ResourceTypeAction(ResourceProviderActions.Purge, true, false, [
                             new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Delete, [], [], [typeof(ResourceProviderActionResult)])
                         ])

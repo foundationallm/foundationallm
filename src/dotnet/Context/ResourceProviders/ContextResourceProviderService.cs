@@ -7,7 +7,6 @@ using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Configuration.ResourceProviders;
-using FoundationaLLM.Common.Models.Context;
 using FoundationaLLM.Common.Models.Context.Knowledge;
 using FoundationaLLM.Common.Models.Knowledge;
 using FoundationaLLM.Common.Models.Orchestration;

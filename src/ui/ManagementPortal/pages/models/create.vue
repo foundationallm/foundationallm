@@ -198,20 +198,18 @@ export default {
 	async created() {
 		this.loading = true;
 		this.loadingStatusText = `Retrieving AI model endpoints...`;
-		const modelEndpoints = (await api.getAPIEndpointConfigurations()).map(
-			(endpoint) => endpoint.resource,
-		);
-		this.aiModelEndpointOptions = modelEndpoints.filter((resource) =>
-			['AIModel'].includes(resource.subcategory),
-		);
-		this.loading = false;
+		const modelEndpoints = await api.filterAPIEndpointConfigurations({
+			category: 'General',
+			subcategory: 'AIModel',
+		});
+		this.aiModelEndpointOptions = modelEndpoints.sort((a, b) => a.name.localeCompare(b.name));
 
 		if (this.editId) {
-			this.loading = true;
 			this.loadingStatusText = `Retrieving AI model "${this.editId}"...`;
 			this.aiModel = (await api.getAIModel(this.editId))[0].resource;
-			this.loading = false;
 		}
+
+		this.loading = false;
 
 		this.debouncedCheckName = debounce(this.checkName, 500);
 	},
@@ -241,7 +239,7 @@ export default {
 		async handleCancel() {
 			const confirmationStore = useConfirmationStore();
 			const confirmed = await confirmationStore.confirmAsync({
-				title: 'Cancel Model Creation',
+				title: this.editId ? 'Cancel Model Edit' : 'Cancel Model Creation',
 				message: 'Are you sure you want to cancel?',
 				confirmText: 'Yes',
 				cancelText: 'Cancel',

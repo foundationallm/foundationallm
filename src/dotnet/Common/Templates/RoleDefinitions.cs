@@ -228,8 +228,7 @@ namespace FoundationaLLM.Common.Models.Authorization
                                 Actions = [
                                     "FoundationaLLM.Configuration/apiEndpointConfigurations/read",
                                     "FoundationaLLM.AIModel/aiModels/read",
-                                    "FoundationaLLM.Plugin/plugins/read",
-                                    "FoundationaLLM.Vector/vectorDatabases/read",],
+                                    "FoundationaLLM.Plugin/plugins/read",],
                                 NotActions = [],
                                 DataActions = [],
                                 NotDataActions = [],
@@ -348,6 +347,56 @@ namespace FoundationaLLM.Common.Models.Authorization
                     }
                 },
                 {
+                    "/providers/FoundationaLLM.Authorization/roleDefinitions/8eec6664-9abf-4beb-84f7-18d9c2917c7f",
+                    new RoleDefinition
+                    {
+                        Name = "8eec6664-9abf-4beb-84f7-18d9c2917c7f",
+                        Type = "FoundationaLLM.Authorization/roleDefinitions",
+                        ObjectId = "/providers/FoundationaLLM.Authorization/roleDefinitions/8eec6664-9abf-4beb-84f7-18d9c2917c7f",
+                        DisplayName = "Knowledge Sources Contributor",
+                        Description = "Create new knowledge sources.",
+                        AssignableScopes = [
+                            "/",],
+                        Permissions = [                            
+                            new RoleDefinitionPermissions
+                            {
+                                Actions = [],
+                                NotActions = [],
+                                DataActions = [],
+                                NotDataActions = [],
+                            },],
+                        CreatedOn = DateTimeOffset.Parse("2026-01-10T00:00:00.0000000Z"),
+                        UpdatedOn = DateTimeOffset.Parse("2026-01-10T00:00:00.0000000Z"),
+                        CreatedBy = null,
+                        UpdatedBy = null
+                    }
+                },
+                {
+                    "/providers/FoundationaLLM.Authorization/roleDefinitions/5f38b653-e3b7-47a8-8fde-e70ea9e4fa91",
+                    new RoleDefinition
+                    {
+                        Name = "5f38b653-e3b7-47a8-8fde-e70ea9e4fa91",
+                        Type = "FoundationaLLM.Authorization/roleDefinitions",
+                        ObjectId = "/providers/FoundationaLLM.Authorization/roleDefinitions/5f38b653-e3b7-47a8-8fde-e70ea9e4fa91",
+                        DisplayName = "Knowledge Units Contributor",
+                        Description = "Create new knowledge units.",
+                        AssignableScopes = [
+                            "/",],
+                        Permissions = [                            
+                            new RoleDefinitionPermissions
+                            {
+                                Actions = [],
+                                NotActions = [],
+                                DataActions = [],
+                                NotDataActions = [],
+                            },],
+                        CreatedOn = DateTimeOffset.Parse("2026-01-10T00:00:00.0000000Z"),
+                        UpdatedOn = DateTimeOffset.Parse("2026-01-10T00:00:00.0000000Z"),
+                        CreatedBy = null,
+                        UpdatedBy = null
+                    }
+                },
+                {
                     "/providers/FoundationaLLM.Authorization/roleDefinitions/c026f070-abc2-4419-aed9-ec0676f81519",
                     new RoleDefinition
                     {
@@ -362,7 +411,6 @@ namespace FoundationaLLM.Common.Models.Authorization
                             new RoleDefinitionPermissions
                             {
                                 Actions = [
-                                    "FoundationaLLM.Vector/vectorDatabases/read",
                                     "FoundationaLLM.Configuration/apiEndpointConfigurations/read",],
                                 NotActions = [],
                                 DataActions = [],

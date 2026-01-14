@@ -19,24 +19,28 @@ export default {
 	data() {
 		return {
 			pageTitle: 'FoundationaLLM Management',
-			iconLink: this.$appConfigStore.favIconUrl || '/favicon.ico',
 		};
 	},
 
 	computed: {
+		iconLink() {
+			return this.$appConfigStore?.favIconUrl || '/favicon.ico';
+		},
 		style() {
+			const store = this.$appConfigStore;
+			if (!store) return {};
 			return {
-				'--primary-bg': this.$appConfigStore.primaryBg,
-				'--primary-color': this.$appConfigStore.primaryColor,
-				'--secondary-color': this.$appConfigStore.secondaryColor,
-				'--accent-color': this.$appConfigStore.accentColor,
-				'--primary-text': this.$appConfigStore.primaryText,
-				'--secondary-text': this.$appConfigStore.secondaryText,
-				'--accent-text': this.$appConfigStore.accentText,
-				'--primary-button-bg': this.$appConfigStore.primaryButtonBg,
-				'--primary-button-text': this.$appConfigStore.primaryButtonText,
-				'--secondary-button-bg': this.$appConfigStore.secondaryButtonBg,
-				'--secondary-button-text': this.$appConfigStore.secondaryButtonText,
+				'--primary-bg': store.primaryBg,
+				'--primary-color': store.primaryColor,
+				'--secondary-color': store.secondaryColor,
+				'--accent-color': store.accentColor,
+				'--primary-text': store.primaryText,
+				'--secondary-text': store.secondaryText,
+				'--accent-text': store.accentText,
+				'--primary-button-bg': store.primaryButtonBg,
+				'--primary-button-text': store.primaryButtonText,
+				'--secondary-button-bg': store.secondaryButtonBg,
+				'--secondary-button-text': store.secondaryButtonText,
 			};
 		},
 	},

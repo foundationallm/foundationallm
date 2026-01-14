@@ -24,6 +24,7 @@ import type {
 	// Role,
 	RoleAssignment,
 	APIEndpointConfiguration,
+	APIEndpointConfigurationFilter,
 	FileToolAssociation,
 	UpdateAgentFileToolAssociationRequest,
 	Workflow,
@@ -472,6 +473,18 @@ export default {
 		)) as ResourceProviderGetResult<APIEndpointConfiguration>[];
 
 		return data;
+	},
+
+	async filterAPIEndpointConfigurations(
+		filter: APIEndpointConfigurationFilter,
+	): Promise<ResourceProviderGetResult<APIEndpointConfiguration>[]> {
+		return (await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/filter?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: filter,
+			},
+		)) as ResourceProviderGetResult<APIEndpointConfiguration>[];
 	},
 
 	async getAPIEndpointConfiguration(
@@ -942,22 +955,6 @@ export default {
 		);
 	},
 
-	async getOrchestrationServices(): Promise<APIEndpointConfiguration> {
-		return (await this.fetch(
-			`/instances/${this.instanceId}/providers/FoundationaLLM.Configuration/apiEndpointConfigurations?api-version=${this.apiVersion}`,
-		)) as APIEndpointConfiguration;
-	},
-
-	async getExternalOrchestrationServices(
-		resolveApiKey: boolean = false,
-	): Promise<ResourceProviderGetResult<ExternalOrchestrationService>[]> {
-		const data = (await this.fetch(
-			`/instances/${this.instanceId}/providers/FoundationaLLM.Configuration/apiEndpointConfigurations?api-version=${this.apiVersion}`,
-		)) as ResourceProviderGetResult<ExternalOrchestrationService>[];
-
-		// Return the updated external orchestration services.
-		return data;
-	},
 
 	/*
 		Pipelines
@@ -1069,16 +1066,23 @@ export default {
 
 	async filterResources(resourcePath: string, filterActionPayload: any): Promise<any> {
 		if (filterActionPayload === null) {
-			filterActionPayload = {};
+			const data = await this.fetch(
+				`/instances/${this.instanceId}/${resourcePath}?api-version=${this.apiVersion}`,
+				{
+					method: 'GET'
+				},
+			);
+			return data;
+		} else {
+			const data = await this.fetch(
+				`/instances/${this.instanceId}/${resourcePath}/filter?api-version=${this.apiVersion}`,
+				{
+					method: 'POST',
+					body: JSON.stringify(filterActionPayload),
+				},
+			);
+			return data;
 		}
-		const data = await this.fetch(
-			`/instances/${this.instanceId}/${resourcePath}/filter?api-version=${this.apiVersion}`,
-			{
-				method: 'POST',
-				body: JSON.stringify(filterActionPayload),
-			},
-		);
-		return data;
 	},
 
 	/*
@@ -1093,9 +1097,10 @@ export default {
 	async getVectorDatabase(
 		vectorDatabaseName: string,
 	): Promise<ResourceProviderGetResult<VectorDatabase>> {
-		return await this.fetch(
+		const [data] = (await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Vector/vectorDatabases/${vectorDatabaseName}?api-version=${this.apiVersion}`,
-		);
+		)) as ResourceProviderGetResult<VectorDatabase>[];
+		return data;
 	},
 
 	async upsertVectorDatabase(request: VectorDatabase): Promise<ResourceProviderUpsertResult> {

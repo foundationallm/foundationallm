@@ -1267,7 +1267,6 @@ export default {
 			nameValidationStatus: null as string | null, // 'valid', 'invalid', or null
 			validationMessage: '' as string,
 
-			externalOrchestratorOptions: [] as ExternalOrchestrationService[],
 			aiModelOptions: [] as AIModel[],
 
 			workflowOptions: [] as Workflow[],
@@ -1297,19 +1296,7 @@ export default {
 				{
 					label: 'LangChain',
 					value: 'LangChain',
-				},
-				{
-					label: 'AzureOpenAIDirect',
-					value: 'AzureOpenAIDirect',
-				},
-				{
-					label: 'AzureAIDirect',
-					value: 'AzureAIDirect',
-				},
-				{
-					label: 'SemanticKernel',
-					value: 'SemanticKernel',
-				},
+				}
 			],
 
 			gatekeeperContentSafetyOptions: ref([
@@ -1414,15 +1401,6 @@ export default {
 
 		try {
 
-			this.loadingStatusText = 'Retrieving external orchestration services...';
-			const externalOrchestrationServicesResult = await api.getExternalOrchestrationServices();
-			this.externalOrchestratorOptions = externalOrchestrationServicesResult.map(
-				(result) => result.resource,
-			) as ExternalOrchestrationService[];
-			this.externalOrchestratorOptions = this.externalOrchestratorOptions.filter(
-				(service) => service.category === 'ExternalOrchestration',
-			);
-
 			this.loadingStatusText = 'Retrieving AI models...';
 			const aiModelsResult = await api.getAIModels();
 			this.aiModelOptions = aiModelsResult.map((result) => result.resource);
@@ -1451,14 +1429,6 @@ export default {
 				// },
 				...(await api.getAgentWorkflows()).map((workflow) => workflow.resource),
 			];
-
-			// Update the orchestratorOptions with the externalOrchestratorOptions.
-			this.orchestratorOptions = this.orchestratorOptions.concat(
-				this.externalOrchestratorOptions.map((service) => ({
-					label: service.name,
-					value: service.name,
-				})),
-			);
 
 			// Note: Prompts are now loaded lazily when userPromptRewriteEnabled is true
 			// This improves performance by not loading all prompts upfront

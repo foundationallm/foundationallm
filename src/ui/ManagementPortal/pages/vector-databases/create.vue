@@ -21,7 +21,7 @@
 				:scopes="[
 					{
 						label: 'Vector Database',
-						value: `providers/FoundationaLLM.Vector/vectorDatabases/${vectorDatabase.name}`,
+						value: `providers/FoundationaLLM.Vector/vectorDatabases/${editId}`,
 					},
 				]"
 			/>
@@ -127,8 +127,8 @@
 				<Dropdown
 					v-model="vectorDatabase.api_endpoint_configuration_object_id"
 					:options="apiEndpointOptions"
-					option-label="label"
-					option-value="value"
+					option-label="name"
+					option-value="object_id"
 					class="dropdown--agent"
 					placeholder="--Select--"
 					aria-labelledby="aria-api-endpoint"
@@ -283,13 +283,13 @@ export default {
 				cost_center: '',
 				database_type: 'AzureAISearch' as VectorDatabaseType,
 				database_name: '',
-				embedding_model: '',
-				embedding_dimensions: 1536,
-				embedding_property_name: 'vector',
-				content_property_name: 'content',
-				vector_store_id_property_name: 'vector_store_id',
-				metadata_property_name: 'metadata',
-				metadata_properties: '',
+				embedding_model: 'text-embedding-3-large',
+				embedding_dimensions: 2048,
+				embedding_property_name: 'Embedding',
+				content_property_name: 'Text',
+				vector_store_id_property_name: 'VectorStoreId',
+				metadata_property_name: 'Metadata',
+				metadata_properties: 'FileId|Edm.String,FileName|Edm.String',
 				api_endpoint_configuration_object_id: '',
 			} as VectorDatabase,
 
@@ -318,18 +318,11 @@ export default {
 		// Load API endpoints
 		try {
 			this.loadingStatusText = 'Retrieving API endpoints...';
-			const response = await api.getOrchestrationServices();
-			const filteredData = response.filter(
-				(item) =>
-					item.resource.category === 'General' && item.resource.subcategory === 'VectorDatabase',
-			);
-
-			filteredData.forEach((item) => {
-				this.apiEndpointOptions.push({
-					label: item.resource.name,
-					value: item.resource.object_id,
-				});
+			const endpoints = await api.filterAPIEndpointConfigurations({
+				category: 'General',
+				subcategory: 'Indexing',
 			});
+			this.apiEndpointOptions = endpoints.sort((a, b) => a.name.localeCompare(b.name));
 		} catch (error) {
 			this.$toast.add({
 				severity: 'error',
@@ -340,9 +333,25 @@ export default {
 
 		if (this.editId) {
 			this.loadingStatusText = `Retrieving vector database "${this.editId}"...`;
-			const vectorDatabaseResult = await api.getVectorDatabase(this.editId);
-			const vectorDatabase = vectorDatabaseResult.resource;
-			this.vectorDatabase = vectorDatabase;
+			try {
+				const vectorDatabaseResult = await api.getVectorDatabase(this.editId);
+				const vectorDatabase = vectorDatabaseResult?.resource;
+				if (!vectorDatabase) {
+					throw new Error('Vector database not found');
+				}
+				this.vectorDatabase = {
+					...this.vectorDatabase,
+					...vectorDatabase,
+				};
+			} catch (error) {
+				this.$toast.add({
+					severity: 'error',
+					detail: `Failed to load vector database "${this.editId}": ${error?.response?._data || error?.message || error}`,
+					life: 5000,
+				});
+				this.$router.push('/vector-databases');
+				return;
+			}
 		}
 
 		this.debouncedCheckName = debounce(this.checkName, 500);
@@ -375,7 +384,7 @@ export default {
 		async handleCancel() {
 			const confirmationStore = useConfirmationStore();
 			const confirmed = await confirmationStore.confirmAsync({
-				title: 'Cancel Vector Database Creation',
+				title: this.editId ? 'Cancel Vector Database Edit' : 'Cancel Vector Database Creation',
 				message: 'Are you sure you want to cancel?',
 				confirmText: 'Yes',
 				cancelText: 'Cancel',

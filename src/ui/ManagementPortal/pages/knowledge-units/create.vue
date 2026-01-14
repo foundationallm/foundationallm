@@ -3,11 +3,28 @@
 		<div style="display: flex">
 			<!-- Title -->
 			<div style="flex: 1">
-				<h2 class="page-header">Create Knowledge Unit</h2>
+				<h2 class="page-header">
+					{{ editId ? 'Edit Knowledge Unit' : 'Create Knowledge Unit' }}
+				</h2>
 				<div class="page-subheader">
-					Complete the settings below to create a new knowledge unit.
+					{{
+						editId
+							? 'Edit your knowledge unit below.'
+							: 'Complete the settings below to create a new knowledge unit.'
+					}}
 				</div>
 			</div>
+
+			<!-- Edit access control -->
+			<AccessControl
+				v-if="editId"
+				:scopes="[
+					{
+						label: 'Knowledge Unit',
+						value: `providers/FoundationaLLM.Context/knowledgeUnits/${editId}`,
+					},
+				]"
+			/>
 		</div>
 
 		<div class="steps">
@@ -22,11 +39,12 @@
 			<div class="col-span-2">
 				<div id="aria-knowledge-unit-name" class="step-header !mb-2">Knowledge Unit name:</div>
 				<div id="aria-knowledge-unit-name-desc" class="mb-2">
-					No special characters or spaces, use letters and numbers with dashes and underscores only.
+					{{ editId ? 'The name cannot be changed after creation.' : 'No special characters or spaces, use letters and numbers with dashes and underscores only.' }}
 				</div>
 				<div class="input-wrapper">
 					<InputText
 						v-model="knowledgeUnit.name"
+						:disabled="!!editId"
 						type="text"
 						class="w-full"
 						placeholder="Enter knowledge unit name"
@@ -57,8 +75,8 @@
 				<Dropdown
 					v-model="knowledgeUnit.vector_database_object_id"
 					:options="vectorDatabaseOptions"
-					option-label="label"
-					option-value="value"
+					option-label="name"
+					option-value="object_id"
 					placeholder="Select a vector database"
 					class="w-full"
 					aria-labelledby="aria-vector-database"
@@ -101,8 +119,8 @@
 				<Dropdown
 					v-model="knowledgeUnit.knowledge_graph_vector_database_object_id"
 					:options="vectorDatabaseOptions"
-					option-label="label"
-					option-value="value"
+					option-label="name"
+					option-value="object_id"
 					placeholder="Select a vector database for knowledge graph"
 					class="w-full"
 					aria-labelledby="aria-kg-vector-database"
@@ -112,9 +130,9 @@
 
 		<!-- Buttons -->
 		<div class="flex justify-end gap-4 mt-6">
-			<!-- Create knowledge unit -->
+			<!-- Create/Save knowledge unit -->
 			<Button
-				label="Create Knowledge Unit"
+				:label="editId ? 'Save Changes' : 'Create Knowledge Unit'"
 				severity="primary"
 				@click="handleSave"
 			/>
@@ -131,6 +149,13 @@ import api from '@/js/api';
 export default {
 	name: 'CreateKnowledgeUnit',
 
+	props: {
+		editId: {
+			type: String,
+			default: null,
+		},
+	},
+
 	data() {
 		return {
 			knowledgeUnit: {
@@ -143,14 +168,18 @@ export default {
 				has_knowledge_graph: false,
 				knowledge_graph_vector_database_object_id: '',
 			},
-			vectorDatabaseOptions: [] as { label: string; value: string }[],
+			vectorDatabaseOptions: [] as { name: string; object_id: string }[],
 			loading: false,
 			loadingStatusText: 'Loading...',
 		};
 	},
 
 	async created() {
-		await this.loadVectorDatabases();
+		if (this.editId) {
+			await this.loadKnowledgeUnit(this.editId);
+		} else {
+			await this.loadVectorDatabases();
+		}
 	},
 
 	methods: {
@@ -160,10 +189,49 @@ export default {
 			try {
 				const vectorDbResult = await api.getVectorDatabases();
 				if (vectorDbResult && Array.isArray(vectorDbResult)) {
-					this.vectorDatabaseOptions = vectorDbResult.map((item: any) => ({
-						label: item.resource?.name || item.name || 'Unknown',
-						value: item.resource?.object_id || item.object_id || '',
-					}));
+					this.vectorDatabaseOptions = vectorDbResult
+						.map((item: any) => ({
+							name: item.resource?.name || item.name || 'Unknown',
+							object_id: item.resource?.object_id || item.object_id || '',
+						}))
+						.sort((a, b) => a.name.localeCompare(b.name));
+				}
+			} catch (error) {
+				this.$toast.add({
+					severity: 'error',
+					detail: error?.response?._data || error,
+					life: 5000,
+				});
+			}
+			this.loading = false;
+		},
+
+		async loadKnowledgeUnit(knowledgeUnitName: string) {
+			this.loading = true;
+			this.loadingStatusText = 'Loading knowledge unit...';
+			try {
+				// Load vector databases and knowledge unit in parallel
+				const [vectorDbResult, knowledgeUnitResult] = await Promise.all([
+					api.getVectorDatabases(),
+					api.getKnowledgeUnit(knowledgeUnitName),
+				]);
+
+				// Process vector database options
+				if (vectorDbResult && Array.isArray(vectorDbResult)) {
+					this.vectorDatabaseOptions = vectorDbResult
+						.map((item: any) => ({
+							name: item.resource?.name || item.name || 'Unknown',
+							object_id: item.resource?.object_id || item.object_id || '',
+						}))
+						.sort((a, b) => a.name.localeCompare(b.name));
+				}
+
+				// Process knowledge unit
+				if (knowledgeUnitResult && knowledgeUnitResult.length > 0) {
+					this.knowledgeUnit = {
+						...this.knowledgeUnit,
+						...knowledgeUnitResult[0].resource,
+					};
 				}
 			} catch (error) {
 				this.$toast.add({
@@ -202,13 +270,13 @@ export default {
 			}
 
 			this.loading = true;
-			this.loadingStatusText = 'Creating knowledge unit...';
+			this.loadingStatusText = this.editId ? 'Updating knowledge unit...' : 'Creating knowledge unit...';
 			
 			try {
 				await api.createOrUpdateKnowledgeUnit(this.knowledgeUnit.name, knowledgeUnitToSave);
 				this.$toast.add({
 					severity: 'success',
-					detail: 'Knowledge unit created successfully.',
+					detail: this.editId ? 'Knowledge unit updated successfully.' : 'Knowledge unit created successfully.',
 					life: 3000,
 				});
 				this.$router.push('/knowledge-units');

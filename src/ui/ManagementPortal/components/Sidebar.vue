@@ -69,22 +69,6 @@
 				<ul>
 					<li>
 						<NuxtLink
-							to="/data-sources"
-							:class="{ 'router-link-active': isRouteActive('/data-sources') }"
-							class="sidebar__item"
-							>Data Sources</NuxtLink
-						>
-					</li>
-					<li>
-						<NuxtLink
-							to="/vector-databases"
-							:class="{ 'router-link-active': isRouteActive('/vector-databases') }"
-							class="sidebar__item"
-							>Vector Databases</NuxtLink
-						>
-					</li>
-					<li>
-						<NuxtLink
 							to="/pipelines"
 							:class="{ 'router-link-active': isRouteActive('/pipelines') }"
 							class="sidebar__item"
@@ -101,10 +85,10 @@
 					</li>
 					<li>
 						<NuxtLink
-							to="/knowledge-sources"
-							:class="{ 'router-link-active': isRouteActive('/knowledge-sources') }"
+							to="/data-sources"
+							:class="{ 'router-link-active': isRouteActive('/data-sources') }"
 							class="sidebar__item"
-							>Knowledge Sources</NuxtLink
+							>Data Sources</NuxtLink
 						>
 					</li>
 					<li>
@@ -113,6 +97,22 @@
 							:class="{ 'router-link-active': isRouteActive('/knowledge-units') }"
 							class="sidebar__item"
 							>Knowledge Units</NuxtLink
+						>
+					</li>
+					<li>
+						<NuxtLink
+							to="/vector-databases"
+							:class="{ 'router-link-active': isRouteActive('/vector-databases') }"
+							class="sidebar__item"
+							>Vector Databases</NuxtLink
+						>
+					</li>
+					<li>
+						<NuxtLink
+							to="/knowledge-explorer"
+							:class="{ 'router-link-active': isRouteActive('/knowledge-explorer') }"
+							class="sidebar__item"
+							>Knowledge Explorer</NuxtLink
 						>
 					</li>
 				</ul>

@@ -691,6 +691,11 @@ export enum APIEndpointSubcategory {
 	AIModel = 'AIModel',
 }
 
+export interface APIEndpointConfigurationFilter {
+	category?: APIEndpointCategory;
+	subcategory?: APIEndpointSubcategory;
+}
+
 export enum AuthenticationTypes {
 	Unknown = -1,
 	AzureIdentity = 'AzureIdentity',

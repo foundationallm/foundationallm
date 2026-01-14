@@ -2,7 +2,7 @@
     <main id="main-content">
         <div style="display: flex">
             <div style="flex: 1">
-                <h2 class="page-header">Knowledge Sources</h2>
+                <h2 class="page-header">Knowledge Explorer</h2>
                 <div class="page-subheader"></div>
             </div>
 
