@@ -1,6 +1,9 @@
 import { defineStore } from 'pinia';
 import type { AccountInfo } from '@azure/msal-browser';
-import { PublicClientApplication } from '@azure/msal-browser';
+import { 
+	PublicClientApplication,
+	InteractionRequiredAuthError
+} from '@azure/msal-browser';
 
 export const useAuthStore = defineStore('auth', {
 	state: () => ({
@@ -8,19 +11,40 @@ export const useAuthStore = defineStore('auth', {
 		tokenExpirationTimerId: null as number | null,
 		isExpired: false,
 		apiToken: null,
+		// Reactive trigger to force updates when account changes
+		accountUpdateTrigger: 0,
 	}),
 
 	getters: {
 		accounts(): AccountInfo[] {
-			return this.msalInstance.getAllAccounts();
+			if (!this.msalInstance) return [];
+			try {
+				return this.msalInstance.getAllAccounts();
+			} catch (error) {
+				console.error('Error getting accounts from MSAL:', error);
+				return [];
+			}
 		},
 
 		currentAccount(): AccountInfo | null {
-			return this.accounts[0] || null;
+			// Force reactivity by accessing trigger
+			this.accountUpdateTrigger;
+			const accountsArray = this.accounts;
+			
+			if (this.msalInstance) {
+				const activeAccount = this.msalInstance.getActiveAccount();
+				if (activeAccount) {
+					return activeAccount;
+				}
+			}
+			
+			return accountsArray[0] || null;
 		},
 
 		isAuthenticated(): boolean {
-			return !!this.currentAccount && !this.isExpired;
+			const hasAccount = !!this.currentAccount && !this.isExpired;
+			this.accounts.length; // Force reactivity
+			return hasAccount;
 		},
 
 		authConfig() {
@@ -50,6 +74,12 @@ export const useAuthStore = defineStore('auth', {
 
 			await msalInstance.initialize();
 			this.msalInstance = msalInstance;
+
+			// Set active account if we have accounts
+			const accounts = msalInstance.getAllAccounts();
+			if (accounts.length > 0) {
+				msalInstance.setActiveAccount(accounts[0]);
+			}
 
 			return this;
 		},
@@ -141,5 +171,29 @@ export const useAuthStore = defineStore('auth', {
 
 			useNuxtApp().$router.push({ name: 'auth/login' });
 		},
+
+		forceAccountUpdate() {
+			this.accountUpdateTrigger++;
+		},
+
+		isInteractionRequiredError(error: any): boolean {
+			if (!error) return false;
+
+			// If you have access to the error class:
+			if (error instanceof InteractionRequiredAuthError) return true;
+
+			const code = error.errorCode || error.code || "";
+			const name = error.name || "";
+
+			return (
+				name === "InteractionRequiredAuthError" ||
+				code === "interaction_required" ||
+				code === "login_required" ||
+				code === "consent_required" ||
+				code === "no_account_in_silent_request" ||
+				code === "no_tokens_found" ||
+				code === "user_login_error"
+			);
+		}
 	},
 });

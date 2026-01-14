@@ -5,8 +5,20 @@ import { useAuthStore } from '@/stores/authStore';
 import { useAppStore } from '@/stores/appStore';
 
 export default defineNuxtPlugin(async (nuxtApp: any) => {
-	// Load config variables into the app config store
+	
+	// Create a promise that resolves when authentication initialization is complete
+	let resolveAuthReady: () => void;
+	const authReadyPromise = new Promise<void>((resolve) =>
+		(resolveAuthReady = resolve));
+	nuxtApp.provide('authReady', authReadyPromise);
+
+	// Initialize and provide the appConfigStore and authStore
+	// to avoid potential race conditions in middleware.
+
 	const appConfigStore = useAppConfigStore(nuxtApp.$pinia);
+	nuxtApp.provide('appConfigStore', appConfigStore);
+	
+	// Load config variables into the app config store
 	await appConfigStore.getConfigVariables();
 
 	const config = useRuntimeConfig();
@@ -18,11 +30,9 @@ export default defineNuxtPlugin(async (nuxtApp: any) => {
 	api.setApiUrl(apiUrl);
 	api.setInstanceId(appConfigStore.instanceId);
 
-	// Make stores globally accessible on the nuxt app instance
-	nuxtApp.provide('appConfigStore', appConfigStore);
-
 	const authStore = await useAuthStore(nuxtApp.$pinia).init();
 	nuxtApp.provide('authStore', authStore);
+	resolveAuthReady();
 
 	const appStore = useAppStore(nuxtApp.$pinia);
 	nuxtApp.provide('appStore', appStore);
