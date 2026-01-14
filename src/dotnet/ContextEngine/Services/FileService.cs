@@ -520,9 +520,10 @@ namespace FoundationaLLM.Context.Services
 
             return
                 _knowledgeSearchContextFileTypes.Contains(fileExtension)
+                && ContentTypeMappings.MediaContentTypes.Contains(fileExtension)
                 && _maxFileSizes.TryGetValue(fileExtension, out var maxSize)
                 && fileSizeBytes <= maxSize
-                    ? FileProcessingTypes.CompletionRequestContext
+                    ? FileProcessingTypes.CompletionRequestContext //Only media files below a certain size are sent inline.
                     : FileProcessingTypes.DataPipeline;
         }
 
