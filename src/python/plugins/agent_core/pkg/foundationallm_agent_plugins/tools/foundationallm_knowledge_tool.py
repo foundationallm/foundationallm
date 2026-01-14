@@ -24,7 +24,7 @@ from foundationallm.models.orchestration import CompletionRequestObjectKeys, Con
 from foundationallm.models.resource_providers.configuration import APIEndpointConfiguration
 from foundationallm.services import HttpClientService
 
-from .foundationallm_knowledge_tool_input import FoundationaLLMKnowledgeToolInput
+from .foundationallm_knowledge_tool_input import FoundationaLLMKnowledgeToolInput, KnowledgeTask
 
 class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
     """
@@ -51,14 +51,16 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
 
     def _run(self,
             prompt: str,
-            file_names: Optional[List[str]],
+            task: KnowledgeTask,
+            file_name: Optional[str],
             run_manager: Optional[CallbackManagerForToolRun] = None
             ) -> str:
         raise ToolException("This tool does not support synchronous execution. Please use the async version of the tool.")
 
     async def _arun(self,
             prompt: str,
-            file_names: Optional[List[str]],
+            task: KnowledgeTask,
+            file_name: Optional[str],
             run_manager: Optional[AsyncCallbackManagerForToolRun] = None,
             runnable_config: RunnableConfig = None,
     ) -> Tuple[str, FoundationaLLMToolResult]:
@@ -78,7 +80,7 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
         if RunnableConfigKeys.CONVERSATION_ID in runnable_config['configurable']:
             conversation_id = runnable_config['configurable'][RunnableConfigKeys.CONVERSATION_ID]
 
-        # Retrieve the agent name from the runnable config if availabl;e
+        # Retrieve the agent name from the runnable config if available
         agent_name = None
         if 'agent_name' in runnable_config['configurable']:
             agent_name = runnable_config['configurable']['agent_name']
@@ -91,13 +93,10 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
             else None
         original_prompt = user_prompt_rewrite or user_prompt or prompt
 
-        file_name = None
-        if file_names and len(file_names) > 0:
-            file_name = file_names[0]
-
         # Prepare the knowledge source query request
         query_request = {
-                'user_prompt': original_prompt,
+                'user_prompt': prompt,
+                'knowledge_task': task,
                 'vector_store_query': self.vector_store_query,
                 'knowledge_graph_query': self.knowledge_graph_query,
                 'knowledge_unit_vector_store_filters': copy.deepcopy(self.knowledge_unit_vector_store_filters), # Use a copy to avoid mutating the original
@@ -169,7 +168,8 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
             'prompt_tokens': str(input_tokens),
             'completion_tokens': str(output_tokens),
             'input_prompt': prompt,
-            'input_file_names': ', '.join(file_names) if file_names else ''
+            'input_task': task,
+            'input_file_name': file_name if file_name else ''
         }
         content_artifacts.append(ContentArtifact(
             id = self.name,

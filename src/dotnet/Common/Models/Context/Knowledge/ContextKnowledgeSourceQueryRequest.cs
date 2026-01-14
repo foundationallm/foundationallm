@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using FoundationaLLM.Common.Constants.Context;
+using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.Common.Models.Context.Knowledge
 {
@@ -12,6 +13,13 @@ namespace FoundationaLLM.Common.Models.Context.Knowledge
         /// </summary>
         [JsonPropertyName("user_prompt")]
         public required string UserPrompt { get; set; }
+
+        /// <summary>
+        /// Gets or sets the knowledge task associated with the query.
+        /// </summary>
+        /// <remarks>The value must be one of the <see cref="ContextKnowledgeTasks"/> values.</remarks>
+        [JsonPropertyName("knowledge_task")]
+        public required string KnowledgeTask { get; set; }
 
         /// <summary>
         /// Gets or sets the vector store query parameters.
