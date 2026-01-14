@@ -644,9 +644,6 @@ export default {
 			delete agentCopy.created_on;
 		}
 		
-		// Log the payload for debugging (remove in production if needed)
-		console.log('Updating agent with payload:', JSON.stringify(agentCopy, null, 2));
-		
 		return await this.fetch<AgentBase>(url, {
 			method: 'POST',
 			body: agentCopy,

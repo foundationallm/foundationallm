@@ -2311,7 +2311,6 @@ export default defineComponent({
                     throw new Error('Unable to determine role assignment name for deletion');
                 }
 
-                console.log('Deleting role assignment with name:', roleAssignmentName);
                 await api.deleteRoleAssignment(roleAssignmentName);
 
                 this.$toast.add({
