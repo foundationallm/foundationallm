@@ -340,12 +340,12 @@
                                         <div class="upload-content">
                                             <i class="pi pi-upload text-3xl text-[#94a3b8] mb-3 block"></i>
                                             <p class="text-lg text-[#64748b] font-normal mb-2">Drop and drag or <span
-                                                    class="text-[#5472d4] underline">choose file</span> to
+                                                    class="text-[#5472d4] underline">choose files</span> to
                                                 upload</p>
                                             <p class="text-sm text-[#94a3b8] font-medium italic">(Any file type)</p>
                                         </div>
                                         <input ref="fileInput" type="file" @change="onFileSelect"
-                                            class="hidden">
+                                            class="hidden" multiple>
                                     </div>
 
                                     <!-- Selected files preview list -->
