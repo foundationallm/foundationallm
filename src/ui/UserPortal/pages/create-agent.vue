@@ -1712,6 +1712,7 @@ export default defineComponent({
             let associationsFailed = 0;
             const uploadErrors: string[] = [];
             const associationErrors: string[] = [];
+            const processedFiles = new Set<File>(); // Track all processed files (successful or failed)
 
             for (const file of this.uploadedFiles) {
                 try {
@@ -1733,6 +1734,7 @@ export default defineComponent({
                         const errorMessage = uploadResult.error_message || 'Unknown upload error';
                         uploadErrors.push(`${errorMessage}`);
                         filesFailed++;
+                        processedFiles.add(file); // Mark file as processed (failed)
                         continue;
                     }
 
@@ -1759,8 +1761,10 @@ export default defineComponent({
                                 const errorMessage = associationResult.error_message || 'Unknown association error';
                                 associationErrors.push(`${file.name}: ${errorMessage}`);
                                 associationsFailed++;
+                                processedFiles.add(file); // Mark file as processed (association failed but upload succeeded)
                             } else {
                                 filesUploaded++;
+                                processedFiles.add(file); // Mark file as processed (successful)
                             }
                         } catch (associationError: any) {
                             console.error('File association error:', associationError);
@@ -1768,9 +1772,11 @@ export default defineComponent({
                             const errorMessage = associationError?.message || associationError?.error_message || 'Association failed';
                             associationErrors.push(`${file.name}: ${errorMessage}`);
                             associationsFailed++;
+                            processedFiles.add(file); // Mark file as processed (association failed but upload succeeded)
                         }
                     } else {
                         filesUploaded++;
+                        processedFiles.add(file); // Mark file as processed (successful)
                     }
 
                 } catch (error: any) {
@@ -1779,11 +1785,14 @@ export default defineComponent({
                     // Extract error message from the error object
                     const errorMessage = error?.message || error?.error_message || 'Upload failed';
                     uploadErrors.push(`${file.name}: ${errorMessage}`);
+                    processedFiles.add(file); // Mark file as processed (failed)
                 }
             }
 
+            // Remove all processed files (both successful and failed) from the upload queue
+            this.uploadedFiles = this.uploadedFiles.filter(file => !processedFiles.has(file));
+
             if (filesUploaded > 0) {
-                this.uploadedFiles = [];
                 await this.loadAgentFiles();
 
                 // Show appropriate success/error messages
