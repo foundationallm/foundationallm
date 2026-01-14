@@ -1,5 +1,19 @@
 <template>
-	<div :class="$appStore.sidebarCollapsed ? 'wrapper collapsed-sidebar' : 'wrapper'">
+	<!-- Access Denied Message for 403 Errors -->
+	<div v-if="$appConfigStore.hasConfigurationAccessError" class="access-denied-overlay">
+		<div class="access-denied-container">
+			<div class="access-denied-icon">
+				<i class="pi pi-ban" style="font-size: 3rem; color: #e74c3c;"></i>
+			</div>
+			<p class="access-denied-title">Access Denied</p>
+			<p class="access-denied-message">
+				{{ $appConfigStore.configurationAccessErrorMessage }}
+			</p>
+		</div>
+	</div>
+
+	<!-- Normal App Content (hidden when access denied) -->
+	<div v-else :class="$appStore.sidebarCollapsed ? 'wrapper collapsed-sidebar' : 'wrapper'">
 		<Button
 			class="skip-to-main-content-button"
 			role="link"
@@ -42,6 +56,8 @@
 </template>
 
 <script>
+import '@/styles/access-denied.scss';
+
 export default {
 	methods: {
 		async handleRefreshLogin() {

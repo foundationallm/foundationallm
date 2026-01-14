@@ -3,6 +3,16 @@ import api from '@/js/api';
 
 export const useAppConfigStore = defineStore('appConfig', {
 	state: () => ({
+		// Loading states
+		isConfigurationLoaded: false,
+		hasConfigurationAccessError: false,
+		configurationAccessErrorMessage: null as string | null,
+
+		isAppConfigurationSetLoaded: false,
+
+		// Promises to prevent duplicate loads
+		appConfigurationSetLoadingPromise: null as Promise<void> | null,
+
 		// API: Defines API-specific settings such as the base URL for application requests.
 		apiUrl: null,
 		authorizationApiUrl: null,
@@ -193,6 +203,86 @@ export const useAppConfigStore = defineStore('appConfig', {
 			this.auth.tenantId = authTenantId;
 			this.auth.scopes = authScopes;
 			this.auth.callbackPath = authCallbackPath;
+
+			this.isConfigurationLoaded = true;
+		},
+
+		/**
+		 * Loads the full configuration after authentication is complete.
+		 * Uses app configuration sets as the new method to load configuration.
+		 */
+		async loadFullConfiguration() {
+			// Load the app configuration set (this is the only supported approach)
+			await this.loadAppConfigurationSet();
+			//await this.loadFeatureFlags();
+		},
+
+		async loadAppConfigurationSet() {
+
+			if (this.isAppConfigurationSetLoaded) {
+				return;
+			}
+
+			// If a loading promise already exists, return it to prevent duplicate loads
+			if (this.appConfigurationSetLoadingPromise) {
+				return this.appConfigurationSetLoadingPromise;
+			}
+
+			this.appConfigurationSetLoadingPromise = (async () => {
+				try {
+					// Reset error state before attempting to load
+					this.hasConfigurationAccessError = false;
+					this.configurationAccessErrorMessage = null;
+
+					const appConfigSetResults = await api.getManagementPortalAppConfigurationSet();
+
+					if (appConfigSetResults && appConfigSetResults.length > 0) {
+						// For now the configuration set is empty.
+						// The structure is in place for future use.
+					}
+					this.isAppConfigurationSetLoaded = true;
+				} catch (error: any) {
+					console.error('Failed to load app configuration set:', error);
+
+					// Check if this is a 403 Forbidden error
+					if (error?.status === 403 || error?.statusCode === 403 ||
+						(error?.message && error.message.includes('403')) ||
+						(error?.response?.status === 403)) {
+						this.hasConfigurationAccessError = true;
+						this.configurationAccessErrorMessage = 'Please contact your system administrator to request access.';
+						console.error('Access to ManagementPortal app configuration set is forbidden (403)');
+					}
+
+					throw error;
+				} finally {
+					// Clear the loading promise once done
+					this.appConfigurationSetLoadingPromise = null;
+				}
+			})();
+
+			return this.appConfigurationSetLoadingPromise;
+		},
+
+		/**
+		 * Loads configuration after successful authentication.
+		 * This should be called from the auth store after login is complete.
+		 */
+		async loadConfigurationAfterAuth() {
+			try {
+				await this.loadFullConfiguration();
+				this.isConfigurationLoaded = true;
+			} catch (error: any) {
+				console.error('Failed to load configuration after authentication:', error);
+
+				// If it's a 403 error, we still mark as loaded but keep the error state
+				// This allows the UI to render the access denied message
+				if (this.hasConfigurationAccessError) {
+					this.isConfigurationLoaded = true;
+				} else {
+					// For other errors, still mark as loaded so UI doesn't stay in loading state
+					this.isConfigurationLoaded = true;
+				}
+			}
 		},
 	},
 });
