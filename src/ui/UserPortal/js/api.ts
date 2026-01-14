@@ -654,6 +654,25 @@ export default {
 	},
 
 	/**
+	 * Deletes an agent by name.
+	 * @param agentName The name of the agent to delete.
+	 * @returns A promise that resolves when the agent is deleted.
+	 */
+	async deleteAgent(agentName: string): Promise<void> {
+		try {
+			await this.fetch(
+				`/management/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agents/${agentName}`,
+				{
+					method: 'DELETE',
+				}
+			);
+		} catch (error) {
+			console.error('Error deleting agent:', error);
+			throw error;
+		}
+	},
+
+	/**
 	 * Retrieves private store files for a given agent from the management endpoint.
 	 * Returns an array of ResourceProviderGetResult where each result.resource contains file details.
 	 */

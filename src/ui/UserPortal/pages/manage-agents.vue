@@ -31,6 +31,7 @@
         </header>
 
         <main id="main-content">
+        <Toast position="top-center" />
 
         <div class="w-full max-w-[1430px] mx-auto px-4 py-7">
             <div class="csm-backto-chats-1">
@@ -175,11 +176,19 @@
                         style="min-width: 80px"
                     >
                         <template #body="slotProps">
-                            <div style="position: relative; display: flex; justify-content: center; align-items: center;">
-                                <Button icon="pi pi-ellipsis-h" class="p-button-text p-button-rounded" @click="toggleActions(slotProps)" aria-label="Actions" />
-                                <div v-if="slotProps.data.showActions" class="csm-popover-actions">
-                                    <Button label="Edit" icon="pi pi-pencil" class="p-button-text w-full" @click="onEditAgent(slotProps.data)" />
-                                </div>
+                            <div style="display: flex; justify-content: center; align-items: center; gap: 0.5rem;">
+                                <Button 
+                                    icon="pi pi-pencil" 
+                                    class="p-button-text p-button-rounded" 
+                                    @click="onEditAgent(slotProps.data)" 
+                                    :aria-label="`Edit ${slotProps.data.resource.display_name || slotProps.data.resource.name}`"
+                                />
+                                <Button 
+                                    icon="pi pi-trash" 
+                                    class="p-button-text p-button-rounded" 
+                                    @click="onDeleteAgent(slotProps.data)" 
+                                    :aria-label="`Delete ${slotProps.data.resource.display_name || slotProps.data.resource.name}`"
+                                />
                             </div>
                         </template>
                     </Column>
@@ -192,6 +201,23 @@
                     <p>No agents found where you have Owner or Contributor access.</p>
                 </div>
             </div>
+
+            <!-- Delete Agent Confirmation Dialog -->
+            <ConfirmationDialog
+                v-if="agentToDelete !== null"
+                :visible="agentToDelete !== null"
+                header="Delete Agent"
+                confirm-text="Yes"
+                cancel-text="Cancel"
+                confirm-button-severity="danger"
+                @confirm="handleDeleteAgent"
+                @cancel="agentToDelete = null"
+                @update:visible="agentToDelete = null"
+            >
+                <div>
+                    Are you sure you want to delete the agent "{{ agentToDelete?.resource?.display_name || agentToDelete?.resource?.name }}"? This action cannot be undone.
+                </div>
+            </ConfirmationDialog>
         </div>
     </main>
     </div>
@@ -210,6 +236,8 @@ import '@/styles/access-denied.scss';
 import Button from 'primevue/button';
 import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
+import Toast from 'primevue/toast';
+import ConfirmationDialog from '~/components/ConfirmationDialog.vue';
 
 // Constants
 const SCROLL_HEIGHT = '500px';
@@ -224,6 +252,8 @@ export default defineComponent({
         DataTable,
         Column,
         Button,
+        Toast,
+        ConfirmationDialog,
     },
 
     setup() {
@@ -237,6 +267,7 @@ export default defineComponent({
         const router = useRouter();
         // Cache resolved owner emails by principal id
         const ownerEmailById = ref<Record<string, string>>({});
+        const agentToDelete = ref<ResourceProviderGetResult<AgentBase> | null>(null);
 
         // Computed property
         const filteredAgents = computed(() => {
@@ -356,23 +387,74 @@ export default defineComponent({
             searchByName.value = '';
         };
 
-        // Actions popover logic
-        const toggleActions = (slotProps: any) => {
-            slotProps.data.showActions = !slotProps.data.showActions;
-            if (slotProps.data.showActions) {
-                const closePopover = () => {
-                    slotProps.data.showActions = false;
-                    window.removeEventListener('click', closePopover);
-                };
-                setTimeout(() => {
-                    window.addEventListener('click', closePopover);
-                }, 0);
-            }
-        };
         const onEditAgent = (rowData: any) => {
             // Edit agent: navigate to create-agent with query params
             const agentName = rowData.resource.name;
             router.push({ path: '/create-agent', query: { edit: 'true', agentName, returnTo: 'manage-agents' } });
+        };
+
+        const onDeleteAgent = (rowData: any) => {
+            // Set the agent to delete
+            agentToDelete.value = rowData;
+        };
+
+        const handleDeleteAgent = async () => {
+            if (!agentToDelete.value) return;
+
+            const agentName = agentToDelete.value.resource.name;
+            const agentDisplayName = agentToDelete.value.resource.display_name || agentName;
+
+            try {
+                await api.deleteAgent(agentName);
+                agentToDelete.value = null;
+                // Reload agents list
+                await loadAgents();
+                // Show success message
+                const nuxtApp = useNuxtApp();
+                nuxtApp.vueApp.config.globalProperties.$toast.add({
+                    severity: 'success',
+                    summary: 'Agent Deleted',
+                    detail: `Agent "${agentDisplayName}" has been deleted successfully.`,
+                    life: 3000,
+                });
+            } catch (err: any) {
+                console.error('Failed to delete agent:', err);
+                agentToDelete.value = null;
+                
+                // Extract error message
+                let errorMessage = 'Failed to delete agent. Please try again later.';
+                if (err?.data) {
+                    if (typeof err.data === 'string') {
+                        errorMessage = err.data;
+                    } else {
+                        errorMessage = err.data.message || err.data.title || err.data.detail || err.data.error || JSON.stringify(err.data);
+                    }
+                } else if (err?.response?.data) {
+                    if (typeof err.response.data === 'string') {
+                        errorMessage = err.response.data;
+                    } else {
+                        errorMessage = err.response.data.message || err.response.data.title || err.response.data.detail || err.response.data.error || JSON.stringify(err.response.data);
+                    }
+                } else if (err?.message) {
+                    // Extract the actual error message from the error
+                    const message = err.message;
+                    // Check if it contains "is not available" which suggests a permissions or path issue
+                    if (message.includes('is not available')) {
+                        errorMessage = 'You do not have permission to delete this agent, or the agent may have already been deleted.';
+                    } else {
+                        errorMessage = message;
+                    }
+                }
+                
+                // Show error message
+                const nuxtApp = useNuxtApp();
+                nuxtApp.vueApp.config.globalProperties.$toast.add({
+                    severity: 'error',
+                    summary: 'Delete Failed',
+                    detail: errorMessage,
+                    life: 5000,
+                });
+            }
         };
 
         const getOwnerEmail = (ownerUserId?: string | null): string => {
@@ -405,8 +487,10 @@ export default defineComponent({
             getPrimaryRole,
             formatExpirationDate,
             clearSearch,
-            toggleActions,
             onEditAgent,
+            onDeleteAgent,
+            handleDeleteAgent,
+            agentToDelete,
             getOwnerEmail,
             getOwnerDisplay,
             SCROLL_HEIGHT
