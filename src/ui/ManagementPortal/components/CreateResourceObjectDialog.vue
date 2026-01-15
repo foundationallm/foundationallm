@@ -83,6 +83,17 @@ export default {
 			type: Boolean,
 			required: false,
 		},
+
+		/**
+		 * Context for resource filtering.
+		 * 'tool' - Filter prompts by 'Agent Tool' category
+		 * 'workflow' - Filter prompts by 'Workflow' category (default)
+		 */
+		resourceContext: {
+			type: String,
+			required: false,
+			default: 'workflow',
+		},
 	},
 
 	emits: ['update:modelValue', 'update:visible'],
@@ -240,7 +251,7 @@ export default {
 			if (resourceType === 'prompt') {
 				this.resourceOptions = this.filterPromptsByCriteria(
 					this.allResourceOptions, 
-					'workflowResource', 
+					this.resourceContext, 
 					this.searchFilter
 				);
 			} else {
@@ -260,19 +271,22 @@ export default {
 		/**
 		 * Filter prompts based on context and search criteria
 		 * @param prompts - Array of prompt objects
-		 * @param context - The context for filtering ('workflowResource', 'editMode', etc.)
+		 * @param context - The context for filtering ('tool', 'workflow', etc.)
 		 * @param searchCriteria - Optional search criteria
 		 */
-		filterPromptsByCriteria(prompts: any[], context = 'workflowResource', searchCriteria = ''): any[] {
+		filterPromptsByCriteria(prompts: any[], context = 'workflow', searchCriteria = ''): any[] {
 			let filteredPrompts = [...prompts];
 
 			// Apply context-specific filtering
-			if (context === 'workflowResource') {
-				// For workflow resources, filter to relevant prompt categories
+			if (context === 'tool') {
+				// For tool resources, filter to Tool category
 				filteredPrompts = filteredPrompts.filter(prompt => 
-					prompt.category === 'Workflow' || 
-					prompt.category === 'System' ||
-					prompt.name.toLowerCase().includes('workflow')
+					prompt.category === 'Tool'
+				);
+			} else if (context === 'workflow') {
+				// For workflow resources, filter to Workflow category
+				filteredPrompts = filteredPrompts.filter(prompt => 
+					prompt.category === 'Workflow'
 				);
 			}
 

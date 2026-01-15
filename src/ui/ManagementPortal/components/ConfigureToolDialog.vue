@@ -71,6 +71,7 @@
 		<CreateResourceObjectDialog
 			v-if="showCreateResourceObjectDialog"
 			:visible="showCreateResourceObjectDialog"
+			resource-context="tool"
 			@update:visible="showCreateResourceObjectDialog = false"
 			@update:model-value="handleAddToolResource"
 		/>

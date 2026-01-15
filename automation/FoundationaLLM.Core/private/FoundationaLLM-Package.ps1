@@ -2,7 +2,8 @@ function Resolve-Placeholders {
     param (
         [Parameter(ValueFromPipeline)]
         [string]$Content,
-        [hashtable]$Parameters = @{}
+        [hashtable]$Parameters = @{},
+        [switch]$RemoveMissing = $false
     )
 
     process {
@@ -12,15 +13,17 @@ function Resolve-Placeholders {
             $Content = $Content -replace $placeholder, $value
         }
 
-        # Remaining placeholders that were not replaced will be removed
+        if ($RemoveMissing) {
+            # Remaining placeholders that were not replaced will be removed
 
-        # $pattern = "{{(.*?)}}"
-        # $placeholderMatches = [regex]::Matches($Content, $pattern)
+            $pattern = "{{(.*?)}}"
+            $placeholderMatches = [regex]::Matches($Content, $pattern)
 
-        # foreach ($match in $placeholderMatches) {
-        #     $missingPlaceholder = "{{" + $match.Groups[1].Value + "}}"
-        #     $Content = $Content -replace $missingPlaceholder, ""
-        # }
+            foreach ($match in $placeholderMatches) {
+                $missingPlaceholder = "{{" + $match.Groups[1].Value + "}}"
+                $Content = $Content -replace $missingPlaceholder, ""
+            }
+        }
     
         $Content
     }
@@ -167,7 +170,7 @@ function Deploy-FoundationaLLMPackage {
         Write-Host "Updating plugin packages..."
 
         $plugins = Get-Content "$($PackageRoot)/artifacts/plugins.json" `
-            | Resolve-Placeholders -Parameters $Parameters `
+            | Resolve-Placeholders -Parameters $Parameters -RemoveMissing `
             | ConvertFrom-Json -AsHashTable
 
         foreach ($plugin in $plugins.dotnet) {
