@@ -1,17 +1,13 @@
-﻿using FoundationaLLM.Common.Models.Context;
+﻿using FoundationaLLM.Common.Constants.Context;
+using FoundationaLLM.Common.Models.Context;
 using FoundationaLLM.Common.Models.Context.Knowledge;
 using FoundationaLLM.Common.Models.Knowledge;
 using FoundationaLLM.Common.Models.ResourceProviders.Context;
 using FoundationaLLM.Common.Models.ResourceProviders.Vector;
 using FoundationaLLM.Common.Models.Services;
-using FoundationaLLM.Common.Models.Vectorization;
 using FoundationaLLM.Context.Models;
-using MathNet.Numerics;
 using Microsoft.Extensions.Logging;
-using Microsoft.Graph.Models;
-using Microsoft.Graph.Search.Query;
 using OpenAI.Embeddings;
-using OpenAI.VectorStores;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
 
@@ -125,6 +121,43 @@ namespace FoundationaLLM.Context.Services
                         _vectorDatabase.DatabaseName,
                         vectorStoreId,
                         _knowledgeUnit.Name);
+
+                    if (!matchingDocuments.Any()
+                        && queryRequest.KnowledgeTask == ContextKnowledgeTasks.Summary
+                        && vectorStoreFilter is not null
+                        && vectorStoreFilter.VectorStoreMetadataFilter is not null
+                        && vectorStoreFilter.VectorStoreMetadataFilter.ContainsKey("FileName"))
+                    {
+                        _logger.LogInformation(
+                            "Vector store query - attempting non-vector query for vector store {VectorDatabase}/{VectorStore} in knowledge unit {KnowledgeUnit}",
+                            _vectorDatabase.DatabaseName,
+                            vectorStoreId,
+                            _knowledgeUnit.Name);
+
+                        matchingDocuments = await _cachedKnowledgeUnit.SearchService.SearchDocuments(
+                            _vectorDatabase.DatabaseName,
+                            [
+                                KEY_FIELD_NAME,
+                                _vectorDatabase.ContentPropertyName,
+                                _vectorDatabase.MetadataPropertyName
+                            ],
+                            matchingDocumentsFilter,
+                            queryRequest.VectorStoreQuery.UseHybridSearch
+                                ? queryRequest.UserPrompt!
+                                : null,
+                            null,
+                            null,
+                            null,
+                            queryRequest.VectorStoreQuery.TextChunksMaxCount,
+                            queryRequest.VectorStoreQuery.UseSemanticRanking);
+
+                        _logger.LogInformation(
+                            "Vector store query - non-vector query found {MatchingDocumentsCount} matching documents for vector store {VectorDatabase}/{VectorStore} in knowledge unit {KnowledgeUnit}",
+                            matchingDocuments.Count(),
+                            _vectorDatabase.DatabaseName,
+                            vectorStoreId,
+                            _knowledgeUnit.Name);
+                    }
 
                     queryResponse.VectorStoreResponse = new ContextVectorStoreResponse
                     {

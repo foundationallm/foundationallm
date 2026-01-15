@@ -205,19 +205,23 @@ namespace FoundationaLLM.Common.Services.Azure
             IEnumerable<string> select,
             string filter,
             string? userPrompt,
-            ReadOnlyMemory<float> userPromptEmbedding,
-            string embeddingPropertyName,
-            float similarityThreshold,
+            ReadOnlyMemory<float>? userPromptEmbedding,
+            string? embeddingPropertyName,
+            float? similarityThreshold,
             int topN,
             bool useSemanticRanking)
         {
             // Create a SearchClient for the index
             var searchClient = _searchIndexClient.GetSearchClient(indexName);
 
-            var vectorQuery = new VectorizedQuery(userPromptEmbedding);
-            vectorQuery.Fields.Add(embeddingPropertyName);
-            vectorQuery.KNearestNeighborsCount = 500;
-            vectorQuery.Threshold = new VectorSimilarityThreshold(similarityThreshold);
+            var vectorQuery = default(VectorizedQuery);
+            if (userPromptEmbedding is not null)
+            {
+                vectorQuery = new VectorizedQuery(userPromptEmbedding.Value);
+                vectorQuery.Fields.Add(embeddingPropertyName!);
+                vectorQuery.KNearestNeighborsCount = 500;
+                vectorQuery.Threshold = new VectorSimilarityThreshold(similarityThreshold!.Value);
+            }
 
             var searchOptions = new SearchOptions
             {
@@ -233,8 +237,9 @@ namespace FoundationaLLM.Common.Services.Azure
             };
             foreach (var field in select)
                 searchOptions.Select.Add(field);
-            // Always include the search score in the results
-            searchOptions.VectorSearch.Queries.Add(vectorQuery);
+
+            if (vectorQuery is not null)
+                searchOptions.VectorSearch.Queries.Add(vectorQuery);
 
             if (useSemanticRanking)
             {
