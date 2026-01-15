@@ -14,13 +14,13 @@ function Resolve-Placeholders {
 
         # Remaining placeholders that were not replaced will be removed
 
-        $pattern = "{{(.*?)}}"
-        $placeholderMatches = [regex]::Matches($Content, $pattern)
+        # $pattern = "{{(.*?)}}"
+        # $placeholderMatches = [regex]::Matches($Content, $pattern)
 
-        foreach ($match in $placeholderMatches) {
-            $missingPlaceholder = "{{" + $match.Groups[1].Value + "}}"
-            $Content = $Content -replace $missingPlaceholder, ""
-        }
+        # foreach ($match in $placeholderMatches) {
+        #     $missingPlaceholder = "{{" + $match.Groups[1].Value + "}}"
+        #     $Content = $Content -replace $missingPlaceholder, ""
+        # }
     
         $Content
     }
