@@ -155,6 +155,9 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
         )
 
         context = query_response.get('text_response','')
+        context_length = len(context.strip())
+        if file_name:
+            context = f"File name: '{file_name}'\n\n{context}"
         completion_prompt = main_prompt.replace('{{context}}', context).replace('{{prompt}}', prompt)
 
         completion = await self.main_llm.ainvoke(completion_prompt)
@@ -169,7 +172,8 @@ class FoundationaLLMKnowledgeTool(FoundationaLLMToolBase):
             'completion_tokens': str(output_tokens),
             'input_prompt': prompt,
             'input_task': task,
-            'input_file_name': file_name if file_name else ''
+            'input_file_name': file_name if file_name else '',
+            'context_length': str(context_length)
         }
         content_artifacts.append(ContentArtifact(
             id = self.name,

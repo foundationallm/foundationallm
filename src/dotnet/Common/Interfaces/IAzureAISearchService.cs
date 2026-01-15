@@ -56,9 +56,9 @@ namespace FoundationaLLM.Common.Interfaces
             IEnumerable<string> select,
             string filter,
             string? userPrompt,
-            ReadOnlyMemory<float> userPromptEmbedding,
-            string embeddingPropertyName,
-            float similarityThreshold,
+            ReadOnlyMemory<float>? userPromptEmbedding,
+            string? embeddingPropertyName,
+            float? similarityThreshold,
             int topN,
             bool useSemanticRanking);
 
