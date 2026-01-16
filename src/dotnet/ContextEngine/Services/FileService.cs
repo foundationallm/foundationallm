@@ -123,6 +123,7 @@ namespace FoundationaLLM.Context.Services
                 var fileProcessingType = GetFileProcessingType(
                     origin,
                     fileName,
+                    contentType,
                     content.Length);
 
                 var fileRecord = new ContextFileRecord(
@@ -276,6 +277,7 @@ namespace FoundationaLLM.Context.Services
                     GetFileProcessingType(
                         origin,
                         fileName,
+                        contentType,
                         content.Length),
                     userIdentity,
                     metadata);
@@ -507,6 +509,7 @@ namespace FoundationaLLM.Context.Services
         private string GetFileProcessingType(
             string fileOrigin,
             string fileName,
+            string contentType,
             long fileSizeBytes)
         {
             var fileExtension = Path.GetExtension(fileName).Replace(".", string.Empty).ToLower();
@@ -520,7 +523,7 @@ namespace FoundationaLLM.Context.Services
 
             return
                 _knowledgeSearchContextFileTypes.Contains(fileExtension)
-                && ContentTypeMappings.MediaFileExtensions.Contains(fileExtension, StringComparer.OrdinalIgnoreCase)
+                && ContentTypeMappings.MediaFileExtensions.Contains(contentType, StringComparer.OrdinalIgnoreCase)
                 && _maxFileSizes.TryGetValue(fileExtension, out var maxSize)
                 && fileSizeBytes <= maxSize
                     ? FileProcessingTypes.CompletionRequestContext //Only media files below a certain size are sent inline.
