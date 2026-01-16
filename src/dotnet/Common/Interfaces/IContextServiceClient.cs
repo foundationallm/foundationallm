@@ -95,6 +95,42 @@ namespace FoundationaLLM.Common.Interfaces
             string language);
 
         /// <summary>
+        /// Checks whether the specified knowledge unit name is available within the given instance.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="resourceName">The knowledge unit name to validate. Cannot be null.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains a <see
+        /// cref="ResourceNameCheckResult"/> indicating whether the knowledge unit name is available and, if not, the
+        /// reason for unavailability.</returns>
+        Task<Result<ResourceNameCheckResult>> CheckKnowledgeUnitName(
+            string instanceId,
+            ResourceName resourceName);
+
+        /// <summary>
+        /// Checks whether the specified vector store identifier is available within the given instance.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="checkVectorStoreIdRequest">The vector store identifier validation request. Cannot be null.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains a <see
+        /// cref="ResourceNameCheckResult"/> indicating whether the vector store identifier is available and, if not, the
+        /// reason for unavailability.</returns>
+        Task<Result<ResourceNameCheckResult>> CheckVectorStoreId(
+            string instanceId,
+            CheckVectorStoreIdRequest checkVectorStoreIdRequest);
+
+        /// <summary>
+        /// Checks whether the specified knowledge source name is available within the given instance.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="resourceName">The knowledge source name to validate. Cannot be null.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains a <see
+        /// cref="ResourceNameCheckResult"/> indicating whether the knowledge source name is available and, if not, the
+        /// reason for unavailability.</returns>
+        Task<Result<ResourceNameCheckResult>> CheckKnowledgeSourceName(
+            string instanceId,
+            ResourceName resourceName);
+
+        /// <summary>
         /// Call the Context API to retrieve the a knowledge unit.
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>

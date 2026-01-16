@@ -123,6 +123,7 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
                 DataPipelineResourceTypeNames.DataPipelines => await UpdateDataPipeline(
                     resourcePath,
                     serializedResource!,
+                    authorizationResult,
                     userIdentity),
                 DataPipelineResourceTypeNames.DataPipelineRuns => await CreateDataPipelineRun(
                     resourcePath,
@@ -274,6 +275,7 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
         private async Task<ResourceProviderUpsertResult> UpdateDataPipeline(
             ResourcePath resourcePath,
             string serializedDataPipeline,
+            ResourcePathAuthorizationResult authorizationResult,
             UnifiedUserIdentity userIdentity)
         {
             var dataPipeline = JsonSerializer.Deserialize<DataPipelineDefinition>(serializedDataPipeline)
@@ -281,6 +283,18 @@ namespace FoundationaLLM.DataPipeline.ResourceProviders
                 StatusCodes.Status400BadRequest);
 
             var existingDataPipelineReference = await _resourceReferenceStore!.GetResourceReference(dataPipeline.Name);
+
+            if (existingDataPipelineReference is not null
+                    && !authorizationResult.Authorized)
+            {
+                // The resource already exists and the user is not authorized to update it.
+                // Irrespective of whether the user has the required role or not, we need to throw an exception in the case of existing resources.
+                // The required role only allows the user to create a new resource.
+                // This check is needed because it's only here that we can determine if the resource exists.
+                _logger.LogWarning("Access to the resource path {ResourcePath} was not authorized for user {UserName} : userId {UserId}.",
+                    resourcePath.RawResourcePath, userIdentity!.Username, userIdentity!.UserId);
+                throw new ResourceProviderException("Access is not authorized.", StatusCodes.Status403Forbidden);
+            }
 
             if (resourcePath.ResourceTypeInstances[0].ResourceId != dataPipeline.Name)
                 throw new ResourceProviderException("The resource path does not match the object definition (name mismatch).",

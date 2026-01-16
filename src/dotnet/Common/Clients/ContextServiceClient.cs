@@ -277,6 +277,30 @@ namespace FoundationaLLM.Common.Clients
         }
 
         /// <inheritdoc/>
+        public async Task<Result<ResourceNameCheckResult>> CheckKnowledgeUnitName(
+            string instanceId,
+            ResourceName resourceName)
+        {
+
+        }
+
+        /// <inheritdoc/>
+        public async Task<Result<ResourceNameCheckResult>> CheckVectorStoreId(
+            string instanceId,
+            CheckVectorStoreIdRequest checkVectorStoreIdRequest)
+        {
+
+        }
+
+        /// <inheritdoc/>
+        public async Task<Result<ResourceNameCheckResult>> CheckKnowledgeSourceName(
+            string instanceId,
+            ResourceName resourceName)
+        {
+
+        }
+
+        /// <inheritdoc/>
         public async Task<Result<ResourceProviderGetResult<KnowledgeUnit>>> GetKnowledgeUnit(
             string instanceId,
             string knowledgeUnitId,

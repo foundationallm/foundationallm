@@ -102,6 +102,7 @@ namespace FoundationaLLM.Vector.ResourceProviders
                 VectorResourceTypeNames.VectorDatabases => await UpdateVectorDatabase(
                     resourcePath,
                     serializedResource!,
+                    authorizationResult,
                     userIdentity),
                 _ => throw new ResourceProviderException(
                     $"The resource type {resourcePath.ResourceTypeName} is not supported by the {_name} resource provider.",
@@ -144,6 +145,7 @@ namespace FoundationaLLM.Vector.ResourceProviders
         private async Task<ResourceProviderUpsertResult> UpdateVectorDatabase(
             ResourcePath resourcePath,
             string serializedVectorDatabase,
+            ResourcePathAuthorizationResult authorizationResult,
             UnifiedUserIdentity userIdentity)
         {
             var vectorDatabase = JsonSerializer.Deserialize<VectorDatabase>(serializedVectorDatabase)
@@ -151,6 +153,18 @@ namespace FoundationaLLM.Vector.ResourceProviders
                     StatusCodes.Status400BadRequest);
 
             var existingVectorDatabaseReference = await _resourceReferenceStore!.GetResourceReference(vectorDatabase.Name);
+
+            if (existingVectorDatabaseReference is not null
+                && !authorizationResult.Authorized)
+            {
+                // The resource already exists and the user is not authorized to update it.
+                // Irrespective of whether the user has the required role or not, we need to throw an exception in the case of existing resources.
+                // The required role only allows the user to create a new resource.
+                // This check is needed because it's only here that we can determine if the resource exists.
+                _logger.LogWarning("Access to the resource path {ResourcePath} was not authorized for user {UserName} : userId {UserId}.",
+                    resourcePath.RawResourcePath, userIdentity!.Username, userIdentity!.UserId);
+                throw new ResourceProviderException("Access is not authorized.", StatusCodes.Status403Forbidden);
+            }
 
             if (resourcePath.ResourceTypeInstances[0].ResourceId != vectorDatabase.Name)
                 throw new ResourceProviderException("The resource path does not match the object definition (name mismatch).",
