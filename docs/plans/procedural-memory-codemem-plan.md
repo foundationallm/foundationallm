@@ -323,6 +323,99 @@ so I can help you with similar requests faster in the future.
 - No new required parameters
 - Existing integrations and prompts continue to work unchanged
 
+### 4.6 Skill Registration Content Artifact with User Review
+
+**Decision:** When a skill is registered, the tool returns a **new content artifact type (`skill_saved`)** that allows users to review and approve/reject the skill directly from the User Portal.
+
+**Rationale:**
+- Provides transparency to users about what code is being saved on their behalf
+- Gives users direct control over their skill library without requiring Management Portal access
+- Creates a natural review point in the conversation flow
+- Follows the existing content artifact pattern used for file outputs
+
+**User Experience Flow:**
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                    Skill Registration UX Flow                            │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                          │
+│  1. Agent registers a skill                                              │
+│     └─► Tool returns content artifact (type: skill_saved)               │
+│                                                                          │
+│  2. User Portal displays artifact in conversation                        │
+│     ┌─────────────────────────────────────────────────────────────┐     │
+│     │  🔧 Skill Saved: "calculate_revenue_growth"                  │     │
+│     │  Click to review the code                                    │     │
+│     └─────────────────────────────────────────────────────────────┘     │
+│                                                                          │
+│  3. User clicks to view skill details                                    │
+│     ┌─────────────────────────────────────────────────────────────┐     │
+│     │  Skill: calculate_revenue_growth                             │     │
+│     │  Description: Calculates month-over-month revenue growth...  │     │
+│     │                                                               │     │
+│     │  ┌─────────────────────────────────────────────────────────┐ │     │
+│     │  │ def calculate_revenue_growth(data_file, date_column):   │ │     │
+│     │  │     import pandas as pd                                  │ │     │
+│     │  │     df = pd.read_csv(data_file)                         │ │     │
+│     │  │     ...                                                  │ │     │
+│     │  └─────────────────────────────────────────────────────────┘ │     │
+│     │                                                               │     │
+│     │  [✓ Approve]  [✗ Reject]                                     │     │
+│     └─────────────────────────────────────────────────────────────┘     │
+│                                                                          │
+│  4a. User clicks "Approve"                                               │
+│      └─► Skill status remains Active (or changes from PendingApproval)  │
+│      └─► Toast: "Skill approved and ready to use"                       │
+│                                                                          │
+│  4b. User clicks "Reject"                                                │
+│      └─► Skill is DELETED from storage                                  │
+│      └─► Toast: "Skill rejected and removed"                            │
+│                                                                          │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+**Content Artifact Structure:**
+
+```python
+ContentArtifact(
+    id="skill_saved",
+    title="Skill Saved: calculate_revenue_growth",
+    type=ContentArtifactTypeNames.SKILL_SAVED,  # NEW type
+    filepath=skill_object_id,  # Used for retrieval
+    metadata={
+        "skill_object_id": "/instances/{id}/providers/FoundationaLLM.Skill/skills/...",
+        "skill_name": "calculate_revenue_growth",
+        "skill_description": "Calculates month-over-month revenue growth...",
+        "skill_code": "def calculate_revenue_growth(...):\n    ...",
+        "skill_status": "Active",
+        "agent_object_id": "/instances/{id}/providers/FoundationaLLM.Agent/agents/MAA-02",
+        "user_id": "zoinertejada@foundationallm.ai"
+    }
+)
+```
+
+**User Portal Implementation:**
+
+1. **Content Artifact Renderer**: New component to render `skill_saved` artifacts
+   - Displays skill name and description inline in conversation
+   - "View Code" button opens modal/drawer with full details
+   
+2. **Skill Review Modal**: Shows skill details with syntax-highlighted code
+   - Read-only Python code viewer
+   - Skill metadata (name, description, parameters)
+   - Approve/Reject buttons
+   
+3. **Skill Actions**: API calls for user approval/rejection
+   - `POST /skills/{skillId}/approve` → Sets status to Active
+   - `DELETE /skills/{skillId}` → Removes skill from storage (on reject)
+
+**Key Behaviors:**
+- Skills are usable immediately after registration (status: Active)
+- User can review and reject at any time, even after using the skill
+- Rejected skills are permanently deleted (not just disabled)
+- Approval action is idempotent (no-op if already Active)
+
 ---
 
 ## 5. Data Model
@@ -533,6 +626,26 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
 public ProceduralMemorySettings? ProceduralMemorySettings { get; set; }
 ```
 
+### 5.4 Content Artifact Type for Skill Registration
+
+```csharp
+// Add to src/dotnet/Common/Models/Constants/ContentArtifactTypeNames.cs
+
+/// <summary>
+/// Content artifact type for a skill that was saved by the agent.
+/// Displayed in User Portal with review/approve/reject capabilities.
+/// </summary>
+public const string SKILL_SAVED = "skill_saved";
+```
+
+```python
+# Add to foundationallm/models/constants.py (Python SDK)
+
+class ContentArtifactTypeNames:
+    # ... existing types ...
+    SKILL_SAVED = "skill_saved"
+```
+
 ---
 
 ## 6. API Design
@@ -622,25 +735,96 @@ def calculate_revenue_growth(data_file: str, date_column: str) -> dict:
 '''
 }
 
-# Returns:
-{
-    "status": "registered",
-    "skill_name": "calculate_revenue_growth",
-    "skill_id": "/instances/{id}/providers/FoundationaLLM.Skill/skills/calculate_revenue_growth"
-}
+# Returns: Text response + Content Artifact for User Portal review
+# Text response:
+"Skill 'calculate_revenue_growth' has been saved and is ready to use."
+
+# Content Artifact (included in tool result):
+ContentArtifact(
+    id="skill_saved",
+    title="Skill Saved: calculate_revenue_growth",
+    type="skill_saved",
+    filepath="/instances/{id}/providers/FoundationaLLM.Skill/skills/calculate_revenue_growth_MAA-02_user",
+    metadata={
+        "skill_object_id": "/instances/{id}/providers/FoundationaLLM.Skill/skills/calculate_revenue_growth_MAA-02_user",
+        "skill_name": "calculate_revenue_growth",
+        "skill_description": "Calculates month-over-month revenue growth percentage from sales data",
+        "skill_code": "def calculate_revenue_growth(data_file: str, date_column: str) -> dict:\n    ...",
+        "skill_status": "Active",
+        "agent_object_id": "/instances/{id}/providers/FoundationaLLM.Agent/agents/MAA-02",
+        "user_id": "zoinertejada@foundationallm.ai"
+    }
+)
 ```
+
+The content artifact allows users to review and approve/reject the skill directly from the User Portal conversation view (see Section 4.6).
 
 ### 6.3 Skill Resource Provider API
 
+**Management API (Management Portal / Admin):**
 ```
 GET    /instances/{instanceId}/providers/FoundationaLLM.Skill/skills
-GET    /instances/{instanceId}/providers/FoundationaLLM.Skill/skills/{skillName}
-PUT    /instances/{instanceId}/providers/FoundationaLLM.Skill/skills/{skillName}
-DELETE /instances/{instanceId}/providers/FoundationaLLM.Skill/skills/{skillName}
+GET    /instances/{instanceId}/providers/FoundationaLLM.Skill/skills/{skillId}
+PUT    /instances/{instanceId}/providers/FoundationaLLM.Skill/skills/{skillId}
+DELETE /instances/{instanceId}/providers/FoundationaLLM.Skill/skills/{skillId}
 POST   /instances/{instanceId}/providers/FoundationaLLM.Skill/skills/search
 ```
 
-### 6.4 Skill Search Request/Response
+**User Portal API (CoreAPI endpoints for user skill review):**
+```
+GET    /instances/{instanceId}/skills/{skillId}           # Get skill details for review
+POST   /instances/{instanceId}/skills/{skillId}/approve   # Approve a skill (sets status to Active)
+DELETE /instances/{instanceId}/skills/{skillId}           # Reject and delete a skill
+```
+
+### 6.4 User Portal Skill Review Endpoints
+
+These endpoints are exposed via CoreAPI for the User Portal to review and manage skills:
+
+```csharp
+// GET /instances/{instanceId}/skills/{skillId}
+// Returns skill details for the review modal
+public class SkillReviewResponse
+{
+    [JsonPropertyName("skill_object_id")]
+    public required string SkillObjectId { get; set; }
+
+    [JsonPropertyName("name")]
+    public required string Name { get; set; }
+
+    [JsonPropertyName("description")]
+    public required string Description { get; set; }
+
+    [JsonPropertyName("code")]
+    public required string Code { get; set; }
+
+    [JsonPropertyName("parameters")]
+    public List<SkillParameter> Parameters { get; set; } = [];
+
+    [JsonPropertyName("status")]
+    public SkillStatus Status { get; set; }
+
+    [JsonPropertyName("created_on")]
+    public DateTime CreatedOn { get; set; }
+
+    [JsonPropertyName("execution_count")]
+    public int ExecutionCount { get; set; }
+}
+
+// POST /instances/{instanceId}/skills/{skillId}/approve
+// Sets skill status to Active (idempotent)
+// Returns: 200 OK with updated skill details
+
+// DELETE /instances/{instanceId}/skills/{skillId}
+// Permanently removes the skill from storage
+// Returns: 204 No Content
+```
+
+**Authorization:**
+- Users can only view/approve/reject skills where `owner_user_id` matches their UPN
+- Admin users (via Management Portal) can manage any skill
+
+### 6.5 Skill Search Request/Response
 
 ```csharp
 // Search Request
@@ -769,9 +953,9 @@ public class SkillSearchResult
 - Existing prompts without `operation` parameter → default to `execute`
 - Skill parameters ignored when procedural memory disabled
 
-### Phase 4: Agent Configuration
+### Phase 4: Agent Configuration & Management Portal
 
-**Goal:** Allow agents to be configured with procedural memory settings.
+**Goal:** Allow agents to be configured with procedural memory settings and provide admin skill management.
 
 **Tasks:**
 1. Add `ProceduralMemorySettings` to agent model
@@ -794,7 +978,38 @@ public class SkillSearchResult
 - `src/ui/ManagementPortal/pages/skills/index.vue` (NEW)
 - `src/ui/ManagementPortal/pages/skills/[skillId].vue` (NEW)
 
-### Phase 5: Skill Lifecycle & Analytics (Optional Enhancement)
+### Phase 5: User Portal Skill Review UI
+
+**Goal:** Allow users to review, approve, and reject skills directly from the conversation in the User Portal.
+
+**Tasks:**
+1. Add new content artifact type `SKILL_SAVED` to constants
+2. Create `SkillSavedArtifact` component to render skill artifacts in conversation
+   - Display skill name and status inline
+   - "View Code" button to open review modal
+3. Create `SkillReviewModal` component for detailed skill review
+   - Syntax-highlighted Python code viewer (read-only)
+   - Skill metadata display (name, description, parameters)
+   - Approve and Reject action buttons
+4. Add CoreAPI endpoints for User Portal skill operations
+   - `GET /instances/{instanceId}/skills/{skillId}` - Get skill for review
+   - `POST /instances/{instanceId}/skills/{skillId}/approve` - Approve skill
+   - `DELETE /instances/{instanceId}/skills/{skillId}` - Reject and delete skill
+5. Implement skill approval/rejection with toast notifications
+6. Handle edge cases (skill already deleted, network errors)
+
+**Estimated Effort:** 1-2 weeks
+
+**Files to Create/Modify:**
+- `src/dotnet/Common/Constants/ContentArtifactTypeNames.cs` (add `SKILL_SAVED`)
+- `src/dotnet/CoreAPI/Controllers/SkillsController.cs` (NEW)
+- `src/ui/UserPortal/components/SkillSavedArtifact.vue` (NEW)
+- `src/ui/UserPortal/components/SkillReviewModal.vue` (NEW)
+- `src/ui/UserPortal/components/ChatMessage.vue` (update to render skill artifacts)
+- `src/ui/UserPortal/js/api.ts` (add skill API methods)
+- `src/ui/UserPortal/js/types/index.ts` (add skill types)
+
+### Phase 6: Skill Lifecycle & Analytics (Optional Enhancement)
 
 **Goal:** Track skill usage and improve skill quality over time.
 
@@ -937,11 +1152,12 @@ From the paper's evaluation:
 
 ---
 
-*Document Version: 1.1*
+*Document Version: 1.2*
 *Created: January 2025*
 *Last Updated: January 2025*
 *Status: Design Decisions Finalized*
 
 **Revision History:**
+- v1.2 (Jan 2025): Added skill registration content artifact with User Portal review UI; users can approve/reject skills directly from conversation; added Phase 5 for User Portal implementation; added CoreAPI endpoints for skill review
 - v1.1 (Jan 2025): Finalized design decisions for skill scoping (agent-user), approval workflow (auto-approve by default, configurable), security (sandbox only), and backwards compatibility requirement
 - v1.0 (Jan 2025): Initial plan draft
