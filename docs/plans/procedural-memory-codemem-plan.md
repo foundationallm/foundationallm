@@ -19,11 +19,11 @@ This document outlines a plan to add procedural memory capabilities to Foundatio
 1. [CodeMem Architecture Overview](#1-codemem-architecture-overview)
 2. [Current FoundationaLLM Architecture](#2-current-foundationallm-architecture)
 3. [Proposed Implementation](#3-proposed-implementation)
-4. [Data Model](#4-data-model)
-5. [API Design](#5-api-design)
-6. [Implementation Phases](#6-implementation-phases)
-7. [Alternative Approaches](#7-alternative-approaches)
-8. [Open Questions](#8-open-questions)
+4. [Design Decisions](#4-design-decisions)
+5. [Data Model](#5-data-model)
+6. [API Design](#6-api-design)
+7. [Implementation Phases](#7-implementation-phases)
+8. [Alternative Approaches](#8-alternative-approaches)
 
 ---
 
@@ -181,7 +181,36 @@ Create a new `FoundationaLLMSkillTool` alongside the code interpreter:
 
 **Recommendation:** Option A - Extend the existing code interpreter tool, as it keeps the agent's tool set lean and provides a natural workflow.
 
-### 3.3 Component Overview
+### 3.3 Backwards Compatibility Requirement
+
+**Critical Requirement:** The Code Interpreter tool must remain fully backwards compatible. If `ProceduralMemorySettings` is not enabled on an agent, the tool must work exactly as it does today with no changes in behavior.
+
+**Implementation Strategy:**
+1. All skill-related operations are gated by checking `procedural_memory_settings.enabled`
+2. If disabled, the tool ignores any skill-related parameters and executes code directly
+3. The default `operation` value of `"execute"` ensures existing integrations work unchanged
+4. No new required parameters are added to the tool interface
+
+```python
+# Backwards compatibility check in the tool
+async def _arun(self, prompt, file_names=[], operation="execute", ...):
+    # Check if procedural memory is enabled for this agent
+    procedural_memory_enabled = self._get_procedural_memory_enabled()
+    
+    if not procedural_memory_enabled or operation == "execute":
+        # Original behavior - generate and execute code
+        return await self._execute_code(prompt, file_names)
+    
+    # Procedural memory operations only if enabled
+    if operation == "search_skills":
+        return await self._search_skills(prompt)
+    elif operation == "use_skill":
+        return await self._use_skill(skill_name, skill_parameters, file_names)
+    elif operation == "register_skill":
+        return await self._register_skill(skill_name, skill_description, prompt)
+```
+
+### 3.4 Component Overview
 
 | Component | Change Type | Description |
 |-----------|-------------|-------------|
@@ -193,9 +222,112 @@ Create a new `FoundationaLLMSkillTool` alongside the code interpreter:
 
 ---
 
-## 4. Data Model
+## 4. Design Decisions
 
-### 4.1 Skill Resource Model
+This section documents the finalized design decisions for the procedural memory implementation.
+
+### 4.1 Skill Scoping: Agent-User Combination
+
+**Decision:** Skills are scoped to the **agent-user combination**. A skill created by user `zoinertejada@foundationallm.ai` for agent `MAA-02` is only visible and usable by that specific user when interacting with that specific agent.
+
+**Rationale:**
+- Ensures skills are personalized to each user's workflow and preferences
+- Prevents skill pollution across users (one user's specialized skills don't affect others)
+- Allows users to build up agent-specific expertise over time
+- Maintains data isolation for multi-tenant deployments
+
+**Implementation:**
+- Skills are stored with composite key: `{agent_object_id}:{user_id}`
+- Skill search automatically filters by current agent and user context
+- Management Portal shows skills grouped by agent-user combination
+
+**Example:** A skill `calculate_revenue_growth` for agent `MAA-02` and user `zoinertejada@foundationallm.ai` would have:
+```json
+{
+    "owner_agent_object_id": "/instances/{id}/providers/FoundationaLLM.Agent/agents/MAA-02",
+    "owner_user_id": "zoinertejada@foundationallm.ai"
+}
+```
+
+### 4.2 Skill Approval Workflow: Auto-Approve by Default (Configurable)
+
+**Decision:** Skills registered by agents are **auto-approved by default**, but this behavior is configurable via `ProceduralMemorySettings.require_skill_approval`.
+
+**Rationale:**
+- Auto-approval provides a seamless experience for skill learning
+- Configurability allows organizations with stricter policies to require review
+- Aligns with the CodeMem paper's approach of immediate skill availability
+
+**Configuration Options:**
+| Setting | Value | Behavior |
+|---------|-------|----------|
+| `require_skill_approval` | `false` (default) | Skills are immediately available after registration |
+| `require_skill_approval` | `true` | Skills enter a "pending" state and require admin approval |
+
+**Approval Workflow (when enabled):**
+1. Agent registers skill → Skill created with `status: "pending_approval"`
+2. Admin reviews skill in Management Portal
+3. Admin approves or rejects → Skill becomes `status: "active"` or `status: "rejected"`
+4. Only `active` skills are returned in skill searches
+
+### 4.3 Skill Execution Security: Sandbox Only
+
+**Decision:** Skill code executes **only within the existing sandboxed PythonCodeSessionAPI container**. No additional security layers are required.
+
+**Rationale:**
+- The existing sandbox provides process isolation and resource limits
+- Skills are just Python code, same as dynamically generated code
+- No need for static analysis or code review for security (approval workflow is for quality/policy, not security)
+- Simplifies implementation by reusing existing infrastructure
+
+**Security Properties (inherited from existing sandbox):**
+- Isolated container per code session
+- Network restrictions (configurable)
+- File system isolation to `/mnt/data`
+- Execution timeout limits
+- Memory and CPU limits
+
+### 4.4 Skill Discovery and Management UX
+
+**Decision:** 
+- **Management Portal** for administration (create, edit, delete, approve skills)
+- **Agent transparency** for end users (agent explains when it uses a skill vs. generating new code)
+
+**Rationale:**
+- Keeps the User Portal simple and focused on conversations
+- Provides clear audit trail of skill usage via agent responses
+- Allows admins to curate and manage the skill library
+
+**Agent Transparency Implementation:**
+When an agent uses a skill, it should include context in its response:
+```
+I found an existing skill "calculate_revenue_growth" that matches your request. 
+Using this skill to analyze your data...
+
+[Results from skill execution]
+```
+
+When an agent creates a new skill:
+```
+I've solved your problem and created a reusable skill "calculate_revenue_growth" 
+so I can help you with similar requests faster in the future.
+```
+
+### 4.5 Backwards Compatibility
+
+**Decision:** The Code Interpreter tool must be **100% backwards compatible**. When `ProceduralMemorySettings.enabled` is `false` (or not set), the tool behaves exactly as it does today.
+
+**Implementation:**
+- All skill operations are gated by `procedural_memory_settings.enabled` check
+- Default operation is `"execute"` (original behavior)
+- No new required parameters
+- Existing integrations and prompts continue to work unchanged
+
+---
+
+## 5. Data Model
+
+### 5.1 Skill Resource Model
 
 ```csharp
 // src/dotnet/Common/Models/ResourceProviders/Skill/Skill.cs (NEW)
@@ -203,6 +335,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Skill
 {
     /// <summary>
     /// Represents a reusable code skill that can be executed deterministically.
+    /// Skills are scoped to an agent-user combination.
     /// </summary>
     public class Skill : ResourceBase
     {
@@ -239,11 +372,26 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Skill
         public List<string> Tags { get; set; } = [];
 
         /// <summary>
-        /// The object ID of the agent that created/owns this skill.
-        /// Null for global skills available to all agents.
+        /// The object ID of the agent that this skill belongs to.
+        /// Required - skills are always scoped to an agent.
         /// </summary>
         [JsonPropertyName("owner_agent_object_id")]
-        public string? OwnerAgentObjectId { get; set; }
+        public required string OwnerAgentObjectId { get; set; }
+
+        /// <summary>
+        /// The user ID (UPN) of the user that this skill belongs to.
+        /// Required - skills are scoped to the agent-user combination.
+        /// Example: "zoinertejada@foundationallm.ai"
+        /// </summary>
+        [JsonPropertyName("owner_user_id")]
+        public required string OwnerUserId { get; set; }
+
+        /// <summary>
+        /// The approval status of the skill.
+        /// Skills with status "active" are available for use.
+        /// </summary>
+        [JsonPropertyName("status")]
+        public SkillStatus Status { get; set; } = SkillStatus.Active;
 
         /// <summary>
         /// Number of times this skill has been successfully executed.
@@ -262,6 +410,32 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Skill
         /// </summary>
         [JsonPropertyName("version")]
         public int Version { get; set; } = 1;
+    }
+
+    /// <summary>
+    /// Skill approval status values.
+    /// </summary>
+    public enum SkillStatus
+    {
+        /// <summary>
+        /// Skill is active and available for use.
+        /// </summary>
+        Active,
+
+        /// <summary>
+        /// Skill is pending approval (when require_skill_approval is enabled).
+        /// </summary>
+        PendingApproval,
+
+        /// <summary>
+        /// Skill was rejected by an administrator.
+        /// </summary>
+        Rejected,
+
+        /// <summary>
+        /// Skill has been disabled but not deleted.
+        /// </summary>
+        Disabled
     }
 
     /// <summary>
@@ -287,7 +461,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Skill
 }
 ```
 
-### 4.2 Agent Procedural Memory Settings
+### 5.2 Agent Procedural Memory Settings
 
 ```csharp
 // src/dotnet/Common/Models/ResourceProviders/Agent/ProceduralMemorySettings.cs (NEW)
@@ -295,11 +469,13 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
 {
     /// <summary>
     /// Configuration for agent procedural memory capabilities.
+    /// When enabled is false, the Code Interpreter tool behaves exactly as before.
     /// </summary>
     public class ProceduralMemorySettings
     {
         /// <summary>
         /// Whether procedural memory (skill learning) is enabled.
+        /// When false, the Code Interpreter tool works in backwards-compatible mode.
         /// </summary>
         [JsonPropertyName("enabled")]
         public bool Enabled { get; set; } = false;
@@ -309,21 +485,22 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
         /// If false, skills must be registered manually/by admins.
         /// </summary>
         [JsonPropertyName("auto_register_skills")]
-        public bool AutoRegisterSkills { get; set; } = false;
+        public bool AutoRegisterSkills { get; set; } = true;
 
         /// <summary>
-        /// Minimum confidence threshold for skill auto-registration.
-        /// Agent must indicate high confidence in the code's correctness.
+        /// Whether newly registered skills require admin approval before becoming active.
+        /// Default is false (auto-approve).
+        /// When true, new skills are created with status "PendingApproval".
         /// </summary>
-        [JsonPropertyName("skill_registration_confidence_threshold")]
-        public double SkillRegistrationConfidenceThreshold { get; set; } = 0.9;
+        [JsonPropertyName("require_skill_approval")]
+        public bool RequireSkillApproval { get; set; } = false;
 
         /// <summary>
-        /// Maximum number of skills the agent can store.
+        /// Maximum number of skills per agent-user combination.
         /// 0 = unlimited.
         /// </summary>
-        [JsonPropertyName("max_skills")]
-        public int MaxSkills { get; set; } = 0;
+        [JsonPropertyName("max_skills_per_user")]
+        public int MaxSkillsPerUser { get; set; } = 0;
 
         /// <summary>
         /// Similarity threshold for skill retrieval (0.0 to 1.0).
@@ -334,6 +511,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
 
         /// <summary>
         /// Whether to prefer using existing skills over generating new code.
+        /// When true, agent will search for skills first before generating code.
         /// </summary>
         [JsonPropertyName("prefer_skills")]
         public bool PreferSkills { get; set; } = true;
@@ -341,13 +519,15 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
 }
 ```
 
-### 4.3 Add to AgentBase
+### 5.3 Add to AgentBase
 
 ```csharp
 // Add to src/dotnet/Common/Models/ResourceProviders/Agent/AgentBase.cs
 
 /// <summary>
 /// Configuration for procedural memory capabilities (skill learning).
+/// When null or when Enabled is false, the Code Interpreter tool works in 
+/// backwards-compatible mode without any skill functionality.
 /// </summary>
 [JsonPropertyName("procedural_memory_settings")]
 public ProceduralMemorySettings? ProceduralMemorySettings { get; set; }
@@ -355,9 +535,9 @@ public ProceduralMemorySettings? ProceduralMemorySettings { get; set; }
 
 ---
 
-## 5. API Design
+## 6. API Design
 
-### 5.1 Enhanced Code Interpreter Tool Interface
+### 6.1 Enhanced Code Interpreter Tool Interface
 
 The enhanced code interpreter will support these operations:
 
@@ -381,7 +561,7 @@ class FoundationaLLMCodeInterpreterToolInput(BaseModel):
     skill_parameters: Optional[Dict[str, Any]] = Field(default=None, description="Parameters to pass to a skill")
 ```
 
-### 5.2 Tool Operations
+### 6.2 Tool Operations
 
 #### Search Skills
 ```python
@@ -450,7 +630,7 @@ def calculate_revenue_growth(data_file: str, date_column: str) -> dict:
 }
 ```
 
-### 5.3 Skill Resource Provider API
+### 6.3 Skill Resource Provider API
 
 ```
 GET    /instances/{instanceId}/providers/FoundationaLLM.Skill/skills
@@ -460,26 +640,53 @@ DELETE /instances/{instanceId}/providers/FoundationaLLM.Skill/skills/{skillName}
 POST   /instances/{instanceId}/providers/FoundationaLLM.Skill/skills/search
 ```
 
-### 5.4 Skill Search Request/Response
+### 6.4 Skill Search Request/Response
 
 ```csharp
 // Search Request
 public class SkillSearchRequest
 {
+    /// <summary>
+    /// The search query (natural language description of desired skill).
+    /// </summary>
     [JsonPropertyName("query")]
     public required string Query { get; set; }
 
+    /// <summary>
+    /// The agent object ID. Required - skills are scoped to agent-user combination.
+    /// </summary>
     [JsonPropertyName("agent_object_id")]
-    public string? AgentObjectId { get; set; }
+    public required string AgentObjectId { get; set; }
 
+    /// <summary>
+    /// The user ID (UPN). Required - skills are scoped to agent-user combination.
+    /// </summary>
+    [JsonPropertyName("user_id")]
+    public required string UserId { get; set; }
+
+    /// <summary>
+    /// Optional tags to filter results.
+    /// </summary>
     [JsonPropertyName("tags")]
     public List<string>? Tags { get; set; }
 
+    /// <summary>
+    /// Minimum similarity score (0.0 to 1.0). Default: 0.7
+    /// </summary>
     [JsonPropertyName("min_similarity")]
     public double MinSimilarity { get; set; } = 0.7;
 
+    /// <summary>
+    /// Maximum number of results to return. Default: 5
+    /// </summary>
     [JsonPropertyName("max_results")]
     public int MaxResults { get; set; } = 5;
+
+    /// <summary>
+    /// Only return skills with this status. Default: Active only.
+    /// </summary>
+    [JsonPropertyName("status_filter")]
+    public SkillStatus? StatusFilter { get; set; } = SkillStatus.Active;
 }
 
 // Search Response
@@ -495,24 +702,26 @@ public class SkillSearchResult
 
 ---
 
-## 6. Implementation Phases
+## 7. Implementation Phases
 
 ### Phase 1: Skill Resource Provider (Foundation)
 
-**Goal:** Create the infrastructure to store and retrieve skills.
+**Goal:** Create the infrastructure to store and retrieve skills with agent-user scoping.
 
 **Tasks:**
-1. Create `Skill` resource model and related classes
-2. Create `FoundationaLLM.Skill` resource provider
-3. Implement skill CRUD operations
-4. Add skill storage (Cosmos DB / Blob Storage)
-5. Add Management Portal UI for viewing/managing skills
+1. Create `Skill` resource model with agent-user scoping fields
+2. Create `SkillStatus` enum and `SkillParameter` class
+3. Create `FoundationaLLM.Skill` resource provider
+4. Implement skill CRUD operations with agent-user filtering
+5. Add skill storage (Cosmos DB with partition key on agent-user combination)
+6. Add Management Portal UI for viewing/managing skills (grouped by agent-user)
 
 **Estimated Effort:** 1-2 weeks
 
 **Files to Create/Modify:**
 - `src/dotnet/Common/Models/ResourceProviders/Skill/Skill.cs` (NEW)
 - `src/dotnet/Common/Models/ResourceProviders/Skill/SkillParameter.cs` (NEW)
+- `src/dotnet/Common/Models/ResourceProviders/Skill/SkillStatus.cs` (NEW)
 - `src/dotnet/Common/Constants/ResourceProviders/SkillResourceProviderMetadata.cs` (NEW)
 - `src/dotnet/Skill/ResourceProviders/SkillResourceProviderService.cs` (NEW)
 - `deploy/standard/data/resource-provider/FoundationaLLM.Skill/` (NEW)
@@ -536,14 +745,17 @@ public class SkillSearchResult
 
 ### Phase 3: Code Interpreter Enhancement
 
-**Goal:** Add skill operations to the code interpreter tool.
+**Goal:** Add skill operations to the code interpreter tool while maintaining 100% backwards compatibility.
 
 **Tasks:**
-1. Update `FoundationaLLMCodeInterpreterToolInput` with new parameters
-2. Implement `search_skills` operation
-3. Implement `use_skill` operation
-4. Implement `register_skill` operation
-5. Update tool prompts to guide LLM on skill usage
+1. Add procedural memory enabled check at tool initialization
+2. Update `FoundationaLLMCodeInterpreterToolInput` with optional skill parameters
+3. Implement backwards-compatible operation routing (default to `execute`)
+4. Implement `search_skills` operation (only when enabled)
+5. Implement `use_skill` operation (only when enabled)
+6. Implement `register_skill` operation with approval workflow support
+7. Update tool prompts to guide LLM on skill usage (conditional on enabled)
+8. Add comprehensive tests for backwards compatibility
 
 **Estimated Effort:** 1-2 weeks
 
@@ -551,15 +763,27 @@ public class SkillSearchResult
 - `src/python/plugins/agent_core/pkg/foundationallm_agent_plugins/tools/foundationallm_code_interpreter_tool.py`
 - `src/python/plugins/agent_core/pkg/foundationallm_agent_plugins/tools/foundationallm_code_interpreter_tool_input.py`
 
+**Backwards Compatibility Test Cases:**
+- Agent without `procedural_memory_settings` → tool works as before
+- Agent with `procedural_memory_settings.enabled = false` → tool works as before
+- Existing prompts without `operation` parameter → default to `execute`
+- Skill parameters ignored when procedural memory disabled
+
 ### Phase 4: Agent Configuration
 
 **Goal:** Allow agents to be configured with procedural memory settings.
 
 **Tasks:**
 1. Add `ProceduralMemorySettings` to agent model
-2. Update Management Portal agent configuration UI
-3. Update agent workflows to check for skills before code generation
-4. Add agent-scoped skill visibility
+2. Update Management Portal agent configuration UI with:
+   - Enable/disable toggle
+   - Auto-register skills toggle
+   - Require approval toggle
+   - Max skills per user setting
+   - Skill search threshold slider
+   - Prefer skills toggle
+3. Add skill management section in Management Portal (view skills by agent-user)
+4. Add skill approval workflow UI (when require_skill_approval is enabled)
 
 **Estimated Effort:** 1 week
 
@@ -567,6 +791,8 @@ public class SkillSearchResult
 - `src/dotnet/Common/Models/ResourceProviders/Agent/AgentBase.cs`
 - `src/dotnet/Common/Models/ResourceProviders/Agent/ProceduralMemorySettings.cs` (NEW)
 - `src/ui/ManagementPortal/pages/agents/create.vue`
+- `src/ui/ManagementPortal/pages/skills/index.vue` (NEW)
+- `src/ui/ManagementPortal/pages/skills/[skillId].vue` (NEW)
 
 ### Phase 5: Skill Lifecycle & Analytics (Optional Enhancement)
 
@@ -582,9 +808,9 @@ public class SkillSearchResult
 
 ---
 
-## 7. Alternative Approaches
+## 8. Alternative Approaches
 
-### 7.1 Approach A: Enhanced Code Interpreter (Recommended)
+### 8.1 Approach A: Enhanced Code Interpreter (Recommended)
 
 **Description:** Extend the existing code interpreter tool with skill management capabilities.
 
@@ -595,7 +821,7 @@ public class SkillSearchResult
 | Lean agent context | |
 | Leverages existing infrastructure | |
 
-### 7.2 Approach B: Separate Skill Tool
+### 8.2 Approach B: Separate Skill Tool
 
 **Description:** Create a dedicated `FoundationaLLMSkillTool` for skill management.
 
@@ -605,7 +831,7 @@ public class SkillSearchResult
 | Independent tool lifecycle | Two tools to manage |
 | Clearer tool descriptions | More complex agent prompts |
 
-### 7.3 Approach C: MCP-Based Skills (Future)
+### 8.3 Approach C: MCP-Based Skills (Future)
 
 **Description:** Implement skills as MCP (Model Context Protocol) servers that can be dynamically loaded.
 
@@ -619,71 +845,30 @@ public class SkillSearchResult
 
 ---
 
-## 8. Open Questions
-
-### 8.1 Skill Scoping
-
-**Question:** Should skills be scoped to individual agents, users, tenants, or global?
-
-**Options:**
-1. **Agent-scoped** (default): Each agent has its own skill library
-2. **User-scoped**: Users can create personal skills across agents
-3. **Tenant-scoped**: Shared skills within an organization
-4. **Global**: Platform-wide skill library
-
-**Recommendation:** Support agent-scoped by default, with optional tenant-scoped sharing.
-
-### 8.2 Skill Approval Workflow
-
-**Question:** Should agent-registered skills require human approval?
-
-**Options:**
-1. **Auto-approve**: Skills registered by agents are immediately available
-2. **Review queue**: Skills require admin approval before use
-3. **Confidence-based**: Auto-approve if agent confidence > threshold
-
-**Recommendation:** Make configurable via `ProceduralMemorySettings`.
-
-### 8.3 Skill Execution Security
-
-**Question:** How to ensure skill code is safe to execute?
-
-**Options:**
-1. **Sandbox only**: Skills run in existing sandboxed environment
-2. **Code review**: Required review before skill registration
-3. **Static analysis**: Automated security scanning of skill code
-
-**Recommendation:** Leverage existing sandbox security + optional code review.
-
-### 8.4 Skill Discovery UX
-
-**Question:** How should users discover and manage skills?
-
-**Options:**
-1. **Management Portal only**: Admin-level skill management
-2. **User Portal visibility**: Users can see available skills
-3. **Agent transparency**: Agent explains when it uses skills
-
-**Recommendation:** Management Portal for administration, agent transparency for end users.
-
----
-
 ## Appendix A: Example Agent Prompt with Skills
+
+**Note:** This prompt is only used when `procedural_memory_settings.enabled = true`. When disabled, the standard code interpreter prompt is used unchanged.
 
 ```
 You are an AI assistant with access to a code interpreter tool that supports procedural memory.
 
+Your skills are personal to you and this user - they remember successful code patterns 
+that have worked well in past conversations.
+
 When given a task:
 1. First, search for relevant skills that might help: use operation="search_skills"
 2. If a suitable skill exists with similarity > 0.8, use it: use operation="use_skill"
+   - Let the user know you're using a previously learned skill
 3. If no suitable skill exists, generate and execute code: use operation="execute"
-4. If your code works well and could be reused, consider registering it as a skill: use operation="register_skill"
+4. If your code works well and could be reused, consider registering it as a skill: 
+   use operation="register_skill"
+   - Let the user know you've learned a new skill for future use
 
 Available operations:
-- search_skills: Find skills matching a description
+- search_skills: Find skills matching a description (searches your skill library for this user)
 - use_skill: Execute a registered skill with parameters
-- execute: Generate and run Python code
-- register_skill: Save working code as a reusable skill
+- execute: Generate and run Python code (default behavior)
+- register_skill: Save working code as a reusable skill for future conversations
 ```
 
 ---
@@ -692,13 +877,13 @@ Available operations:
 
 ```json
 {
-    "id": "calculate_revenue_growth",
+    "id": "calculate_revenue_growth_MAA-02_zoinertejada",
     "type": "FoundationaLLM.Skill/skills",
     "name": "calculate_revenue_growth",
-    "object_id": "/instances/{instanceId}/providers/FoundationaLLM.Skill/skills/calculate_revenue_growth",
+    "object_id": "/instances/{instanceId}/providers/FoundationaLLM.Skill/skills/calculate_revenue_growth_MAA-02_zoinertejada",
     "display_name": "Calculate Revenue Growth",
     "description": "Calculates month-over-month revenue growth percentage from sales data",
-    "code": "def calculate_revenue_growth(data_file: str, date_column: str) -> dict:\n    ...",
+    "code": "def calculate_revenue_growth(data_file: str, date_column: str) -> dict:\n    import pandas as pd\n    df = pd.read_csv(data_file)\n    df[date_column] = pd.to_datetime(df[date_column])\n    monthly = df.groupby(df[date_column].dt.to_period('M'))['revenue'].sum()\n    growth = monthly.pct_change() * 100\n    return {\"growth_rates\": growth.to_dict()}",
     "example_prompts": [
         "Calculate the monthly revenue growth from my sales data",
         "What was the month-over-month growth in revenue?"
@@ -718,7 +903,9 @@ Available operations:
         }
     ],
     "tags": ["analytics", "revenue", "growth"],
-    "owner_agent_object_id": "/instances/{instanceId}/providers/FoundationaLLM.Agent/agents/sales-analyst",
+    "owner_agent_object_id": "/instances/{instanceId}/providers/FoundationaLLM.Agent/agents/MAA-02",
+    "owner_user_id": "zoinertejada@foundationallm.ai",
+    "status": "Active",
     "execution_count": 47,
     "success_rate": 0.98,
     "version": 2,
@@ -726,6 +913,8 @@ Available operations:
     "updated_on": "2024-02-20T14:45:00Z"
 }
 ```
+
+**Note:** The skill ID incorporates both the agent name and a sanitized user identifier to ensure uniqueness within the agent-user scope.
 
 ---
 
@@ -748,6 +937,11 @@ From the paper's evaluation:
 
 ---
 
-*Document Version: 1.0*
+*Document Version: 1.1*
 *Created: January 2025*
-*Status: Draft - For Review*
+*Last Updated: January 2025*
+*Status: Design Decisions Finalized*
+
+**Revision History:**
+- v1.1 (Jan 2025): Finalized design decisions for skill scoping (agent-user), approval workflow (auto-approve by default, configurable), security (sandbox only), and backwards compatibility requirement
+- v1.0 (Jan 2025): Initial plan draft
