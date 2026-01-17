@@ -115,6 +115,12 @@ namespace FoundationaLLM.Common.Constants.Configuration
             "FoundationaLLM:ResourceProviders:Context:Storage";
         
         /// <summary>
+        /// Configuration section used to identify the storage settings for the FoundationaLLM.Skill resource provider.
+        /// </summary>
+        public const string FoundationaLLM_ResourceProviders_Skill_Storage =
+            "FoundationaLLM:ResourceProviders:Skill:Storage";
+        
+        /// <summary>
         /// Configuration section used to identify the settings for all API endpoints.
         /// </summary>
         public const string FoundationaLLM_APIEndpoints =

@@ -1,6 +1,6 @@
 # pylint: disable=W0221
 
-from typing import Optional, Tuple, Type, List, ClassVar, Any
+from typing import Optional, Tuple, Type, List, ClassVar, Any, Dict
 from uuid import uuid4
 import json
 
@@ -32,8 +32,22 @@ from foundationallm.utils import LoggingAsyncHttpClient
 
 from .foundationallm_code_interpreter_tool_input import FoundationaLLMCodeInterpreterToolInput
 
+
+# Skill content artifact type names (for procedural memory)
+# These will be added to ContentArtifactTypeNames in the SDK
+SKILL_SAVED_ARTIFACT_TYPE = "skill_saved"
+SKILL_USED_ARTIFACT_TYPE = "skill_used"
+
+
 class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
-    """ A tool for executing Python code in a code interpreter. """
+    """
+    A tool for executing Python code in a code interpreter.
+    
+    Supports procedural memory capabilities when enabled on the agent:
+    - search_skills: Find relevant skills by semantic similarity
+    - use_skill: Execute a previously saved skill
+    - register_skill: Save successful code as a reusable skill
+    """
     args_schema: Type[BaseModel] = FoundationaLLMCodeInterpreterToolInput
     DYNAMIC_SESSION_ENDPOINT: ClassVar[str] = "code_session_endpoint"
     DYNAMIC_SESSION_ID: ClassVar[str] = "code_session_id"
@@ -42,15 +56,25 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
         self,
         tool_config: AgentTool,
         objects: dict,
-        user_identity:UserIdentity,
+        user_identity: UserIdentity,
         config: Configuration,
         intercept_http_calls: bool = False
     ):
-        """ Initializes the FoundationaLLMCodeInterpreterTool class with the tool configuration,
-            exploded objects collection, user_identity, and platform configuration. """
+        """
+        Initializes the FoundationaLLMCodeInterpreterTool class.
+        
+        Args:
+            tool_config: The tool configuration from the agent.
+            objects: The exploded objects collection from the completion request.
+            user_identity: The user identity making the request.
+            config: The platform configuration.
+            intercept_http_calls: Whether to intercept HTTP calls for logging.
+        """
         super().__init__(tool_config, objects, user_identity, config)
 
-        context_api_endpoint_configuration = APIEndpointConfiguration(**objects.get(CompletionRequestObjectKeys.CONTEXT_API_ENDPOINT_CONFIGURATION, None))
+        context_api_endpoint_configuration = APIEndpointConfiguration(
+            **objects.get(CompletionRequestObjectKeys.CONTEXT_API_ENDPOINT_CONFIGURATION, None)
+        )
         if context_api_endpoint_configuration:
             self.context_api_client = HttpClientService(
                 context_api_endpoint_configuration,
@@ -58,27 +82,125 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
                 config
             )
         else:
-            raise ToolException("The Context API endpoint configuration is required to use the Code Interpreter tool.")
+            raise ToolException(
+                "The Context API endpoint configuration is required to use the Code Interpreter tool."
+            )
+        
         self.instance_id = objects.get(CompletionRequestObjectKeys.INSTANCE_ID, None)
         self.main_llm = self.get_main_language_model(
             http_async_client=LoggingAsyncHttpClient(timeout=30.0)
         ) if intercept_http_calls else self.get_main_language_model()
+        
+        # Extract procedural memory settings from agent configuration
+        self.agent = objects.get(CompletionRequestObjectKeys.AGENT, None)
+        self.procedural_memory_enabled = self._get_procedural_memory_enabled()
+        self.procedural_memory_settings = self._get_procedural_memory_settings()
+    
+    def _get_procedural_memory_enabled(self) -> bool:
+        """Check if procedural memory is enabled for this agent."""
+        if self.agent is None:
+            return False
+        settings = getattr(self.agent, 'procedural_memory_settings', None)
+        if settings is None:
+            return False
+        return getattr(settings, 'enabled', False)
+    
+    def _get_procedural_memory_settings(self) -> Optional[Dict[str, Any]]:
+        """Get the procedural memory settings for this agent."""
+        if self.agent is None:
+            return None
+        settings = getattr(self.agent, 'procedural_memory_settings', None)
+        if settings is None:
+            return None
+        return {
+            'enabled': getattr(settings, 'enabled', False),
+            'auto_register_skills': getattr(settings, 'auto_register_skills', True),
+            'require_skill_approval': getattr(settings, 'require_skill_approval', False),
+            'max_skills_per_user': getattr(settings, 'max_skills_per_user', 0),
+            'skill_search_threshold': getattr(settings, 'skill_search_threshold', 0.8),
+            'prefer_skills': getattr(settings, 'prefer_skills', True),
+        }
 
     def _run(
         self,
         prompt: str,
         file_names: Optional[List[str]] = [],
+        operation: str = "execute",
+        skill_name: Optional[str] = None,
+        skill_description: Optional[str] = None,
+        skill_parameters: Optional[Dict[str, Any]] = None,
         run_manager: Optional[CallbackManagerForToolRun] = None,
         **kwargs: Any) -> Any:
         raise ToolException("This tool does not support synchronous execution. Please use the async version of the tool.")
 
-    async def _arun(self,
-            prompt: str,
-            file_names: Optional[List[str]] = [],
-            run_manager: Optional[AsyncCallbackManagerForToolRun] = None,
-            runnable_config: RunnableConfig = None,
-            **kwargs: Any) -> Tuple[str, FoundationaLLMToolResult]:
+    async def _arun(
+        self,
+        prompt: str,
+        file_names: Optional[List[str]] = [],
+        operation: str = "execute",
+        skill_name: Optional[str] = None,
+        skill_description: Optional[str] = None,
+        skill_parameters: Optional[Dict[str, Any]] = None,
+        run_manager: Optional[AsyncCallbackManagerForToolRun] = None,
+        runnable_config: RunnableConfig = None,
+        **kwargs: Any
+    ) -> Tuple[str, FoundationaLLMToolResult]:
+        """
+        Execute the code interpreter tool.
+        
+        Supports multiple operations:
+        - execute: Generate and run Python code (default, backwards compatible)
+        - search_skills: Search for relevant skills (requires procedural memory)
+        - use_skill: Execute a saved skill (requires procedural memory)
+        - register_skill: Save code as a reusable skill (requires procedural memory)
+        """
+        # Route to appropriate operation handler
+        # Backwards compatibility: if procedural memory is not enabled, always use execute
+        if not self.procedural_memory_enabled or operation == "execute":
+            return await self._execute_code(
+                prompt=prompt,
+                file_names=file_names,
+                runnable_config=runnable_config
+            )
+        
+        # Procedural memory operations
+        if operation == "search_skills":
+            return await self._search_skills(
+                query=prompt,
+                runnable_config=runnable_config
+            )
+        elif operation == "use_skill":
+            return await self._use_skill(
+                skill_name=skill_name,
+                skill_parameters=skill_parameters or {},
+                file_names=file_names,
+                runnable_config=runnable_config
+            )
+        elif operation == "register_skill":
+            return await self._register_skill(
+                skill_name=skill_name,
+                skill_description=skill_description,
+                code=prompt,
+                runnable_config=runnable_config
+            )
+        else:
+            # Unknown operation - fall back to execute for backwards compatibility
+            return await self._execute_code(
+                prompt=prompt,
+                file_names=file_names,
+                runnable_config=runnable_config
+            )
 
+    async def _execute_code(
+        self,
+        prompt: str,
+        file_names: Optional[List[str]] = [],
+        runnable_config: RunnableConfig = None
+    ) -> Tuple[str, FoundationaLLMToolResult]:
+        """
+        Execute the original code generation and execution flow.
+        This is the backwards-compatible default operation.
+        """
         main_prompt = self.get_main_prompt()
 
         # Get the original prompt
@@ -278,3 +400,319 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
         if not code.endswith('\n'):
             code += '\n'
         return code
+
+    # =========================================================================
+    # Procedural Memory (Skill) Operations
+    # =========================================================================
+
+    async def _search_skills(
+        self,
+        query: str,
+        runnable_config: RunnableConfig = None
+    ) -> Tuple[str, FoundationaLLMToolResult]:
+        """
+        Search for relevant skills using semantic similarity.
+        
+        Args:
+            query: Natural language description of the desired skill.
+            runnable_config: The runnable configuration.
+            
+        Returns:
+            A tuple of (response text, tool result with content artifacts).
+        """
+        try:
+            # Get user identity for scoping
+            user_id = self.user_identity.upn if self.user_identity else None
+            agent_object_id = getattr(self.agent, 'object_id', None) if self.agent else None
+            
+            if not user_id or not agent_object_id:
+                return "Unable to search skills: missing user or agent context.", FoundationaLLMToolResult(
+                    content="Unable to search skills: missing user or agent context.",
+                    content_artifacts=[],
+                    input_tokens=0,
+                    output_tokens=0
+                )
+            
+            # Search for skills via the Skill resource provider
+            search_threshold = self.procedural_memory_settings.get('skill_search_threshold', 0.8) if self.procedural_memory_settings else 0.8
+            
+            self.context_api_client.headers['X-USER-IDENTITY'] = self.user_identity.model_dump_json()
+            search_response = await self.context_api_client.post_async(
+                endpoint=f"/instances/{self.instance_id}/providers/FoundationaLLM.Skill/skills/search",
+                data=json.dumps({
+                    "query": query,
+                    "agent_object_id": agent_object_id,
+                    "user_id": user_id,
+                    "min_similarity": search_threshold,
+                    "max_results": 5
+                })
+            )
+            
+            skills = search_response.get('skills', [])
+            
+            if not skills:
+                response_text = "No matching skills found. You may need to generate new code."
+            else:
+                skill_descriptions = []
+                for skill_result in skills:
+                    skill = skill_result.get('skill', {})
+                    similarity = skill_result.get('similarity', 0)
+                    skill_descriptions.append(
+                        f"- {skill.get('name', 'Unknown')}: {skill.get('description', 'No description')} "
+                        f"(similarity: {similarity:.2f})"
+                    )
+                response_text = f"Found {len(skills)} matching skill(s):\n" + "\n".join(skill_descriptions)
+            
+            return response_text, FoundationaLLMToolResult(
+                content=response_text,
+                content_artifacts=[],
+                input_tokens=0,
+                output_tokens=0
+            )
+            
+        except Exception as e:
+            error_msg = f"Error searching skills: {str(e)}"
+            return error_msg, FoundationaLLMToolResult(
+                content=error_msg,
+                content_artifacts=[],
+                input_tokens=0,
+                output_tokens=0
+            )
+
+    async def _use_skill(
+        self,
+        skill_name: str,
+        skill_parameters: Dict[str, Any],
+        file_names: Optional[List[str]] = [],
+        runnable_config: RunnableConfig = None
+    ) -> Tuple[str, FoundationaLLMToolResult]:
+        """
+        Execute a previously saved skill.
+        
+        Args:
+            skill_name: Name of the skill to execute.
+            skill_parameters: Parameters to pass to the skill.
+            file_names: Files to make available for the skill.
+            runnable_config: The runnable configuration.
+            
+        Returns:
+            A tuple of (response text, tool result with content artifacts).
+        """
+        content_artifacts = []
+        
+        try:
+            # Get user identity for scoping
+            user_id = self.user_identity.upn if self.user_identity else None
+            agent_object_id = getattr(self.agent, 'object_id', None) if self.agent else None
+            
+            if not skill_name:
+                return "Unable to use skill: skill_name is required.", FoundationaLLMToolResult(
+                    content="Unable to use skill: skill_name is required.",
+                    content_artifacts=[],
+                    input_tokens=0,
+                    output_tokens=0
+                )
+            
+            # Retrieve the skill from the resource provider
+            self.context_api_client.headers['X-USER-IDENTITY'] = self.user_identity.model_dump_json()
+            
+            # Build skill ID based on agent-user scoping
+            skill_id = f"{skill_name}_{agent_object_id.split('/')[-1]}_{user_id.replace('@', '_').replace('.', '_')}"
+            
+            skill_response = await self.context_api_client.get_async(
+                endpoint=f"/instances/{self.instance_id}/providers/FoundationaLLM.Skill/skills/{skill_id}"
+            )
+            
+            skill = skill_response.get('resource', skill_response)
+            skill_code = skill.get('code', '')
+            
+            if not skill_code:
+                return f"Skill '{skill_name}' not found or has no code.", FoundationaLLMToolResult(
+                    content=f"Skill '{skill_name}' not found or has no code.",
+                    content_artifacts=[],
+                    input_tokens=0,
+                    output_tokens=0
+                )
+            
+            # Build the code to execute with parameters
+            param_assignments = "\n".join([
+                f"{key} = {json.dumps(value)}" for key, value in skill_parameters.items()
+            ])
+            
+            full_code = f"{param_assignments}\n\n{skill_code}" if param_assignments else skill_code
+            
+            # Execute the skill code in the code session
+            session_id = runnable_config['configurable'][self.tool_config.name][self.DYNAMIC_SESSION_ID]
+            
+            # Upload files if needed
+            if file_names:
+                operation_response = await self.context_api_client.post_async(
+                    endpoint=f"/instances/{self.instance_id}/codeSessions/{session_id}/uploadFiles",
+                    data=json.dumps({"file_names": file_names})
+                )
+            
+            # Execute the code
+            code_execution_response = await self.context_api_client.post_async(
+                endpoint=f"/instances/{self.instance_id}/codeSessions/{session_id}/executeCode",
+                data=json.dumps({"code_to_execute": full_code})
+            )
+            
+            # Build response
+            if code_execution_response.get('status') == 'Succeeded':
+                result = code_execution_response.get('execution_result', '')
+                output = code_execution_response.get('standard_output', '')
+                final_response = result if result and result != '{}' else output
+                
+                # Update skill execution count (fire and forget)
+                try:
+                    await self.context_api_client.post_async(
+                        endpoint=f"/instances/{self.instance_id}/providers/FoundationaLLM.Skill/skills/{skill_id}/execute",
+                        data=json.dumps({"success": True})
+                    )
+                except Exception:
+                    pass  # Don't fail if stats update fails
+            else:
+                final_response = f"Skill execution failed: {code_execution_response.get('error_output', 'Unknown error')}"
+            
+            # Add skill_used content artifact for User Portal review
+            content_artifacts.append(ContentArtifact(
+                id="skill_used",
+                title=f"Skill Used: {skill_name}",
+                type=SKILL_USED_ARTIFACT_TYPE,
+                filepath=skill.get('object_id', skill_id),
+                metadata={
+                    'skill_object_id': skill.get('object_id', ''),
+                    'skill_name': skill_name,
+                    'skill_description': skill.get('description', ''),
+                    'skill_code': skill_code,
+                    'skill_status': skill.get('status', 'Active'),
+                    'execution_count': skill.get('execution_count', 0) + 1,
+                    'success_rate': skill.get('success_rate', 1.0),
+                    'agent_object_id': agent_object_id,
+                    'user_id': user_id
+                }
+            ))
+            
+            return final_response, FoundationaLLMToolResult(
+                content=final_response,
+                content_artifacts=content_artifacts,
+                input_tokens=0,
+                output_tokens=0
+            )
+            
+        except Exception as e:
+            error_msg = f"Error using skill '{skill_name}': {str(e)}"
+            return error_msg, FoundationaLLMToolResult(
+                content=error_msg,
+                content_artifacts=content_artifacts,
+                input_tokens=0,
+                output_tokens=0
+            )
+
+    async def _register_skill(
+        self,
+        skill_name: str,
+        skill_description: str,
+        code: str,
+        runnable_config: RunnableConfig = None
+    ) -> Tuple[str, FoundationaLLMToolResult]:
+        """
+        Register (save) code as a reusable skill.
+        
+        Args:
+            skill_name: Name for the new skill.
+            skill_description: Description of what the skill does.
+            code: The Python code to save as a skill.
+            runnable_config: The runnable configuration.
+            
+        Returns:
+            A tuple of (response text, tool result with content artifacts).
+        """
+        content_artifacts = []
+        
+        try:
+            # Get user identity for scoping
+            user_id = self.user_identity.upn if self.user_identity else None
+            agent_object_id = getattr(self.agent, 'object_id', None) if self.agent else None
+            
+            if not skill_name or not code:
+                return "Unable to register skill: skill_name and code are required.", FoundationaLLMToolResult(
+                    content="Unable to register skill: skill_name and code are required.",
+                    content_artifacts=[],
+                    input_tokens=0,
+                    output_tokens=0
+                )
+            
+            # Prepare skill code (clean up markdown formatting if present)
+            clean_code = self.__prepare_code(code)
+            
+            # Determine initial status based on settings
+            require_approval = self.procedural_memory_settings.get('require_skill_approval', False) if self.procedural_memory_settings else False
+            initial_status = "PendingApproval" if require_approval else "Active"
+            
+            # Build skill ID based on agent-user scoping
+            safe_user_id = user_id.replace('@', '_').replace('.', '_') if user_id else 'unknown'
+            safe_agent_id = agent_object_id.split('/')[-1] if agent_object_id else 'unknown'
+            skill_id = f"{skill_name}_{safe_agent_id}_{safe_user_id}"
+            
+            # Create the skill resource
+            skill_data = {
+                "name": skill_name,
+                "type": "FoundationaLLM.Skill/skills",
+                "object_id": f"/instances/{self.instance_id}/providers/FoundationaLLM.Skill/skills/{skill_id}",
+                "display_name": skill_name,
+                "description": skill_description or f"Skill: {skill_name}",
+                "code": clean_code,
+                "owner_agent_object_id": agent_object_id,
+                "owner_user_id": user_id,
+                "status": initial_status,
+                "execution_count": 0,
+                "success_rate": 1.0,
+                "version": 1,
+                "example_prompts": [],
+                "parameters": [],
+                "tags": []
+            }
+            
+            self.context_api_client.headers['X-USER-IDENTITY'] = self.user_identity.model_dump_json()
+            await self.context_api_client.post_async(
+                endpoint=f"/instances/{self.instance_id}/providers/FoundationaLLM.Skill/skills/{skill_id}",
+                data=json.dumps(skill_data)
+            )
+            
+            response_text = f"Skill '{skill_name}' has been saved and is ready to use."
+            if require_approval:
+                response_text = f"Skill '{skill_name}' has been saved and is pending approval."
+            
+            # Add skill_saved content artifact for User Portal review
+            content_artifacts.append(ContentArtifact(
+                id="skill_saved",
+                title=f"Skill Saved: {skill_name}",
+                type=SKILL_SAVED_ARTIFACT_TYPE,
+                filepath=skill_data['object_id'],
+                metadata={
+                    'skill_object_id': skill_data['object_id'],
+                    'skill_name': skill_name,
+                    'skill_description': skill_data['description'],
+                    'skill_code': clean_code,
+                    'skill_status': initial_status,
+                    'agent_object_id': agent_object_id,
+                    'user_id': user_id
+                }
+            ))
+            
+            return response_text, FoundationaLLMToolResult(
+                content=response_text,
+                content_artifacts=content_artifacts,
+                input_tokens=0,
+                output_tokens=0
+            )
+            
+        except Exception as e:
+            error_msg = f"Error registering skill '{skill_name}': {str(e)}"
+            return error_msg, FoundationaLLMToolResult(
+                content=error_msg,
+                content_artifacts=content_artifacts,
+                input_tokens=0,
+                output_tokens=0
+            )
