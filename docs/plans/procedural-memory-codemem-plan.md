@@ -375,7 +375,7 @@ so I can help you with similar requests faster in the future.
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
-**Content Artifact Structure:**
+**Content Artifact Structure (Skill Saved):**
 
 ```python
 ContentArtifact(
@@ -394,6 +394,89 @@ ContentArtifact(
     }
 )
 ```
+
+### 4.7 Skill Used Content Artifact with User Review
+
+**Decision:** When an existing skill is used, the tool returns a **`skill_used` content artifact** that allows users to see which skill was executed and approve or reject it.
+
+**Rationale:**
+- Provides transparency when the agent uses learned skills
+- Allows users to remove skills that aren't working well
+- Creates an audit trail of skill usage in the conversation
+- Enables users to understand agent behavior ("Why did it do that?")
+
+**User Experience Flow:**
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                    Skill Used UX Flow                                    │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                          │
+│  1. Agent uses an existing skill                                         │
+│     └─► Tool returns content artifact (type: skill_used)                │
+│                                                                          │
+│  2. User Portal displays artifact in conversation                        │
+│     ┌─────────────────────────────────────────────────────────────┐     │
+│     │  ⚡ Skill Used: "calculate_revenue_growth"                   │     │
+│     │  Click to review the skill                                   │     │
+│     └─────────────────────────────────────────────────────────────┘     │
+│                                                                          │
+│  3. User clicks to view skill details (same modal as skill_saved)        │
+│     ┌─────────────────────────────────────────────────────────────┐     │
+│     │  Skill: calculate_revenue_growth                             │     │
+│     │  Status: Active | Used 48 times | 98% success rate           │     │
+│     │  Description: Calculates month-over-month revenue growth...  │     │
+│     │                                                               │     │
+│     │  ┌─────────────────────────────────────────────────────────┐ │     │
+│     │  │ def calculate_revenue_growth(data_file, date_column):   │ │     │
+│     │  │     import pandas as pd                                  │ │     │
+│     │  │     ...                                                  │ │     │
+│     │  └─────────────────────────────────────────────────────────┘ │     │
+│     │                                                               │     │
+│     │  [✓ Keep Skill]  [✗ Remove Skill]                            │     │
+│     └─────────────────────────────────────────────────────────────┘     │
+│                                                                          │
+│  4a. User clicks "Keep Skill"                                            │
+│      └─► No action needed (skill already Active)                        │
+│      └─► Toast: "Skill will continue to be used"                        │
+│                                                                          │
+│  4b. User clicks "Remove Skill"                                          │
+│      └─► Skill is DELETED from storage                                  │
+│      └─► Toast: "Skill removed - agent will generate new code next time"│
+│                                                                          │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+**Content Artifact Structure (Skill Used):**
+
+```python
+ContentArtifact(
+    id="skill_used",
+    title="Skill Used: calculate_revenue_growth",
+    type=ContentArtifactTypeNames.SKILL_USED,  # NEW type
+    filepath=skill_object_id,  # Used for retrieval
+    metadata={
+        "skill_object_id": "/instances/{id}/providers/FoundationaLLM.Skill/skills/...",
+        "skill_name": "calculate_revenue_growth",
+        "skill_description": "Calculates month-over-month revenue growth...",
+        "skill_code": "def calculate_revenue_growth(...):\n    ...",
+        "skill_status": "Active",
+        "execution_count": 48,
+        "success_rate": 0.98,
+        "agent_object_id": "/instances/{id}/providers/FoundationaLLM.Agent/agents/MAA-02",
+        "user_id": "zoinertejada@foundationallm.ai"
+    }
+)
+```
+
+**Differences from Skill Saved Artifact:**
+| Aspect | Skill Saved | Skill Used |
+|--------|-------------|------------|
+| Icon | 🔧 (wrench) | ⚡ (lightning) |
+| Title | "Skill Saved: {name}" | "Skill Used: {name}" |
+| Button labels | "Approve" / "Reject" | "Keep Skill" / "Remove Skill" |
+| Shows execution stats | No (new skill) | Yes (execution_count, success_rate) |
+| Typical use case | First time skill is created | Subsequent uses of skill |
 
 **User Portal Implementation:**
 
@@ -626,7 +709,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
 public ProceduralMemorySettings? ProceduralMemorySettings { get; set; }
 ```
 
-### 5.4 Content Artifact Type for Skill Registration
+### 5.4 Content Artifact Types for Skills
 
 ```csharp
 // Add to src/dotnet/Common/Models/Constants/ContentArtifactTypeNames.cs
@@ -636,6 +719,12 @@ public ProceduralMemorySettings? ProceduralMemorySettings { get; set; }
 /// Displayed in User Portal with review/approve/reject capabilities.
 /// </summary>
 public const string SKILL_SAVED = "skill_saved";
+
+/// <summary>
+/// Content artifact type for a skill that was used by the agent.
+/// Displayed in User Portal with review/keep/remove capabilities.
+/// </summary>
+public const string SKILL_USED = "skill_used";
 ```
 
 ```python
@@ -644,6 +733,7 @@ public const string SKILL_SAVED = "skill_saved";
 class ContentArtifactTypeNames:
     # ... existing types ...
     SKILL_SAVED = "skill_saved"
+    SKILL_USED = "skill_used"
 ```
 
 ---
@@ -713,8 +803,31 @@ class FoundationaLLMCodeInterpreterToolInput(BaseModel):
     "file_names": ["sales_2024.csv"]
 }
 
-# Returns: Same as regular code execution (results, output, files)
+# Returns: Execution results + Content Artifact for User Portal review
+# Text response (same as regular code execution):
+"The monthly revenue growth rates are: Jan: 5.2%, Feb: -1.3%, Mar: 8.7%..."
+
+# Content Artifact (included in tool result):
+ContentArtifact(
+    id="skill_used",
+    title="Skill Used: calculate_revenue_growth",
+    type="skill_used",
+    filepath="/instances/{id}/providers/FoundationaLLM.Skill/skills/calculate_revenue_growth_MAA-02_user",
+    metadata={
+        "skill_object_id": "/instances/{id}/providers/FoundationaLLM.Skill/skills/calculate_revenue_growth_MAA-02_user",
+        "skill_name": "calculate_revenue_growth",
+        "skill_description": "Calculates month-over-month revenue growth percentage from sales data",
+        "skill_code": "def calculate_revenue_growth(data_file: str, date_column: str) -> dict:\n    ...",
+        "skill_status": "Active",
+        "execution_count": 48,
+        "success_rate": 0.98,
+        "agent_object_id": "/instances/{id}/providers/FoundationaLLM.Agent/agents/MAA-02",
+        "user_id": "zoinertejada@foundationallm.ai"
+    }
+)
 ```
+
+The content artifact allows users to see which skill was used and remove it if desired (see Section 4.7).
 
 #### Register Skill
 ```python
@@ -980,30 +1093,38 @@ public class SkillSearchResult
 
 ### Phase 5: User Portal Skill Review UI
 
-**Goal:** Allow users to review, approve, and reject skills directly from the conversation in the User Portal.
+**Goal:** Allow users to review, approve/reject, and remove skills directly from the conversation in the User Portal.
 
 **Tasks:**
-1. Add new content artifact type `SKILL_SAVED` to constants
-2. Create `SkillSavedArtifact` component to render skill artifacts in conversation
-   - Display skill name and status inline
-   - "View Code" button to open review modal
+1. Add new content artifact types `SKILL_SAVED` and `SKILL_USED` to constants
+2. Create `SkillArtifact` component to render both skill artifact types in conversation
+   - Display skill name and appropriate icon (🔧 saved, ⚡ used)
+   - "View Code" / "View Skill" button to open review modal
+   - Different styling for saved vs. used artifacts
 3. Create `SkillReviewModal` component for detailed skill review
    - Syntax-highlighted Python code viewer (read-only)
    - Skill metadata display (name, description, parameters)
-   - Approve and Reject action buttons
+   - Execution statistics for used skills (execution count, success rate)
+   - Context-appropriate buttons:
+     - Skill Saved: "Approve" / "Reject"
+     - Skill Used: "Keep Skill" / "Remove Skill"
 4. Add CoreAPI endpoints for User Portal skill operations
    - `GET /instances/{instanceId}/skills/{skillId}` - Get skill for review
-   - `POST /instances/{instanceId}/skills/{skillId}/approve` - Approve skill
-   - `DELETE /instances/{instanceId}/skills/{skillId}` - Reject and delete skill
-5. Implement skill approval/rejection with toast notifications
-6. Handle edge cases (skill already deleted, network errors)
+   - `POST /instances/{instanceId}/skills/{skillId}/approve` - Approve/keep skill
+   - `DELETE /instances/{instanceId}/skills/{skillId}` - Reject/remove and delete skill
+5. Implement skill actions with appropriate toast notifications
+   - Saved + Approve: "Skill approved and ready to use"
+   - Saved + Reject: "Skill rejected and removed"
+   - Used + Keep: "Skill will continue to be used"
+   - Used + Remove: "Skill removed - agent will generate new code next time"
+6. Handle edge cases (skill already deleted, network errors, concurrent access)
 
 **Estimated Effort:** 1-2 weeks
 
 **Files to Create/Modify:**
-- `src/dotnet/Common/Constants/ContentArtifactTypeNames.cs` (add `SKILL_SAVED`)
+- `src/dotnet/Common/Constants/ContentArtifactTypeNames.cs` (add `SKILL_SAVED`, `SKILL_USED`)
 - `src/dotnet/CoreAPI/Controllers/SkillsController.cs` (NEW)
-- `src/ui/UserPortal/components/SkillSavedArtifact.vue` (NEW)
+- `src/ui/UserPortal/components/SkillArtifact.vue` (NEW - handles both types)
 - `src/ui/UserPortal/components/SkillReviewModal.vue` (NEW)
 - `src/ui/UserPortal/components/ChatMessage.vue` (update to render skill artifacts)
 - `src/ui/UserPortal/js/api.ts` (add skill API methods)
@@ -1152,12 +1273,13 @@ From the paper's evaluation:
 
 ---
 
-*Document Version: 1.2*
+*Document Version: 1.3*
 *Created: January 2025*
 *Last Updated: January 2025*
 *Status: Design Decisions Finalized*
 
 **Revision History:**
+- v1.3 (Jan 2025): Added `skill_used` content artifact for when existing skills are executed; users can review which skill was used and remove it if desired; updated Use Skill operation to return content artifact
 - v1.2 (Jan 2025): Added skill registration content artifact with User Portal review UI; users can approve/reject skills directly from conversation; added Phase 5 for User Portal implementation; added CoreAPI endpoints for skill review
 - v1.1 (Jan 2025): Finalized design decisions for skill scoping (agent-user), approval workflow (auto-approve by default, configurable), security (sandbox only), and backwards compatibility requirement
 - v1.0 (Jan 2025): Initial plan draft
