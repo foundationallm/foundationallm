@@ -1,4 +1,4 @@
-﻿namespace FoundationaLLM.Common.Constants
+namespace FoundationaLLM.Common.Constants
 {
     /// <summary>
     /// Core FoundationaLLM Cosmos DB container names.
@@ -59,5 +59,10 @@
         /// Stores objects managed by the FoundationaLLM.DataPipeline resource provider.
         /// </summary>
         public const string DataPipelines = "DataPipelines";
+
+        /// <summary>
+        /// Stores procedural memory skills for Code Interpreter.
+        /// </summary>
+        public const string Skills = "Skills";
     }
 }
