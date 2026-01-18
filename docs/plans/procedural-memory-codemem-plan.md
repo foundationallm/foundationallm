@@ -1273,6 +1273,406 @@ From the paper's evaluation:
 
 ---
 
+## 9. Manual Testing and Verification Guide
+
+This section provides step-by-step instructions to manually test and verify the procedural memory implementation.
+
+### 9.1 Prerequisites
+
+Before testing, ensure the following are in place:
+
+1. **Environment Setup**
+   - FoundationaLLM platform is deployed and running
+   - Core API, LangChain API, and Context API services are accessible
+   - Azure Blob Storage is configured for the Skill resource provider
+   - User Portal is accessible
+
+2. **Configuration**
+   - Add the Skill resource provider storage configuration:
+     ```json
+     "FoundationaLLM:ResourceProviders:Skill:Storage": {
+       "AccountName": "<your-storage-account>",
+       "ContainerName": "skills"
+     }
+     ```
+   - Register the Skill resource provider in the relevant APIs
+
+3. **Test User**
+   - Have a valid Entra ID user account for testing
+   - Note the user's UPN (e.g., `testuser@contoso.com`)
+
+---
+
+### 9.2 Test Case 1: Backwards Compatibility (Procedural Memory Disabled)
+
+**Objective:** Verify the Code Interpreter works exactly as before when procedural memory is not enabled.
+
+**Steps:**
+
+1. **Create or select an agent WITHOUT procedural memory**
+   - In Management Portal, create/edit an agent
+   - Ensure `procedural_memory_settings` is either:
+     - Not present in the agent configuration, OR
+     - Present with `enabled: false`
+   - Add the Code Interpreter tool to the agent
+
+2. **Start a conversation**
+   - Open User Portal
+   - Select the agent
+   - Start a new conversation
+
+3. **Test code execution**
+   - Send a message: *"Calculate the factorial of 10 using Python"*
+   - **Expected:** Agent generates Python code, executes it, returns result (3628800)
+   - **Verify:** No skill-related content artifacts appear in the response
+
+4. **Verify no skill operations available**
+   - Send a message: *"Search for factorial skills"*
+   - **Expected:** Agent treats this as a regular prompt, may generate code or respond conversationally
+   - **Verify:** No skill search is performed (backwards compatible behavior)
+
+**Pass Criteria:** Code Interpreter functions identically to pre-implementation behavior.
+
+---
+
+### 9.3 Test Case 2: Enable Procedural Memory on Agent
+
+**Objective:** Verify procedural memory can be enabled and configured on an agent.
+
+**Steps:**
+
+1. **Enable procedural memory on an agent**
+   - In Management Portal, edit the test agent
+   - Add procedural memory settings:
+     ```json
+     {
+       "procedural_memory_settings": {
+         "enabled": true,
+         "auto_register_skills": true,
+         "require_skill_approval": false,
+         "max_skills_per_user": 0,
+         "skill_search_threshold": 0.8,
+         "prefer_skills": true
+       }
+     }
+     ```
+   - Save the agent
+
+2. **Verify configuration saved**
+   - Reload the agent in Management Portal
+   - **Expected:** Procedural memory settings are persisted correctly
+
+3. **Verify API reflects changes**
+   - Call `GET /instances/{instanceId}/providers/FoundationaLLM.Agent/agents/{agentName}`
+   - **Expected:** Response includes `procedural_memory_settings` with correct values
+
+**Pass Criteria:** Agent configuration correctly saves and retrieves procedural memory settings.
+
+---
+
+### 9.4 Test Case 3: Register a New Skill
+
+**Objective:** Verify a user can register code as a reusable skill.
+
+**Steps:**
+
+1. **Start a conversation with the procedural-memory-enabled agent**
+   - Open User Portal
+   - Select the agent with procedural memory enabled
+   - Start a new conversation
+
+2. **Generate and execute code**
+   - Send: *"Write Python code to calculate compound interest given principal, rate, time, and compounding frequency"*
+   - **Expected:** Agent generates and executes Python code successfully
+
+3. **Register the code as a skill**
+   - Send: *"Save that code as a skill called 'compound_interest_calculator' with description 'Calculates compound interest with configurable compounding frequency'"*
+   - **Expected:** 
+     - Agent registers the skill
+     - Response includes a `skill_saved` content artifact
+     - Artifact shows skill name, description, and code
+
+4. **Verify skill_saved content artifact**
+   - In the User Portal response, locate the skill artifact
+   - **Expected fields:**
+     - `skill_name`: "compound_interest_calculator"
+     - `skill_description`: Contains the provided description
+     - `skill_code`: The Python code
+     - `skill_status`: "Active" (since `require_skill_approval` is false)
+   - **Expected UI:** Shows "Approve" and "Reject" buttons
+
+5. **Verify skill stored in resource provider**
+   - Call `GET /instances/{instanceId}/skills` (as the test user)
+   - **Expected:** Skill appears in the list with correct metadata
+
+**Pass Criteria:** Skill is registered, stored, and displayed in content artifact.
+
+---
+
+### 9.5 Test Case 4: Search for Skills
+
+**Objective:** Verify skill search functionality finds relevant skills.
+
+**Steps:**
+
+1. **Ensure at least one skill exists**
+   - Complete Test Case 3 first, or verify a skill exists for the test user/agent
+
+2. **Search for the skill**
+   - In a new or existing conversation, send:
+     *"Search for skills related to interest calculation"*
+   - **Expected:** Response lists matching skills with similarity scores
+
+3. **Search with no matches**
+   - Send: *"Search for skills related to image processing"*
+   - **Expected:** Response indicates no matching skills found
+
+4. **Verify scoping**
+   - Log in as a different user
+   - Search for the same skill
+   - **Expected:** Skill is NOT found (scoped to original user)
+
+**Pass Criteria:** Skill search returns appropriate results based on query and user scoping.
+
+---
+
+### 9.6 Test Case 5: Use an Existing Skill
+
+**Objective:** Verify a user can execute a previously saved skill.
+
+**Steps:**
+
+1. **Start with a registered skill**
+   - Ensure "compound_interest_calculator" skill exists from Test Case 3
+
+2. **Use the skill**
+   - Send: *"Use the compound_interest_calculator skill with principal=1000, rate=0.05, time=10, frequency=12"*
+   - **Expected:**
+     - Skill code executes with the provided parameters
+     - Result is returned (approximately $1647.01 for monthly compounding)
+     - Response includes a `skill_used` content artifact
+
+3. **Verify skill_used content artifact**
+   - Locate the skill artifact in the response
+   - **Expected fields:**
+     - `skill_name`: "compound_interest_calculator"
+     - `skill_code`: The stored Python code
+     - `execution_count`: Incremented from previous value
+   - **Expected UI:** Shows "Approve" (keep) and "Reject" (remove) buttons
+
+4. **Verify execution count updated**
+   - Call `GET /instances/{instanceId}/skills/{skillId}`
+   - **Expected:** `execution_count` has increased by 1
+
+**Pass Criteria:** Skill executes correctly and returns skill_used artifact.
+
+---
+
+### 9.7 Test Case 6: Skill Approval Workflow
+
+**Objective:** Verify skill approval workflow when `require_skill_approval` is enabled.
+
+**Steps:**
+
+1. **Enable approval requirement**
+   - Update agent configuration:
+     ```json
+     {
+       "procedural_memory_settings": {
+         "enabled": true,
+         "require_skill_approval": true
+       }
+     }
+     ```
+
+2. **Register a new skill**
+   - Send: *"Save this code as a skill called 'pending_test_skill': print('Hello World')"*
+   - **Expected:**
+     - Skill is created with status "PendingApproval"
+     - Content artifact shows pending status
+     - Message indicates skill is pending approval
+
+3. **Verify skill cannot be used**
+   - Send: *"Use the pending_test_skill skill"*
+   - **Expected:** Error or message indicating skill is not active
+
+4. **Approve the skill via User Portal**
+   - Click "Approve" button on the skill_saved artifact
+   - OR call `POST /instances/{instanceId}/skills/{skillId}/approve`
+   - **Expected:** Skill status changes to "Active"
+
+5. **Verify skill is now usable**
+   - Send: *"Use the pending_test_skill skill"*
+   - **Expected:** Skill executes successfully
+
+**Pass Criteria:** Approval workflow correctly gates skill availability.
+
+---
+
+### 9.8 Test Case 7: Reject/Delete a Skill
+
+**Objective:** Verify users can reject and remove skills.
+
+**Steps:**
+
+1. **Create a test skill**
+   - Register a skill called "skill_to_delete"
+
+2. **Reject via content artifact**
+   - On the skill_saved or skill_used artifact, click "Reject"
+   - **Expected:** Confirmation prompt appears
+
+3. **Confirm rejection**
+   - Confirm the rejection
+   - **Expected:** 
+     - Skill is deleted from storage
+     - Success message displayed
+
+4. **Verify skill removed**
+   - Call `GET /instances/{instanceId}/skills`
+   - **Expected:** "skill_to_delete" no longer appears
+
+5. **Alternative: Reject via API**
+   - Create another skill "skill_to_delete_via_api"
+   - Call `DELETE /instances/{instanceId}/skills/{skillId}`
+   - **Expected:** 200 OK with success message
+
+**Pass Criteria:** Skills can be rejected/deleted via UI and API.
+
+---
+
+### 9.9 Test Case 8: Skill Scoping (Agent-User Combination)
+
+**Objective:** Verify skills are correctly scoped to agent-user combination.
+
+**Steps:**
+
+1. **Create skill with User A on Agent 1**
+   - Log in as User A
+   - Use Agent 1 (procedural memory enabled)
+   - Register skill "user_a_agent_1_skill"
+
+2. **Verify User A can access on Agent 1**
+   - Search for the skill
+   - **Expected:** Skill is found
+
+3. **Verify User A cannot access on Agent 2**
+   - Switch to Agent 2 (also procedural memory enabled)
+   - Search for "user_a_agent_1_skill"
+   - **Expected:** Skill is NOT found (different agent)
+
+4. **Verify User B cannot access User A's skill**
+   - Log in as User B
+   - Use Agent 1
+   - Search for "user_a_agent_1_skill"
+   - **Expected:** Skill is NOT found (different user)
+
+5. **Verify User B can create own skill**
+   - Register skill "user_b_agent_1_skill"
+   - **Expected:** Skill is created successfully
+
+6. **Verify both users' skills exist independently**
+   - Check storage: both skills should exist with different `owner_user_id` values
+
+**Pass Criteria:** Skills are isolated by agent-user combination.
+
+---
+
+### 9.10 Test Case 9: CoreAPI Skills Endpoints
+
+**Objective:** Verify all SkillsController API endpoints function correctly.
+
+**Steps:**
+
+1. **GET /instances/{instanceId}/skills**
+   - Call the endpoint as an authenticated user
+   - **Expected:** Returns list of user's skills (empty or populated)
+
+2. **GET /instances/{instanceId}/skills?agentObjectId={id}**
+   - Call with agent filter
+   - **Expected:** Returns only skills for that agent
+
+3. **GET /instances/{instanceId}/skills/{skillId}**
+   - Call with a valid skill ID
+   - **Expected:** Returns skill details
+   - Call with another user's skill ID
+   - **Expected:** 403 Forbidden
+
+4. **POST /instances/{instanceId}/skills/{skillId}/approve**
+   - Call on a PendingApproval skill
+   - **Expected:** Skill status becomes Active
+   - Call on already Active skill
+   - **Expected:** 400 Bad Request (not pending)
+
+5. **DELETE /instances/{instanceId}/skills/{skillId}**
+   - Call on own skill
+   - **Expected:** Skill deleted, 200 OK
+   - Call on another user's skill
+   - **Expected:** 403 Forbidden
+
+**Pass Criteria:** All API endpoints return correct responses and enforce authorization.
+
+---
+
+### 9.11 Test Case 10: Error Handling
+
+**Objective:** Verify graceful error handling in edge cases.
+
+**Steps:**
+
+1. **Use non-existent skill**
+   - Send: *"Use the skill called 'nonexistent_skill_12345'"*
+   - **Expected:** Clear error message, no crash
+
+2. **Register skill with invalid code**
+   - Send: *"Save this as a skill: this is not valid python code {{{"*
+   - **Expected:** Error during registration or execution, graceful handling
+
+3. **Register duplicate skill name**
+   - Register "duplicate_test" skill
+   - Try to register another "duplicate_test" skill
+   - **Expected:** Either overwrites (version increment) or returns conflict error
+
+4. **Skill execution timeout**
+   - Register a skill with an infinite loop: `while True: pass`
+   - Try to use the skill
+   - **Expected:** Execution times out gracefully, error message returned
+
+5. **Resource provider unavailable**
+   - (If possible) Disable Skill resource provider
+   - Try skill operations
+   - **Expected:** 503 Service Unavailable with clear message
+
+**Pass Criteria:** All error cases handled gracefully with informative messages.
+
+---
+
+### 9.12 Verification Checklist
+
+Use this checklist to confirm all functionality:
+
+| Test | Status | Notes |
+|------|--------|-------|
+| Backwards compatibility (PM disabled) | ☐ | |
+| Enable procedural memory on agent | ☐ | |
+| Register new skill | ☐ | |
+| skill_saved content artifact displays | ☐ | |
+| Search for skills | ☐ | |
+| Use existing skill | ☐ | |
+| skill_used content artifact displays | ☐ | |
+| Approval workflow (when enabled) | ☐ | |
+| Reject skill via UI | ☐ | |
+| Reject skill via API | ☐ | |
+| Skill scoping by user | ☐ | |
+| Skill scoping by agent | ☐ | |
+| GET /skills endpoint | ☐ | |
+| GET /skills/{id} endpoint | ☐ | |
+| POST /skills/{id}/approve endpoint | ☐ | |
+| DELETE /skills/{id} endpoint | ☐ | |
+| Error handling | ☐ | |
+
+---
+
 *Document Version: 2.0*
 *Created: January 2025*
 *Last Updated: January 2025*
