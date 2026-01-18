@@ -16,6 +16,8 @@ items:
   href: development-approach.md
 - name: Local Development Environment
   href: development-local.md
+- name: User Portal to Dynamic Sessions Call Stack
+  href: user-portal-python-dynamic-sessions-call-stack.md
 - name: Contributing
   href: contributing/index.md
   items:
