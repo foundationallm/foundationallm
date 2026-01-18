@@ -1647,6 +1647,198 @@ Before testing, ensure the following are in place:
 
 ---
 
+---
+
+## 10. Storage Options Analysis
+
+The current implementation creates a new Skill resource provider with its own storage configuration. However, to minimize configuration overhead, we can leverage existing storage infrastructure. This section analyzes the available options.
+
+### 10.1 Option A: Store Skills in Cosmos DB (Recommended)
+
+**Approach:** Add skill storage to the existing `IAzureCosmosDBService` interface, similar to how Attachments and Agent Files are already stored.
+
+**Implementation:**
+1. Add a new `SkillReference` model (similar to `AttachmentReference`)
+2. Add methods to `IAzureCosmosDBService`:
+   - `GetSkillAsync(string upn, string agentObjectId, string skillId)`
+   - `GetSkillsAsync(string upn, string agentObjectId)` 
+   - `UpsertSkillAsync(SkillReference skill)`
+   - `DeleteSkillAsync(SkillReference skill)`
+   - `SearchSkillsAsync(string upn, string agentObjectId, ReadOnlyMemory<float> embedding, double minSimilarity)`
+
+3. Store skills in a `skills` container with partition key `/{upn}/{agentObjectId}`
+
+**Pros:**
+- Uses existing Cosmos DB already configured for Core API
+- Supports vector search for semantic skill discovery (already has `CreateVectorSearchContainerAsync`)
+- Follows established patterns (Attachments, Agent Files use same approach)
+- No new storage account configuration required
+- User-scoped data naturally partitioned by UPN
+
+**Cons:**
+- Requires changes to `IAzureCosmosDBService` and `AzureCosmosDBService`
+- Skills not managed through resource provider pattern
+
+**Required Changes:**
+```csharp
+// Add to IAzureCosmosDBService.cs
+Task<SkillReference?> GetSkillAsync(string upn, string agentObjectId, string id, CancellationToken cancellationToken = default);
+Task<List<SkillReference>> GetSkillsAsync(string upn, string agentObjectId, CancellationToken cancellationToken = default);
+Task UpsertSkillAsync(SkillReference skill, CancellationToken cancellationToken = default);
+Task DeleteSkillAsync(SkillReference skill, CancellationToken cancellationToken = default);
+Task<List<SkillSearchResult>> SearchSkillsAsync(string upn, string agentObjectId, ReadOnlyMemory<float> embedding, double minSimilarity, CancellationToken cancellationToken = default);
+```
+
+---
+
+### 10.2 Option B: Add Skills as Agent Resource Provider Sub-Resource
+
+**Approach:** Add `skills` as a new resource type under the existing `FoundationaLLM.Agent` resource provider.
+
+**Implementation:**
+1. Add `AgentResourceTypeNames.Skills = "skills"`
+2. Extend `AgentResourceProviderMetadata` with skills resource type
+3. Store skills in the existing Agent provider blob storage
+4. Skills accessed via `/instances/{id}/providers/FoundationaLLM.Agent/agents/{agentName}/skills/{skillId}`
+
+**Pros:**
+- Uses existing Agent resource provider storage (no new config)
+- Follows resource provider pattern
+- Skills naturally associated with agents
+
+**Cons:**
+- Skills conceptually belong to users, not agents
+- Requires modifying Agent resource provider (more complex)
+- Agent provider storage is agent-centric, not user-centric
+- Would need custom logic for user-scoping within agent storage
+
+**Required Changes:**
+- Modify `AgentResourceTypeNames.cs`
+- Modify `AgentResourceProviderMetadata.cs`
+- Modify `AgentResourceProviderService.cs` (significant changes)
+
+---
+
+### 10.3 Option C: Use Context Resource Provider Storage
+
+**Approach:** Store skills using the Context resource provider's storage, since Context already handles code-related resources.
+
+**Implementation:**
+1. Add `ContextResourceTypeNames.Skills = "skills"`
+2. Extend Context provider to handle skill resources
+3. Use existing Context provider blob storage
+
+**Pros:**
+- Context already handles code session data
+- Conceptual alignment (code-related resources)
+- No new storage configuration
+
+**Cons:**
+- Context focuses on knowledge units/sources, not procedural skills
+- Would mix unrelated resource types
+- Context provider may not be deployed in all configurations
+
+---
+
+### 10.4 Option D: Store Skills in User Profile (Cosmos DB)
+
+**Approach:** Extend the existing user profile/data storage in Cosmos DB to include skills.
+
+**Implementation:**
+1. Add `Skills` property to `UserData` model
+2. Skills stored as part of user's data document
+3. Access via existing `GetUserDataAsync` / `UpsertUserDataAsync`
+
+**Pros:**
+- No new storage configuration
+- User-centric storage (natural fit for user-owned skills)
+- Very simple implementation
+
+**Cons:**
+- Limited scalability (all skills in one document)
+- No vector search capability for semantic matching
+- Document size limits could be hit with many skills
+- Not suitable for large code blocks
+
+---
+
+### 10.5 Recommendation
+
+**Option A (Cosmos DB with dedicated container)** is recommended for the following reasons:
+
+1. **Vector Search Support:** Cosmos DB vector search is already configured and can be used for semantic skill discovery
+2. **Scalability:** Dedicated container scales independently
+3. **Existing Pattern:** Follows the same pattern as Attachments and Agent Files
+4. **No New Configuration:** Uses the existing Core API Cosmos DB connection
+5. **Natural Partitioning:** Partition by `{upn}/{agentObjectId}` for efficient queries
+
+**Migration Path from Current Implementation:**
+
+1. Remove the separate Skill resource provider project
+2. Add skill methods to `IAzureCosmosDBService`
+3. Implement skill storage in `AzureCosmosDBService`
+4. Update `SkillsController` to use Cosmos DB service directly
+5. Update Python code interpreter to call Core API skill endpoints
+6. Remove skill storage configuration from `AppConfigurationKeySections`
+
+**Storage Schema:**
+```json
+{
+  "id": "compound_interest_MAA-02_user@example.com",
+  "type": "skill",
+  "upn": "user@example.com",
+  "agentObjectId": "/instances/abc/providers/FoundationaLLM.Agent/agents/MAA-02",
+  "name": "compound_interest_calculator",
+  "description": "Calculates compound interest...",
+  "code": "def calculate_compound_interest(...):\n    ...",
+  "status": "Active",
+  "executionCount": 15,
+  "successRate": 0.98,
+  "embedding": [0.123, -0.456, ...],
+  "createdOn": "2025-01-17T10:00:00Z",
+  "updatedOn": "2025-01-17T12:00:00Z"
+}
+```
+
+---
+
+### 10.6 Implementation Steps for Option A
+
+1. **Create SkillReference model** (in Common project):
+```csharp
+public class SkillReference
+{
+    public string Id { get; set; }
+    public string Type { get; set; } = "skill";
+    public string UPN { get; set; }
+    public string AgentObjectId { get; set; }
+    public string Name { get; set; }
+    public string Description { get; set; }
+    public string Code { get; set; }
+    public SkillStatus Status { get; set; }
+    public int ExecutionCount { get; set; }
+    public double SuccessRate { get; set; }
+    public float[]? Embedding { get; set; }
+    public DateTimeOffset CreatedOn { get; set; }
+    public DateTimeOffset UpdatedOn { get; set; }
+}
+```
+
+2. **Add methods to IAzureCosmosDBService** (interface changes)
+
+3. **Implement in AzureCosmosDBService** (Core project)
+
+4. **Update SkillsController** to inject `IAzureCosmosDBService` instead of resource provider
+
+5. **Create Cosmos DB container** via configuration or startup:
+   - Container name: `skills`
+   - Partition key: `/upn`
+   - Vector index on `/embedding` property
+
+6. **Remove Skill resource provider** files and configuration
+
+---
+
 ### 9.12 Verification Checklist
 
 Use this checklist to confirm all functionality:
