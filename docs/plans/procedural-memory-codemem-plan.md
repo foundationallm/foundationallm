@@ -22,9 +22,11 @@ This document outlines a plan to add procedural memory capabilities to Foundatio
 4. [Design Decisions](#4-design-decisions)
 5. [Data Model](#5-data-model)
 6. [API Design](#6-api-design)
-7. [Implementation Phases](#7-implementation-phases)
-8. [Alternative Approaches](#8-alternative-approaches)
-
+7. [Management Portal Configuration UI](#7-management-portal-configuration-ui)
+8. [Implementation Phases](#8-implementation-phases)
+9. [Alternative Approaches](#9-alternative-approaches)
+10. [Manual Testing and Verification Guide](#10-manual-testing-and-verification-guide)
+11. [Storage Options Analysis](#11-storage-options-analysis)
 ---
 
 ## 1. CodeMem Architecture Overview
@@ -119,6 +121,33 @@ public class AgentTool
 }
 ```
 
+#### 2.2.1 Code Interpreter Tool Properties
+
+The Code Interpreter tool currently uses these properties in the Management Portal:
+
+| Property Name | Type | Description |
+|---------------|------|-------------|
+| `code_session_required` | `bool` | Whether the tool requires a code session |
+| `code_session_endpoint_provider` | `string` | The code session endpoint provider name |
+| `code_session_language` | `string` | The programming language (e.g., "python") |
+
+**Example Tool Configuration:**
+```json
+{
+  "name": "code-interpreter",
+  "description": "Execute Python code in a sandboxed environment",
+  "package_name": "foundationallm_agent_plugins",
+  "class_name": "FoundationaLLMCodeInterpreterTool",
+  "properties": {
+    "code_session_required": true,
+    "code_session_endpoint_provider": "AzureContainerAppsCustomContainer",
+    "code_session_language": "Python"
+  }
+}
+```
+
+**Management Portal UI:** These properties are configured in the "Configure Tool" dialog when adding or editing the Code Interpreter tool on an agent.
+
 ---
 
 ## 3. Proposed Implementation
@@ -136,13 +165,16 @@ The goal is to add procedural memory with minimal platform changes. The proposed
 │      │                                                                   │
 │      ├─► FoundationaLLMCodeInterpreterTool (ENHANCED)                    │
 │      │      │                                                            │
-│      │      ├─► search_skills() - Find relevant skills                   │
-│      │      ├─► execute_skill() - Run a saved skill                      │
-│      │      └─► register_skill() - Save code as skill                    │
+│      │      │ User provides prompt                                       │
+│      │      │                                                            │
+│      │      ├─► INTERNAL: Search for relevant skills                     │
+│      │      ├─► INTERNAL: Use skill if found and suitable                 │
+│      │      ├─► INTERNAL: Generate new code if no skill found             │
+│      │      └─► INTERNAL: Register successful code as skill (optional)    │
 │      │                                                                   │
 │      └─► (Existing tools: Knowledge, KQL, SQL, etc.)                     │
 │                                                                          │
-│   NEW: Skill Resource Provider                                           │
+│   NEW: Skill Storage (Cosmos DB via Core API)                            │
 │      │                                                                   │
 │      ├─► Store skill definitions (code + metadata)                       │
 │      ├─► Skill search via embedding similarity                           │
@@ -153,33 +185,32 @@ The goal is to add procedural memory with minimal platform changes. The proposed
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
+**Key Design Principle:** The Code Interpreter Tool manages skill operations internally. The agent simply provides a prompt, and the tool autonomously decides whether to search for skills, use existing skills, generate new code, or register successful code as a skill. This keeps the tool interface simple and backwards-compatible.
+
+**Important:** Even though skill operations are internal, the tool still returns content artifacts (`skill_saved` and `skill_used`) that allow users to review, approve, or reject skills directly from the User Portal. This provides transparency and user control over the skill library.
+
 ### 3.2 Key Design Decisions
 
-#### Option A: Extend Code Interpreter Tool (Recommended)
+#### Internal Skill Management (Selected Approach)
 
-Add skill management methods directly to `FoundationaLLMCodeInterpreterTool`:
+The Code Interpreter Tool handles all skill operations internally. When procedural memory is enabled, the tool:
 
-**Pros:**
-- Minimal new components
-- Natural integration with existing code execution flow
-- Agent can seamlessly switch between generating new code and using skills
+1. **Automatically searches for relevant skills** when given a prompt
+2. **Uses a skill if found** and the similarity exceeds the threshold
+3. **Generates new code** if no suitable skill is found
+4. **Optionally registers successful code** as a skill after execution
 
-**Cons:**
-- Larger tool surface area
+**Key Benefits:**
+- **Simple interface**: Agent only needs to provide a prompt (backwards compatible)
+- **Autonomous decision-making**: Tool decides when to use skills vs. generate code
+- **No agent orchestration required**: Agent doesn't need to explicitly call search/use/register operations
+- **Backwards compatible**: When procedural memory is disabled, tool works exactly as before
 
-#### Option B: Separate Skill Tool
-
-Create a new `FoundationaLLMSkillTool` alongside the code interpreter:
-
-**Pros:**
-- Clean separation of concerns
-- Can be used independently
-
-**Cons:**
-- More components to maintain
-- Context overhead (two tools instead of one)
-
-**Recommendation:** Option A - Extend the existing code interpreter tool, as it keeps the agent's tool set lean and provides a natural workflow.
+**Implementation:**
+- Tool interface remains unchanged: `prompt` and `file_names` parameters only
+- Skill operations (`search_skills`, `use_skill`, `register_skill`) are internal methods
+- Tool uses procedural memory settings to determine behavior
+- Agent prompt doesn't need to mention skill operations (tool handles them automatically)
 
 ### 3.3 Backwards Compatibility Requirement
 
@@ -187,27 +218,36 @@ Create a new `FoundationaLLMSkillTool` alongside the code interpreter:
 
 **Implementation Strategy:**
 1. All skill-related operations are gated by checking `procedural_memory_settings.enabled`
-2. If disabled, the tool ignores any skill-related parameters and executes code directly
-3. The default `operation` value of `"execute"` ensures existing integrations work unchanged
-4. No new required parameters are added to the tool interface
+2. If disabled, the tool executes code directly (original behavior)
+3. **No new parameters are added to the tool interface** - only `prompt` and `file_names` (existing parameters)
+4. Skill operations are internal implementation details, not exposed in the tool interface
 
 ```python
 # Backwards compatibility check in the tool
-async def _arun(self, prompt, file_names=[], operation="execute", ...):
+async def _arun(self, prompt, file_names=[]):
     # Check if procedural memory is enabled for this agent
     procedural_memory_enabled = self._get_procedural_memory_enabled()
     
-    if not procedural_memory_enabled or operation == "execute":
+    if not procedural_memory_enabled:
         # Original behavior - generate and execute code
         return await self._execute_code(prompt, file_names)
     
-    # Procedural memory operations only if enabled
-    if operation == "search_skills":
-        return await self._search_skills(prompt)
-    elif operation == "use_skill":
-        return await self._use_skill(skill_name, skill_parameters, file_names)
-    elif operation == "register_skill":
-        return await self._register_skill(skill_name, skill_description, prompt)
+    # Procedural memory enabled - internal skill management
+    # 1. Search for relevant skills
+    matching_skills = await self._search_skills_internal(prompt)
+    
+    # 2. Use skill if found and similarity > threshold
+    if matching_skills and matching_skills[0]['similarity'] > threshold:
+        return await self._use_skill_internal(matching_skills[0], prompt, file_names)
+    
+    # 3. Generate and execute new code
+    result = await self._execute_code(prompt, file_names)
+    
+    # 4. Optionally register successful code as skill
+    if result.successful and auto_register_enabled:
+        await self._register_skill_internal(prompt, result.code)
+    
+    return result
 ```
 
 ### 3.4 Component Overview
@@ -325,7 +365,7 @@ so I can help you with similar requests faster in the future.
 
 ### 4.6 Skill Registration Content Artifact with User Review
 
-**Decision:** When a skill is registered, the tool returns a **new content artifact type (`skill_saved`)** that allows users to review and approve/reject the skill directly from the User Portal.
+**Decision:** When a skill is registered (even though registration is handled internally by the tool), the tool returns a **new content artifact type (`skill_saved`)** that allows users to review and approve/reject the skill directly from the User Portal.
 
 **Rationale:**
 - Provides transparency to users about what code is being saved on their behalf
@@ -340,7 +380,7 @@ so I can help you with similar requests faster in the future.
 │                    Skill Registration UX Flow                            │
 ├─────────────────────────────────────────────────────────────────────────┤
 │                                                                          │
-│  1. Agent registers a skill                                              │
+│  1. Tool internally registers a skill (after successful code execution)  │
 │     └─► Tool returns content artifact (type: skill_saved)               │
 │                                                                          │
 │  2. User Portal displays artifact in conversation                        │
@@ -397,7 +437,7 @@ ContentArtifact(
 
 ### 4.7 Skill Used Content Artifact with User Review
 
-**Decision:** When an existing skill is used, the tool returns a **`skill_used` content artifact** that allows users to see which skill was executed and approve or reject it.
+**Decision:** When an existing skill is used (even though skill usage is handled internally by the tool), the tool returns a **`skill_used` content artifact** that allows users to see which skill was executed and approve or reject it.
 
 **Rationale:**
 - Provides transparency when the agent uses learned skills
@@ -412,7 +452,7 @@ ContentArtifact(
 │                    Skill Used UX Flow                                    │
 ├─────────────────────────────────────────────────────────────────────────┤
 │                                                                          │
-│  1. Agent uses an existing skill                                         │
+│  1. Tool internally uses an existing skill (found via search)           │
 │     └─► Tool returns content artifact (type: skill_used)                │
 │                                                                          │
 │  2. User Portal displays artifact in conversation                        │
@@ -695,19 +735,75 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
 }
 ```
 
-### 5.3 Add to AgentBase
+### 5.3 Procedural Memory Settings in Tool Properties
+
+**Decision:** Procedural memory settings are stored as a tool property on the Code Interpreter tool, not on the agent itself. This keeps skill learning configuration scoped to the specific tool.
+
+**Implementation:** Add a new tool property `procedural_memory_settings` that contains a JSON object with the procedural memory configuration.
+
+#### 5.3.1 Tool Property Structure
+
+```json
+{
+  "name": "code-interpreter",
+  "description": "Execute Python code in a sandboxed environment",
+  "package_name": "foundationallm_agent_plugins",
+  "class_name": "FoundationaLLMCodeInterpreterTool",
+  "properties": {
+    "code_session_required": true,
+    "code_session_endpoint_provider": "ContextAPI",
+    "code_session_language": "python",
+    "procedural_memory_settings": {
+      "enabled": true,
+      "auto_register_skills": true,
+      "require_skill_approval": false,
+      "max_skills_per_user": 0,
+      "skill_search_threshold": 0.8,
+      "prefer_skills": true
+    }
+  }
+}
+```
+
+#### 5.3.2 Tool Property Constant
+
+Add a constant for the new property name:
 
 ```csharp
-// Add to src/dotnet/Common/Models/ResourceProviders/Agent/AgentBase.cs
+// Add to src/dotnet/Common/Constants/Agents/AgentToolPropertyNames.cs
 
 /// <summary>
-/// Configuration for procedural memory capabilities (skill learning).
-/// When null or when Enabled is false, the Code Interpreter tool works in 
-/// backwards-compatible mode without any skill functionality.
+/// Procedural memory settings for the Code Interpreter tool.
+/// Contains a JSON object with ProceduralMemorySettings configuration.
 /// </summary>
-[JsonPropertyName("procedural_memory_settings")]
-public ProceduralMemorySettings? ProceduralMemorySettings { get; set; }
+public const string ProceduralMemorySettings = "procedural_memory_settings";
 ```
+
+#### 5.3.3 Tool Reading Settings
+
+The `FoundationaLLMCodeInterpreterTool` reads procedural memory settings from tool properties:
+
+```python
+# In FoundationaLLMCodeInterpreterTool.__init__()
+def _get_procedural_memory_settings(self) -> Optional[Dict[str, Any]]:
+    """Get procedural memory settings from tool properties."""
+    if not self.tool_config or not self.tool_config.properties:
+        return None
+    
+    # Get procedural_memory_settings from tool properties
+    pm_settings_json = self.tool_config.properties.get('procedural_memory_settings')
+    if not pm_settings_json:
+        return None
+    
+    # Parse JSON if it's a string, otherwise use directly
+    if isinstance(pm_settings_json, str):
+        import json
+        pm_settings_json = json.loads(pm_settings_json)
+    
+    return pm_settings_json
+```
+
+**Note:** The `ProceduralMemorySettings` class on `AgentBase` (Section 5.2) is kept for reference but is not used. Settings come from tool properties instead.
 
 ### 5.4 Content Artifact Types for Skills
 
@@ -740,137 +836,115 @@ class ContentArtifactTypeNames:
 
 ## 6. API Design
 
-### 6.1 Enhanced Code Interpreter Tool Interface
+### 6.1 Code Interpreter Tool Interface (Simplified)
 
-The enhanced code interpreter will support these operations:
+The code interpreter tool maintains a simple interface - skill operations are handled internally:
 
 ```python
 # src/python/plugins/agent_core/pkg/foundationallm_agent_plugins/tools/foundationallm_code_interpreter_tool.py
 
 class FoundationaLLMCodeInterpreterToolInput(BaseModel):
-    """Input schema for the enhanced code interpreter tool."""
+    """Input schema for the code interpreter tool.
     
-    # Existing parameters
+    When procedural memory is enabled, the tool automatically:
+    - Searches for relevant skills
+    - Uses skills if found and suitable
+    - Generates new code if no skill found
+    - Optionally registers successful code as a skill
+    """
+    
+    # Existing parameters (unchanged for backwards compatibility)
     prompt: str = Field(description="The task description or code to execute")
     file_names: Optional[List[str]] = Field(default=[], description="Files to make available")
     
-    # NEW: Skill-related parameters
-    operation: str = Field(
-        default="execute",
-        description="Operation: 'execute' (run code), 'search_skills' (find skills), 'use_skill' (run a skill), 'register_skill' (save code as skill)"
-    )
-    skill_name: Optional[str] = Field(default=None, description="Name of skill to use or register")
-    skill_description: Optional[str] = Field(default=None, description="Description for skill registration")
-    skill_parameters: Optional[Dict[str, Any]] = Field(default=None, description="Parameters to pass to a skill")
+    # Note: No skill-related parameters exposed in the interface
+    # Skill operations (search, use, register) are internal implementation details
 ```
 
-### 6.2 Tool Operations
+**Key Design:** The tool interface remains unchanged. Skill management is an internal implementation detail that doesn't affect the tool's external API.
 
-#### Search Skills
+**User Review via Content Artifacts:** Even though skill operations are internal, the tool returns content artifacts (`skill_saved` when a skill is registered, `skill_used` when a skill is executed) that enable users to review, approve, or reject skills directly from the User Portal. This provides transparency and user control without requiring the agent to explicitly manage skill operations.
+
+### 6.2 Tool Internal Flow (When Procedural Memory Enabled)
+
+The tool handles skill operations internally. The agent simply provides a prompt:
+
+#### Example: Agent Calls Tool
 ```python
-# Agent calls tool with:
+# Agent calls tool with (simple interface):
 {
-    "operation": "search_skills",
-    "prompt": "calculate monthly revenue growth from sales data"
-}
-
-# Returns:
-{
-    "skills": [
-        {
-            "name": "calculate_revenue_growth",
-            "description": "Calculates month-over-month revenue growth percentage",
-            "similarity": 0.92,
-            "parameters": [
-                {"name": "data_file", "type": "str", "description": "Path to CSV with sales data"},
-                {"name": "date_column", "type": "str", "description": "Name of date column"}
-            ]
-        }
-    ]
-}
-```
-
-#### Use Skill
-```python
-# Agent calls tool with:
-{
-    "operation": "use_skill",
-    "skill_name": "calculate_revenue_growth",
-    "skill_parameters": {
-        "data_file": "sales_2024.csv",
-        "date_column": "transaction_date"
-    },
+    "prompt": "calculate monthly revenue growth from sales data",
     "file_names": ["sales_2024.csv"]
 }
+```
 
-# Returns: Execution results + Content Artifact for User Portal review
-# Text response (same as regular code execution):
+#### Internal Tool Flow
+
+**Step 1: Search for Skills (Internal)**
+```python
+# Tool internally searches for relevant skills
+matching_skills = await self._search_skills_internal("calculate monthly revenue growth from sales data")
+# Returns: [{"name": "calculate_revenue_growth", "similarity": 0.92, ...}]
+```
+
+**Step 2: Use Skill if Found (Internal)**
+```python
+# If similarity > threshold (e.g., 0.8), tool uses the skill
+if matching_skills[0]['similarity'] > 0.8:
+    result = await self._use_skill_internal(matching_skills[0], prompt, file_names)
+    # Returns execution results + skill_used content artifact
+```
+
+**Step 3: Generate Code if No Skill (Internal)**
+```python
+# If no suitable skill found, tool generates new code
+if not matching_skills or matching_skills[0]['similarity'] <= 0.8:
+    result = await self._execute_code(prompt, file_names)
+    # Standard code generation and execution
+```
+
+**Step 4: Register Successful Code (Internal, Optional)**
+```python
+# After successful execution, tool may register code as skill
+if result.successful and auto_register_enabled:
+    registration_result = await self._register_skill_internal(prompt, result.code, result.description)
+    # Returns skill_saved content artifact which is merged into the tool result
+    # This allows users to review and approve/reject the skill in the User Portal
+    result.content_artifacts.extend(registration_result.content_artifacts)
+```
+
+#### Tool Response (Same for All Cases)
+
+The tool returns a consistent response format regardless of whether it used a skill or generated new code:
+
+```python
+# Text response (execution results):
 "The monthly revenue growth rates are: Jan: 5.2%, Feb: -1.3%, Mar: 8.7%..."
 
-# Content Artifact (included in tool result):
-ContentArtifact(
-    id="skill_used",
-    title="Skill Used: calculate_revenue_growth",
-    type="skill_used",
-    filepath="/instances/{id}/providers/FoundationaLLM.Skill/skills/calculate_revenue_growth_MAA-02_user",
-    metadata={
-        "skill_object_id": "/instances/{id}/providers/FoundationaLLM.Skill/skills/calculate_revenue_growth_MAA-02_user",
-        "skill_name": "calculate_revenue_growth",
-        "skill_description": "Calculates month-over-month revenue growth percentage from sales data",
-        "skill_code": "def calculate_revenue_growth(data_file: str, date_column: str) -> dict:\n    ...",
-        "skill_status": "Active",
-        "execution_count": 48,
-        "success_rate": 0.98,
-        "agent_object_id": "/instances/{id}/providers/FoundationaLLM.Agent/agents/MAA-02",
-        "user_id": "zoinertejada@foundationallm.ai"
-    }
-)
+# Content Artifacts (if skill was used or registered):
+[
+    ContentArtifact(
+        id="skill_used",  # or "skill_saved"
+        title="Skill Used: calculate_revenue_growth",
+        type="skill_used",
+        filepath="calculate_revenue_growth_MAA-02_user",
+        metadata={
+            "skill_name": "calculate_revenue_growth",
+            "skill_description": "Calculates month-over-month revenue growth...",
+            "skill_code": "def calculate_revenue_growth(...):\n    ...",
+            "skill_status": "Active",
+            "execution_count": 48,
+            "success_rate": 0.98,
+            ...
+        }
+    )
+]
 ```
 
-The content artifact allows users to see which skill was used and remove it if desired (see Section 4.7).
-
-#### Register Skill
-```python
-# Agent calls tool with:
-{
-    "operation": "register_skill",
-    "skill_name": "calculate_revenue_growth",
-    "skill_description": "Calculates month-over-month revenue growth percentage from sales data",
-    "prompt": '''
-def calculate_revenue_growth(data_file: str, date_column: str) -> dict:
-    """Calculate month-over-month revenue growth."""
-    import pandas as pd
-    df = pd.read_csv(data_file)
-    df[date_column] = pd.to_datetime(df[date_column])
-    monthly = df.groupby(df[date_column].dt.to_period('M'))['revenue'].sum()
-    growth = monthly.pct_change() * 100
-    return {"growth_rates": growth.to_dict()}
-'''
-}
-
-# Returns: Text response + Content Artifact for User Portal review
-# Text response:
-"Skill 'calculate_revenue_growth' has been saved and is ready to use."
-
-# Content Artifact (included in tool result):
-ContentArtifact(
-    id="skill_saved",
-    title="Skill Saved: calculate_revenue_growth",
-    type="skill_saved",
-    filepath="/instances/{id}/providers/FoundationaLLM.Skill/skills/calculate_revenue_growth_MAA-02_user",
-    metadata={
-        "skill_object_id": "/instances/{id}/providers/FoundationaLLM.Skill/skills/calculate_revenue_growth_MAA-02_user",
-        "skill_name": "calculate_revenue_growth",
-        "skill_description": "Calculates month-over-month revenue growth percentage from sales data",
-        "skill_code": "def calculate_revenue_growth(data_file: str, date_column: str) -> dict:\n    ...",
-        "skill_status": "Active",
-        "agent_object_id": "/instances/{id}/providers/FoundationaLLM.Agent/agents/MAA-02",
-        "user_id": "zoinertejada@foundationallm.ai"
-    }
-)
-```
-
-The content artifact allows users to review and approve/reject the skill directly from the User Portal conversation view (see Section 4.6).
+**Key Points:**
+1. The agent doesn't need to know whether a skill was used or new code was generated. The tool handles this internally.
+2. **Content artifacts are always returned** when skills are used or registered, allowing users to review and approve/reject skills in the User Portal (see Sections 4.6 and 4.7).
+3. The User Portal displays these artifacts with "Approve/Reject" or "Keep/Remove" buttons for user control.
 
 ### 6.3 Skill Resource Provider API
 
@@ -999,7 +1073,234 @@ public class SkillSearchResult
 
 ---
 
-## 7. Implementation Phases
+## 7. Management Portal Configuration UI
+
+This section provides detailed wireframes and UX specifications for configuring procedural memory settings on the Code Interpreter tool in the Management Portal.
+
+### 7.1 Configure Tool Dialog - Procedural Memory Section
+
+When editing the Code Interpreter tool in the Management Portal, a new "Procedural Memory" section appears below the existing tool properties.
+
+#### 7.1.1 Tool Properties Layout
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                    Configure Tool Dialog                                  │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                          │
+│  Tool name: [code-interpreter                          ]                │
+│                                                                          │
+│  Tool description: [Execute Python code in a sandboxed...]             │
+│                                                                          │
+│  Tool package name: [foundationallm_agent_plugins      ]                │
+│                                                                          │
+│  Tool class name: [FoundationaLLMCodeInterpreterTool   ]                │
+│                                                                          │
+│  ─────────────────────────────────────────────────────────────────────  │
+│  Tool Properties:                                                        │
+│                                                                          │
+│  ┌──────────────────────────────────────────────────────────────────┐  │
+│  │ Property Name              │ Property Value                      │  │
+│  ├──────────────────────────────────────────────────────────────────┤  │
+│  │ code_session_required      │ true                                │  │
+│  │ code_session_endpoint_...  │ ContextAPI                          │  │
+│  │ code_session_language       │ python                              │  │
+│  └──────────────────────────────────────────────────────────────────┘  │
+│                                                                          │
+│  [Add Property]                                                          │
+│                                                                          │
+│  ─────────────────────────────────────────────────────────────────────  │
+│  🔧 Procedural Memory Settings                                          │
+│                                                                          │
+│  ┌──────────────────────────────────────────────────────────────────┐  │
+│  │ ☑ Enable Procedural Memory                                       │  │
+│  │                                                                   │  │
+│  │ When enabled, the Code Interpreter tool will automatically:      │  │
+│  │ • Search for relevant skills before generating new code          │  │
+│  │ • Use existing skills when found and suitable                    │  │
+│  │ • Optionally register successful code as reusable skills         │  │
+│  │                                                                   │  │
+│  │ ┌─────────────────────────────────────────────────────────────┐ │  │
+│  │ │ ☑ Auto-Register Skills                                       │ │  │
+│  │ │   Automatically save successful code executions as skills    │ │  │
+│  │ └─────────────────────────────────────────────────────────────┘ │  │
+│  │                                                                   │  │
+│  │ ┌─────────────────────────────────────────────────────────────┐ │  │
+│  │ │ ☐ Require Skill Approval                                    │ │  │
+│  │ │   New skills require admin approval before becoming active  │ │  │
+│  │ └─────────────────────────────────────────────────────────────┘ │  │
+│  │                                                                   │  │
+│  │ Max Skills Per User: [0        ] (0 = unlimited)                │  │
+│  │                                                                   │  │
+│  │ Skill Search Threshold: [━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━] 0.80 │  │
+│  │   Minimum similarity score (0.0 to 1.0) for skill matching     │  │
+│  │                                                                   │  │
+│  │ ☑ Prefer Skills Over New Code                                   │  │
+│  │   When enabled, tool will prefer using existing skills          │  │
+│  │   over generating new code when similarity threshold is met      │  │
+│  └──────────────────────────────────────────────────────────────────┘  │
+│                                                                          │
+│  ─────────────────────────────────────────────────────────────────────  │
+│                                                                          │
+│  [Save]  [Close]                                                        │
+│                                                                          │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+#### 7.1.2 Procedural Memory Section - Disabled State
+
+When "Enable Procedural Memory" is unchecked, all other settings are disabled:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│ 🔧 Procedural Memory Settings                                    │
+│                                                                   │
+│ ☐ Enable Procedural Memory                                       │
+│                                                                   │
+│ [All other settings grayed out and disabled]                    │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+#### 7.1.3 Procedural Memory Section - Enabled State
+
+When "Enable Procedural Memory" is checked, all settings become available:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│ 🔧 Procedural Memory Settings                                    │
+│                                                                   │
+│ ☑ Enable Procedural Memory                                       │
+│                                                                   │
+│ When enabled, the Code Interpreter tool will automatically:      │
+│ • Search for relevant skills before generating new code          │
+│ • Use existing skills when found and suitable                    │
+│ • Optionally register successful code as reusable skills         │
+│                                                                   │
+│ ┌─────────────────────────────────────────────────────────────┐  │
+│ │ ☑ Auto-Register Skills                                       │  │
+│ │   Automatically save successful code executions as skills    │  │
+│ └─────────────────────────────────────────────────────────────┘  │
+│                                                                   │
+│ ┌─────────────────────────────────────────────────────────────┐  │
+│ │ ☐ Require Skill Approval                                    │  │
+│ │   New skills require admin approval before becoming active  │  │
+│ └─────────────────────────────────────────────────────────────┘  │
+│                                                                   │
+│ Max Skills Per User: [0        ] (0 = unlimited)                │
+│                                                                   │
+│ Skill Search Threshold: [━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━] 0.80 │
+│   Minimum similarity score (0.0 to 1.0) for skill matching      │
+│                                                                   │
+│ ☑ Prefer Skills Over New Code                                   │
+│   When enabled, tool will prefer using existing skills          │
+│   over generating new code when similarity threshold is met      │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+### 7.2 Tool Properties JSON Structure
+
+When saved, the procedural memory settings are stored as a JSON object in the tool properties:
+
+```json
+{
+  "code_session_required": true,
+  "code_session_endpoint_provider": "ContextAPI",
+  "code_session_language": "python",
+  "procedural_memory_settings": {
+    "enabled": true,
+    "auto_register_skills": true,
+    "require_skill_approval": false,
+    "max_skills_per_user": 0,
+    "skill_search_threshold": 0.8,
+    "prefer_skills": true
+  }
+}
+```
+
+### 7.3 Implementation Details
+
+#### 7.3.1 Component Detection
+
+The `ConfigureToolDialog` component should detect when the Code Interpreter tool is being configured:
+
+```typescript
+// In ConfigureToolDialog.vue
+const isCodeInterpreterTool = computed(() => {
+  return toolObject.package_name === 'foundationallm_agent_plugins' &&
+         toolObject.class_name === 'FoundationaLLMCodeInterpreterTool';
+});
+```
+
+#### 7.3.2 Settings Initialization
+
+When loading an existing tool, parse the `procedural_memory_settings` property:
+
+```typescript
+// In ConfigureToolDialog.vue
+const proceduralMemorySettings = ref({
+  enabled: false,
+  auto_register_skills: true,
+  require_skill_approval: false,
+  max_skills_per_user: 0,
+  skill_search_threshold: 0.8,
+  prefer_skills: true
+});
+
+// On tool load
+if (toolObject.properties?.procedural_memory_settings) {
+  const settings = toolObject.properties.procedural_memory_settings;
+  if (typeof settings === 'string') {
+    proceduralMemorySettings.value = JSON.parse(settings);
+  } else {
+    proceduralMemorySettings.value = { ...proceduralMemorySettings.value, ...settings };
+  }
+}
+```
+
+#### 7.3.3 Settings Persistence
+
+When saving the tool, serialize the settings to JSON:
+
+```typescript
+// In ConfigureToolDialog.vue - handleSave()
+if (isCodeInterpreterTool.value) {
+  toolObject.properties = toolObject.properties || {};
+  toolObject.properties.procedural_memory_settings = JSON.stringify(proceduralMemorySettings.value);
+}
+```
+
+### 7.4 Validation Rules
+
+| Setting | Validation Rule | Error Message |
+|---------|----------------|---------------|
+| `skill_search_threshold` | Must be between 0.0 and 1.0 | "Skill search threshold must be between 0.0 and 1.0" |
+| `max_skills_per_user` | Must be >= 0 | "Max skills per user must be 0 or greater (0 = unlimited)" |
+
+### 7.5 User Experience Flow
+
+1. **Admin opens agent configuration** in Management Portal
+2. **Clicks "Edit" on Code Interpreter tool** (or adds new tool)
+3. **ConfigureToolDialog opens** with tool details
+4. **Scrolls to "Procedural Memory Settings" section** (appears only for Code Interpreter tool)
+5. **Enables procedural memory** by checking the toggle
+6. **Configures settings**:
+   - Enables/disables auto-register
+   - Sets approval requirement
+   - Sets max skills limit
+   - Adjusts search threshold slider
+   - Sets prefer skills option
+7. **Clicks "Save"** - settings are stored as JSON in tool properties
+8. **Tool is ready** - Code Interpreter will use procedural memory when agent runs
+
+### 7.6 Backwards Compatibility
+
+- **Existing tools without `procedural_memory_settings`**: Work exactly as before (procedural memory disabled)
+- **Tools with `procedural_memory_settings.enabled = false`**: Work exactly as before
+- **Non-Code-Interpreter tools**: Don't show procedural memory section (not applicable)
+
+---
+
+## 8. Implementation Phases
 
 > **Note:** This implementation uses **Cosmos DB storage** (Option A) instead of a separate Skill resource provider. Skills are stored in the existing Core API Cosmos DB database, eliminating the need for additional storage configuration.
 
@@ -1023,45 +1324,110 @@ public class SkillSearchResult
 - `src/dotnet/Common/Models/ResourceProviders/Skill/SkillSearchResult.cs` (NEW)
 - `src/dotnet/Common/Interfaces/IAzureCosmosDBService.cs` (MODIFIED)
 
-### Phase 2: Agent Configuration
+### Phase 2: Tool Configuration Structure
 
-**Goal:** Add procedural memory settings to agent configuration.
+**Goal:** Define procedural memory settings structure for tool properties.
 
 **Status:** ✅ COMPLETE
 
 **Tasks:**
-1. ✅ Add `ProceduralMemorySettings` class to agent model
-2. ✅ Add `procedural_memory_settings` property to `AgentBase`
-3. ✅ Add `HasProceduralMemoryEnabled` helper property
+1. ✅ Create `ProceduralMemorySettings` class (data model reference)
+2. ✅ Add `ProceduralMemorySettings` constant to `AgentToolPropertyNames`
+3. ✅ Update tool to read settings from tool properties
 
 **Files Created/Modified:**
-- `src/dotnet/Common/Models/ResourceProviders/Agent/ProceduralMemorySettings.cs` (NEW)
-- `src/dotnet/Common/Models/ResourceProviders/Agent/AgentBase.cs` (MODIFIED)
+- `src/dotnet/Common/Models/ResourceProviders/Agent/ProceduralMemorySettings.cs` (NEW - reference model)
+- `src/dotnet/Common/Constants/Agents/AgentToolPropertyNames.cs` (MODIFIED - add constant)
+- `src/python/plugins/agent_core/pkg/foundationallm_agent_plugins/tools/foundationallm_code_interpreter_tool.py` (MODIFIED - read from properties)
+
+**Key Design:**
+- Settings are stored in tool properties, not on the agent
+- Tool reads `procedural_memory_settings` property from `tool_config.properties`
+- Settings are scoped to the specific tool instance
+- When `procedural_memory_settings` is missing or `enabled` is false, tool works in backwards-compatible mode
+
+**Tool Property Reading Implementation:**
+```python
+# In FoundationaLLMCodeInterpreterTool.__init__()
+# NOTE: Current implementation reads from agent object, but should be updated
+# to read from tool_config.properties instead.
+
+def _get_procedural_memory_enabled(self) -> bool:
+    """Check if procedural memory is enabled from tool properties."""
+    if not self.tool_config or not self.tool_config.properties:
+        return False
+    
+    pm_settings = self.tool_config.properties.get('procedural_memory_settings')
+    if not pm_settings:
+        return False
+    
+    # Parse JSON if string, otherwise use directly
+    if isinstance(pm_settings, str):
+        import json
+        pm_settings = json.loads(pm_settings)
+    
+    return pm_settings.get('enabled', False) if isinstance(pm_settings, dict) else False
+
+def _get_procedural_memory_settings(self) -> Optional[Dict[str, Any]]:
+    """Get procedural memory settings from tool properties."""
+    if not self.tool_config or not self.tool_config.properties:
+        return None
+    
+    pm_settings = self.tool_config.properties.get('procedural_memory_settings')
+    if not pm_settings:
+        return None
+    
+    # Parse JSON if string, otherwise use directly
+    if isinstance(pm_settings, str):
+        import json
+        pm_settings = json.loads(pm_settings)
+    
+    if not isinstance(pm_settings, dict):
+        return None
+    
+    return {
+        'enabled': pm_settings.get('enabled', False),
+        'auto_register_skills': pm_settings.get('auto_register_skills', True),
+        'require_skill_approval': pm_settings.get('require_skill_approval', False),
+        'max_skills_per_user': pm_settings.get('max_skills_per_user', 0),
+        'skill_search_threshold': pm_settings.get('skill_search_threshold', 0.8),
+        'prefer_skills': pm_settings.get('prefer_skills', True),
+    }
+```
+
+**Migration Note:** The current implementation reads from `self.agent.procedural_memory_settings`. This should be updated to read from `self.tool_config.properties['procedural_memory_settings']` instead.
 
 ### Phase 3: Code Interpreter Enhancement
 
-**Goal:** Add skill operations to the code interpreter tool while maintaining 100% backwards compatibility.
+**Goal:** Add internal skill management to the code interpreter tool while maintaining 100% backwards compatibility.
 
 **Status:** ✅ COMPLETE
 
 **Tasks:**
 1. ✅ Add procedural memory enabled check at tool initialization
-2. ✅ Update `FoundationaLLMCodeInterpreterToolInput` with optional skill parameters
-3. ✅ Implement backwards-compatible operation routing (default to `execute`)
-4. ✅ Implement `search_skills` operation (only when enabled)
-5. ✅ Implement `use_skill` operation (only when enabled)
-6. ✅ Implement `register_skill` operation with approval workflow support
-7. ✅ Add `skill_saved` and `skill_used` content artifacts
+2. ✅ Simplify `FoundationaLLMCodeInterpreterToolInput` - removed operation and skill parameters
+3. ✅ Implement `_execute_with_procedural_memory()` method for internal skill management
+4. ✅ Implement `_search_skills_internal()` - internal skill search (returns structured data)
+5. ✅ Implement `_use_skill_internal()` - internal skill execution
+6. ✅ Implement `_register_skill_internal()` - internal skill registration
+7. ✅ Add helper methods for skill name/description generation
+8. ✅ Add `skill_saved` and `skill_used` content artifacts
 
 **Files Modified:**
 - `src/python/plugins/agent_core/pkg/foundationallm_agent_plugins/tools/foundationallm_code_interpreter_tool.py`
 - `src/python/plugins/agent_core/pkg/foundationallm_agent_plugins/tools/foundationallm_code_interpreter_tool_input.py`
 
+**Key Design Change:**
+- **Tool interface simplified**: Only `prompt` and `file_names` parameters (no `operation`, `skill_name`, etc.)
+- **Skill operations are internal**: Tool automatically searches, uses, and registers skills
+- **Agent doesn't need to orchestrate**: Agent just calls tool with prompt, tool handles skill management
+- **Content artifacts still returned**: Tool returns `skill_saved` and `skill_used` artifacts for user review/approval in User Portal
+
 **Backwards Compatibility Test Cases:**
 - Agent without `procedural_memory_settings` → tool works as before
 - Agent with `procedural_memory_settings.enabled = false` → tool works as before
-- Existing prompts without `operation` parameter → default to `execute`
-- Skill parameters ignored when procedural memory disabled
+- Existing tool calls with only `prompt` and `file_names` → work unchanged
+- No new required parameters added to tool interface
 
 ### Phase 4: Core API Skills Controller
 
@@ -1105,27 +1471,39 @@ public class SkillSearchResult
 - Throughput: Autoscale 1000 RU/s
 - Creation: Automatic on first use (no deployment prerequisite)
 
-### Phase 6: Management Portal UI (PENDING)
+### Phase 6: Management Portal UI - Tool Configuration
 
-**Goal:** Allow agents to be configured with procedural memory settings.
+**Goal:** Allow Code Interpreter tool to be configured with procedural memory settings in the Management Portal.
 
 **Status:** 🔲 PENDING
 
 **Tasks:**
-1. Update Management Portal agent configuration UI with:
-   - Enable/disable toggle
-   - Auto-register skills toggle
-   - Require approval toggle
-   - Max skills per user setting
-   - Skill search threshold slider
-   - Prefer skills toggle
-2. Add skill management section (view skills by agent-user)
-3. Add skill approval workflow UI
+1. **Update ConfigureToolDialog component** to show procedural memory settings when Code Interpreter tool is selected:
+   - Detect when tool is Code Interpreter (package_name: "foundationallm_agent_plugins", class_name: "FoundationaLLMCodeInterpreterTool")
+   - Show "Procedural Memory" section with expandable/collapsible panel
+   - Add enable/disable toggle
+   - Add auto-register skills toggle
+   - Add require approval toggle
+   - Add max skills per user input (number field)
+   - Add skill search threshold slider (0.0 to 1.0)
+   - Add prefer skills toggle
+   - Store settings as JSON object in `procedural_memory_settings` tool property
+
+2. **Update PropertyBuilder component** (if needed) to support JSON object properties:
+   - Support nested object editing
+   - Validate JSON structure
+   - Provide JSON editor for complex objects
+
+3. **Add validation** for procedural memory settings:
+   - Skill search threshold must be between 0.0 and 1.0
+   - Max skills per user must be >= 0 (0 = unlimited)
 
 **Files to Modify:**
-- `src/ui/ManagementPortal/pages/agents/create.vue`
-- `src/ui/ManagementPortal/pages/skills/index.vue` (NEW)
-- `src/ui/ManagementPortal/pages/skills/[skillId].vue` (NEW)
+- `src/ui/ManagementPortal/components/ConfigureToolDialog.vue` - Add procedural memory settings UI
+- `src/ui/ManagementPortal/components/PropertyBuilder.vue` - Support JSON object properties (if needed)
+- `src/dotnet/Common/Constants/Agents/AgentToolPropertyNames.cs` - Add `ProceduralMemorySettings` constant
+
+**UX Wireframes:** See Section 7.1 for detailed wireframes of the Management Portal UI.
 
 ### Phase 7: User Portal Skill Review UI (PENDING)
 
@@ -1181,9 +1559,9 @@ public class SkillSearchResult
 
 ---
 
-## 8. Alternative Approaches
+## 9. Alternative Approaches
 
-### 8.1 Approach A: Enhanced Code Interpreter (Recommended)
+### 9.1 Approach A: Enhanced Code Interpreter (Recommended)
 
 **Description:** Extend the existing code interpreter tool with skill management capabilities.
 
@@ -1194,7 +1572,7 @@ public class SkillSearchResult
 | Lean agent context | |
 | Leverages existing infrastructure | |
 
-### 8.2 Approach B: Separate Skill Tool
+### 9.2 Approach B: Separate Skill Tool
 
 **Description:** Create a dedicated `FoundationaLLMSkillTool` for skill management.
 
@@ -1204,7 +1582,7 @@ public class SkillSearchResult
 | Independent tool lifecycle | Two tools to manage |
 | Clearer tool descriptions | More complex agent prompts |
 
-### 8.3 Approach C: MCP-Based Skills (Future)
+### 9.3 Approach C: MCP-Based Skills (Future)
 
 **Description:** Implement skills as MCP (Model Context Protocol) servers that can be dynamically loaded.
 
@@ -1225,24 +1603,24 @@ public class SkillSearchResult
 ```
 You are an AI assistant with access to a code interpreter tool that supports procedural memory.
 
-Your skills are personal to you and this user - they remember successful code patterns 
-that have worked well in past conversations.
+The code interpreter tool automatically manages skills for you. When you use the tool:
+- The tool will automatically search for relevant skills that match the user's request
+- If a suitable skill is found, the tool will use it automatically
+- If no skill is found, the tool will generate new Python code
+- After successful execution, the tool may automatically save the code as a skill for future use
 
-When given a task:
-1. First, search for relevant skills that might help: use operation="search_skills"
-2. If a suitable skill exists with similarity > 0.8, use it: use operation="use_skill"
-   - Let the user know you're using a previously learned skill
-3. If no suitable skill exists, generate and execute code: use operation="execute"
-4. If your code works well and could be reused, consider registering it as a skill: 
-   use operation="register_skill"
-   - Let the user know you've learned a new skill for future use
+You don't need to explicitly search for skills or register them - the tool handles this internally.
 
-Available operations:
-- search_skills: Find skills matching a description (searches your skill library for this user)
-- use_skill: Execute a registered skill with parameters
-- execute: Generate and run Python code (default behavior)
-- register_skill: Save working code as a reusable skill for future conversations
+Simply use the code interpreter tool with the user's prompt, and the tool will:
+1. Check for existing skills that match the request
+2. Use a skill if found and suitable
+3. Generate new code if no skill is available
+4. Optionally save successful code as a skill
+
+The tool will inform you (and the user) when it uses an existing skill or creates a new one through content artifacts in the response.
 ```
+
+**Key Change:** The agent prompt no longer mentions explicit skill operations. The tool handles skill management internally, so the agent just needs to call the tool with a prompt.
 
 ---
 
@@ -1310,11 +1688,11 @@ From the paper's evaluation:
 
 ---
 
-## 9. Manual Testing and Verification Guide
+## 10. Manual Testing and Verification Guide
 
 This section provides step-by-step instructions to manually test and verify the procedural memory implementation.
 
-### 9.1 Prerequisites
+### 10.1 Prerequisites
 
 Before testing, ensure the following are in place:
 
@@ -1347,7 +1725,7 @@ Before testing, ensure the following are in place:
 
 ---
 
-### 9.2 Test Case 1: Backwards Compatibility (Procedural Memory Disabled)
+### 10.2 Test Case 1: Backwards Compatibility (Procedural Memory Disabled)
 
 **Objective:** Verify the Code Interpreter works exactly as before when procedural memory is not enabled.
 
@@ -1379,7 +1757,7 @@ Before testing, ensure the following are in place:
 
 ---
 
-### 9.3 Test Case 2: Enable Procedural Memory on Agent
+### 10.3 Test Case 2: Enable Procedural Memory on Agent
 
 **Objective:** Verify procedural memory can be enabled and configured on an agent.
 
@@ -1414,7 +1792,7 @@ Before testing, ensure the following are in place:
 
 ---
 
-### 9.4 Test Case 3: Register a New Skill
+### 10.4 Test Case 3: Register a New Skill
 
 **Objective:** Verify a user can register code as a reusable skill.
 
@@ -1453,7 +1831,7 @@ Before testing, ensure the following are in place:
 
 ---
 
-### 9.5 Test Case 4: Search for Skills
+### 10.5 Test Case 4: Search for Skills
 
 **Objective:** Verify skill search functionality finds relevant skills.
 
@@ -1480,7 +1858,7 @@ Before testing, ensure the following are in place:
 
 ---
 
-### 9.6 Test Case 5: Use an Existing Skill
+### 10.6 Test Case 5: Use an Existing Skill
 
 **Objective:** Verify a user can execute a previously saved skill.
 
@@ -1512,7 +1890,7 @@ Before testing, ensure the following are in place:
 
 ---
 
-### 9.7 Test Case 6: Skill Approval Workflow
+### 10.7 Test Case 6: Skill Approval Workflow
 
 **Objective:** Verify skill approval workflow when `require_skill_approval` is enabled.
 
@@ -1553,7 +1931,7 @@ Before testing, ensure the following are in place:
 
 ---
 
-### 9.8 Test Case 7: Reject/Delete a Skill
+### 10.8 Test Case 7: Reject/Delete a Skill
 
 **Objective:** Verify users can reject and remove skills.
 
@@ -1585,7 +1963,7 @@ Before testing, ensure the following are in place:
 
 ---
 
-### 9.9 Test Case 8: Skill Scoping (Agent-User Combination)
+### 10.9 Test Case 8: Skill Scoping (Agent-User Combination)
 
 **Objective:** Verify skills are correctly scoped to agent-user combination.
 
@@ -1622,7 +2000,7 @@ Before testing, ensure the following are in place:
 
 ---
 
-### 9.10 Test Case 9: CoreAPI Skills Endpoints
+### 10.10 Test Case 9: CoreAPI Skills Endpoints
 
 **Objective:** Verify all SkillsController API endpoints function correctly.
 
@@ -1658,7 +2036,7 @@ Before testing, ensure the following are in place:
 
 ---
 
-### 9.11 Test Case 10: Error Handling
+### 10.11 Test Case 10: Error Handling
 
 **Objective:** Verify graceful error handling in edge cases.
 
@@ -1689,15 +2067,37 @@ Before testing, ensure the following are in place:
 
 **Pass Criteria:** All error cases handled gracefully with informative messages.
 
----
+### 10.12 Verification Checklist
+
+Use this checklist to confirm all functionality:
+
+| Test | Status | Notes |
+|------|--------|-------|
+| Backwards compatibility (PM disabled) | ☐ | |
+| Enable procedural memory on agent | ☐ | |
+| Register new skill | ☐ | |
+| skill_saved content artifact displays | ☐ | |
+| Search for skills | ☐ | |
+| Use existing skill | ☐ | |
+| skill_used content artifact displays | ☐ | |
+| Approval workflow (when enabled) | ☐ | |
+| Reject skill via UI | ☐ | |
+| Reject skill via API | ☐ | |
+| Skill scoping by user | ☐ | |
+| Skill scoping by agent | ☐ | |
+| GET /skills endpoint | ☐ | |
+| GET /skills/{id} endpoint | ☐ | |
+| POST /skills/{id}/approve endpoint | ☐ | |
+| DELETE /skills/{id} endpoint | ☐ | |
+| Error handling | ☐ | |
 
 ---
 
-## 10. Storage Options Analysis
+## 11. Storage Options Analysis
 
 > **✅ IMPLEMENTED:** This implementation uses **Option A (Cosmos DB)** for skill storage. The separate Skill resource provider has been removed in favor of storing skills directly in the existing Core API Cosmos DB database.
 
-### 10.1 Option A: Store Skills in Cosmos DB (✅ IMPLEMENTED)
+### 11.1 Option A: Store Skills in Cosmos DB (✅ IMPLEMENTED)
 
 **Approach:** Add skill storage to the existing `IAzureCosmosDBService` interface, similar to how Attachments and Agent Files are already stored.
 
@@ -1735,7 +2135,7 @@ Task<List<SkillSearchResult>> SearchSkillsAsync(string upn, string agentObjectId
 
 ---
 
-### 10.2 Option B: Add Skills as Agent Resource Provider Sub-Resource
+### 11.2 Option B: Add Skills as Agent Resource Provider Sub-Resource
 
 **Approach:** Add `skills` as a new resource type under the existing `FoundationaLLM.Agent` resource provider.
 
@@ -1763,7 +2163,7 @@ Task<List<SkillSearchResult>> SearchSkillsAsync(string upn, string agentObjectId
 
 ---
 
-### 10.3 Option C: Use Context Resource Provider Storage
+### 11.3 Option C: Use Context Resource Provider Storage
 
 **Approach:** Store skills using the Context resource provider's storage, since Context already handles code-related resources.
 
@@ -1784,7 +2184,7 @@ Task<List<SkillSearchResult>> SearchSkillsAsync(string upn, string agentObjectId
 
 ---
 
-### 10.4 Option D: Store Skills in User Profile (Cosmos DB)
+### 11.4 Option D: Store Skills in User Profile (Cosmos DB)
 
 **Approach:** Extend the existing user profile/data storage in Cosmos DB to include skills.
 
@@ -1806,7 +2206,7 @@ Task<List<SkillSearchResult>> SearchSkillsAsync(string upn, string agentObjectId
 
 ---
 
-### 10.5 Recommendation
+### 11.5 Recommendation
 
 **Option A (Cosmos DB with dedicated container)** is recommended for the following reasons:
 
@@ -1846,7 +2246,7 @@ Task<List<SkillSearchResult>> SearchSkillsAsync(string upn, string agentObjectId
 
 ---
 
-### 10.6 Implementation Steps for Option A
+### 11.6 Implementation Steps for Option A
 
 1. **Create SkillReference model** (in Common project):
 ```csharp
@@ -1883,38 +2283,31 @@ public class SkillReference
 
 ---
 
-### 9.12 Verification Checklist
 
-Use this checklist to confirm all functionality:
 
-| Test | Status | Notes |
-|------|--------|-------|
-| Backwards compatibility (PM disabled) | ☐ | |
-| Enable procedural memory on agent | ☐ | |
-| Register new skill | ☐ | |
-| skill_saved content artifact displays | ☐ | |
-| Search for skills | ☐ | |
-| Use existing skill | ☐ | |
-| skill_used content artifact displays | ☐ | |
-| Approval workflow (when enabled) | ☐ | |
-| Reject skill via UI | ☐ | |
-| Reject skill via API | ☐ | |
-| Skill scoping by user | ☐ | |
-| Skill scoping by agent | ☐ | |
-| GET /skills endpoint | ☐ | |
-| GET /skills/{id} endpoint | ☐ | |
-| POST /skills/{id}/approve endpoint | ☐ | |
-| DELETE /skills/{id} endpoint | ☐ | |
-| Error handling | ☐ | |
 
----
 
-*Document Version: 2.1*
+*Document Version: 2.3*
 *Created: January 2025*
 *Last Updated: January 2025*
-*Status: Core Implementation Complete (Cosmos DB Storage)*
+*Status: Core Implementation Complete (Simplified Interface - Internal Skill Management)*
 
 **Revision History:**
+- v2.3 (Jan 2025): **Management Portal configuration details**:
+  - Added detailed section on tool property configuration (Section 11)
+  - Settings stored in tool properties (`procedural_memory_settings` JSON object), not on agent
+  - Added wireframes for ConfigureToolDialog with procedural memory settings
+  - Updated Phase 2 and Phase 6 to reflect tool property approach
+  - Documented existing tool properties (code_session_required, code_session_endpoint_provider, code_session_language)
+  - Added implementation details for reading settings from tool_config.properties
+- v2.2 (Jan 2025): **Simplified tool interface - internal skill management**:
+  - Removed `operation`, `skill_name`, `skill_description`, and `skill_parameters` from tool input
+  - Tool now handles skill search/use/register internally when procedural memory is enabled
+  - Agent interface simplified: only `prompt` and `file_names` parameters
+  - Added `_execute_with_procedural_memory()` method for internal skill orchestration
+  - Added internal helper methods: `_search_skills_internal()`, `_use_skill_internal()`, `_register_skill_internal()`
+  - Updated agent prompt examples to reflect simplified interface
+  - Improved backwards compatibility - no new parameters required
 - v2.1 (Jan 2025): **Migrated to Cosmos DB storage (Option A)** - Removed Skill resource provider:
   - Removed `FoundationaLLM.Skill` resource provider project and configuration
   - Added `SkillReference` model for Cosmos DB storage

@@ -43,10 +43,13 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
     """
     A tool for executing Python code in a code interpreter.
     
-    Supports procedural memory capabilities when enabled on the agent:
-    - search_skills: Find relevant skills by semantic similarity
-    - use_skill: Execute a previously saved skill
-    - register_skill: Save successful code as a reusable skill
+    When procedural memory is enabled, the tool automatically manages skills:
+    - Automatically searches for relevant skills when given a prompt
+    - Uses skills if found and similarity exceeds threshold
+    - Generates new code if no suitable skill is found
+    - Optionally registers successful code as a skill
+    
+    Skill operations are internal - the tool interface remains simple (prompt + file_names only).
     """
     args_schema: Type[BaseModel] = FoundationaLLMCodeInterpreterToolInput
     DYNAMIC_SESSION_ENDPOINT: ClassVar[str] = "code_session_endpoint"
@@ -125,10 +128,6 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
         self,
         prompt: str,
         file_names: Optional[List[str]] = [],
-        operation: str = "execute",
-        skill_name: Optional[str] = None,
-        skill_description: Optional[str] = None,
-        skill_parameters: Optional[Dict[str, Any]] = None,
         run_manager: Optional[CallbackManagerForToolRun] = None,
         **kwargs: Any) -> Any:
         raise ToolException("This tool does not support synchronous execution. Please use the async version of the tool.")
@@ -137,10 +136,6 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
         self,
         prompt: str,
         file_names: Optional[List[str]] = [],
-        operation: str = "execute",
-        skill_name: Optional[str] = None,
-        skill_description: Optional[str] = None,
-        skill_parameters: Optional[Dict[str, Any]] = None,
         run_manager: Optional[AsyncCallbackManagerForToolRun] = None,
         runnable_config: RunnableConfig = None,
         **kwargs: Any
@@ -148,48 +143,28 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
         """
         Execute the code interpreter tool.
         
-        Supports multiple operations:
-        - execute: Generate and run Python code (default, backwards compatible)
-        - search_skills: Search for relevant skills (requires procedural memory)
-        - use_skill: Execute a saved skill (requires procedural memory)
-        - register_skill: Save code as a reusable skill (requires procedural memory)
+        When procedural memory is enabled, the tool automatically:
+        1. Searches for relevant skills matching the prompt
+        2. Uses a skill if found and similarity > threshold
+        3. Generates new code if no suitable skill is found
+        4. Optionally registers successful code as a skill
+        
+        When procedural memory is disabled, the tool generates and executes code directly.
         """
-        # Route to appropriate operation handler
-        # Backwards compatibility: if procedural memory is not enabled, always use execute
-        if not self.procedural_memory_enabled or operation == "execute":
+        # Backwards compatibility: if procedural memory is not enabled, execute code directly
+        if not self.procedural_memory_enabled:
             return await self._execute_code(
                 prompt=prompt,
                 file_names=file_names,
                 runnable_config=runnable_config
             )
         
-        # Procedural memory operations
-        if operation == "search_skills":
-            return await self._search_skills(
-                query=prompt,
-                runnable_config=runnable_config
-            )
-        elif operation == "use_skill":
-            return await self._use_skill(
-                skill_name=skill_name,
-                skill_parameters=skill_parameters or {},
-                file_names=file_names,
-                runnable_config=runnable_config
-            )
-        elif operation == "register_skill":
-            return await self._register_skill(
-                skill_name=skill_name,
-                skill_description=skill_description,
-                code=prompt,
-                runnable_config=runnable_config
-            )
-        else:
-            # Unknown operation - fall back to execute for backwards compatibility
-            return await self._execute_code(
-                prompt=prompt,
-                file_names=file_names,
-                runnable_config=runnable_config
-            )
+        # Procedural memory enabled - handle skill management internally
+        return await self._execute_with_procedural_memory(
+            prompt=prompt,
+            file_names=file_names,
+            runnable_config=runnable_config
+        )
 
     async def _execute_code(
         self,
@@ -375,6 +350,89 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
             output_tokens=output_tokens
         )
 
+    async def _execute_with_procedural_memory(
+        self,
+        prompt: str,
+        file_names: Optional[List[str]] = [],
+        runnable_config: RunnableConfig = None
+    ) -> Tuple[str, FoundationaLLMToolResult]:
+        """
+        Execute code with procedural memory enabled.
+        
+        Internal flow:
+        1. Search for relevant skills matching the prompt
+        2. Use skill if found and similarity > threshold
+        3. Generate new code if no suitable skill found
+        4. Optionally register successful code as a skill
+        """
+        settings = self.procedural_memory_settings or {}
+        prefer_skills = settings.get('prefer_skills', True)
+        search_threshold = settings.get('skill_search_threshold', 0.8)
+        auto_register = settings.get('auto_register_skills', True)
+        
+        # Step 1: Search for relevant skills (if prefer_skills is enabled)
+        matching_skill = None
+        if prefer_skills:
+            matching_skills = await self._search_skills_internal(prompt)
+            if matching_skills and len(matching_skills) > 0:
+                # Use the best matching skill if similarity exceeds threshold
+                best_match = matching_skills[0]
+                similarity = best_match.get('similarity', 0.0)
+                if similarity >= search_threshold:
+                    matching_skill = best_match
+        
+        # Step 2: Use skill if found
+        if matching_skill:
+            return await self._use_skill_internal(
+                skill=matching_skill,
+                prompt=prompt,
+                file_names=file_names,
+                runnable_config=runnable_config
+            )
+        
+        # Step 3: Generate and execute new code
+        result = await self._execute_code(
+            prompt=prompt,
+            file_names=file_names,
+            runnable_config=runnable_config
+        )
+        
+        # Step 4: Optionally register successful code as a skill
+        if auto_register and result.content and not result.content.startswith("The generated code could not be executed"):
+            # Check if execution was successful (basic heuristic)
+            execution_successful = (
+                "Failed" not in result.content and
+                "error" not in result.content.lower() and
+                len(result.content_artifacts) > 0
+            )
+            
+            if execution_successful:
+                # Extract generated code from content artifacts
+                generated_code = None
+                for artifact in result.content_artifacts:
+                    if artifact.type == ContentArtifactTypeNames.TOOL_EXECUTION:
+                        generated_code = artifact.metadata.get('tool_generated_code')
+                        break
+                
+                if generated_code and generated_code.strip():
+                    # Auto-generate skill name and description from prompt
+                    skill_name = self._generate_skill_name(prompt)
+                    skill_description = self._generate_skill_description(prompt, generated_code)
+                    
+                    # Register skill and merge skill_saved artifact into result
+                    registration_result = await self._register_skill_internal(
+                        skill_name=skill_name,
+                        skill_description=skill_description,
+                        code=generated_code,
+                        runnable_config=runnable_config
+                    )
+                    
+                    # Merge skill_saved content artifact into the result for user review
+                    if registration_result and registration_result.content_artifacts:
+                        result.content_artifacts.extend(registration_result.content_artifacts)
+        
+        return result
+
     def __get_code_from_content_blocks(self, content_blocks: List[dict]) -> str:
         """ Extracts code from content blocks returned by the LLM. """
         if isinstance(content_blocks, list):
@@ -402,27 +460,16 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
         return code
 
     # =========================================================================
-    # Procedural Memory (Skill) Operations
+    # Procedural Memory (Skill) Operations - Internal Methods
     # =========================================================================
 
-    async def _search_skills(
+    async def _search_skills_internal(
         self,
-        query: str,
-        runnable_config: RunnableConfig = None
-    ) -> Tuple[str, FoundationaLLMToolResult]:
+        query: str
+    ) -> List[Dict[str, Any]]:
         """
-        Search for relevant skills using semantic similarity.
-        
-        Note: Skills are stored in Cosmos DB via Core API. This method retrieves
-        skills for the current user filtered by agent, then performs local filtering.
-        Full semantic search requires vector embeddings (future enhancement).
-        
-        Args:
-            query: Natural language description of the desired skill.
-            runnable_config: The runnable configuration.
-            
-        Returns:
-            A tuple of (response text, tool result with content artifacts).
+        Internal method to search for relevant skills.
+        Returns a list of matching skills with similarity scores.
         """
         try:
             # Get user identity for scoping
@@ -430,15 +477,9 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
             agent_object_id = getattr(self.agent, 'object_id', None) if self.agent else None
             
             if not user_id or not agent_object_id:
-                return "Unable to search skills: missing user or agent context.", FoundationaLLMToolResult(
-                    content="Unable to search skills: missing user or agent context.",
-                    content_artifacts=[],
-                    input_tokens=0,
-                    output_tokens=0
-                )
+                return []
             
             # Get skills from Core API (stored in Cosmos DB)
-            # Skills are automatically filtered by user (via authentication) and optionally by agent
             self.context_api_client.headers['X-USER-IDENTITY'] = self.user_identity.model_dump_json()
             skills_response = await self.context_api_client.get_async(
                 endpoint=f"/instances/{self.instance_id}/skills?agentObjectId={agent_object_id}"
@@ -451,45 +492,172 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
             active_skills = [s for s in skills if s.get('status') == 'Active']
             
             if not active_skills:
-                response_text = "No matching skills found. You may need to generate new code."
-            else:
-                # Simple text-based matching for now (vector search is a future enhancement)
-                query_lower = query.lower()
-                matching_skills = []
-                for skill in active_skills:
-                    name = skill.get('name', '').lower()
-                    description = (skill.get('description') or '').lower()
-                    if query_lower in name or query_lower in description or any(
-                        word in name or word in description for word in query_lower.split()
-                    ):
-                        matching_skills.append(skill)
-                
-                if not matching_skills:
-                    # Return all active skills if no text match
-                    matching_skills = active_skills[:5]
-                
-                skill_descriptions = []
-                for skill in matching_skills[:5]:
-                    skill_descriptions.append(
-                        f"- {skill.get('name', 'Unknown')}: {skill.get('description', 'No description')}"
-                    )
-                response_text = f"Found {len(matching_skills)} skill(s):\n" + "\n".join(skill_descriptions)
+                return []
             
-            return response_text, FoundationaLLMToolResult(
-                content=response_text,
-                content_artifacts=[],
-                input_tokens=0,
-                output_tokens=0
-            )
+            # Simple text-based matching for now (vector search is a future enhancement)
+            query_lower = query.lower()
+            matching_skills = []
+            for skill in active_skills:
+                name = skill.get('name', '').lower()
+                description = (skill.get('description') or '').lower()
+                
+                # Calculate simple similarity score (0.0 to 1.0)
+                similarity = 0.0
+                query_words = set(query_lower.split())
+                
+                # Check name match
+                if query_lower in name:
+                    similarity = 0.9
+                elif any(word in name for word in query_words):
+                    similarity = 0.7
+                
+                # Check description match
+                if query_lower in description:
+                    similarity = max(similarity, 0.8)
+                elif any(word in description for word in query_words):
+                    similarity = max(similarity, 0.6)
+                
+                if similarity > 0.0:
+                    matching_skills.append({
+                        'skill': skill,
+                        'similarity': similarity
+                    })
             
-        except Exception as e:
-            error_msg = f"Error searching skills: {str(e)}"
-            return error_msg, FoundationaLLMToolResult(
-                content=error_msg,
-                content_artifacts=[],
-                input_tokens=0,
-                output_tokens=0
+            # Sort by similarity (highest first)
+            matching_skills.sort(key=lambda x: x['similarity'], reverse=True)
+            
+            return matching_skills
+            
+        except Exception:
+            return []
+
+    async def _use_skill_internal(
+        self,
+        skill: Dict[str, Any],
+        prompt: str,
+        file_names: Optional[List[str]] = [],
+        runnable_config: RunnableConfig = None
+    ) -> Tuple[str, FoundationaLLMToolResult]:
+        """
+        Internal method to execute a skill.
+        Returns execution results with skill_used content artifact.
+        """
+        skill_data = skill.get('skill', {})
+        skill_name = skill_data.get('name', '')
+        
+        # Extract parameters from prompt if needed (simple heuristic)
+        # In a more sophisticated implementation, we could use an LLM to extract parameters
+        skill_parameters = self._extract_skill_parameters(prompt, skill_data)
+        
+        return await self._use_skill(
+            skill_name=skill_name,
+            skill_parameters=skill_parameters,
+            file_names=file_names,
+            runnable_config=runnable_config
+        )
+
+    async def _register_skill_internal(
+        self,
+        skill_name: str,
+        skill_description: str,
+        code: str,
+        runnable_config: RunnableConfig = None
+    ) -> Optional[FoundationaLLMToolResult]:
+        """
+        Internal method to register a skill.
+        Returns the tool result with skill_saved content artifact for user review.
+        
+        Returns None if registration fails (non-blocking).
+        """
+        try:
+            _, result = await self._register_skill(
+                skill_name=skill_name,
+                skill_description=skill_description,
+                code=code,
+                runnable_config=runnable_config
             )
+            return result
+        except Exception:
+            # Don't raise exceptions for internal skill registration
+            # Return None to indicate registration failed (non-blocking)
+            return None
+
+    def _generate_skill_name(self, prompt: str) -> str:
+        """
+        Generate a skill name from a prompt.
+        Simple heuristic - can be enhanced with LLM in the future.
+        """
+        # Extract key words and create a snake_case name
+        words = prompt.lower().split()
+        # Remove common words
+        stop_words = {'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by', 'from', 'as', 'is', 'was', 'are', 'were', 'be', 'been', 'being', 'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'should', 'could', 'may', 'might', 'must', 'can', 'this', 'that', 'these', 'those'}
+        key_words = [w for w in words if w not in stop_words and len(w) > 2][:5]
+        skill_name = '_'.join(key_words) if key_words else 'generated_skill'
+        # Sanitize for valid identifier
+        skill_name = ''.join(c if c.isalnum() or c == '_' else '_' for c in skill_name)
+        return skill_name[:50]  # Limit length
+
+    def _generate_skill_description(self, prompt: str, code: str) -> str:
+        """
+        Generate a skill description from prompt and code.
+        Simple heuristic - can be enhanced with LLM in the future.
+        """
+        # Use the prompt as the description, truncated if too long
+        description = prompt[:200] if len(prompt) <= 200 else prompt[:197] + "..."
+        return description
+
+    def _extract_skill_parameters(self, prompt: str, skill_data: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Extract parameters for a skill from the prompt.
+        Simple heuristic - can be enhanced with LLM or pattern matching in the future.
+        """
+        # For now, return empty dict - parameters would need to be extracted intelligently
+        # This is a placeholder for future enhancement
+        return {}
+
+    # =========================================================================
+    # Procedural Memory (Skill) Operations - Legacy Methods (kept for reference)
+    # =========================================================================
+
+    async def _search_skills(
+        self,
+        query: str,
+        runnable_config: RunnableConfig = None
+    ) -> Tuple[str, FoundationaLLMToolResult]:
+        """
+        Legacy method: Search for relevant skills using semantic similarity.
+        
+        Note: This method is kept for backwards compatibility but is no longer
+        called directly by agents. The tool now uses _search_skills_internal()
+        which is called automatically when procedural memory is enabled.
+        
+        Args:
+            query: Natural language description of the desired skill.
+            runnable_config: The runnable configuration.
+            
+        Returns:
+            A tuple of (response text, tool result with content artifacts).
+        """
+        matching_skills = await self._search_skills_internal(query)
+        
+        if not matching_skills:
+            response_text = "No matching skills found. You may need to generate new code."
+        else:
+            skill_descriptions = []
+            for match in matching_skills[:5]:
+                skill = match.get('skill', {})
+                similarity = match.get('similarity', 0.0)
+                skill_descriptions.append(
+                    f"- {skill.get('name', 'Unknown')} (similarity: {similarity:.2f}): {skill.get('description', 'No description')}"
+                )
+            response_text = f"Found {len(matching_skills)} skill(s):\n" + "\n".join(skill_descriptions)
+        
+        return response_text, FoundationaLLMToolResult(
+            content=response_text,
+            content_artifacts=[],
+            input_tokens=0,
+            output_tokens=0
+        )
 
     async def _use_skill(
         self,
