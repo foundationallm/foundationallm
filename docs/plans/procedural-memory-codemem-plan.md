@@ -1081,22 +1081,29 @@ public class SkillSearchResult
 **Files Created:**
 - `src/dotnet/CoreAPI/Controllers/SkillsController.cs` (NEW)
 
-### Phase 5: Cosmos DB Service Implementation (PENDING)
+### Phase 5: Cosmos DB Service Implementation
 
 **Goal:** Implement the skill methods in `AzureCosmosDBService`.
 
-**Status:** 🔲 PENDING
+**Status:** ✅ COMPLETE
 
 **Tasks:**
-1. Implement `GetSkillAsync` method
-2. Implement `GetSkillsAsync` method
-3. Implement `UpsertSkillAsync` method
-4. Implement `DeleteSkillAsync` method
-5. Implement `UpdateSkillExecutionAsync` method
-6. Create `skills` container in Cosmos DB (if not exists)
+1. ✅ Implement `GetSkillAsync` method
+2. ✅ Implement `GetSkillsAsync` method
+3. ✅ Implement `UpsertSkillAsync` method
+4. ✅ Implement `DeleteSkillAsync` method
+5. ✅ Implement `UpdateSkillExecutionAsync` method
+6. ✅ Create `skills` container in Cosmos DB (created automatically on first use)
 
-**Files to Modify:**
-- `src/dotnet/Core/Services/AzureCosmosDBService.cs`
+**Files Modified:**
+- `src/dotnet/Common/Services/Azure/AzureCosmosDBService.cs`
+- `src/dotnet/Common/Constants/AzureCosmosDBContainers.cs`
+
+**Container Configuration:**
+- Name: `Skills`
+- Partition key: `/upn`
+- Throughput: Autoscale 1000 RU/s
+- Creation: Automatic on first use (no deployment prerequisite)
 
 ### Phase 6: Management Portal UI (PENDING)
 
