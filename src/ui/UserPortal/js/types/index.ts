@@ -24,6 +24,8 @@ export interface ContentArtifact {
 	id: string;
 	title: string;
 	filepath: string;
+	type?: string;
+	metadata?: Record<string, unknown>;
 }
 
 export interface ResourceProviderUpsertResult {

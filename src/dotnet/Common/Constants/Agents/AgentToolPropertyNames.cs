@@ -1,4 +1,4 @@
-﻿namespace FoundationaLLM.Common.Constants.Agents
+namespace FoundationaLLM.Common.Constants.Agents
 {
     /// <summary>
     /// Provides well-known parameter names for agent tools.
@@ -44,5 +44,11 @@
         /// Represents the maximum content size in characters for content items processed by data pipelines.
         /// </summary>
         public const string MaxContentSizeCharacters = "max_content_size_characters";
+
+        /// <summary>
+        /// Procedural memory settings for the Code Interpreter tool.
+        /// Contains a JSON object with ProceduralMemorySettings configuration.
+        /// </summary>
+        public const string ProceduralMemorySettings = "procedural_memory_settings";
     }
 }

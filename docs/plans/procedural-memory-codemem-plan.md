@@ -1475,75 +1475,100 @@ def _get_procedural_memory_settings(self) -> Optional[Dict[str, Any]]:
 
 **Goal:** Allow Code Interpreter tool to be configured with procedural memory settings in the Management Portal.
 
-**Status:** 🔲 PENDING
+**Status:** ✅ COMPLETE
 
 **Tasks:**
-1. **Update ConfigureToolDialog component** to show procedural memory settings when Code Interpreter tool is selected:
-   - Detect when tool is Code Interpreter (package_name: "foundationallm_agent_plugins", class_name: "FoundationaLLMCodeInterpreterTool")
-   - Show "Procedural Memory" section with expandable/collapsible panel
-   - Add enable/disable toggle
-   - Add auto-register skills toggle
-   - Add require approval toggle
-   - Add max skills per user input (number field)
-   - Add skill search threshold slider (0.0 to 1.0)
-   - Add prefer skills toggle
-   - Store settings as JSON object in `procedural_memory_settings` tool property
+1. ✅ **Update ConfigureToolDialog component** to show procedural memory settings when Code Interpreter tool is selected:
+   - ✅ Detect when tool is Code Interpreter (package_name: "foundationallm_agent_plugins", class_name: "FoundationaLLMCodeInterpreterTool")
+   - ✅ Show "Procedural Memory" section with visual divider
+   - ✅ Add enable/disable toggle (InputSwitch)
+   - ✅ Add auto-register skills toggle
+   - ✅ Add require approval toggle
+   - ✅ Add max skills per user input (InputNumber field)
+   - ✅ Add skill search threshold slider (0.0 to 1.0) with live value display
+   - ✅ Add prefer skills toggle
+   - ✅ Store settings as JSON object in `procedural_memory_settings` tool property
 
-2. **Update PropertyBuilder component** (if needed) to support JSON object properties:
-   - Support nested object editing
-   - Validate JSON structure
-   - Provide JSON editor for complex objects
+2. ✅ **Add constant** for procedural memory settings property name:
+   - ✅ Added `ProceduralMemorySettings` constant to `AgentToolPropertyNames.cs`
 
-3. **Add validation** for procedural memory settings:
-   - Skill search threshold must be between 0.0 and 1.0
-   - Max skills per user must be >= 0 (0 = unlimited)
+3. ✅ **Add validation** for procedural memory settings:
+   - ✅ Skill search threshold must be between 0.0 and 1.0
+   - ✅ Max skills per user must be >= 0 (0 = unlimited)
+   - ✅ Validation only runs when procedural memory is enabled
 
-**Files to Modify:**
-- `src/ui/ManagementPortal/components/ConfigureToolDialog.vue` - Add procedural memory settings UI
-- `src/ui/ManagementPortal/components/PropertyBuilder.vue` - Support JSON object properties (if needed)
-- `src/dotnet/Common/Constants/Agents/AgentToolPropertyNames.cs` - Add `ProceduralMemorySettings` constant
+4. ✅ **Implement settings initialization and persistence**:
+   - ✅ Initialize settings from tool properties on component load
+   - ✅ Handle both JSON string and object formats
+   - ✅ Persist settings to tool properties on save
+   - ✅ Preserve settings even when disabled (for future re-enabling)
+
+**Files Modified:**
+- ✅ `src/ui/ManagementPortal/components/ConfigureToolDialog.vue` - Added procedural memory settings UI section
+- ✅ `src/dotnet/Common/Constants/Agents/AgentToolPropertyNames.cs` - Added `ProceduralMemorySettings` constant
+
+**Implementation Details:**
+- Component detection via computed property `isCodeInterpreterTool`
+- Settings initialized from `toolObject.properties['procedural_memory_settings']`
+- Settings persisted as JSON string in tool properties
+- UI matches wireframes from Section 7.1
+- All settings disabled when procedural memory is not enabled
+- Backwards compatible: existing tools without settings work as before
 
 **UX Wireframes:** See Section 7.1 for detailed wireframes of the Management Portal UI.
 
-### Phase 7: User Portal Skill Review UI (PENDING)
+### Phase 7: User Portal Skill Review UI
 
 **Goal:** Allow users to review, approve/reject, and remove skills directly from the conversation.
 
-**Status:** 🔲 PENDING
+**Status:** ✅ COMPLETE
 
 **Tasks:**
-1. Create `SkillArtifact` component to render skill artifacts in conversation
-   - Display skill name and appropriate icon (🔧 saved, ⚡ used)
-   - "View Code" / "View Skill" button to open review modal
-   - Different styling for saved vs. used artifacts
-3. Create `SkillReviewModal` component for detailed skill review
-   - Syntax-highlighted Python code viewer (read-only)
-   - Skill metadata display (name, description, parameters)
-   - Execution statistics for used skills (execution count, success rate)
-   - Context-appropriate buttons:
+1. ✅ Create `SkillArtifact` component to render skill artifacts in conversation
+   - ✅ Display skill name and appropriate icon (🔧 saved, ⚡ used)
+   - ✅ "View Skill" button to open review modal
+   - ✅ Different styling for saved vs. used artifacts
+2. ✅ Create `SkillReviewModal` component for detailed skill review
+   - ✅ Python code viewer (read-only)
+   - ✅ Skill metadata display (name, description, parameters)
+   - ✅ Execution statistics for used skills (execution count, success rate)
+   - ✅ Context-appropriate buttons:
      - Skill Saved: "Approve" / "Reject"
      - Skill Used: "Keep Skill" / "Remove Skill"
-4. Add CoreAPI endpoints for User Portal skill operations
-   - `GET /instances/{instanceId}/skills/{skillId}` - Get skill for review
-   - `POST /instances/{instanceId}/skills/{skillId}/approve` - Approve/keep skill
-   - `DELETE /instances/{instanceId}/skills/{skillId}` - Reject/remove and delete skill
-5. Implement skill actions with appropriate toast notifications
-   - Saved + Approve: "Skill approved and ready to use"
-   - Saved + Reject: "Skill rejected and removed"
-   - Used + Keep: "Skill will continue to be used"
-   - Used + Remove: "Skill removed - agent will generate new code next time"
-6. Handle edge cases (skill already deleted, network errors, concurrent access)
+3. ✅ Add CoreAPI endpoints for User Portal skill operations (already implemented in Phase 4)
+   - ✅ `GET /instances/{instanceId}/skills/{skillId}` - Get skill for review
+   - ✅ `POST /instances/{instanceId}/skills/{skillId}/approve` - Approve/keep skill
+   - ✅ `DELETE /instances/{instanceId}/skills/{skillId}` - Reject/remove and delete skill
+4. ✅ Add skill API methods to User Portal api.ts
+   - ✅ `getSkill(skillId)` - Get skill details
+   - ✅ `approveSkill(skillId)` - Approve a skill
+   - ✅ `deleteSkill(skillId)` - Delete a skill
+5. ✅ Implement skill actions with appropriate toast notifications
+   - ✅ Saved + Approve: "Skill approved and ready to use"
+   - ✅ Saved + Reject: "Skill rejected and removed"
+   - ✅ Used + Keep: "Skill will continue to be used"
+   - ✅ Used + Remove: "Skill removed - agent will generate new code next time"
+6. ✅ Handle edge cases (skill already deleted, network errors, concurrent access)
+   - ✅ Error handling in API methods
+   - ✅ Fallback to metadata if API call fails
+   - ✅ Loading and error states in modal
 
-**Estimated Effort:** 1-2 weeks
+**Files Created/Modified:**
+- ✅ `src/python/plugins/core/pkg/foundationallm/models/constants/content_artifact_type_names.py` - Added `SKILL_SAVED`, `SKILL_USED`
+- ✅ `src/ui/UserPortal/js/types/index.ts` - Updated `ContentArtifact` interface to include `type` and `metadata`
+- ✅ `src/ui/UserPortal/components/SkillArtifact.vue` (NEW - handles both types)
+- ✅ `src/ui/UserPortal/components/SkillReviewModal.vue` (NEW)
+- ✅ `src/ui/UserPortal/components/ChatMessage.vue` - Updated to render skill artifacts
+- ✅ `src/ui/UserPortal/js/api.ts` - Added skill API methods (`getSkill`, `approveSkill`, `deleteSkill`)
 
-**Files to Create/Modify:**
-- `src/dotnet/Common/Constants/ContentArtifactTypeNames.cs` (add `SKILL_SAVED`, `SKILL_USED`)
-- `src/dotnet/CoreAPI/Controllers/SkillsController.cs` (NEW)
-- `src/ui/UserPortal/components/SkillArtifact.vue` (NEW - handles both types)
-- `src/ui/UserPortal/components/SkillReviewModal.vue` (NEW)
-- `src/ui/UserPortal/components/ChatMessage.vue` (update to render skill artifacts)
-- `src/ui/UserPortal/js/api.ts` (add skill API methods)
-- `src/ui/UserPortal/js/types/index.ts` (add skill types)
+**Implementation Details:**
+- Skill artifacts are rendered inline in the message body using `SkillArtifact` component
+- Clicking a skill artifact opens `SkillReviewModal` for detailed review
+- Modal loads skill details from API (with fallback to artifact metadata)
+- Actions (approve/reject/keep/remove) call appropriate API endpoints
+- Toast notifications provide user feedback for all actions
+- Error handling gracefully falls back to metadata if API calls fail
+- Skill artifacts appear in content artifacts list with appropriate icons
 
 ### Phase 6: Skill Lifecycle & Analytics (Optional Enhancement)
 
@@ -1561,130 +1586,7 @@ def _get_procedural_memory_settings(self) -> Optional[Dict[str, Any]]:
 
 ## 9. Alternative Approaches
 
-### 9.1 Approach A: Enhanced Code Interpreter (Recommended)
-
-**Description:** Extend the existing code interpreter tool with skill management capabilities.
-
-| Pros | Cons |
-|------|------|
-| Minimal new components | Larger tool interface |
-| Natural workflow integration | All operations through one tool |
-| Lean agent context | |
-| Leverages existing infrastructure | |
-
-### 9.2 Approach B: Separate Skill Tool
-
-**Description:** Create a dedicated `FoundationaLLMSkillTool` for skill management.
-
-| Pros | Cons |
-|------|------|
-| Clean separation of concerns | More context overhead |
-| Independent tool lifecycle | Two tools to manage |
-| Clearer tool descriptions | More complex agent prompts |
-
-### 9.3 Approach C: MCP-Based Skills (Future)
-
-**Description:** Implement skills as MCP (Model Context Protocol) servers that can be dynamically loaded.
-
-| Pros | Cons |
-|------|------|
-| Standard protocol | Requires MCP infrastructure |
-| Dynamic tool discovery | More complex deployment |
-| Cross-platform compatibility | Overhead for simple skills |
-
-**Recommendation:** Start with Approach A (Enhanced Code Interpreter) and consider evolving to Approach C as MCP adoption grows.
-
----
-
-## Appendix A: Example Agent Prompt with Skills
-
-**Note:** This prompt is only used when `procedural_memory_settings.enabled = true`. When disabled, the standard code interpreter prompt is used unchanged.
-
-```
-You are an AI assistant with access to a code interpreter tool that supports procedural memory.
-
-The code interpreter tool automatically manages skills for you. When you use the tool:
-- The tool will automatically search for relevant skills that match the user's request
-- If a suitable skill is found, the tool will use it automatically
-- If no skill is found, the tool will generate new Python code
-- After successful execution, the tool may automatically save the code as a skill for future use
-
-You don't need to explicitly search for skills or register them - the tool handles this internally.
-
-Simply use the code interpreter tool with the user's prompt, and the tool will:
-1. Check for existing skills that match the request
-2. Use a skill if found and suitable
-3. Generate new code if no skill is available
-4. Optionally save successful code as a skill
-
-The tool will inform you (and the user) when it uses an existing skill or creates a new one through content artifacts in the response.
-```
-
-**Key Change:** The agent prompt no longer mentions explicit skill operations. The tool handles skill management internally, so the agent just needs to call the tool with a prompt.
-
----
-
-## Appendix B: Skill Storage Schema
-
-```json
-{
-    "id": "calculate_revenue_growth_MAA-02_zoinertejada",
-    "type": "FoundationaLLM.Skill/skills",
-    "name": "calculate_revenue_growth",
-    "object_id": "/instances/{instanceId}/providers/FoundationaLLM.Skill/skills/calculate_revenue_growth_MAA-02_zoinertejada",
-    "display_name": "Calculate Revenue Growth",
-    "description": "Calculates month-over-month revenue growth percentage from sales data",
-    "code": "def calculate_revenue_growth(data_file: str, date_column: str) -> dict:\n    import pandas as pd\n    df = pd.read_csv(data_file)\n    df[date_column] = pd.to_datetime(df[date_column])\n    monthly = df.groupby(df[date_column].dt.to_period('M'))['revenue'].sum()\n    growth = monthly.pct_change() * 100\n    return {\"growth_rates\": growth.to_dict()}",
-    "example_prompts": [
-        "Calculate the monthly revenue growth from my sales data",
-        "What was the month-over-month growth in revenue?"
-    ],
-    "parameters": [
-        {
-            "name": "data_file",
-            "type": "str",
-            "description": "Path to CSV file with sales data",
-            "required": true
-        },
-        {
-            "name": "date_column",
-            "type": "str",
-            "description": "Name of the date column",
-            "required": true
-        }
-    ],
-    "tags": ["analytics", "revenue", "growth"],
-    "owner_agent_object_id": "/instances/{instanceId}/providers/FoundationaLLM.Agent/agents/MAA-02",
-    "owner_user_id": "zoinertejada@foundationallm.ai",
-    "status": "Active",
-    "execution_count": 47,
-    "success_rate": 0.98,
-    "version": 2,
-    "created_on": "2024-01-15T10:30:00Z",
-    "updated_on": "2024-02-20T14:45:00Z"
-}
-```
-
-**Note:** The skill ID incorporates both the agent name and a sanitized user identifier to ensure uniqueness within the agent-user scope.
-
----
-
-## Appendix C: Related CodeMem Paper Concepts
-
-### State Anchoring via write_todos
-
-The paper describes using `write_todos` to prevent goal drift in long tasks. This is similar to FoundationaLLM's existing conversation state management, but could be enhanced for complex agent workflows.
-
-### Dynamic MCP
-
-The paper references "Dynamic MCP" for just-in-time tool loading. This aligns with FoundationaLLM's plugin architecture and could be a future enhancement.
-
-### Skill Formation Metrics
-
-From the paper's evaluation:
-- Gemini 3 Full achieved 96% minimum correctness with CodeMem
-- Average of ~7 assistant calls to resolve tasks
-- Skills reduce latency and token usage for repeated tasks
+SECTION REMOVED 
 
 ---
 
@@ -2283,9 +2185,97 @@ public class SkillReference
 
 ---
 
+## Appendix A: Example Agent Prompt with Skills
 
+**Note:** This prompt is only used when `procedural_memory_settings.enabled = true`. When disabled, the standard code interpreter prompt is used unchanged.
 
+```
+You are an AI assistant with access to a code interpreter tool that supports procedural memory.
 
+The code interpreter tool automatically manages skills for you. When you use the tool:
+- The tool will automatically search for relevant skills that match the user's request
+- If a suitable skill is found, the tool will use it automatically
+- If no skill is found, the tool will generate new Python code
+- After successful execution, the tool may automatically save the code as a skill for future use
+
+You don't need to explicitly search for skills or register them - the tool handles this internally.
+
+Simply use the code interpreter tool with the user's prompt, and the tool will:
+1. Check for existing skills that match the request
+2. Use a skill if found and suitable
+3. Generate new code if no skill is available
+4. Optionally save successful code as a skill
+
+The tool will inform you (and the user) when it uses an existing skill or creates a new one through content artifacts in the response.
+```
+
+**Key Change:** The agent prompt no longer mentions explicit skill operations. The tool handles skill management internally, so the agent just needs to call the tool with a prompt.
+
+---
+
+## Appendix B: Skill Storage Schema
+
+```json
+{
+    "id": "calculate_revenue_growth_MAA-02_zoinertejada",
+    "type": "FoundationaLLM.Skill/skills",
+    "name": "calculate_revenue_growth",
+    "object_id": "/instances/{instanceId}/providers/FoundationaLLM.Skill/skills/calculate_revenue_growth_MAA-02_zoinertejada",
+    "display_name": "Calculate Revenue Growth",
+    "description": "Calculates month-over-month revenue growth percentage from sales data",
+    "code": "def calculate_revenue_growth(data_file: str, date_column: str) -> dict:\n    import pandas as pd\n    df = pd.read_csv(data_file)\n    df[date_column] = pd.to_datetime(df[date_column])\n    monthly = df.groupby(df[date_column].dt.to_period('M'))['revenue'].sum()\n    growth = monthly.pct_change() * 100\n    return {\"growth_rates\": growth.to_dict()}",
+    "example_prompts": [
+        "Calculate the monthly revenue growth from my sales data",
+        "What was the month-over-month growth in revenue?"
+    ],
+    "parameters": [
+        {
+            "name": "data_file",
+            "type": "str",
+            "description": "Path to CSV file with sales data",
+            "required": true
+        },
+        {
+            "name": "date_column",
+            "type": "str",
+            "description": "Name of the date column",
+            "required": true
+        }
+    ],
+    "tags": ["analytics", "revenue", "growth"],
+    "owner_agent_object_id": "/instances/{instanceId}/providers/FoundationaLLM.Agent/agents/MAA-02",
+    "owner_user_id": "zoinertejada@foundationallm.ai",
+    "status": "Active",
+    "execution_count": 47,
+    "success_rate": 0.98,
+    "version": 2,
+    "created_on": "2024-01-15T10:30:00Z",
+    "updated_on": "2024-02-20T14:45:00Z"
+}
+```
+
+**Note:** The skill ID incorporates both the agent name and a sanitized user identifier to ensure uniqueness within the agent-user scope.
+
+---
+
+## Appendix C: Related CodeMem Paper Concepts
+
+### State Anchoring via write_todos
+
+The paper describes using `write_todos` to prevent goal drift in long tasks. This is similar to FoundationaLLM's existing conversation state management, but could be enhanced for complex agent workflows.
+
+### Dynamic MCP
+
+The paper references "Dynamic MCP" for just-in-time tool loading. This aligns with FoundationaLLM's plugin architecture and could be a future enhancement.
+
+### Skill Formation Metrics
+
+From the paper's evaluation:
+- Gemini 3 Full achieved 96% minimum correctness with CodeMem
+- Average of ~7 assistant calls to resolve tasks
+- Skills reduce latency and token usage for repeated tasks
+
+---
 
 *Document Version: 2.3*
 *Created: January 2025*
