@@ -11,7 +11,7 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Skill
         /// The matching skill.
         /// </summary>
         [JsonPropertyName("skill")]
-        public required Skill Skill { get; set; }
+        public required SkillReference Skill { get; set; }
 
         /// <summary>
         /// The similarity score (0.0 to 1.0) indicating how well the skill matches the query.

@@ -1001,62 +1001,59 @@ public class SkillSearchResult
 
 ## 7. Implementation Phases
 
-### Phase 1: Skill Resource Provider (Foundation)
+> **Note:** This implementation uses **Cosmos DB storage** (Option A) instead of a separate Skill resource provider. Skills are stored in the existing Core API Cosmos DB database, eliminating the need for additional storage configuration.
 
-**Goal:** Create the infrastructure to store and retrieve skills with agent-user scoping.
+### Phase 1: Skill Data Model & Cosmos DB Storage (Foundation)
+
+**Goal:** Create the skill data model and Cosmos DB storage infrastructure.
+
+**Status:** ✅ COMPLETE
 
 **Tasks:**
-1. Create `Skill` resource model with agent-user scoping fields
-2. Create `SkillStatus` enum and `SkillParameter` class
-3. Create `FoundationaLLM.Skill` resource provider
-4. Implement skill CRUD operations with agent-user filtering
-5. Add skill storage (Cosmos DB with partition key on agent-user combination)
-6. Add Management Portal UI for viewing/managing skills (grouped by agent-user)
+1. ✅ Create `SkillReference` model for Cosmos DB storage
+2. ✅ Create `SkillStatus` enum and `SkillParameter` class
+3. ✅ Add skill methods to `IAzureCosmosDBService` interface
+4. ✅ Implement skill CRUD operations in Core API
 
-**Estimated Effort:** 1-2 weeks
-
-**Files to Create/Modify:**
-- `src/dotnet/Common/Models/ResourceProviders/Skill/Skill.cs` (NEW)
+**Files Created/Modified:**
+- `src/dotnet/Common/Models/ResourceProviders/Skill/SkillReference.cs` (NEW)
 - `src/dotnet/Common/Models/ResourceProviders/Skill/SkillParameter.cs` (NEW)
 - `src/dotnet/Common/Models/ResourceProviders/Skill/SkillStatus.cs` (NEW)
-- `src/dotnet/Common/Constants/ResourceProviders/SkillResourceProviderMetadata.cs` (NEW)
-- `src/dotnet/Skill/ResourceProviders/SkillResourceProviderService.cs` (NEW)
-- `deploy/standard/data/resource-provider/FoundationaLLM.Skill/` (NEW)
+- `src/dotnet/Common/Models/ResourceProviders/Skill/SkillSearchRequest.cs` (NEW)
+- `src/dotnet/Common/Models/ResourceProviders/Skill/SkillSearchResult.cs` (NEW)
+- `src/dotnet/Common/Interfaces/IAzureCosmosDBService.cs` (MODIFIED)
 
-### Phase 2: Skill Search Service
+### Phase 2: Agent Configuration
 
-**Goal:** Enable semantic search to find relevant skills.
+**Goal:** Add procedural memory settings to agent configuration.
+
+**Status:** ✅ COMPLETE
 
 **Tasks:**
-1. Create skill embedding service (embed skill descriptions + example prompts)
-2. Implement vector search for skill discovery
-3. Add skill search API endpoint
-4. Index existing skills with embeddings
+1. ✅ Add `ProceduralMemorySettings` class to agent model
+2. ✅ Add `procedural_memory_settings` property to `AgentBase`
+3. ✅ Add `HasProceduralMemoryEnabled` helper property
 
-**Estimated Effort:** 1 week
-
-**Files to Create/Modify:**
-- `src/dotnet/Skill/Services/SkillSearchService.cs` (NEW)
-- `src/dotnet/Skill/Services/SkillEmbeddingService.cs` (NEW)
-- Reuse existing embedding infrastructure from vectorization
+**Files Created/Modified:**
+- `src/dotnet/Common/Models/ResourceProviders/Agent/ProceduralMemorySettings.cs` (NEW)
+- `src/dotnet/Common/Models/ResourceProviders/Agent/AgentBase.cs` (MODIFIED)
 
 ### Phase 3: Code Interpreter Enhancement
 
 **Goal:** Add skill operations to the code interpreter tool while maintaining 100% backwards compatibility.
 
+**Status:** ✅ COMPLETE
+
 **Tasks:**
-1. Add procedural memory enabled check at tool initialization
-2. Update `FoundationaLLMCodeInterpreterToolInput` with optional skill parameters
-3. Implement backwards-compatible operation routing (default to `execute`)
-4. Implement `search_skills` operation (only when enabled)
-5. Implement `use_skill` operation (only when enabled)
-6. Implement `register_skill` operation with approval workflow support
-7. Update tool prompts to guide LLM on skill usage (conditional on enabled)
-8. Add comprehensive tests for backwards compatibility
+1. ✅ Add procedural memory enabled check at tool initialization
+2. ✅ Update `FoundationaLLMCodeInterpreterToolInput` with optional skill parameters
+3. ✅ Implement backwards-compatible operation routing (default to `execute`)
+4. ✅ Implement `search_skills` operation (only when enabled)
+5. ✅ Implement `use_skill` operation (only when enabled)
+6. ✅ Implement `register_skill` operation with approval workflow support
+7. ✅ Add `skill_saved` and `skill_used` content artifacts
 
-**Estimated Effort:** 1-2 weeks
-
-**Files to Modify:**
+**Files Modified:**
 - `src/python/plugins/agent_core/pkg/foundationallm_agent_plugins/tools/foundationallm_code_interpreter_tool.py`
 - `src/python/plugins/agent_core/pkg/foundationallm_agent_plugins/tools/foundationallm_code_interpreter_tool_input.py`
 
@@ -1066,38 +1063,71 @@ public class SkillSearchResult
 - Existing prompts without `operation` parameter → default to `execute`
 - Skill parameters ignored when procedural memory disabled
 
-### Phase 4: Agent Configuration & Management Portal
+### Phase 4: Core API Skills Controller
 
-**Goal:** Allow agents to be configured with procedural memory settings and provide admin skill management.
+**Goal:** Provide REST API endpoints for skill management in User Portal.
+
+**Status:** ✅ COMPLETE
 
 **Tasks:**
-1. Add `ProceduralMemorySettings` to agent model
-2. Update Management Portal agent configuration UI with:
+1. ✅ Create `SkillsController` with Cosmos DB integration
+2. ✅ Implement GET /skills (list user's skills)
+3. ✅ Implement GET /skills/{skillId} (get skill details)
+4. ✅ Implement POST /skills (create/update skill)
+5. ✅ Implement POST /skills/{skillId}/approve (approve pending skill)
+6. ✅ Implement DELETE /skills/{skillId} (reject/delete skill)
+7. ✅ Implement POST /skills/{skillId}/execute (record execution stats)
+
+**Files Created:**
+- `src/dotnet/CoreAPI/Controllers/SkillsController.cs` (NEW)
+
+### Phase 5: Cosmos DB Service Implementation (PENDING)
+
+**Goal:** Implement the skill methods in `AzureCosmosDBService`.
+
+**Status:** 🔲 PENDING
+
+**Tasks:**
+1. Implement `GetSkillAsync` method
+2. Implement `GetSkillsAsync` method
+3. Implement `UpsertSkillAsync` method
+4. Implement `DeleteSkillAsync` method
+5. Implement `UpdateSkillExecutionAsync` method
+6. Create `skills` container in Cosmos DB (if not exists)
+
+**Files to Modify:**
+- `src/dotnet/Core/Services/AzureCosmosDBService.cs`
+
+### Phase 6: Management Portal UI (PENDING)
+
+**Goal:** Allow agents to be configured with procedural memory settings.
+
+**Status:** 🔲 PENDING
+
+**Tasks:**
+1. Update Management Portal agent configuration UI with:
    - Enable/disable toggle
    - Auto-register skills toggle
    - Require approval toggle
    - Max skills per user setting
    - Skill search threshold slider
    - Prefer skills toggle
-3. Add skill management section in Management Portal (view skills by agent-user)
-4. Add skill approval workflow UI (when require_skill_approval is enabled)
-
-**Estimated Effort:** 1 week
+2. Add skill management section (view skills by agent-user)
+3. Add skill approval workflow UI
 
 **Files to Modify:**
-- `src/dotnet/Common/Models/ResourceProviders/Agent/AgentBase.cs`
-- `src/dotnet/Common/Models/ResourceProviders/Agent/ProceduralMemorySettings.cs` (NEW)
 - `src/ui/ManagementPortal/pages/agents/create.vue`
 - `src/ui/ManagementPortal/pages/skills/index.vue` (NEW)
 - `src/ui/ManagementPortal/pages/skills/[skillId].vue` (NEW)
 
-### Phase 5: User Portal Skill Review UI
+### Phase 7: User Portal Skill Review UI (PENDING)
 
-**Goal:** Allow users to review, approve/reject, and remove skills directly from the conversation in the User Portal.
+**Goal:** Allow users to review, approve/reject, and remove skills directly from the conversation.
+
+**Status:** 🔲 PENDING
 
 **Tasks:**
-1. Add new content artifact types `SKILL_SAVED` and `SKILL_USED` to constants
-2. Create `SkillArtifact` component to render both skill artifact types in conversation
+1. Create `SkillArtifact` component to render skill artifacts in conversation
    - Display skill name and appropriate icon (🔧 saved, ⚡ used)
    - "View Code" / "View Skill" button to open review modal
    - Different styling for saved vs. used artifacts
@@ -1284,22 +1314,29 @@ Before testing, ensure the following are in place:
 1. **Environment Setup**
    - FoundationaLLM platform is deployed and running
    - Core API, LangChain API, and Context API services are accessible
-   - Azure Blob Storage is configured for the Skill resource provider
    - User Portal is accessible
+   - Azure Cosmos DB is configured and accessible (uses existing Core API Cosmos DB)
 
-2. **Configuration**
-   - Add the Skill resource provider storage configuration:
-     ```json
-     "FoundationaLLM:ResourceProviders:Skill:Storage": {
-       "AccountName": "<your-storage-account>",
-       "ContainerName": "skills"
-     }
-     ```
-   - Register the Skill resource provider in the relevant APIs
+2. **Cosmos DB Configuration**
+   Skills are stored in the existing Core API Cosmos DB database. Ensure:
+   - The `AzureCosmosDBService` implementation includes the skill methods
+   - A `skills` container exists in Cosmos DB (or will be created on first use)
+   - Container configuration:
+     - Partition key: `/upn`
+     - Recommended: Enable vector indexing on `/embedding` for future semantic search
 
-3. **Test User**
+3. **Core API Configuration**
+   - The `SkillsController` is registered in Core API
+   - The `IAzureCosmosDBService` skill methods are implemented
+   - No additional storage configuration required (uses existing Cosmos DB)
+
+4. **Test User**
    - Have a valid Entra ID user account for testing
    - Note the user's UPN (e.g., `testuser@contoso.com`)
+
+5. **Agent Configuration**
+   - Have an agent with the Code Interpreter tool configured
+   - Have another agent without procedural memory for backwards compatibility testing
 
 ---
 
@@ -1401,7 +1438,7 @@ Before testing, ensure the following are in place:
      - `skill_status`: "Active" (since `require_skill_approval` is false)
    - **Expected UI:** Shows "Approve" and "Reject" buttons
 
-5. **Verify skill stored in resource provider**
+5. **Verify skill stored in Cosmos DB**
    - Call `GET /instances/{instanceId}/skills` (as the test user)
    - **Expected:** Skill appears in the list with correct metadata
 
@@ -1638,10 +1675,10 @@ Before testing, ensure the following are in place:
    - Try to use the skill
    - **Expected:** Execution times out gracefully, error message returned
 
-5. **Resource provider unavailable**
-   - (If possible) Disable Skill resource provider
+5. **Cosmos DB unavailable**
+   - (If possible) Simulate Cosmos DB connection failure
    - Try skill operations
-   - **Expected:** 503 Service Unavailable with clear message
+   - **Expected:** 503 Service Unavailable or appropriate error message
 
 **Pass Criteria:** All error cases handled gracefully with informative messages.
 
@@ -1651,9 +1688,9 @@ Before testing, ensure the following are in place:
 
 ## 10. Storage Options Analysis
 
-The current implementation creates a new Skill resource provider with its own storage configuration. However, to minimize configuration overhead, we can leverage existing storage infrastructure. This section analyzes the available options.
+> **✅ IMPLEMENTED:** This implementation uses **Option A (Cosmos DB)** for skill storage. The separate Skill resource provider has been removed in favor of storing skills directly in the existing Core API Cosmos DB database.
 
-### 10.1 Option A: Store Skills in Cosmos DB (Recommended)
+### 10.1 Option A: Store Skills in Cosmos DB (✅ IMPLEMENTED)
 
 **Approach:** Add skill storage to the existing `IAzureCosmosDBService` interface, similar to how Attachments and Agent Files are already stored.
 
@@ -1865,18 +1902,25 @@ Use this checklist to confirm all functionality:
 
 ---
 
-*Document Version: 2.0*
+*Document Version: 2.1*
 *Created: January 2025*
 *Last Updated: January 2025*
-*Status: Implementation Complete*
+*Status: Core Implementation Complete (Cosmos DB Storage)*
 
 **Revision History:**
-- v2.0 (Jan 2025): **Implementation complete** - All phases implemented:
-  - Phase 1: Skill resource model (Skill.cs, SkillParameter.cs, SkillStatus.cs, SkillSearchRequest.cs, SkillSearchResult.cs)
+- v2.1 (Jan 2025): **Migrated to Cosmos DB storage (Option A)** - Removed Skill resource provider:
+  - Removed `FoundationaLLM.Skill` resource provider project and configuration
+  - Added `SkillReference` model for Cosmos DB storage
+  - Added skill methods to `IAzureCosmosDBService` interface
+  - Updated `SkillsController` to use Cosmos DB directly
+  - Updated Python code interpreter to use new Core API endpoints
+  - Updated testing prerequisites to reflect Cosmos DB approach
+  - No additional storage configuration required
+- v2.0 (Jan 2025): **Initial implementation** - All core phases implemented:
+  - Phase 1: Skill resource model (SkillReference.cs, SkillParameter.cs, SkillStatus.cs)
   - Phase 2: ProceduralMemorySettings added to AgentBase
-  - Phase 3: Code Interpreter tool enhanced with skill operations (search_skills, use_skill, register_skill)
-  - Phase 4: SkillResourceProviderService and DependencyInjection
-  - Phase 5: CoreAPI SkillsController for User Portal skill review
+  - Phase 3: Code Interpreter tool enhanced with skill operations
+  - Phase 4: CoreAPI SkillsController for User Portal skill review
   - Content artifacts for skill_saved and skill_used implemented
   - Backwards compatibility maintained when procedural memory is disabled
 - v1.3 (Jan 2025): Added `skill_used` content artifact for when existing skills are executed; users can review which skill was used and remove it if desired; updated Use Skill operation to return content artifact

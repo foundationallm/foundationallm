@@ -413,6 +413,10 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
         """
         Search for relevant skills using semantic similarity.
         
+        Note: Skills are stored in Cosmos DB via Core API. This method retrieves
+        skills for the current user filtered by agent, then performs local filtering.
+        Full semantic search requires vector embeddings (future enhancement).
+        
         Args:
             query: Natural language description of the desired skill.
             runnable_config: The runnable configuration.
@@ -433,35 +437,43 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
                     output_tokens=0
                 )
             
-            # Search for skills via the Skill resource provider
-            search_threshold = self.procedural_memory_settings.get('skill_search_threshold', 0.8) if self.procedural_memory_settings else 0.8
-            
+            # Get skills from Core API (stored in Cosmos DB)
+            # Skills are automatically filtered by user (via authentication) and optionally by agent
             self.context_api_client.headers['X-USER-IDENTITY'] = self.user_identity.model_dump_json()
-            search_response = await self.context_api_client.post_async(
-                endpoint=f"/instances/{self.instance_id}/providers/FoundationaLLM.Skill/skills/search",
-                data=json.dumps({
-                    "query": query,
-                    "agent_object_id": agent_object_id,
-                    "user_id": user_id,
-                    "min_similarity": search_threshold,
-                    "max_results": 5
-                })
+            skills_response = await self.context_api_client.get_async(
+                endpoint=f"/instances/{self.instance_id}/skills?agentObjectId={agent_object_id}"
             )
             
-            skills = search_response.get('skills', [])
+            # skills_response is a list of SkillReference objects
+            skills = skills_response if isinstance(skills_response, list) else []
             
-            if not skills:
+            # Filter to only active skills
+            active_skills = [s for s in skills if s.get('status') == 'Active']
+            
+            if not active_skills:
                 response_text = "No matching skills found. You may need to generate new code."
             else:
+                # Simple text-based matching for now (vector search is a future enhancement)
+                query_lower = query.lower()
+                matching_skills = []
+                for skill in active_skills:
+                    name = skill.get('name', '').lower()
+                    description = (skill.get('description') or '').lower()
+                    if query_lower in name or query_lower in description or any(
+                        word in name or word in description for word in query_lower.split()
+                    ):
+                        matching_skills.append(skill)
+                
+                if not matching_skills:
+                    # Return all active skills if no text match
+                    matching_skills = active_skills[:5]
+                
                 skill_descriptions = []
-                for skill_result in skills:
-                    skill = skill_result.get('skill', {})
-                    similarity = skill_result.get('similarity', 0)
+                for skill in matching_skills[:5]:
                     skill_descriptions.append(
-                        f"- {skill.get('name', 'Unknown')}: {skill.get('description', 'No description')} "
-                        f"(similarity: {similarity:.2f})"
+                        f"- {skill.get('name', 'Unknown')}: {skill.get('description', 'No description')}"
                     )
-                response_text = f"Found {len(skills)} matching skill(s):\n" + "\n".join(skill_descriptions)
+                response_text = f"Found {len(matching_skills)} skill(s):\n" + "\n".join(skill_descriptions)
             
             return response_text, FoundationaLLMToolResult(
                 content=response_text,
@@ -489,6 +501,8 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
         """
         Execute a previously saved skill.
         
+        Skills are stored in Cosmos DB via Core API and scoped to the agent-user combination.
+        
         Args:
             skill_name: Name of the skill to execute.
             skill_parameters: Parameters to pass to the skill.
@@ -513,22 +527,32 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
                     output_tokens=0
                 )
             
-            # Retrieve the skill from the resource provider
+            # Build skill ID based on agent-user scoping
+            safe_user_id = user_id.replace('@', '_').replace('.', '_') if user_id else 'unknown'
+            safe_agent_id = agent_object_id.split('/')[-1] if agent_object_id else 'unknown'
+            skill_id = f"{skill_name}_{safe_agent_id}_{safe_user_id}"
+            
+            # Retrieve the skill from Core API (Cosmos DB)
             self.context_api_client.headers['X-USER-IDENTITY'] = self.user_identity.model_dump_json()
             
-            # Build skill ID based on agent-user scoping
-            skill_id = f"{skill_name}_{agent_object_id.split('/')[-1]}_{user_id.replace('@', '_').replace('.', '_')}"
-            
-            skill_response = await self.context_api_client.get_async(
-                endpoint=f"/instances/{self.instance_id}/providers/FoundationaLLM.Skill/skills/{skill_id}"
+            skill = await self.context_api_client.get_async(
+                endpoint=f"/instances/{self.instance_id}/skills/{skill_id}"
             )
             
-            skill = skill_response.get('resource', skill_response)
             skill_code = skill.get('code', '')
             
             if not skill_code:
                 return f"Skill '{skill_name}' not found or has no code.", FoundationaLLMToolResult(
                     content=f"Skill '{skill_name}' not found or has no code.",
+                    content_artifacts=[],
+                    input_tokens=0,
+                    output_tokens=0
+                )
+            
+            # Check if skill is active
+            if skill.get('status') != 'Active':
+                return f"Skill '{skill_name}' is not active (status: {skill.get('status')}).", FoundationaLLMToolResult(
+                    content=f"Skill '{skill_name}' is not active.",
                     content_artifacts=[],
                     input_tokens=0,
                     output_tokens=0
@@ -546,7 +570,7 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
             
             # Upload files if needed
             if file_names:
-                operation_response = await self.context_api_client.post_async(
+                await self.context_api_client.post_async(
                     endpoint=f"/instances/{self.instance_id}/codeSessions/{session_id}/uploadFiles",
                     data=json.dumps({"file_names": file_names})
                 )
@@ -558,30 +582,31 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
             )
             
             # Build response
-            if code_execution_response.get('status') == 'Succeeded':
+            execution_success = code_execution_response.get('status') == 'Succeeded'
+            if execution_success:
                 result = code_execution_response.get('execution_result', '')
                 output = code_execution_response.get('standard_output', '')
                 final_response = result if result and result != '{}' else output
-                
-                # Update skill execution count (fire and forget)
-                try:
-                    await self.context_api_client.post_async(
-                        endpoint=f"/instances/{self.instance_id}/providers/FoundationaLLM.Skill/skills/{skill_id}/execute",
-                        data=json.dumps({"success": True})
-                    )
-                except Exception:
-                    pass  # Don't fail if stats update fails
             else:
                 final_response = f"Skill execution failed: {code_execution_response.get('error_output', 'Unknown error')}"
+            
+            # Update skill execution statistics (fire and forget)
+            try:
+                await self.context_api_client.post_async(
+                    endpoint=f"/instances/{self.instance_id}/skills/{skill_id}/execute",
+                    data=json.dumps({"success": execution_success})
+                )
+            except Exception:
+                pass  # Don't fail if stats update fails
             
             # Add skill_used content artifact for User Portal review
             content_artifacts.append(ContentArtifact(
                 id="skill_used",
                 title=f"Skill Used: {skill_name}",
                 type=SKILL_USED_ARTIFACT_TYPE,
-                filepath=skill.get('object_id', skill_id),
+                filepath=skill_id,
                 metadata={
-                    'skill_object_id': skill.get('object_id', ''),
+                    'skill_id': skill_id,
                     'skill_name': skill_name,
                     'skill_description': skill.get('description', ''),
                     'skill_code': skill_code,
@@ -619,6 +644,8 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
         """
         Register (save) code as a reusable skill.
         
+        Skills are stored in Cosmos DB via Core API and scoped to the agent-user combination.
+        
         Args:
             skill_name: Name for the new skill.
             skill_description: Description of what the skill does.
@@ -655,16 +682,15 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
             safe_agent_id = agent_object_id.split('/')[-1] if agent_object_id else 'unknown'
             skill_id = f"{skill_name}_{safe_agent_id}_{safe_user_id}"
             
-            # Create the skill resource
+            # Create the skill document for Cosmos DB
             skill_data = {
+                "id": skill_id,
+                "type": "skill",
+                "upn": user_id,
+                "agent_object_id": agent_object_id,
                 "name": skill_name,
-                "type": "FoundationaLLM.Skill/skills",
-                "object_id": f"/instances/{self.instance_id}/providers/FoundationaLLM.Skill/skills/{skill_id}",
-                "display_name": skill_name,
                 "description": skill_description or f"Skill: {skill_name}",
                 "code": clean_code,
-                "owner_agent_object_id": agent_object_id,
-                "owner_user_id": user_id,
                 "status": initial_status,
                 "execution_count": 0,
                 "success_rate": 1.0,
@@ -676,7 +702,7 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
             
             self.context_api_client.headers['X-USER-IDENTITY'] = self.user_identity.model_dump_json()
             await self.context_api_client.post_async(
-                endpoint=f"/instances/{self.instance_id}/providers/FoundationaLLM.Skill/skills/{skill_id}",
+                endpoint=f"/instances/{self.instance_id}/skills",
                 data=json.dumps(skill_data)
             )
             
@@ -689,9 +715,9 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
                 id="skill_saved",
                 title=f"Skill Saved: {skill_name}",
                 type=SKILL_SAVED_ARTIFACT_TYPE,
-                filepath=skill_data['object_id'],
+                filepath=skill_id,
                 metadata={
-                    'skill_object_id': skill_data['object_id'],
+                    'skill_id': skill_id,
                     'skill_name': skill_name,
                     'skill_description': skill_data['description'],
                     'skill_code': clean_code,
