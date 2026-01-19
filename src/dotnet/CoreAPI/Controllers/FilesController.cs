@@ -1,4 +1,4 @@
-﻿using FoundationaLLM.Common.Authentication;
+using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Constants.Authorization;
 using FoundationaLLM.Common.Constants.Telemetry;
 using FoundationaLLM.Common.Exceptions;
@@ -63,7 +63,11 @@ namespace FoundationaLLM.Core.API.Controllers
         /// <param name="file">The file sent with the HTTP request.</param>
         /// <returns></returns>
         [HttpPost("upload")]
-        public async Task<IActionResult> Upload(string instanceId, string sessionId, string agentName, IFormFile file)
+        public async Task<IActionResult> Upload(
+            string instanceId,
+            string? sessionId,
+            string? agentName,
+            IFormFile file)
         {
             using var telemetryActivity = TelemetryActivitySources.CoreAPIActivitySource.StartActivity(
                 TelemetryActivityNames.CoreAPI_Files_Upload,
@@ -80,6 +84,10 @@ namespace FoundationaLLM.Core.API.Controllers
 
             if (file == null || file.Length == 0)
                 return BadRequest("File not selected.");
+            if (string.IsNullOrWhiteSpace(sessionId))
+                return BadRequest("Session ID is required.");
+            if (string.IsNullOrWhiteSpace(agentName))
+                return BadRequest("Agent name is required.");
 
             var fileName = file.FileName;
             var name = $"a-{Guid.NewGuid()}-{DateTime.UtcNow.Ticks}";
@@ -147,7 +155,7 @@ namespace FoundationaLLM.Core.API.Controllers
         /// </list>
         /// </remarks>
         [HttpGet("{fileProvider}/{fileId}")]
-        public async Task<IActionResult> Download(string instanceId, string fileProvider, string fileId)
+        public async Task<IActionResult> Download(string instanceId, string? fileProvider, string? fileId)
         {
             using var telemetryActivity = TelemetryActivitySources.CoreAPIActivitySource.StartActivity(
                TelemetryActivityNames.CoreAPI_Files_Download,
@@ -161,6 +169,11 @@ namespace FoundationaLLM.Core.API.Controllers
                         { TelemetryActivityTagNames.UPN, _callContext.CurrentUserIdentity?.UPN ?? "N/A" },
                         { TelemetryActivityTagNames.UserId, _callContext.CurrentUserIdentity?.UserId ?? "N/A" }
                    });
+
+            if (string.IsNullOrWhiteSpace(fileProvider))
+                return BadRequest("File provider is required.");
+            if (string.IsNullOrWhiteSpace(fileId))
+                return BadRequest("File ID is required.");
 
             var attachment = await _coreService.DownloadAttachment(instanceId, fileProvider, fileId);
 

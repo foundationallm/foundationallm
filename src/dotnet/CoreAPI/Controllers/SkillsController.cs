@@ -14,7 +14,7 @@ namespace FoundationaLLM.Core.API.Controllers
     /// Skills are stored in Cosmos DB and scoped to agent-user combinations.
     /// </summary>
     /// <param name="cosmosDBService">The Cosmos DB service for skill storage.</param>
-    /// <param name="callContext">The call context containing user identity.</param>
+    /// <param name="callContext">The <see cref="IOrchestrationContext"/> call context containing user identity.</param>
     /// <param name="logger">The logging interface.</param>
     [Authorize(
         AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,
@@ -26,11 +26,11 @@ namespace FoundationaLLM.Core.API.Controllers
     [Route("instances/{instanceId}/skills")]
     public class SkillsController(
         IAzureCosmosDBService cosmosDBService,
-        ICallContext callContext,
+        IOrchestrationContext callContext,
         ILogger<SkillsController> logger) : ControllerBase
     {
         private readonly IAzureCosmosDBService _cosmosDBService = cosmosDBService;
-        private readonly ICallContext _callContext = callContext;
+        private readonly IOrchestrationContext _callContext = callContext;
         private readonly ILogger<SkillsController> _logger = logger;
 
         /// <summary>

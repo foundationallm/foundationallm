@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
+import { defineComponent, type PropType } from 'vue';
 import type { ContentArtifact } from '@/js/types';
 import Button from 'primevue/button';
 

@@ -94,34 +94,42 @@ class FoundationaLLMCodeInterpreterTool(FoundationaLLMToolBase):
             http_async_client=LoggingAsyncHttpClient(timeout=30.0)
         ) if intercept_http_calls else self.get_main_language_model()
         
-        # Extract procedural memory settings from agent configuration
-        self.agent = objects.get(CompletionRequestObjectKeys.AGENT, None)
+        # Extract procedural memory settings from tool configuration
         self.procedural_memory_enabled = self._get_procedural_memory_enabled()
         self.procedural_memory_settings = self._get_procedural_memory_settings()
     
     def _get_procedural_memory_enabled(self) -> bool:
         """Check if procedural memory is enabled for this agent."""
-        if self.agent is None:
-            return False
-        settings = getattr(self.agent, 'procedural_memory_settings', None)
+        settings = self._get_procedural_memory_settings()
         if settings is None:
             return False
-        return getattr(settings, 'enabled', False)
+        return settings.get('enabled', False)
     
     def _get_procedural_memory_settings(self) -> Optional[Dict[str, Any]]:
-        """Get the procedural memory settings for this agent."""
-        if self.agent is None:
+        """Get the procedural memory settings for this tool."""
+        if not getattr(self, "tool_config", None) or not self.tool_config.properties:
             return None
-        settings = getattr(self.agent, 'procedural_memory_settings', None)
-        if settings is None:
+
+        pm_settings = self.tool_config.properties.get("procedural_memory_settings")
+        if not pm_settings:
             return None
+
+        if isinstance(pm_settings, str):
+            try:
+                pm_settings = json.loads(pm_settings)
+            except json.JSONDecodeError:
+                return None
+
+        if not isinstance(pm_settings, dict):
+            return None
+
         return {
-            'enabled': getattr(settings, 'enabled', False),
-            'auto_register_skills': getattr(settings, 'auto_register_skills', True),
-            'require_skill_approval': getattr(settings, 'require_skill_approval', False),
-            'max_skills_per_user': getattr(settings, 'max_skills_per_user', 0),
-            'skill_search_threshold': getattr(settings, 'skill_search_threshold', 0.8),
-            'prefer_skills': getattr(settings, 'prefer_skills', True),
+            'enabled': pm_settings.get('enabled', False),
+            'auto_register_skills': pm_settings.get('auto_register_skills', True),
+            'require_skill_approval': pm_settings.get('require_skill_approval', False),
+            'max_skills_per_user': pm_settings.get('max_skills_per_user', 0),
+            'skill_search_threshold': pm_settings.get('skill_search_threshold', 0.8),
+            'prefer_skills': pm_settings.get('prefer_skills', True),
         }
 
     def _run(

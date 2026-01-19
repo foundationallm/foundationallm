@@ -1592,61 +1592,266 @@ SECTION REMOVED
 
 ## 10. Manual Testing and Verification Guide
 
-This section provides step-by-step instructions to manually test and verify the procedural memory implementation.
+This section provides step-by-step instructions to manually test and verify the procedural memory implementation. The testing approach uses **local development** for modified components (Core API, Management API, User Portal, Management Portal) while relying on the **deployed FoundationaLLM instance** for all other services.
 
 ### 10.1 Prerequisites
 
 Before testing, ensure the following are in place:
 
-1. **Environment Setup**
-   - FoundationaLLM platform is deployed and running
-   - Core API, LangChain API, and Context API services are accessible
-   - User Portal is accessible
+1. **Deployed FoundationaLLM Instance**
+   - FoundationaLLM platform is deployed and running in Azure
+   - LangChain API, Context API, and other services are accessible
    - Azure Cosmos DB is configured and accessible (uses existing Core API Cosmos DB)
+   - Storage account is accessible for test harness conversation data
 
-2. **Cosmos DB Configuration**
-   Skills are stored in the existing Core API Cosmos DB database. Ensure:
+2. **Local Development Environment**
+   - .NET SDK installed (for Core API and Management API)
+   - Node.js and npm installed (for User Portal and Management Portal)
+   - Python 3.x installed (for Code Interpreter Sandbox and test harness)
+   - Visual Studio Code or Cursor IDE with appropriate extensions
+   - Access to the FoundationaLLM codebase
+
+3. **Cosmos DB Configuration**
+   Skills are stored in the existing Core API Cosmos DB database. No manual container setup is required:
    - The `AzureCosmosDBService` implementation includes the skill methods
-   - A `skills` container exists in Cosmos DB (or will be created on first use)
-   - Container configuration:
+   - The `skills` container is **automatically created on first use** via `CreateContainerIfNotExistsAsync`
+   - Container is created with the following configuration:
      - Partition key: `/upn`
-     - Recommended: Enable vector indexing on `/embedding` for future semantic search
-
-3. **Core API Configuration**
-   - The `SkillsController` is registered in Core API
-   - The `IAzureCosmosDBService` skill methods are implemented
-   - No additional storage configuration required (uses existing Cosmos DB)
+     - Autoscale throughput: 1000 RU/s
+   - **Optional (future enhancement):** Enable vector indexing on `/embedding` for semantic search
 
 4. **Test User**
    - Have a valid Entra ID user account for testing
-   - Note the user's UPN (e.g., `testuser@contoso.com`)
+   - Note the user's UPN (e.g., `testuser@contoso.com`) - **case sensitive**
+   - Note the user's `user_id` (GUID format)
 
 5. **Agent Configuration**
-   - Have an agent with the Code Interpreter tool configured
+   - Have an agent with the Code Interpreter tool configured (via deployed Management Portal)
    - Have another agent without procedural memory for backwards compatibility testing
 
 ---
 
-### 10.2 Test Case 1: Backwards Compatibility (Procedural Memory Disabled)
+### 10.2 Local Development Setup
+
+This section describes how to run the modified components locally while using the deployed instance for everything else.
+
+#### 10.2.1 Build the .NET Solution
+
+Before running any .NET services, rebuild the solution to include your changes:
+
+```powershell
+cd C:\Repos\foundationallm\src
+dotnet build FoundationaLLM.sln --configuration Debug 2>&1 | Select-Object -Last 30
+```
+
+**Note:** This ensures all recent changes to Core API, Management API, and shared libraries are compiled.
+
+#### 10.2.2 Run Core API Locally
+
+The Core API handles skill management endpoints. Run it locally in debug mode:
+
+```powershell
+cd C:\Repos\foundationallm\src\dotnet\CoreAPI
+dotnet run --configuration Debug --no-build 2>&1
+```
+
+**Expected:** Core API starts and listens on the configured port (typically `http://localhost:5001` or similar).
+
+**Verify:** Check the console output for startup messages and ensure no errors occur.
+
+#### 10.2.3 Run Management API Locally
+
+The Management API handles agent configuration. Run it locally in debug mode:
+
+```powershell
+cd C:\Repos\foundationallm\src\dotnet\ManagementAPI
+dotnet run --configuration Debug --no-build 2>&1
+```
+
+**Expected:** Management API starts and listens on the configured port.
+
+**Verify:** Check the console output for startup messages and ensure no errors occur.
+
+#### 10.2.4 Run User Portal Locally
+
+The User Portal displays skill artifacts and allows skill review. Run it locally:
+
+```powershell
+cd C:\Repos\foundationallm\src\ui\UserPortal
+npm run dev 2>&1
+```
+
+**Expected:** User Portal starts and is accessible (typically `http://localhost:3000` or similar).
+
+**Note:** You can also use the "User Portal UI - Backend" configuration in VS Code/Cursor debug panel.
+
+#### 10.2.5 Run Management Portal Locally
+
+The Management Portal allows configuration of procedural memory settings. Run it locally:
+
+```powershell
+cd C:\Repos\foundationallm\src\ui\ManagementPortal
+npm run dev
+```
+
+**Expected:** Management Portal starts and is accessible (typically `http://localhost:3001` or similar).
+
+**Note:** You can also use the "Management Portal UI - Backend" configuration in VS Code/Cursor debug panel.
+
+#### 10.2.6 Configuration for Local Services
+
+Ensure your local services are configured to:
+- Connect to the **deployed** Cosmos DB instance (for skill storage)
+- Connect to the **deployed** storage account (for conversation data)
+- Use the **deployed** LangChain API and Context API
+- Authenticate using your Entra ID credentials
+
+**Important:** Only the services you're modifying (Core API, Management API, portals) run locally. All other services use the deployed instance.
+
+---
+
+### 10.3 Running Code Interpreter Sandbox Locally
+
+The Code Interpreter tool requires a local Python sandbox environment. Set it up as follows:
+
+1. **Create Required Directories**
+   - Create folder: `C:\mnt\data`
+   - **Important:** This must be on the same drive as your repository (typically `C:`)
+
+2. **Set Up Python Environment**
+   - Option 1: Use the Python interpreter located under `src\Python\PythonCodeSessionAPI`
+   - Option 2: Create a Python virtual environment at the project level
+   - Ensure all required Python packages are installed
+
+3. **Run PythonCodeSessionAPI in Debug**
+   - In Cursor/VS Code, open the Debug panel
+   - Select the **PythonCodeSessionAPI** configuration
+   - Click the Run button (or press F5)
+
+**Expected:** The Python sandbox service starts and is ready to execute Python code.
+
+**Verify:** Check the console output for startup messages indicating the sandbox is running.
+
+---
+
+### 10.4 Using the Test Harness
+
+The test harness allows you to test the Code Interpreter tool and procedural memory without running the entire platform. It uses a conversation JSON file from the deployed instance.
+
+#### 10.4.1 Get a Conversation for Test Harness
+
+1. **Create a Conversation in Deployed User Portal**
+   - Login to the deployed Chat Portal (User Portal)
+   - Create a new conversation with the agent you're testing
+   - Send an initial message to create the conversation (e.g., "who are you")
+
+2. **Get the Conversation JSON Representation**
+   - Navigate to the Azure Portal
+   - Go to the storage account backing your FoundationaLLM deployment
+   - Select `Containers` → `orchestration-completion-requests`
+   - Select the folder with your user ID
+   - Select the latest folder (representing the conversation you just started)
+   - Select the file ending in `completion-request-OUT.json`
+   - Click `Edit` in the Azure Portal
+   - Right-click in the text area and select `Format Document`
+   - Select all JSON content and copy it
+
+3. **Update the Test Harness File**
+   - In the FoundationaLLM codebase, open `src\python\plugins\agent_core\test\full_request.json`
+   - Replace the entire contents with the JSON you copied from Azure Portal
+   - Save the file
+
+#### 10.4.2 Configure the Test Harness
+
+1. **Open the Test File**
+   - Open `src\python\plugins\agent_core\test\foundationallm_function_calling_workflow\test_workflow.py`
+
+2. **Update User Identity**
+   - Locate the `user_identity_json` variable (around line 51)
+   - Update it with your test user's information:
+     ```python
+     user_identity_json = {
+         "name": "Experimental Test",
+         "user_name": "yourname@foundationaLLM.ai",  # Your email
+         "upn": "YourName@foundationaLLM.ai",        # Case-sensitive UPN matching Entra
+         "user_id": "your-user-guid-here",            # Your user GUID
+         "group_ids": []                              # Your group IDs if any
+     }
+     ```
+   - **Important:** The `upn` is case-sensitive and must exactly match your Entra ID UPN
+
+3. **Set the Test Prompt**
+   - Locate the `user_prompt` variable (around line 75)
+   - The prompt is read from `full_request.json`, but you can modify it directly in the file
+   - For procedural memory testing, use prompts that will trigger code execution:
+     - `"Calculate the factorial of 10 using Python"`
+     - `"Generate a graph of y=mx+b where m=2 and b=3"`
+     - `"Create a bar chart showing the average of 42, 84, and 168"`
+
+#### 10.4.3 Run the Test Harness
+
+1. **Start Required Services**
+   - Ensure PythonCodeSessionAPI is running (see Section 10.3)
+   - Ensure Core API is running locally (see Section 10.2.2) if testing skill endpoints
+
+2. **Run the Test**
+   - In Cursor/VS Code, open the Run and Debug panel
+   - Select **"Agent Plugins - Debug Workflow"** from the dropdown
+   - Click the Play icon (or press F5) to start debugging
+
+3. **Observe the Output**
+   - The test harness will execute the workflow
+   - Check the console output for:
+     - Code execution results
+     - Content artifacts (including `skill_saved` or `skill_used` if procedural memory is enabled)
+     - Any errors or warnings
+
+4. **Verify Results**
+   - Look for `skill_saved` content artifacts when code is successfully executed
+   - Look for `skill_used` content artifacts when existing skills are reused
+   - Check that the response content includes the expected results
+
+**Example Output:**
+```
+++++++++++++++++++++++++++++++++++++++
+Content artifacts:
+[{'type': 'skill_saved', 'id': '...', 'title': '...', 'metadata': {...}}]
+++++++++++++++++++++++++++++++++++++++
+
+*********************************
+The factorial of 10 is 3628800
+*********************************
+```
+
+---
+
+### 10.5 Test Case 1: Backwards Compatibility (Procedural Memory Disabled)
 
 **Objective:** Verify the Code Interpreter works exactly as before when procedural memory is not enabled.
+
+**Testing Approach:** Use the test harness (Section 10.4) or User Portal (Section 10.2.4).
 
 **Steps:**
 
 1. **Create or select an agent WITHOUT procedural memory**
-   - In Management Portal, create/edit an agent
+   - In Management Portal (local or deployed), create/edit an agent
    - Ensure `procedural_memory_settings` is either:
      - Not present in the agent configuration, OR
      - Present with `enabled: false`
    - Add the Code Interpreter tool to the agent
 
-2. **Start a conversation**
-   - Open User Portal
+2. **Test using Test Harness (Recommended)**
+   - Update `test_workflow.py` with a prompt: `"Calculate the factorial of 10 using Python"`
+   - Ensure PythonCodeSessionAPI is running locally (Section 10.3)
+   - Run the test harness (Section 10.4.3)
+   - **Expected:** Agent generates Python code, executes it, returns result (3628800)
+   - **Verify:** No skill-related content artifacts appear in the response
+
+3. **Test using User Portal (Alternative)**
+   - Open User Portal (local or deployed)
    - Select the agent
    - Start a new conversation
-
-3. **Test code execution**
-   - Send a message: *"Calculate the factorial of 10 using Python"*
+   - Send: *"Calculate the factorial of 10 using Python"*
    - **Expected:** Agent generates Python code, executes it, returns result (3628800)
    - **Verify:** No skill-related content artifacts appear in the response
 
@@ -1659,7 +1864,7 @@ Before testing, ensure the following are in place:
 
 ---
 
-### 10.3 Test Case 2: Enable Procedural Memory on Agent
+### 10.6 Test Case 2: Enable Procedural Memory on Agent
 
 **Objective:** Verify procedural memory can be enabled and configured on an agent.
 
@@ -1694,46 +1899,59 @@ Before testing, ensure the following are in place:
 
 ---
 
-### 10.4 Test Case 3: Register a New Skill
+### 10.7 Test Case 3: Auto-Register a New Skill
 
-**Objective:** Verify a user can register code as a reusable skill.
+**Objective:** Verify the Code Interpreter automatically registers successful code as a skill when `auto_register_skills` is enabled.
+
+**Testing Approach:** Use the test harness (Section 10.4) for quick iteration, or User Portal (Section 10.2.4) for full UI testing.
 
 **Steps:**
 
-1. **Start a conversation with the procedural-memory-enabled agent**
-   - Open User Portal
+1. **Ensure agent has procedural memory enabled**
+   - Complete Test Case 2 to configure procedural memory
+   - Ensure `auto_register_skills: true` is set
+
+2. **Test using Test Harness (Recommended)**
+   - Update `test_workflow.py`:
+     - Set `user_prompt` to: `"Calculate the factorial of 10 using Python"`
+     - Ensure PythonCodeSessionAPI is running (Section 10.3)
+     - Ensure Core API is running locally (Section 10.2.2)
+   - Run the test harness (Section 10.4.3)
+   - **Expected:** 
+     - Code executes successfully
+     - Response includes a `skill_saved` content artifact
+     - Artifact metadata contains skill information
+
+3. **Test using User Portal (Alternative)**
+   - Open User Portal (local or deployed)
    - Select the agent with procedural memory enabled
    - Start a new conversation
-
-2. **Generate and execute code**
-   - Send: *"Write Python code to calculate compound interest given principal, rate, time, and compounding frequency"*
-   - **Expected:** Agent generates and executes Python code successfully
-
-3. **Register the code as a skill**
-   - Send: *"Save that code as a skill called 'compound_interest_calculator' with description 'Calculates compound interest with configurable compounding frequency'"*
+   - Send: *"Calculate the factorial of 10 using Python"*
    - **Expected:** 
-     - Agent registers the skill
+     - Agent generates and executes Python code successfully
      - Response includes a `skill_saved` content artifact
      - Artifact shows skill name, description, and code
 
 4. **Verify skill_saved content artifact**
-   - In the User Portal response, locate the skill artifact
-   - **Expected fields:**
-     - `skill_name`: "compound_interest_calculator"
-     - `skill_description`: Contains the provided description
-     - `skill_code`: The Python code
+   - In the response, locate the skill artifact
+   - **Expected fields in metadata:**
+     - `skill_name`: Auto-generated name (e.g., "calculate_factorial")
+     - `skill_description`: Auto-generated description
+     - `skill_code`: The Python code that was executed
      - `skill_status`: "Active" (since `require_skill_approval` is false)
-   - **Expected UI:** Shows "Approve" and "Reject" buttons
+   - **Expected UI (User Portal):** Shows skill artifact with "View Skill" button, "Approve" and "Reject" buttons
 
 5. **Verify skill stored in Cosmos DB**
+   - Ensure Core API is running locally (Section 10.2.2)
    - Call `GET /instances/{instanceId}/skills` (as the test user)
    - **Expected:** Skill appears in the list with correct metadata
+   - **Verify:** Skill ID includes agent name and user identifier
 
-**Pass Criteria:** Skill is registered, stored, and displayed in content artifact.
+**Pass Criteria:** Skill is automatically registered, stored in Cosmos DB, and displayed in content artifact.
 
 ---
 
-### 10.5 Test Case 4: Search for Skills
+### 10.8 Test Case 4: Internal Skill Search and Use
 
 **Objective:** Verify skill search functionality finds relevant skills.
 
@@ -1760,35 +1978,62 @@ Before testing, ensure the following are in place:
 
 ---
 
-### 10.6 Test Case 5: Use an Existing Skill
+### 10.9 Test Case 5: Skill Review UI in User Portal
 
-**Objective:** Verify a user can execute a previously saved skill.
+**Objective:** Verify users can review, approve, and reject skills via the User Portal UI.
+
+**Testing Approach:** Use local User Portal (Section 10.2.4) to test the skill review interface.
 
 **Steps:**
 
-1. **Start with a registered skill**
-   - Ensure "compound_interest_calculator" skill exists from Test Case 3
+1. **Ensure a skill exists**
+   - Complete Test Case 3 to create a skill with `skill_saved` artifact
 
-2. **Use the skill**
-   - Send: *"Use the compound_interest_calculator skill with principal=1000, rate=0.05, time=10, frequency=12"*
-   - **Expected:**
-     - Skill code executes with the provided parameters
-     - Result is returned (approximately $1647.01 for monthly compounding)
-     - Response includes a `skill_used` content artifact
+2. **View skill artifact in User Portal**
+   - Open User Portal locally (Section 10.2.4)
+   - Navigate to the conversation with the skill artifact
+   - **Expected:** Skill artifact is displayed with appropriate icon (🔧 for saved, ⚡ for used)
+   - **Expected:** "View Skill" button is visible
 
-3. **Verify skill_used content artifact**
-   - Locate the skill artifact in the response
-   - **Expected fields:**
-     - `skill_name`: "compound_interest_calculator"
-     - `skill_code`: The stored Python code
-     - `execution_count`: Incremented from previous value
-   - **Expected UI:** Shows "Approve" (keep) and "Reject" (remove) buttons
+3. **Open skill review modal**
+   - Click "View Skill" button on the artifact
+   - **Expected:** SkillReviewModal opens showing:
+     - Skill name and description
+     - Python code (read-only, syntax-highlighted)
+     - Skill metadata (status, execution count if used)
+     - Action buttons (Approve/Reject for saved, Keep/Remove for used)
 
-4. **Verify execution count updated**
-   - Call `GET /instances/{instanceId}/skills/{skillId}`
-   - **Expected:** `execution_count` has increased by 1
+4. **Test approve action (for skill_saved)**
+   - Click "Approve" button
+   - **Expected:** 
+     - Toast notification: "Skill approved and ready to use"
+     - Modal closes
+     - Skill status changes to "Active" (if it was pending)
 
-**Pass Criteria:** Skill executes correctly and returns skill_used artifact.
+5. **Test reject action**
+   - Create another skill
+   - Click "Reject" button on the skill artifact
+   - **Expected:** 
+     - Toast notification: "Skill rejected and removed"
+     - Modal closes
+     - Skill is deleted from Cosmos DB
+
+6. **Test keep action (for skill_used)**
+   - Use an existing skill (Test Case 4)
+   - Click "Keep Skill" button on the `skill_used` artifact
+   - **Expected:** 
+     - Toast notification: "Skill will continue to be used"
+     - Modal closes
+
+7. **Test remove action (for skill_used)**
+   - Use an existing skill
+   - Click "Remove Skill" button
+   - **Expected:** 
+     - Toast notification: "Skill removed - agent will generate new code next time"
+     - Modal closes
+     - Skill is deleted from Cosmos DB
+
+**Pass Criteria:** All skill review actions work correctly via the User Portal UI.
 
 ---
 
@@ -1833,59 +2078,92 @@ Before testing, ensure the following are in place:
 
 ---
 
-### 10.8 Test Case 7: Reject/Delete a Skill
+### 10.11 Test Case 7: API Endpoints for Skill Management
 
-**Objective:** Verify users can reject and remove skills.
+**Objective:** Verify all skill management API endpoints work correctly.
+
+**Testing Approach:** Use local Core API (Section 10.2.2) and test with API calls.
 
 **Steps:**
 
-1. **Create a test skill**
-   - Register a skill called "skill_to_delete"
+1. **Ensure Core API is running locally**
+   - Start Core API (Section 10.2.2)
+   - Verify it's accessible
 
-2. **Reject via content artifact**
-   - On the skill_saved or skill_used artifact, click "Reject"
-   - **Expected:** Confirmation prompt appears
+2. **Test GET /instances/{instanceId}/skills**
+   - Call the endpoint with your user identity
+   - **Expected:** Returns list of skills for the current user
+   - **Verify:** Skills are scoped to user and agent
 
-3. **Confirm rejection**
-   - Confirm the rejection
+3. **Test GET /instances/{instanceId}/skills/{skillId}**
+   - Get a skill ID from the list
+   - Call the endpoint
+   - **Expected:** Returns full skill details including code, metadata, execution stats
+
+4. **Test POST /instances/{instanceId}/skills/{skillId}/approve**
+   - Create a skill with `require_skill_approval: true`
+   - Call the approve endpoint
    - **Expected:** 
-     - Skill is deleted from storage
-     - Success message displayed
+     - 200 OK response
+     - Skill status changes to "Active"
 
-4. **Verify skill removed**
-   - Call `GET /instances/{instanceId}/skills`
-   - **Expected:** "skill_to_delete" no longer appears
+5. **Test DELETE /instances/{instanceId}/skills/{skillId}**
+   - Create a test skill
+   - Get its skill ID
+   - Call the delete endpoint
+   - **Expected:** 
+     - 200 OK response
+     - Skill is removed from Cosmos DB
+   - **Verify:** Skill no longer appears in GET /skills list
 
-5. **Alternative: Reject via API**
-   - Create another skill "skill_to_delete_via_api"
-   - Call `DELETE /instances/{instanceId}/skills/{skillId}`
-   - **Expected:** 200 OK with success message
+6. **Test error handling**
+   - Call GET with non-existent skill ID
+   - **Expected:** 404 Not Found
+   - Call DELETE with non-existent skill ID
+   - **Expected:** 404 Not Found
 
-**Pass Criteria:** Skills can be rejected/deleted via UI and API.
+**Pass Criteria:** All skill API endpoints work correctly with proper error handling.
 
 ---
 
-### 10.9 Test Case 8: Skill Scoping (Agent-User Combination)
+### 10.12 Test Case 8: Skill Scoping (Agent-User Combination)
 
 **Objective:** Verify skills are correctly scoped to agent-user combination.
+
+**Testing Approach:** Use test harness with different user identities and agents.
 
 **Steps:**
 
 1. **Create skill with User A on Agent 1**
-   - Log in as User A
-   - Use Agent 1 (procedural memory enabled)
-   - Register skill "user_a_agent_1_skill"
+   - Update `test_workflow.py` with User A's identity
+   - Ensure agent configuration uses Agent 1
+   - Run test harness to create a skill
+   - Note the skill name/ID
 
 2. **Verify User A can access on Agent 1**
-   - Search for the skill
-   - **Expected:** Skill is found
+   - Run test harness again with same user and agent
+   - Use a prompt that should match the skill
+   - **Expected:** Skill is found and used (if similarity > threshold)
 
 3. **Verify User A cannot access on Agent 2**
-   - Switch to Agent 2 (also procedural memory enabled)
-   - Search for "user_a_agent_1_skill"
-   - **Expected:** Skill is NOT found (different agent)
+   - Update `test_workflow.py` to use Agent 2 (different agent)
+   - Keep User A's identity
+   - Run test harness with similar prompt
+   - **Expected:** Skill is NOT found (different agent scope)
 
 4. **Verify User B cannot access User A's skill**
+   - Update `test_workflow.py` with User B's identity
+   - Use Agent 1 (same agent as step 1)
+   - Run test harness
+   - **Expected:** Skill is NOT found (different user scope)
+
+5. **Verify via API**
+   - Call `GET /instances/{instanceId}/skills` as User A
+   - **Expected:** Only User A's skills appear
+   - Call same endpoint as User B
+   - **Expected:** Only User B's skills appear (or empty if none)
+
+**Pass Criteria:** Skills are correctly scoped to agent-user combination and not accessible across boundaries.
    - Log in as User B
    - Use Agent 1
    - Search for "user_a_agent_1_skill"
@@ -1902,43 +2180,7 @@ Before testing, ensure the following are in place:
 
 ---
 
-### 10.10 Test Case 9: CoreAPI Skills Endpoints
-
-**Objective:** Verify all SkillsController API endpoints function correctly.
-
-**Steps:**
-
-1. **GET /instances/{instanceId}/skills**
-   - Call the endpoint as an authenticated user
-   - **Expected:** Returns list of user's skills (empty or populated)
-
-2. **GET /instances/{instanceId}/skills?agentObjectId={id}**
-   - Call with agent filter
-   - **Expected:** Returns only skills for that agent
-
-3. **GET /instances/{instanceId}/skills/{skillId}**
-   - Call with a valid skill ID
-   - **Expected:** Returns skill details
-   - Call with another user's skill ID
-   - **Expected:** 403 Forbidden
-
-4. **POST /instances/{instanceId}/skills/{skillId}/approve**
-   - Call on a PendingApproval skill
-   - **Expected:** Skill status becomes Active
-   - Call on already Active skill
-   - **Expected:** 400 Bad Request (not pending)
-
-5. **DELETE /instances/{instanceId}/skills/{skillId}**
-   - Call on own skill
-   - **Expected:** Skill deleted, 200 OK
-   - Call on another user's skill
-   - **Expected:** 403 Forbidden
-
-**Pass Criteria:** All API endpoints return correct responses and enforce authorization.
-
----
-
-### 10.11 Test Case 10: Error Handling
+### 10.13 Test Case 9: Error Handling
 
 **Objective:** Verify graceful error handling in edge cases.
 
@@ -1969,7 +2211,7 @@ Before testing, ensure the following are in place:
 
 **Pass Criteria:** All error cases handled gracefully with informative messages.
 
-### 10.12 Verification Checklist
+### 10.14 Verification Checklist
 
 Use this checklist to confirm all functionality:
 

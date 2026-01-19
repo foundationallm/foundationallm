@@ -25,6 +25,11 @@ namespace FoundationaLLM.Core.API.Controllers
         private readonly IRealtimeSpeechService _realtimeSpeechService;
         private readonly ILogger<RealtimeSpeechController> _logger;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RealtimeSpeechController"/> class.
+        /// </summary>
+        /// <param name="realtimeSpeechService">Service for realtime speech operations.</param>
+        /// <param name="logger">Logger for controller diagnostics.</param>
         public RealtimeSpeechController(
             IRealtimeSpeechService realtimeSpeechService,
             ILogger<RealtimeSpeechController> logger)
