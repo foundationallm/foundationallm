@@ -1,4 +1,5 @@
-﻿using FoundationaLLM.Common.Interfaces;
+﻿using FluentValidation;
+using FoundationaLLM.Common.Interfaces;
 
 namespace FoundationaLLM.Common.Validation
 {
@@ -19,7 +20,16 @@ namespace FoundationaLLM.Common.Validation
         /// </summary>
         /// <typeparam name="T">The type of the object instance to validate.</typeparam>
         /// <param name="instance">The object instance being validated.</param>
-        public async Task ValidateAndThrowAsync<T>(T instance) where T : class
+        public async Task ValidateAndThrowAsync<T>(T instance) where T : class =>
+            await ValidateAndThrowAsync(instance, null);
+
+        /// <summary>
+        /// Validates the specified object instance with additional context data and throws an exception if the instance is invalid.
+        /// </summary>
+        /// <typeparam name="T">The type of the object instance to validate.</typeparam>
+        /// <param name="instance">The object instance being validated.</param>
+        /// <param name="contextData">Optional dictionary of additional context data to pass to the validator.</param>
+        public async Task ValidateAndThrowAsync<T>(T instance, Dictionary<string, object>? contextData) where T : class
         {
             bool isValid = true;
             string? errorMessage = null;
@@ -34,7 +44,15 @@ namespace FoundationaLLM.Common.Validation
                 }
                 else
                 {
-                    var validationResult = await validator.ValidateAsync(instance);
+                    var validationContext = new ValidationContext<T>(instance);
+
+                    if (contextData is not null)
+                    {
+                        foreach (var kvp in contextData)
+                            validationContext.RootContextData[kvp.Key] = kvp.Value;
+                    }
+
+                    var validationResult = await validator.ValidateAsync(validationContext);
                     if (!validationResult.IsValid)
                     {
                         isValid = false;

@@ -36,5 +36,11 @@ namespace FoundationaLLM.Common.Models.CodeExecution
         /// </summary>
         [JsonPropertyName("language")]
         public required string Language { get; set; }
+
+        /// <summary>
+        /// Gets or sets the optional endpoint provider override.
+        /// </summary>
+        [JsonPropertyName("endpoint_provider_override")]
+        public CodeSessionEndpointProviderOverride? EndpointProviderOverride { get; set; }
     }
 }

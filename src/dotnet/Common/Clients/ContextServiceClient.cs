@@ -5,7 +5,6 @@ using FoundationaLLM.Common.Models.CodeExecution;
 using FoundationaLLM.Common.Models.Context;
 using FoundationaLLM.Common.Models.Context.Knowledge;
 using FoundationaLLM.Common.Models.ResourceProviders;
-using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Models.ResourceProviders.Context;
 using FoundationaLLM.Common.Models.Services;
 using Microsoft.Extensions.Logging;
@@ -231,7 +230,8 @@ namespace FoundationaLLM.Common.Clients
             string conversationId,
             string context,
             string endpointProvider,
-            string language)
+            string language,
+            CodeSessionEndpointProviderOverride? endpointProviderOverride = null)
         {
             try
             {
@@ -249,7 +249,8 @@ namespace FoundationaLLM.Common.Clients
                             ConversationId = conversationId,
                             Context = context,
                             EndpointProvider = endpointProvider,
-                            Language = language
+                            Language = language,
+                            EndpointProviderOverride = endpointProviderOverride
                         }));
 
                 if (responseMessage.IsSuccessStatusCode)
