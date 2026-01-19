@@ -47,7 +47,7 @@ namespace FoundationaLLM.Common.Models.CodeExecution
 
                     if (!endpointProviderOverride.Enabled)
                     {
-                        // When the override is disabled, it should be ignored and not produce validation errors.
+                        context.AddFailure("The endpoint provider override is not enabled.");
                         return;
                     }
 

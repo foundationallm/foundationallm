@@ -43,7 +43,7 @@ namespace FoundationaLLM.Context.Services
                     $"The code session provider service {CodeSessionProviderNames.AzureContainerAppsCodeInterpreter} was not found.",
                     StatusCodes.Status500InternalServerError);
 
-        ICodeSessionProviderService _customContainerCodeSessionProviderService =
+        readonly ICodeSessionProviderService _customContainerCodeSessionProviderService =
             codeSessionProviderServices.FirstOrDefault(x =>
                 x.ProviderName == CodeSessionProviderNames.AzureContainerAppsCustomContainer)
                 ?? throw new ContextServiceException(
@@ -51,8 +51,8 @@ namespace FoundationaLLM.Context.Services
                     StatusCodes.Status500InternalServerError);
 
 
-        ILogger<CodeSessionService> _logger = logger;
-        StandardValidator _validator = new(
+        readonly ILogger<CodeSessionService> _logger = logger;
+        readonly StandardValidator _validator = new(
             resourceValidatorFactory,
             message => new ContextServiceException(
                 message,
