@@ -347,6 +347,12 @@ namespace FoundationaLLM.Context.Services
         private ICodeSessionProviderService GetCodeSessionProviderService(
             string codeSessionProviderName,
             CodeSessionEndpointProviderOverride? codeSessionEndpointProviderOverride) =>
+            // Note: LocalCustomContainerService is instantiated inline when an override is present.
+            // This is acceptable because:
+            // 1. It's used for development/testing scenarios with local endpoints
+            // 2. HttpClient lifecycle is managed by IHttpClientFactory (no resource leaks)
+            // 3. The service itself doesn't hold disposable resources
+            // 4. Caching would add complexity for a development feature
             codeSessionEndpointProviderOverride != null && codeSessionEndpointProviderOverride.Enabled
                 ? new LocalCustomContainerService(
                     codeSessionEndpointProviderOverride.Endpoint,
