@@ -21,7 +21,7 @@ namespace FoundationaLLM.ContextEngine.Services
         ILogger logger,
         IHttpClientFactory httpClientFactory) : ICodeSessionProviderService
     {
-        private readonly string _endpoint = endpoint ?? throw new ArgumentNullException(nameof(endpoint));
+        private readonly string _endpoint = ValidateEndpoint(endpoint);
         private readonly ILogger _logger = logger;
         private readonly IHttpClientFactory _httpClientFactory = httpClientFactory
             ?? throw new ArgumentNullException(nameof(httpClientFactory));
@@ -30,18 +30,30 @@ namespace FoundationaLLM.ContextEngine.Services
             logger,
             string.Empty);
 
+        private static string ValidateEndpoint(string endpoint)
+        {
+            if (string.IsNullOrWhiteSpace(endpoint))
+                throw new ArgumentException("Endpoint cannot be null or whitespace.", nameof(endpoint));
+
+            if (!Uri.TryCreate(endpoint, UriKind.Absolute, out var endpointUri)
+                || (endpointUri.Scheme != Uri.UriSchemeHttp && endpointUri.Scheme != Uri.UriSchemeHttps))
+                throw new ArgumentException("Endpoint must be a valid HTTP or HTTPS URL.", nameof(endpoint));
+
+            return endpoint;
+        }
+
         /// <inheritdoc/>
         public string ProviderName => CodeSessionProviderNames.LocalCustomContainer;
 
         /// <inheritdoc/>
-        public async Task<CreateCodeSessionResponse> CreateCodeSession(
+        public Task<CreateCodeSessionResponse> CreateCodeSession(
             string instanceId,
             string agentName,
             string conversationId,
             string context,
             string language,
             UnifiedUserIdentity userIdentity) =>
-            await Task.FromResult(new CreateCodeSessionResponse
+            Task.FromResult(new CreateCodeSessionResponse
             {
                 SessionId = $"__local_code_session_{Guid.NewGuid().ToBase64String()}__",
                 Endpoint = _endpoint

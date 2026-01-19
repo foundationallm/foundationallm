@@ -413,12 +413,15 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                         {
                             var overrides = JsonSerializer.Deserialize<List<CodeSessionEndpointProviderOverride>>(
                                 endpointProviderOverrideString!);
-                            // Check if there is an active override for the current user.
-                            endpointProviderOverride = overrides!
-                                .FirstOrDefault(o => o.UPN.Equals(
-                                    currentUserIdentity.UPN!,
-                                    StringComparison.OrdinalIgnoreCase)
-                                && o.Enabled);
+                            if (overrides is not null)
+                            {
+                                // Check if there is an active override for the current user.
+                                endpointProviderOverride = overrides
+                                    .FirstOrDefault(o => o.UPN.Equals(
+                                        currentUserIdentity.UPN!,
+                                        StringComparison.OrdinalIgnoreCase)
+                                    && o.Enabled);
+                            }
                         }
                         catch (JsonException)
                         {

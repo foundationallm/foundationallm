@@ -47,7 +47,7 @@ namespace FoundationaLLM.Common.Models.CodeExecution
 
                     if (!endpointProviderOverride.Enabled)
                     {
-                        context.AddFailure("The context provider override is not enabled.");
+                        // When the override is disabled, it should be ignored and not produce validation errors.
                         return;
                     }
 
@@ -66,6 +66,13 @@ namespace FoundationaLLM.Common.Models.CodeExecution
                         context.AddFailure(
                             nameof(CreateCodeSessionRequest.EndpointProviderOverride),
                             "The endpoint provider override endpoint must be provided when the override is enabled.");
+                    }
+                    else if (!Uri.TryCreate(endpointProviderOverride.Endpoint, UriKind.Absolute, out var endpointUri)
+                        || (endpointUri.Scheme != Uri.UriSchemeHttp && endpointUri.Scheme != Uri.UriSchemeHttps))
+                    {
+                        context.AddFailure(
+                            nameof(CreateCodeSessionRequest.EndpointProviderOverride),
+                            "The endpoint provider override endpoint must be a valid HTTP or HTTPS URL.");
                     }
                 });
         }

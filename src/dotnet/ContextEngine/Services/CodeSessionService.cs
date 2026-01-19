@@ -32,11 +32,11 @@ namespace FoundationaLLM.Context.Services
         IHttpClientFactory httpClientFactory,
         ILogger<CodeSessionService> logger) : ICodeSessionService
     {
-        IFileService _fileService = fileService;
-        IAzureCosmosDBCodeSessionService _cosmosDBService = cosmosDBService;
-        IHttpClientFactory _httpClientFactory = httpClientFactory;
+        readonly IFileService _fileService = fileService;
+        readonly IAzureCosmosDBCodeSessionService _cosmosDBService = cosmosDBService;
+        readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
 
-        ICodeSessionProviderService _codeInterpreterCodeSessionProviderService =
+        readonly ICodeSessionProviderService _codeInterpreterCodeSessionProviderService =
             codeSessionProviderServices.FirstOrDefault(x =>
                 x.ProviderName == CodeSessionProviderNames.AzureContainerAppsCodeInterpreter)
                 ?? throw new ContextServiceException(
