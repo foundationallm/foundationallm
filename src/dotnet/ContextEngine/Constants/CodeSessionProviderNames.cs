@@ -14,5 +14,10 @@
         /// The Azure Container Apps Dynamic Sessions custom container.
         /// </summary>
         public const string AzureContainerAppsCustomContainer = "AzureContainerAppsCustomContainer";
+
+        /// <summary>
+        /// The custom container running locally (for development and testing).
+        /// </summary>
+        public const string LocalCustomContainer = "LocalCustomContainer";
     }
 }

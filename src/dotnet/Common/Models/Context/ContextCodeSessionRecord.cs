@@ -1,5 +1,6 @@
 ﻿using FoundationaLLM.Common.Constants.Context;
 using FoundationaLLM.Common.Models.Authentication;
+using FoundationaLLM.Common.Models.CodeExecution;
 using System.Text.Json.Serialization;
 
 namespace FoundationaLLM.Common.Models.Context
@@ -46,6 +47,13 @@ namespace FoundationaLLM.Common.Models.Context
         public string Language { get; set; }
 
         /// <summary>
+        /// Gets or sets an optional endpoint provider override.
+        /// </summary>
+        [JsonPropertyName("endpoint_provider_override")]
+        [JsonPropertyOrder(4)]
+        public CodeSessionEndpointProviderOverride? EndpointProviderOverride { get; set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ContextCodeSessionRecord"/> class.
         /// </summary>
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
@@ -64,6 +72,7 @@ namespace FoundationaLLM.Common.Models.Context
         /// <param name="endpointProvider">The code session provider.</param>
         /// <param name="endpoint">The code session provider endpoint.</param>
         /// <param name="language">The code session programming language.</param>
+        /// <param name="endpointProviderOverride">An optional code session endpoint override.</param>
         /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> providing details about the user identity.</param>
         public ContextCodeSessionRecord(
             string instanceId,
@@ -72,6 +81,7 @@ namespace FoundationaLLM.Common.Models.Context
             string endpointProvider,
             string endpoint,
             string language,
+            CodeSessionEndpointProviderOverride? endpointProviderOverride,
             UnifiedUserIdentity userIdentity) : base(
                 codeSessionId,
                 instanceId,
@@ -82,6 +92,7 @@ namespace FoundationaLLM.Common.Models.Context
             EndpointProvider = endpointProvider;
             Endpoint = endpoint;
             Language = language;
+            EndpointProviderOverride = endpointProviderOverride;
         }
     }
 }

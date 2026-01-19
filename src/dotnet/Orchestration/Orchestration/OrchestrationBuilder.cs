@@ -5,6 +5,7 @@ using FoundationaLLM.Common.Constants.Templates;
 using FoundationaLLM.Common.Exceptions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
+using FoundationaLLM.Common.Models.CodeExecution;
 using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.Orchestration.Request;
 using FoundationaLLM.Common.Models.ResourceProviders;
@@ -403,6 +404,32 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                         throw new OrchestrationException(
                             $"The tool {tool.Name} requires a code session, but the code session language is not specified or is invalid.");
 
+                    var endpointProviderOverride = default(CodeSessionEndpointProviderOverride);
+                    if (tool.TryGetPropertyValue<string>(
+                            AgentToolPropertyNames.CodeSessionEndpointProviderOverrides, out var endpointProviderOverrideString)
+                        && !string.IsNullOrWhiteSpace(endpointProviderOverrideString))
+                    {
+                        try
+                        {
+                            var overrides = JsonSerializer.Deserialize<List<CodeSessionEndpointProviderOverride>>(
+                                endpointProviderOverrideString!);
+                            if (overrides is not null)
+                            {
+                                // Check if there is an active override for the current user.
+                                endpointProviderOverride = overrides
+                                    .FirstOrDefault(o => o.UPN.Equals(
+                                        currentUserIdentity.UPN!,
+                                        StringComparison.OrdinalIgnoreCase)
+                                    && o.Enabled);
+                            }
+                        }
+                        catch (JsonException)
+                        {
+                            logger.LogWarning(
+                                "The code session endpoint provider overrides could not be deserialized. The format is invalid.");
+                        }
+                    }
+
                     var contextServiceResponse = await contextServiceClient.CreateCodeSession(
                         instanceId,
                         agentName,
@@ -411,7 +438,8 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                             ?? $"temporary-{Guid.NewGuid().ToString().ToLower()}",
                         tool.Name,
                         codeSessionProvider,
-                        codeSessionLanguage);
+                        codeSessionLanguage,
+                        endpointProviderOverride: endpointProviderOverride);
 
                     if (contextServiceResponse.TryGetValue(out var codeSession))
                     {

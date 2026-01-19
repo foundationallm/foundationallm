@@ -1,66 +1,72 @@
-﻿using FoundationaLLM.Common.Models.Authentication;
+﻿using FoundationaLLM.Common.Extensions;
+using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.CodeExecution;
 using FoundationaLLM.Context.Constants;
-using FoundationaLLM.Context.Exceptions;
 using FoundationaLLM.Context.Interfaces;
 using FoundationaLLM.Context.Models;
-using FoundationaLLM.Context.Models.Configuration;
-using Microsoft.AspNetCore.Http;
+using FoundationaLLM.Context.Services;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
-namespace FoundationaLLM.Context.Services
+namespace FoundationaLLM.ContextEngine.Services
 {
     /// <summary>
-    /// Provides a code session service that uses Azure Container Apps Dynamic Sessions to execute code.
+    /// Provides a code session provider service that interacts with a local custom container instance
+    /// for developing and testing code session functionalities.
     /// </summary>
+    /// <param name="endpoint">The base URL of the local custom container instance used for code session operations. Cannot be null or empty.</param>
+    /// <param name="logger">The <see cref="ILogger"/> used for logging.</param>
     /// <param name="httpClientFactory">The factory used to create <see cref="HttpClient"/> instances.</param>
-    /// <param name="options">The options for the Azure Container Apps code execution service.</param>
-    /// <param name="logger">The logger used for logging.</param>
-    public class AzureContainerAppsCustomContainerService(
-        IHttpClientFactory httpClientFactory,
-        IOptions<AzureContainerAppsCustomContainerServiceSettings> options,
-        ILogger<AzureContainerAppsCodeInterpreterService> logger) :
-        AzureContainerAppsServiceBase(httpClientFactory, logger), ICodeSessionProviderService
+    public class LocalCustomContainerService(
+        string endpoint,
+        ILogger logger,
+        IHttpClientFactory httpClientFactory) : ICodeSessionProviderService
     {
-        private readonly AzureContainerAppsCustomContainerServiceSettings _settings = options.Value;
+        private readonly string _endpoint = ValidateEndpoint(endpoint);
+        private readonly ILogger _logger = logger;
+        private readonly IHttpClientFactory _httpClientFactory = httpClientFactory
+            ?? throw new ArgumentNullException(nameof(httpClientFactory));
+
         private readonly CustomContainerServiceBase _customContainerServiceBase = new(
             logger,
-            "2024-10-02-preview");
+            string.Empty);
 
-        /// <inheritdoc />
-        public string ProviderName => CodeSessionProviderNames.AzureContainerAppsCustomContainer;
+        private static string ValidateEndpoint(string endpoint)
+        {
+            if (string.IsNullOrWhiteSpace(endpoint))
+                throw new ArgumentException("Endpoint cannot be null or whitespace.", nameof(endpoint));
 
-        /// <inheritdoc />
-        public async Task<CreateCodeSessionResponse> CreateCodeSession(
+            if (!Uri.TryCreate(endpoint, UriKind.Absolute, out var endpointUri)
+                || (endpointUri.Scheme != Uri.UriSchemeHttp && endpointUri.Scheme != Uri.UriSchemeHttps))
+                throw new ArgumentException("Endpoint must be a valid HTTP or HTTPS URL.", nameof(endpoint));
+
+            return endpoint;
+        }
+
+        /// <inheritdoc/>
+        public string ProviderName => CodeSessionProviderNames.LocalCustomContainer;
+
+        /// <inheritdoc/>
+        public Task<CreateCodeSessionResponse> CreateCodeSession(
             string instanceId,
             string agentName,
             string conversationId,
             string context,
             string language,
             UnifiedUserIdentity userIdentity) =>
-            _settings.Endpoints.TryGetValue(language, out var endpoints)
-            && endpoints != null
-            && endpoints.Count > 0
-                ? await CreateCodeSessionInternal(
-                    instanceId,
-                    agentName,
-                    conversationId,
-                    context,
-                    _settings.Endpoints[language].First(),
-                    userIdentity)
-                : throw new ContextServiceException(
-                    $"Cound not find any endpoints for the [{language}] language.",
-                    StatusCodes.Status400BadRequest);
+            Task.FromResult(new CreateCodeSessionResponse
+            {
+                SessionId = $"__local_code_session_{Guid.NewGuid().ToBase64String()}__",
+                Endpoint = _endpoint
+            });
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public async Task<bool> UploadFileToCodeSession(
             string codeSessionId,
             string endpoint,
             string fileName,
             BinaryData fileContent)
         {
-            var httpClient = await CreateHttpClient();
+            var httpClient = _httpClientFactory.CreateClient();
 
             return await _customContainerServiceBase.UploadFileToCodeSession(
                 httpClient,
@@ -70,12 +76,12 @@ namespace FoundationaLLM.Context.Services
                 fileContent);
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public async Task<List<CodeSessionFileStoreItem>> GetCodeSessionFileStoreItems(
             string codeSessionId,
             string endpoint)
         {
-            var httpClient = await CreateHttpClient();
+            var httpClient = _httpClientFactory.CreateClient();
 
             return await _customContainerServiceBase.GetCodeSessionFileStoreItems(
                 httpClient,
@@ -88,7 +94,7 @@ namespace FoundationaLLM.Context.Services
             string codeSessionId,
             string endpoint)
         {
-            var httpClient = await CreateHttpClient();
+            var httpClient = _httpClientFactory.CreateClient();
 
             await _customContainerServiceBase.DeleteCodeSessionFileStoreItems(
                 httpClient,
@@ -96,14 +102,14 @@ namespace FoundationaLLM.Context.Services
                 endpoint);
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public async Task<Stream?> DownloadFileFromCodeSession(
             string codeSessionId,
             string endpoint,
             string fileName,
             string filePath)
         {
-            var httpClient = await CreateHttpClient();
+            var httpClient = _httpClientFactory.CreateClient();
 
             return await _customContainerServiceBase.DownloadFileFromCodeSession(
                 httpClient,
@@ -113,13 +119,13 @@ namespace FoundationaLLM.Context.Services
                 filePath);
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public async Task<CodeSessionCodeExecuteResponse> ExecuteCodeInCodeSession(
             string codeSessionId,
             string endpoint,
             string codeToExecute)
         {
-            var httpClient = await CreateHttpClient();
+            var httpClient = _httpClientFactory.CreateClient();
 
             return await _customContainerServiceBase.ExecuteCodeInCodeSession(
                 httpClient,

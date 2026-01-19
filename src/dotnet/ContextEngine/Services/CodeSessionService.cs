@@ -8,6 +8,7 @@ using FoundationaLLM.Common.Validation;
 using FoundationaLLM.Context.Constants;
 using FoundationaLLM.Context.Exceptions;
 using FoundationaLLM.Context.Interfaces;
+using FoundationaLLM.ContextEngine.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
@@ -21,25 +22,28 @@ namespace FoundationaLLM.Context.Services
     /// <param name="cosmosDBService">The Azure Cosmos DB service providing database services.</param>
     /// <param name="codeSessionProviderServices">The code session provider services.</param>
     /// <param name="resourceValidatorFactory">The resource validator factory.</param>
+    /// <param name="httpClientFactory">The factory used to create <see cref="HttpClient"/> instances.</param>
     /// <param name="logger">The logger used for logging.</param>
     public class CodeSessionService(
         IFileService fileService,
         IAzureCosmosDBCodeSessionService cosmosDBService,
         IEnumerable<ICodeSessionProviderService> codeSessionProviderServices,
         IResourceValidatorFactory resourceValidatorFactory,
+        IHttpClientFactory httpClientFactory,
         ILogger<CodeSessionService> logger) : ICodeSessionService
     {
-        IFileService _fileService = fileService;
-        IAzureCosmosDBCodeSessionService _cosmosDBService = cosmosDBService;
+        readonly IFileService _fileService = fileService;
+        readonly IAzureCosmosDBCodeSessionService _cosmosDBService = cosmosDBService;
+        readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
 
-        ICodeSessionProviderService _codeInterpreterCodeSessionProviderService =
+        readonly ICodeSessionProviderService _codeInterpreterCodeSessionProviderService =
             codeSessionProviderServices.FirstOrDefault(x =>
                 x.ProviderName == CodeSessionProviderNames.AzureContainerAppsCodeInterpreter)
                 ?? throw new ContextServiceException(
                     $"The code session provider service {CodeSessionProviderNames.AzureContainerAppsCodeInterpreter} was not found.",
                     StatusCodes.Status500InternalServerError);
 
-        ICodeSessionProviderService _customContainerCodeSessionProviderService =
+        readonly ICodeSessionProviderService _customContainerCodeSessionProviderService =
             codeSessionProviderServices.FirstOrDefault(x =>
                 x.ProviderName == CodeSessionProviderNames.AzureContainerAppsCustomContainer)
                 ?? throw new ContextServiceException(
@@ -47,8 +51,8 @@ namespace FoundationaLLM.Context.Services
                     StatusCodes.Status500InternalServerError);
 
 
-        ILogger<CodeSessionService> _logger = logger;
-        StandardValidator _validator = new(
+        readonly ILogger<CodeSessionService> _logger = logger;
+        readonly StandardValidator _validator = new(
             resourceValidatorFactory,
             message => new ContextServiceException(
                 message,
@@ -62,10 +66,16 @@ namespace FoundationaLLM.Context.Services
         {
             try
             {
-                await _validator.ValidateAndThrowAsync(codeSessionRequest);
+                await _validator.ValidateAndThrowAsync(
+                    codeSessionRequest,
+                    new Dictionary<string, object>
+                    {
+                        { CreateCodeSessionRequestValidator.UserPrincipalNameKey, userIdentity.UPN! }
+                    });
 
                 var codeSessionProviderService = GetCodeSessionProviderService(
-                    codeSessionRequest.EndpointProvider);
+                    codeSessionRequest.EndpointProvider,
+                    codeSessionRequest.EndpointProviderOverride);
 
                 // Create a new code session using the code session provider service.
                 var codeSessionProviderResponse = await codeSessionProviderService.CreateCodeSession(
@@ -84,6 +94,7 @@ namespace FoundationaLLM.Context.Services
                     codeSessionRequest.EndpointProvider,
                     codeSessionProviderResponse.Endpoint,
                     codeSessionRequest.Language,
+                    codeSessionRequest.EndpointProviderOverride,
                     userIdentity);
 
                 // Save the code session record to the database (update if it already exists).
@@ -122,7 +133,8 @@ namespace FoundationaLLM.Context.Services
                         StatusCodes.Status404NotFound);
 
                 var codeSessionProviderService = GetCodeSessionProviderService(
-                    codeSessionRecord.EndpointProvider);
+                    codeSessionRecord.EndpointProvider,
+                    codeSessionRecord.EndpointProviderOverride);
 
                 var uploadResults = request.FileNames.Distinct()
                     .ToDictionary(x => x, x => false);
@@ -206,7 +218,8 @@ namespace FoundationaLLM.Context.Services
                         StatusCodes.Status404NotFound);
 
                 var codeSessionProviderService = GetCodeSessionProviderService(
-                    codeSessionRecord.EndpointProvider);
+                    codeSessionRecord.EndpointProvider,
+                    codeSessionRecord.EndpointProviderOverride);
 
                 var fileStoreItems = await codeSessionProviderService.GetCodeSessionFileStoreItems(
                     codeSessionRecord.Id,
@@ -312,7 +325,8 @@ namespace FoundationaLLM.Context.Services
                         StatusCodes.Status404NotFound);
 
                 var codeSessionProviderService = GetCodeSessionProviderService(
-                    codeSessionRecord.EndpointProvider);
+                    codeSessionRecord.EndpointProvider,
+                    codeSessionRecord.EndpointProviderOverride);
 
                 var result = await codeSessionProviderService.ExecuteCodeInCodeSession(
                     codeSessionRecord.Id,
@@ -331,16 +345,28 @@ namespace FoundationaLLM.Context.Services
         }
 
         private ICodeSessionProviderService GetCodeSessionProviderService(
-            string codeSessionProviderName) =>
-            codeSessionProviderName switch
-            {
-                CodeSessionProviderNames.AzureContainerAppsCodeInterpreter =>
-                    _codeInterpreterCodeSessionProviderService,
-                CodeSessionProviderNames.AzureContainerAppsCustomContainer =>
-                    _customContainerCodeSessionProviderService,
-                _ => throw new ContextServiceException(
-                    $"The code session provider service {codeSessionProviderName} is not supported.",
-                        StatusCodes.Status400BadRequest)
-            };
+            string codeSessionProviderName,
+            CodeSessionEndpointProviderOverride? codeSessionEndpointProviderOverride) =>
+            // Note: LocalCustomContainerService is instantiated inline when an override is present.
+            // This is acceptable because:
+            // 1. It's used for development/testing scenarios with local endpoints
+            // 2. HttpClient lifecycle is managed by IHttpClientFactory (no resource leaks)
+            // 3. The service itself doesn't hold disposable resources
+            // 4. Caching would add complexity for a development feature
+            codeSessionEndpointProviderOverride != null && codeSessionEndpointProviderOverride.Enabled
+                ? new LocalCustomContainerService(
+                    codeSessionEndpointProviderOverride.Endpoint,
+                    _logger,
+                    _httpClientFactory)
+                : codeSessionProviderName switch
+                    {
+                        CodeSessionProviderNames.AzureContainerAppsCodeInterpreter =>
+                            _codeInterpreterCodeSessionProviderService,
+                        CodeSessionProviderNames.AzureContainerAppsCustomContainer =>
+                            _customContainerCodeSessionProviderService,
+                        _ => throw new ContextServiceException(
+                            $"The code session provider service {codeSessionProviderName} is not supported.",
+                                StatusCodes.Status400BadRequest)
+                    };
     }
 }
