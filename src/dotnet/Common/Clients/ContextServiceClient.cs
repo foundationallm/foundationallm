@@ -300,6 +300,45 @@ namespace FoundationaLLM.Common.Clients
 
         }
 
+        private async Task<Result<ResourceNameCheckResult>> CheckResourceName<T>(
+            string instanceId,
+            string checkActionPath,
+            T checkActionPayload)
+            where T : class
+        {
+            try
+            {
+                var client = await _httpClientFactoryService.CreateClient(
+                    instanceId,
+                    HttpClientNames.ContextAPI,
+                    _callContext.CurrentUserIdentity!);
+                var responseMessage = await client.PostAsJsonAsync(
+                    $"instances/{instanceId}/{checkActionPath}",
+                    checkActionPayload);
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    var responseContent = await responseMessage.Content.ReadAsStringAsync();
+                    var response = JsonSerializer.Deserialize<ResourceNameCheckResult>(responseContent);
+
+                    return response == null
+                        ? Result<ResourceNameCheckResult>.FailureFromErrorMessage(
+                            $"An error occurred deserializing the response from the service for knowledge resource {resource.Name} of type {knowledgeResourceType}.")
+                        : Result<ResourceNameCheckResult>.Success(response);
+                }
+                _logger.LogError(
+                    "An error occurred while upserting the knowledge resorce {ResourceName}. Status code: {StatusCode}.",
+                    resource.Name,
+                    responseMessage.StatusCode);
+                return await Result<ResourceNameCheckResult>.FailureFromHttpResponse(responseMessage);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while upserting the knowledge resource {ResourceName}.",
+                    resource.Name);
+                return Result<ResourceNameCheckResult>.FailureFromException(ex);
+            }
+        }
+
         /// <inheritdoc/>
         public async Task<Result<ResourceProviderGetResult<KnowledgeUnit>>> GetKnowledgeUnit(
             string instanceId,
