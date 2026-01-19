@@ -84,6 +84,7 @@ namespace FoundationaLLM.Common.Interfaces
         /// <param name="conversationId">The conversation identifier.</param>
         /// <param name="context">The context within the conversation in which the code session must be created (e.g., an agent tool name).</param>
         /// <param name="endpointProvider">The name of the code session endpoint provider.</param>
+        /// <param name="endpointProviderOverride">Optional user level override for the code session endpoint provider.</param>
         /// <param name="language">The programming language of the code session.</param>
         /// <returns>A <see cref="Result{T}"/> instance where <c>T</c> is of type <see cref="CreateCodeSessionResponse"/>.</returns>
         Task<Result<CreateCodeSessionResponse>> CreateCodeSession(
@@ -92,7 +93,8 @@ namespace FoundationaLLM.Common.Interfaces
             string conversationId,
             string context,
             string endpointProvider,
-            string language);
+            string language,
+            CodeSessionEndpointProviderOverride? endpointProviderOverride = null);
 
         /// <summary>
         /// Call the Context API to retrieve the a knowledge unit.

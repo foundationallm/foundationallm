@@ -16,6 +16,11 @@
         public const string CodeSessionEndpointProvider = "code_session_endpoint_provider";
 
         /// <summary>
+        /// User-level overrides for the code session endpoint provider.
+        /// </summary>
+        public const string CodeSessionEndpointProviderOverrides = "code_session_endpoint_provider_overrides";
+
+        /// <summary>
         /// The programming language of the code session.
         /// </summary>
         public const string CodeSessionLanguage = "code_session_language";
