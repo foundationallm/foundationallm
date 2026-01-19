@@ -37,8 +37,8 @@ namespace FoundationaLLM.Context.Services
             string fileName,
             BinaryData fileContent)
         {
-            var multipartFormDataContent = new MultipartFormDataContent();
-            var streamContent = new StreamContent(fileContent.ToStream());
+            using var multipartFormDataContent = new MultipartFormDataContent();
+            using var streamContent = new StreamContent(fileContent.ToStream());
             streamContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
             {
                 Name = "file",
@@ -116,16 +116,15 @@ namespace FoundationaLLM.Context.Services
             string filePath)
         {
             var payload = new { file_name = fileName };
-            var content = new StringContent(JsonSerializer.Serialize(payload), System.Text.Encoding.UTF8, "application/json");
+            using var content = new StringContent(JsonSerializer.Serialize(payload), System.Text.Encoding.UTF8, "application/json");
 
             var responseMessage = await httpClient.PostAsync(
                 $"{endpoint}/files/download?{_apiVersion}identifier={codeSessionId}",
                 content);
 
-            if (responseMessage.IsSuccessStatusCode)
-                return responseMessage.Content.ReadAsStream();
-            else
-                return null;
+            return responseMessage.IsSuccessStatusCode
+                ? responseMessage.Content.ReadAsStream()
+                : null;
         }
 
         /// <summary>
@@ -145,7 +144,7 @@ namespace FoundationaLLM.Context.Services
             try
             {
                 var payload = new { code = codeToExecute };
-                var content = new StringContent(JsonSerializer.Serialize(payload), System.Text.Encoding.UTF8, "application/json");
+                using var content = new StringContent(JsonSerializer.Serialize(payload), System.Text.Encoding.UTF8, "application/json");
 
                 var response = await httpClient.PostAsync(
                     $"{endpoint}/code/execute?{_apiVersion}identifier={codeSessionId}",
@@ -157,7 +156,7 @@ namespace FoundationaLLM.Context.Services
                     || string.IsNullOrWhiteSpace(responseContent))
                 {
                     _logger.LogError(
-                        "Code execution in session {CodeSessionId} returned an unsuccessfull status code {ResponseStatus}. "
+                        "Code execution in session {CodeSessionId} returned an unsuccessful status code {ResponseStatus}. "
                         + "Raw response content: {ResponseContent}. "
                         + "Code to execute: {CodeToExecute}",
                         codeSessionId, response.StatusCode, responseContent, codeToExecute);

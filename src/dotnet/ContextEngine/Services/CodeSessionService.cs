@@ -32,18 +32,18 @@ namespace FoundationaLLM.Context.Services
         IHttpClientFactory httpClientFactory,
         ILogger<CodeSessionService> logger) : ICodeSessionService
     {
-        IFileService _fileService = fileService;
-        IAzureCosmosDBCodeSessionService _cosmosDBService = cosmosDBService;
-        IHttpClientFactory _httpClientFactory = httpClientFactory;
+        readonly IFileService _fileService = fileService;
+        readonly IAzureCosmosDBCodeSessionService _cosmosDBService = cosmosDBService;
+        readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
 
-        ICodeSessionProviderService _codeInterpreterCodeSessionProviderService =
+        readonly ICodeSessionProviderService _codeInterpreterCodeSessionProviderService =
             codeSessionProviderServices.FirstOrDefault(x =>
                 x.ProviderName == CodeSessionProviderNames.AzureContainerAppsCodeInterpreter)
                 ?? throw new ContextServiceException(
                     $"The code session provider service {CodeSessionProviderNames.AzureContainerAppsCodeInterpreter} was not found.",
                     StatusCodes.Status500InternalServerError);
 
-        ICodeSessionProviderService _customContainerCodeSessionProviderService =
+        readonly ICodeSessionProviderService _customContainerCodeSessionProviderService =
             codeSessionProviderServices.FirstOrDefault(x =>
                 x.ProviderName == CodeSessionProviderNames.AzureContainerAppsCustomContainer)
                 ?? throw new ContextServiceException(
@@ -51,8 +51,8 @@ namespace FoundationaLLM.Context.Services
                     StatusCodes.Status500InternalServerError);
 
 
-        ILogger<CodeSessionService> _logger = logger;
-        StandardValidator _validator = new(
+        readonly ILogger<CodeSessionService> _logger = logger;
+        readonly StandardValidator _validator = new(
             resourceValidatorFactory,
             message => new ContextServiceException(
                 message,
@@ -347,6 +347,12 @@ namespace FoundationaLLM.Context.Services
         private ICodeSessionProviderService GetCodeSessionProviderService(
             string codeSessionProviderName,
             CodeSessionEndpointProviderOverride? codeSessionEndpointProviderOverride) =>
+            // Note: LocalCustomContainerService is instantiated inline when an override is present.
+            // This is acceptable because:
+            // 1. It's used for development/testing scenarios with local endpoints
+            // 2. HttpClient lifecycle is managed by IHttpClientFactory (no resource leaks)
+            // 3. The service itself doesn't hold disposable resources
+            // 4. Caching would add complexity for a development feature
             codeSessionEndpointProviderOverride != null && codeSessionEndpointProviderOverride.Enabled
                 ? new LocalCustomContainerService(
                     codeSessionEndpointProviderOverride.Endpoint,
