@@ -4,3 +4,4 @@ class ContentArtifactTypeNames:
     TOOL_ERROR = 'ToolError'
     WORKFLOW_EXECUTION = 'WorkflowExecution'
     FILE = 'File'
+    GENERATED_IMAGE = 'GeneratedImage'
