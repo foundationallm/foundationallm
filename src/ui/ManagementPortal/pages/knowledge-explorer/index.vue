@@ -483,7 +483,7 @@ export default {
             let data = {
                 nodes: [],
                 edges: []
-            }
+            };
             let graphResponse = this.queryResult.knowledge_graph_response;
 
             // Main entities

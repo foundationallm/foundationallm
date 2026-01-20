@@ -118,7 +118,7 @@ namespace Management.Client.Tests.Clients.Resources
                 NameCheckResultType.Allowed,
                 false,
                 false,
-                "Name is allowed.");
+                "Name is allowed");
 
             _mockRestClient.Resources
                 .ExecuteResourceActionAsync<ResourceNameCheckResult>(
