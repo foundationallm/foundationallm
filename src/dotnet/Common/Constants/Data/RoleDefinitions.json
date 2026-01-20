@@ -200,8 +200,7 @@
 				"actions": [
 					"FoundationaLLM.Configuration/apiEndpointConfigurations/read",
 					"FoundationaLLM.AIModel/aiModels/read",
-					"FoundationaLLM.Plugin/plugins/read",
-					"FoundationaLLM.Vector/vectorDatabases/read"
+					"FoundationaLLM.Plugin/plugins/read"
 				],
 				"not_actions": [],
 				"data_actions": [],
@@ -311,6 +310,50 @@
 	},
 	{
 		"type": "FoundationaLLM.Authorization/roleDefinitions",
+		"name": "8eec6664-9abf-4beb-84f7-18d9c2917c7f",
+		"object_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/8eec6664-9abf-4beb-84f7-18d9c2917c7f",
+		"display_name": "Knowledge Sources Contributor",
+		"description": "Create new knowledge sources.",
+		"assignable_scopes": [
+			"/"
+		],
+		"permissions": [
+			{
+				"actions": [],
+				"not_actions": [],
+				"data_actions": [],
+				"not_data_actions": []
+			}
+		],
+		"created_on": "2026-01-10T00:00:00.0000000Z",
+		"updated_on": "2026-01-10T00:00:00.0000000Z",
+		"created_by": null,
+		"updated_by": null
+	},
+	{
+		"type": "FoundationaLLM.Authorization/roleDefinitions",
+		"name": "5f38b653-e3b7-47a8-8fde-e70ea9e4fa91",
+		"object_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/5f38b653-e3b7-47a8-8fde-e70ea9e4fa91",
+		"display_name": "Knowledge Units Contributor",
+		"description": "Create new knowledge units.",
+		"assignable_scopes": [
+			"/"
+		],
+		"permissions": [
+			{
+				"actions": [],
+				"not_actions": [],
+				"data_actions": [],
+				"not_data_actions": []
+			}
+		],
+		"created_on": "2026-01-10T00:00:00.0000000Z",
+		"updated_on": "2026-01-10T00:00:00.0000000Z",
+		"created_by": null,
+		"updated_by": null
+	},
+	{
+		"type": "FoundationaLLM.Authorization/roleDefinitions",
 		"name": "c026f070-abc2-4419-aed9-ec0676f81519",
 		"object_id": "/providers/FoundationaLLM.Authorization/roleDefinitions/c026f070-abc2-4419-aed9-ec0676f81519",
 		"display_name": "Vector Databases Contributor",
@@ -321,7 +364,6 @@
 		"permissions": [
 			{
 				"actions": [
-					"FoundationaLLM.Vector/vectorDatabases/read",
 					"FoundationaLLM.Configuration/apiEndpointConfigurations/read"
 				],
 				"not_actions": [],

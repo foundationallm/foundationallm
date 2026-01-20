@@ -731,7 +731,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// <inheritdoc/>
         public async Task<TResult> ExecuteResourceActionAsync<T, TAction, TResult>(
             string instanceId,
-            string resourceName,
+            string? resourceName,
             string actionName,
             TAction actionPayload,
             UnifiedUserIdentity userIdentity,
@@ -762,7 +762,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         public async Task<TResult> ExecuteResourceActionAsync<TMain, TSubordinate, TAction, TResult>(
             string instanceId,
             string mainResourceName,
-            string resourceName,
+            string? resourceName,
             string actionName,
             TAction actionPayload,
             UnifiedUserIdentity userIdentity,
@@ -2021,23 +2021,19 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             // 1. A resource with the specified name already exists (hence the reference was successfully retrieved).
             // 2. A resource with the specified name was previously deleted and not purged.
             return result.Success
-                ? new ResourceNameCheckResult
-                {
-                    Name = resourceName!.Name,
-                    Type = resourceName.Type,
-                    Status = NameCheckResultType.Denied,
-                    Exists = result.Success,
-                    Deleted = result.Deleted,
-                    Message = "A resource with the specified name already exists or was previously deleted and not purged."
-                }
-                : new ResourceNameCheckResult
-                {
-                    Name = resourceName!.Name,
-                    Type = resourceName.Type,
-                    Status = NameCheckResultType.Allowed,
-                    Exists = result.Success,
-                    Deleted = result.Deleted
-                };
+                ? new ResourceNameCheckResult(
+                    resourceName!.Name,
+                    resourceName!.Type,
+                    NameCheckResultType.Denied,
+                    result.Success,
+                    result.Deleted,
+                    "A resource with the specified name already exists or was previously deleted and not purged.")
+                : new ResourceNameCheckResult(
+                    resourceName!.Name,
+                    resourceName!.Type,
+                    NameCheckResultType.Allowed,
+                    result.Success,
+                    result.Deleted);
         }
 
         /// <summary>

@@ -3,6 +3,7 @@ import type {
 	ResourceProviderGetResult,
 	Agent,
 	DataSource,
+	VectorDatabase,
 	AppConfigUnion,
 	// AppConfigKeyVault,
 	AgentIndex,
@@ -23,6 +24,7 @@ import type {
 	// Role,
 	RoleAssignment,
 	APIEndpointConfiguration,
+	APIEndpointConfigurationFilter,
 	FileToolAssociation,
 	UpdateAgentFileToolAssociationRequest,
 	Workflow,
@@ -481,6 +483,18 @@ export default {
 		)) as ResourceProviderGetResult<APIEndpointConfiguration>[];
 
 		return data;
+	},
+
+	async filterAPIEndpointConfigurations(
+		filter: APIEndpointConfigurationFilter,
+	): Promise<ResourceProviderGetResult<APIEndpointConfiguration>[]> {
+		return (await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Configuration/apiEndpointConfigurations/filter?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: filter,
+			},
+		)) as ResourceProviderGetResult<APIEndpointConfiguration>[];
 	},
 
 	async getAPIEndpointConfiguration(
@@ -951,22 +965,6 @@ export default {
 		);
 	},
 
-	async getOrchestrationServices(): Promise<APIEndpointConfiguration> {
-		return (await this.fetch(
-			`/instances/${this.instanceId}/providers/FoundationaLLM.Configuration/apiEndpointConfigurations?api-version=${this.apiVersion}`,
-		)) as APIEndpointConfiguration;
-	},
-
-	async getExternalOrchestrationServices(
-		resolveApiKey: boolean = false,
-	): Promise<ResourceProviderGetResult<ExternalOrchestrationService>[]> {
-		const data = (await this.fetch(
-			`/instances/${this.instanceId}/providers/FoundationaLLM.Configuration/apiEndpointConfigurations?api-version=${this.apiVersion}`,
-		)) as ResourceProviderGetResult<ExternalOrchestrationService>[];
-
-		// Return the updated external orchestration services.
-		return data;
-	},
 
 	/*
 		Pipelines
@@ -1078,24 +1076,74 @@ export default {
 
 	async filterResources(resourcePath: string, filterActionPayload: any): Promise<any> {
 		if (filterActionPayload === null) {
-			filterActionPayload = {};
+			const data = await this.fetch(
+				`/instances/${this.instanceId}/${resourcePath}?api-version=${this.apiVersion}`,
+				{
+					method: 'GET'
+				},
+			);
+			return data;
+		} else {
+			const data = await this.fetch(
+				`/instances/${this.instanceId}/${resourcePath}/filter?api-version=${this.apiVersion}`,
+				{
+					method: 'POST',
+					body: JSON.stringify(filterActionPayload),
+				},
+			);
+			return data;
 		}
-		const data = await this.fetch(
-			`/instances/${this.instanceId}/${resourcePath}/filter?api-version=${this.apiVersion}`,
-			{
-				method: 'POST',
-				body: JSON.stringify(filterActionPayload),
-			},
-		);
-		return data;
 	},
 
 	/*
 		Vector Databases
 	*/
-	async getVectorDatabases(): Promise<any> {
+	async getVectorDatabases(): Promise<ResourceProviderGetResult<VectorDatabase>[]> {
 		return await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Vector/vectorDatabases?api-version=${this.apiVersion}`,
+		);
+	},
+
+	async getVectorDatabase(
+		vectorDatabaseName: string,
+	): Promise<ResourceProviderGetResult<VectorDatabase>> {
+		const [data] = (await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Vector/vectorDatabases/${vectorDatabaseName}?api-version=${this.apiVersion}`,
+		)) as ResourceProviderGetResult<VectorDatabase>[];
+		return data;
+	},
+
+	async upsertVectorDatabase(request: VectorDatabase): Promise<ResourceProviderUpsertResult> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Vector/vectorDatabases/${request.name}?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: request,
+			},
+		);
+	},
+
+	async deleteVectorDatabase(vectorDatabaseName: string): Promise<ResourceProviderActionResult> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Vector/vectorDatabases/${vectorDatabaseName}?api-version=${this.apiVersion}`,
+			{
+				method: 'DELETE',
+			},
+		);
+	},
+
+	async checkVectorDatabaseName(name: string): Promise<CheckNameResponse> {
+		const payload = {
+			name,
+			type: 'vector-database',
+		};
+
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Vector/vectorDatabases/checkname?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: payload,
+			},
 		);
 	},
 
@@ -1111,21 +1159,62 @@ export default {
 	/*
 		Knowledge Sources
 	*/
-	async getKnowledgeSources(): Promise<any> {
+	async getKnowledgeSources(): Promise<ResourceProviderGetResult<any>[]> {
 		return await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Context/knowledgeSources?api-version=${this.apiVersion}`,
 		);
 	},
 
+	async getKnowledgeSource(knowledgeSourceName: string): Promise<ResourceProviderGetResult<any>[]> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Context/knowledgeSources/${knowledgeSourceName}?api-version=${this.apiVersion}`,
+		);
+	},
+
+	async createOrUpdateKnowledgeSource(knowledgeSourceName: string, request: any): Promise<any> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Context/knowledgeSources/${knowledgeSourceName}?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: request,
+			},
+		);
+	},
+
+	async deleteKnowledgeSource(knowledgeSourceName: string): Promise<any> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Context/knowledgeSources/${knowledgeSourceName}?api-version=${this.apiVersion}`,
+			{
+				method: 'DELETE',
+			},
+		);
+	},
+
+	async checkKnowledgeSourceName(name: string): Promise<CheckNameResponse> {
+		const payload = {
+			name,
+			type: 'knowledge-source',
+		};
+
+		return (await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Context/knowledgeSources/checkname?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: payload,
+			},
+		)) as CheckNameResponse;
+	},
+
+	/*
+		Knowledge Units
+	*/
 	async getKnowledgeUnits(): Promise<ResourceProviderGetResult<any>[]> {
 		return await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Context/knowledgeUnits?api-version=${this.apiVersion}`,
 		);
 	},
 
-	async getKnowledgeUnit(
-		knowledgeUnitName: string
-	): Promise<ResourceProviderGetResult<any>[]> {
+	async getKnowledgeUnit(knowledgeUnitName: string): Promise<ResourceProviderGetResult<any>[]> {
 		return await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Context/knowledgeUnits/${knowledgeUnitName}?api-version=${this.apiVersion}`,
 		);
@@ -1150,10 +1239,37 @@ export default {
 		);
 	},
 
-	async queryKnowledgeSource(
-		knowledgeSourceName: string,
-		queryRequest: any
-	): Promise<any> {
+	async checkKnowledgeUnitName(name: string): Promise<CheckNameResponse> {
+		const payload = {
+			name,
+			type: 'knowledge-unit',
+		};
+
+		return (await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Context/knowledgeUnits/checkname?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: payload,
+			},
+		)) as CheckNameResponse;
+	},
+
+	async checkVectorStoreId(vectorDatabaseObjectId: string, vectorStoreId: string): Promise<CheckNameResponse> {
+		const payload = {
+			vector_database_object_id: vectorDatabaseObjectId,
+			vector_store_id: vectorStoreId,
+		};
+
+		return (await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Context/knowledgeUnits/check-vector-store-id?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: payload,
+			},
+		)) as CheckNameResponse;
+	},
+
+	async queryKnowledgeSource(knowledgeSourceName: string, queryRequest: any): Promise<any> {
 		return await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Context/knowledgeSources/${knowledgeSourceName}/query?api-version=${this.apiVersion}`,
 			{
@@ -1163,10 +1279,7 @@ export default {
 		);
 	},
 
-	async renderKnowledgeUnitGraph(
-		knowledgeUnitName: string,
-		queryRequest: any
-	): Promise<any> {
+	async renderKnowledgeUnitGraph(knowledgeUnitName: string, queryRequest: any): Promise<any> {
 		return await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Context/knowledgeUnits/${knowledgeUnitName}/render-graph?api-version=${this.apiVersion}`,
 			{
@@ -1174,5 +1287,5 @@ export default {
 				body: queryRequest,
 			},
 		);
-	}
+	},
 };

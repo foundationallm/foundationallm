@@ -7,7 +7,6 @@ using FoundationaLLM.Common.Models.Authentication;
 using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Configuration.ResourceProviders;
-using FoundationaLLM.Common.Models.Context;
 using FoundationaLLM.Common.Models.Context.Knowledge;
 using FoundationaLLM.Common.Models.Knowledge;
 using FoundationaLLM.Common.Models.Orchestration;
@@ -126,11 +125,13 @@ namespace FoundationaLLM.Context.ResourceProviders
                     await UpdateKnowledgeResource<KnowledgeUnit>(
                         resourcePath,
                         JsonSerializer.Deserialize<KnowledgeUnit>(serializedResource!)!,
+                        authorizationResult,
                         userIdentity),
                 ContextResourceTypeNames.KnowledgeSources =>
                     await UpdateKnowledgeResource<KnowledgeSource>(
                         resourcePath,
                         JsonSerializer.Deserialize<KnowledgeSource>(serializedResource!)!,
+                        authorizationResult,
                         userIdentity),
                 _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeName} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest)
@@ -147,6 +148,16 @@ namespace FoundationaLLM.Context.ResourceProviders
             {
                 ContextResourceTypeNames.KnowledgeUnits => resourcePath.Action switch
                 {
+                    ResourceProviderActions.CheckName => await CheckKnowledgeUnitName(
+                        resourcePath,
+                        authorizationResult,
+                        serializedAction,
+                        userIdentity),
+                    ResourceProviderActions.CheckVectorStoreId => await CheckVectorStoreId(
+                        resourcePath,
+                        authorizationResult,
+                        serializedAction,
+                        userIdentity),
                     ResourceProviderActions.SetGraph => await SetKnowledgeUnitGraph(
                         resourcePath,
                         authorizationResult,
@@ -161,6 +172,11 @@ namespace FoundationaLLM.Context.ResourceProviders
                 },
                 ContextResourceTypeNames.KnowledgeSources => resourcePath.Action switch
                 {
+                    ResourceProviderActions.CheckName => await CheckKnowledgeSourceName(
+                        resourcePath,
+                        authorizationResult,
+                        serializedAction,
+                        userIdentity),
                     ResourceProviderActions.Query => await QueryKnowledgeSource(
                         resourcePath,
                         authorizationResult,
@@ -224,11 +240,13 @@ namespace FoundationaLLM.Context.ResourceProviders
                     ((await UpdateKnowledgeResource<KnowledgeUnit>(
                         resourcePath,
                         (resource as KnowledgeUnit)!,
+                        authorizationResult,
                         userIdentity)) as TResult)!,
                 Type t when t == typeof(KnowledgeSource) =>
                     ((await UpdateKnowledgeResource<KnowledgeSource>(
                         resourcePath,
                         (resource as KnowledgeSource)!,
+                        authorizationResult,
                         userIdentity)) as TResult)!,
                 _ => throw new ResourceProviderException(
                     $"The resource type {typeof(T).Name} is not supported by the {_name} resource provider.",
@@ -246,6 +264,18 @@ namespace FoundationaLLM.Context.ResourceProviders
                 Type t when t == typeof(KnowledgeUnit) =>
                     resourcePath.Action! switch
                     {
+                        ResourceProviderActions.CheckName =>
+                            ((await CheckKnowledgeUnitName(
+                                resourcePath,
+                                authorizationResult,
+                                (actionPayload as ResourceName)!,
+                                userIdentity)) as TResult)!,
+                        ResourceProviderActions.CheckVectorStoreId =>
+                            ((await CheckVectorStoreId(
+                                resourcePath,
+                                authorizationResult,
+                                (actionPayload as CheckVectorStoreIdRequest)!,
+                                userIdentity)) as TResult)!,
                         ResourceProviderActions.SetGraph =>
                             ((await SetKnowledgeUnitGraph(
                                 resourcePath,
@@ -261,6 +291,19 @@ namespace FoundationaLLM.Context.ResourceProviders
                                 $"The action {resourcePath.Action} on resource type {ContextResourceTypeNames.KnowledgeUnits} is not supported by the {_name} resource provider.",
                                     StatusCodes.Status400BadRequest)
                     },
+                Type t when t == typeof(KnowledgeSource) =>
+                    resourcePath.Action! switch
+                    {
+                        ResourceProviderActions.CheckName =>
+                            ((await CheckKnowledgeSourceName(
+                                resourcePath,
+                                authorizationResult,
+                                (actionPayload as ResourceName)!,
+                                userIdentity)) as TResult)!,
+                        _ => throw new ResourceProviderException(
+                                $"The action {resourcePath.Action} on resource type {ContextResourceTypeNames.KnowledgeSources} is not supported by the {_name} resource provider.",
+                                    StatusCodes.Status400BadRequest)
+                    },
                 _ => throw new ResourceProviderException($"Action on resource type {resourcePath.ResourceTypeName} are not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest)
             };
@@ -268,6 +311,163 @@ namespace FoundationaLLM.Context.ResourceProviders
         #endregion
 
         #region Resource management
+
+        private async Task<ResourceNameCheckResult> CheckKnowledgeUnitName(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            string serializedAction,
+            UnifiedUserIdentity userIdentity)
+        {
+            var actionPayload = JsonSerializer.Deserialize<ResourceName>(serializedAction)
+                ?? throw new ResourceProviderException(
+                    "The action payload is not valid.",
+                    StatusCodes.Status400BadRequest);
+
+            return await CheckKnowledgeUnitName(
+                resourcePath,
+                authorizationResult,
+                actionPayload,
+                userIdentity);
+        }
+
+        private async Task<ResourceNameCheckResult> CheckKnowledgeUnitName(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            ResourceName actionPayload,
+            UnifiedUserIdentity userIdentity)
+        {
+            if (!authorizationResult.Authorized
+                && !authorizationResult.HasRequiredRole)
+                throw new ResourceProviderException("Access is not authorized.", StatusCodes.Status403Forbidden);
+
+            if (!_proxyMode)
+                return await CheckResourceName<KnowledgeUnit>(actionPayload);
+
+            var contextServiceClient = GetContextServiceClient(userIdentity);
+            var contextResponse = await contextServiceClient.CheckKnowledgeUnitName(
+                resourcePath.InstanceId!,
+                actionPayload);
+
+            if (contextResponse.TryGetValue(out var resourceNameCheckResult))
+                return resourceNameCheckResult;
+            else
+                throw new ResourceProviderException(
+                    $"The following error occured when checking name for knowledge unit in the {_name} resource provider: {contextResponse.Error?.Detail ?? "N/A"}.",
+                    StatusCodes.Status500InternalServerError);
+        }
+
+        private async Task<ResourceNameCheckResult> CheckVectorStoreId(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            string serializedAction,
+            UnifiedUserIdentity userIdentity)
+        {
+            var actionPayload = JsonSerializer.Deserialize<CheckVectorStoreIdRequest>(serializedAction)
+                ?? throw new ResourceProviderException("The action payload is not valid.", StatusCodes.Status400BadRequest);
+
+            return await CheckVectorStoreId(
+                resourcePath,
+                authorizationResult,
+                actionPayload,
+                userIdentity);
+        }
+
+        private async Task<ResourceNameCheckResult> CheckVectorStoreId(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            CheckVectorStoreIdRequest actionPayload,
+            UnifiedUserIdentity userIdentity)
+        {
+            if (!authorizationResult.Authorized
+                && !authorizationResult.HasRequiredRole)
+                throw new ResourceProviderException("Access is not authorized.", StatusCodes.Status403Forbidden);
+
+            if (!_proxyMode)
+            {
+                // Load all knowledge unit resource references and check if the vector store ID is already in use.
+                var knowledgeUnitReferences = await _resourceReferenceStore!.GetAllResourceReferences<KnowledgeUnit>();
+
+                foreach (var reference in knowledgeUnitReferences)
+                {
+                    var knowledgeUnit = await LoadResource<KnowledgeUnit>(reference);
+                    if (knowledgeUnit is not null
+                        && knowledgeUnit.VectorDatabaseObjectId == actionPayload.VectorDataBaseObjectId
+                        && knowledgeUnit.VectorStoreId == actionPayload.VectorStoreId)
+                    {
+                        return new ResourceNameCheckResult(
+                            actionPayload.VectorStoreId,
+                            ContextTypes.KnowledgeUnit,
+                            NameCheckResultType.Denied,
+                            true,
+                            false,
+                            $"The vector store ID '{actionPayload.VectorStoreId}' is already in use by knowledge unit '{knowledgeUnit.Name}'.");
+                    }
+                }
+
+                return new ResourceNameCheckResult(
+                    actionPayload.VectorStoreId,
+                    ContextTypes.KnowledgeUnit,
+                    NameCheckResultType.Allowed,
+                    false,
+                    false);
+            }
+
+            var contextServiceClient = GetContextServiceClient(userIdentity);
+            var contextResponse = await contextServiceClient.CheckVectorStoreId(
+                resourcePath.InstanceId!,
+                actionPayload);
+
+            if (contextResponse.TryGetValue(out var resourceNameCheckResult))
+                return resourceNameCheckResult;
+            else
+                throw new ResourceProviderException(
+                    $"The following error occured when checking vector store identifier in the {_name} resource provider: {contextResponse.Error?.Detail ?? "N/A"}.",
+                    StatusCodes.Status500InternalServerError);
+        }
+
+        private async Task<ResourceNameCheckResult> CheckKnowledgeSourceName(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            string serializedAction,
+            UnifiedUserIdentity userIdentity)
+        {
+            var actionPayload = JsonSerializer.Deserialize<ResourceName>(serializedAction)
+                ?? throw new ResourceProviderException(
+                    "The action payload is not valid.",
+                    StatusCodes.Status400BadRequest);
+
+            return await CheckKnowledgeSourceName(
+                resourcePath,
+                authorizationResult,
+                actionPayload,
+                userIdentity);
+        }
+
+        private async Task<ResourceNameCheckResult> CheckKnowledgeSourceName(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            ResourceName actionPayload,
+            UnifiedUserIdentity userIdentity)
+        {
+            if (!authorizationResult.Authorized
+                && !authorizationResult.HasRequiredRole)
+                throw new ResourceProviderException("Access is not authorized.", StatusCodes.Status403Forbidden);
+
+            if (!_proxyMode)
+                return await CheckResourceName<KnowledgeSource>(actionPayload);
+
+            var contextServiceClient = GetContextServiceClient(userIdentity);
+            var contextResponse = await contextServiceClient.CheckKnowledgeSourceName(
+                resourcePath.InstanceId!,
+                actionPayload);
+
+            if (contextResponse.TryGetValue(out var resourceNameCheckResult))
+                return resourceNameCheckResult;
+            else
+                throw new ResourceProviderException(
+                    $"The following error occured when checking name for knowledge source in the {_name} resource provider: {contextResponse.Error?.Detail ?? "N/A"}.",
+                    StatusCodes.Status500InternalServerError);
+        }
 
         private async Task<KnowledgeSource> GetKnowledgeSource(
             ResourcePath resourcePath,
@@ -295,6 +495,7 @@ namespace FoundationaLLM.Context.ResourceProviders
                     $"The following error occured when retrieving the knowledge source {resourcePath.MainResourceId!} from the {_name} resource provider: {contextResponse.Error?.Detail ?? "N/A"}.",
                     StatusCodes.Status500InternalServerError);
         }
+
         private async Task<KnowledgeUnit> GetKnowledgeUnit(
             ResourcePath resourcePath,
             ResourcePathAuthorizationResult authorizationResult,
@@ -417,12 +618,25 @@ namespace FoundationaLLM.Context.ResourceProviders
         private async Task<ResourceProviderUpsertResult<T>> UpdateKnowledgeResource<T>(
             ResourcePath resourcePath,
             T resource,
+            ResourcePathAuthorizationResult authorizationResult,
             UnifiedUserIdentity userIdentity) where T : ResourceBase
         {
             if (!_proxyMode)
             {
                 var existingResourceReference =
                     await _resourceReferenceStore!.GetResourceReference(resource.Name);
+
+                if (existingResourceReference is not null
+                    && !authorizationResult.Authorized)
+                {
+                    // The resource already exists and the user is not authorized to update it.
+                    // Irrespective of whether the user has the required role or not, we need to throw an exception in the case of existing resources.
+                    // The required role only allows the user to create a new resource.
+                    // This check is needed because it's only here that we can determine if the resource exists.
+                    _logger.LogWarning("Access to the resource path {ResourcePath} was not authorized for user {UserName} : userId {UserId}.",
+                        resourcePath.RawResourcePath, userIdentity!.Username, userIdentity!.UserId);
+                    throw new ResourceProviderException("Access is not authorized.", StatusCodes.Status403Forbidden);
+                }
 
                 var resourceReference = new ContextReference
                 {

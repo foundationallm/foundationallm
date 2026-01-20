@@ -66,6 +66,16 @@ namespace FoundationaLLM.Common.Constants.Authorization
         public const string Prompts_Contributor = "479e7b36-5965-4a7f-baf7-84e57be854aa";
 
         /// <summary>
+        /// Create new knowledge sources.
+        /// </summary>
+        public const string Knowledge_Sources_Contributor = "8eec6664-9abf-4beb-84f7-18d9c2917c7f";
+
+        /// <summary>
+        /// Create new knowledge units.
+        /// </summary>
+        public const string Knowledge_Units_Contributor = "5f38b653-e3b7-47a8-8fde-e70ea9e4fa91";
+
+        /// <summary>
         /// Create new vector databases.
         /// </summary>
         public const string Vector_Databases_Contributor = "c026f070-abc2-4419-aed9-ec0676f81519";

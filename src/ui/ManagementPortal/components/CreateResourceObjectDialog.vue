@@ -202,7 +202,7 @@ export default {
 				apiMethod = api.getPrompts;
 			} else if (resourceType === 'apiEndpoint') {
 				this.loadingStatusText = 'Loading api endpoints...';
-				apiMethod = api.getOrchestrationServices;
+				apiMethod = api.getAPIEndpointConfigurations;
 			} else if (resourceType === 'datapipeline') {
 				this.loadingStatusText = 'Loading data pipelines...';
 				apiMethod = api.getPipelines;

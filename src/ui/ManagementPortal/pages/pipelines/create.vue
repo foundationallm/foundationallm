@@ -796,7 +796,7 @@ export default {
 					this.validationMessage = null;
 				} else if (response.status === 'Denied') {
 					this.nameValidationStatus = 'invalid';
-					this.validationMessage = response.message;
+					this.validationMessage = response.error_message;
 				}
 			} catch (error) {
 				console.error('Error checking pipeline name: ', error);

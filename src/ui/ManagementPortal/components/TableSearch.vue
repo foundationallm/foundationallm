@@ -11,7 +11,7 @@
 			<InputIcon>
 				<i class="pi pi-search" />
 			</InputIcon>
-			<InputText v-model="filters['global'].value" :placeholder="placeholder" @input="handleFilterChange" />
+			<InputText v-model="filters['global'].value" :placeholder="placeholder" />
 		</IconField>
 	</div>
 </template>
@@ -50,34 +50,26 @@ export default {
 			default: 'Search table'
 		},
 
-		initialFilters: {
-			type: Object,
-			required: false,
-			default: {
-				global: { value: null, matchMode: FilterMatchMode.CONTAINS }
-			},
-		},
-
 		modelValue: {
 			type: Object,
 			required: true,
 		},
 	},
 
-	data() {
-		return {
-			filters: this.initialFilters,
-		};
+	computed: {
+		filters: {
+			get() {
+				return this.modelValue;
+			},
+			set(value: any) {
+				this.$emit('update:modelValue', value);
+			},
+		},
 	},
 
 	methods: {
-		handleFilterChange() {
-			this.$emit('update:modelValue', this.filters);
-		},
-
 		handleClearFilter() {
 			this.filters['global'].value = null;
-			this.$emit('update:modelValue', this.filters);
 		},
 	},
 }

@@ -89,5 +89,10 @@
         /// Trigger a resource command.
         /// </summary>
         public const string TriggerCommand = "trigger-command";
+
+        /// <summary>
+        /// Check the existence of a vector store ID.
+        /// </summary>
+        public const string CheckVectorStoreId = "check-vector-store-id";
     }
 }

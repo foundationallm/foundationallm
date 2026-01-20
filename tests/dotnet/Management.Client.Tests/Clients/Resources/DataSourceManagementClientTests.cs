@@ -139,14 +139,13 @@ namespace Management.Client.Tests.Clients.Resources
         {
             // Arrange
             var resourceName = new ResourceName { Name = "test-dataSource", Type = "dataSource-type" };
-            var expectedCheckResult = new ResourceNameCheckResult
-            { 
-                Name = resourceName.Name,
-                Status = NameCheckResultType.Allowed,
-                Message = "Name is allowed",
-                Exists = false,
-                Deleted = false
-            };
+            var expectedCheckResult = new ResourceNameCheckResult(
+                resourceName.Name,
+                null,
+                NameCheckResultType.Allowed,
+                false,
+                false,
+                "Name is allowed");
 
             _mockRestClient.Resources
                 .ExecuteResourceActionAsync<ResourceNameCheckResult>(

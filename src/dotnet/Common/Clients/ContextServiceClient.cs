@@ -278,6 +278,72 @@ namespace FoundationaLLM.Common.Clients
         }
 
         /// <inheritdoc/>
+        public async Task<Result<ResourceNameCheckResult>> CheckKnowledgeUnitName(
+            string instanceId,
+            ResourceName resourceName) =>
+            await CheckResourceName<ResourceName>(
+                instanceId,
+                "knowledgeUnits/check-name",
+                resourceName);
+
+        /// <inheritdoc/>
+        public async Task<Result<ResourceNameCheckResult>> CheckVectorStoreId(
+            string instanceId,
+            CheckVectorStoreIdRequest checkVectorStoreIdRequest) =>
+            await CheckResourceName<CheckVectorStoreIdRequest>(
+                instanceId,
+                "knowledgeUnits/check-vectorstore-id",
+                checkVectorStoreIdRequest);
+
+        /// <inheritdoc/>
+        public async Task<Result<ResourceNameCheckResult>> CheckKnowledgeSourceName(
+            string instanceId,
+            ResourceName resourceName) =>
+            await CheckResourceName<ResourceName>(
+                instanceId,
+                "knowledgeSources/check-name",
+                resourceName);
+
+        private async Task<Result<ResourceNameCheckResult>> CheckResourceName<T>(
+            string instanceId,
+            string checkActionPath,
+            T checkActionPayload)
+            where T : class
+        {
+            try
+            {
+                var client = await _httpClientFactoryService.CreateClient(
+                    instanceId,
+                    HttpClientNames.ContextAPI,
+                    _callContext.CurrentUserIdentity!);
+                var responseMessage = await client.PostAsJsonAsync(
+                    $"instances/{instanceId}/{checkActionPath}",
+                    checkActionPayload);
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    var responseContent = await responseMessage.Content.ReadAsStringAsync();
+                    var response = JsonSerializer.Deserialize<ResourceNameCheckResult>(responseContent);
+
+                    return response == null
+                        ? Result<ResourceNameCheckResult>.FailureFromErrorMessage(
+                            $"An error occurred deserializing the check resource name response for {JsonSerializer.Serialize(checkActionPayload)}.")
+                        : Result<ResourceNameCheckResult>.Success(response);
+                }
+                _logger.LogError(
+                    "An error occurred while checking resource name for {CheckActionPayload}. Status code: {StatusCode}.",
+                    JsonSerializer.Serialize(checkActionPayload),
+                    responseMessage.StatusCode);
+                return await Result<ResourceNameCheckResult>.FailureFromHttpResponse(responseMessage);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while checking resource name for {CheckActionPayload}.",
+                    JsonSerializer.Serialize(checkActionPayload));
+                return Result<ResourceNameCheckResult>.FailureFromException(ex);
+            }
+        }
+
+        /// <inheritdoc/>
         public async Task<Result<ResourceProviderGetResult<KnowledgeUnit>>> GetKnowledgeUnit(
             string instanceId,
             string knowledgeUnitId,

@@ -78,7 +78,7 @@ export default {
 
 			// try {
 			// 	this.loadingStatusText = 'Retrieving external orchestration services...';
-			// 	const externalOrchestrationServicesResult = await api.getExternalOrchestrationServices();
+			// 	const externalOrchestrationServicesResult = await api.getAPIEndpointConfigurations();
 			// 	this.externalOrchestrationServices = externalOrchestrationServicesResult?.map(
 			// 		(result) => result?.resource,
 			// 	);

@@ -8,6 +8,7 @@ using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Configuration.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders;
+using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Models.ResourceProviders.Vector;
 using FoundationaLLM.Common.Services.ResourceProviders;
 using FoundationaLLM.Plugin.Models;
@@ -102,7 +103,31 @@ namespace FoundationaLLM.Vector.ResourceProviders
                 VectorResourceTypeNames.VectorDatabases => await UpdateVectorDatabase(
                     resourcePath,
                     serializedResource!,
+                    authorizationResult,
                     userIdentity),
+                _ => throw new ResourceProviderException(
+                    $"The resource type {resourcePath.ResourceTypeName} is not supported by the {_name} resource provider.",
+                    StatusCodes.Status400BadRequest)
+            };
+
+        /// <inheritdoc/>
+        protected override async Task<object> ExecuteActionAsync(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            string serializedAction,
+            UnifiedUserIdentity userIdentity,
+            Func<object, bool>? requestPayloadValidator = null) =>
+            resourcePath.ResourceTypeName switch
+            {
+                VectorResourceTypeNames.VectorDatabases => resourcePath.Action switch
+                {
+                    ResourceProviderActions.CheckName => await CheckVectorDatabaseName(
+                        authorizationResult,
+                        serializedAction),
+                    _ => throw new ResourceProviderException(
+                        $"The action {resourcePath.Action} is not supported for resource type {resourcePath.ResourceTypeName} by the {_name} resource provider.",
+                        StatusCodes.Status400BadRequest)
+                },
                 _ => throw new ResourceProviderException(
                     $"The resource type {resourcePath.ResourceTypeName} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest)
@@ -141,9 +166,22 @@ namespace FoundationaLLM.Vector.ResourceProviders
 
         #region Resource management
 
+        private async Task<ResourceNameCheckResult> CheckVectorDatabaseName(
+            ResourcePathAuthorizationResult authorizationResult,
+            string serializedAction)
+        {
+            if (!authorizationResult.Authorized
+                && !authorizationResult.HasRequiredRole)
+                throw new ResourceProviderException("Access is not authorized.", StatusCodes.Status403Forbidden);
+
+            return await CheckResourceName<VectorDatabase>(
+                JsonSerializer.Deserialize<ResourceName>(serializedAction)!);
+        }
+
         private async Task<ResourceProviderUpsertResult> UpdateVectorDatabase(
             ResourcePath resourcePath,
             string serializedVectorDatabase,
+            ResourcePathAuthorizationResult authorizationResult,
             UnifiedUserIdentity userIdentity)
         {
             var vectorDatabase = JsonSerializer.Deserialize<VectorDatabase>(serializedVectorDatabase)
@@ -151,6 +189,18 @@ namespace FoundationaLLM.Vector.ResourceProviders
                     StatusCodes.Status400BadRequest);
 
             var existingVectorDatabaseReference = await _resourceReferenceStore!.GetResourceReference(vectorDatabase.Name);
+
+            if (existingVectorDatabaseReference is not null
+                && !authorizationResult.Authorized)
+            {
+                // The resource already exists and the user is not authorized to update it.
+                // Irrespective of whether the user has the required role or not, we need to throw an exception in the case of existing resources.
+                // The required role only allows the user to create a new resource.
+                // This check is needed because it's only here that we can determine if the resource exists.
+                _logger.LogWarning("Access to the resource path {ResourcePath} was not authorized for user {UserName} : userId {UserId}.",
+                    resourcePath.RawResourcePath, userIdentity!.Username, userIdentity!.UserId);
+                throw new ResourceProviderException("Access is not authorized.", StatusCodes.Status403Forbidden);
+            }
 
             if (resourcePath.ResourceTypeInstances[0].ResourceId != vectorDatabase.Name)
                 throw new ResourceProviderException("The resource path does not match the object definition (name mismatch).",

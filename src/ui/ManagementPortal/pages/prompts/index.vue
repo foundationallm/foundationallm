@@ -147,6 +147,9 @@
 <script lang="ts">
 import api from '@/js/api';
 import type { Prompt, ResourceProviderGetResult } from '@/js/types';
+import { useListFilterStore } from '@/stores/listFilterStore';
+
+const FILTER_KEY = 'prompts';
 
 export default {
 	name: 'Prompts',
@@ -168,12 +171,19 @@ export default {
 	},
 
 	async created() {
+		// Restore filter from store
+		const listFilterStore = useListFilterStore();
+		const savedFilter = listFilterStore.getFilter(FILTER_KEY);
+		if (savedFilter) {
+			this.filters.global.value = savedFilter;
+		}
+
 		await this.getPrompts();
 	},
 
 	beforeUnmount() {
-		// Clear filters when leaving the component
-		this.filters.global.value = null;
+		const listFilterStore = useListFilterStore();
+		listFilterStore.setFilter(FILTER_KEY, this.filters.global.value);
 	},
 
 	methods: {

@@ -23,10 +23,16 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                 {
                     AllowedTypes = [
                         new ResourceTypeAllowedTypes(HttpMethod.Get.Method, AuthorizableOperations.Read, [], [], [typeof(ResourceProviderGetResult<KnowledgeUnit>)]),
-                        new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Write, [], [typeof(KnowledgeUnit)], [typeof(ResourceProviderUpsertResult)]),
+                        new ResourceTypeAllowedTypes(HttpMethod.Post.Method, $"{AuthorizableOperations.Write}|{RoleDefinitionNames.Knowledge_Units_Contributor}", [], [typeof(KnowledgeUnit)], [typeof(ResourceProviderUpsertResult)]),
                         new ResourceTypeAllowedTypes(HttpMethod.Delete.Method, AuthorizableOperations.Delete, [], [], [])
                     ],
                     Actions = [
+                        new ResourceTypeAction(ResourceProviderActions.CheckName, false, true, [
+                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, $"{AuthorizableOperations.Read}|{RoleDefinitionNames.Knowledge_Units_Contributor}", [], [typeof(ResourceName)], [typeof(ResourceNameCheckResult)])
+                        ]),
+                        new ResourceTypeAction(ResourceProviderActions.CheckVectorStoreId, false, true, [
+                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, $"{AuthorizableOperations.Read}|{RoleDefinitionNames.Knowledge_Units_Contributor}", [], [typeof(CheckVectorStoreIdRequest)], [typeof(ResourceNameCheckResult)])
+                        ]),
                         new ResourceTypeAction(ResourceProviderActions.SetGraph, true, false, [
                             new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Write, [], [typeof(ContextKnowledgeUnitSetGraphRequest)], [typeof(ResourceProviderActionResult)])
                         ]),
@@ -47,10 +53,13 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                 {
                     AllowedTypes = [
                         new ResourceTypeAllowedTypes(HttpMethod.Get.Method, AuthorizableOperations.Read, [], [], [typeof(ResourceProviderGetResult<KnowledgeSource>)]),
-                        new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Write, [], [typeof(KnowledgeUnit)], [typeof(ResourceProviderUpsertResult)]),
+                        new ResourceTypeAllowedTypes(HttpMethod.Post.Method, $"{AuthorizableOperations.Write}|{RoleDefinitionNames.Knowledge_Sources_Contributor}", [], [typeof(KnowledgeUnit)], [typeof(ResourceProviderUpsertResult)]),
                         new ResourceTypeAllowedTypes(HttpMethod.Delete.Method, AuthorizableOperations.Delete, [], [], [])
                     ],
                     Actions = [
+                        new ResourceTypeAction(ResourceProviderActions.CheckName, false, true, [
+                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, $"{AuthorizableOperations.Read}|{RoleDefinitionNames.Knowledge_Sources_Contributor}", [], [typeof(ResourceName)], [typeof(ResourceNameCheckResult)])
+                        ]),
                         new ResourceTypeAction(ResourceProviderActions.Query, true, false, [
                             new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Read, [], [typeof(ContextKnowledgeSourceQueryRequest)], [typeof(ContextKnowledgeSourceQueryResponse)])
                         ])

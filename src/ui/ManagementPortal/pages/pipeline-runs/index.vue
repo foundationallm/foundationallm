@@ -455,11 +455,6 @@ export default {
 		await this.getPipelines();
 	},
 
-	beforeUnmount() {
-		// Clear filters when leaving the component
-		this.filters.global.value = null;
-	},
-
 	methods: {
         async getPipelines() {
 			this.loading = true;

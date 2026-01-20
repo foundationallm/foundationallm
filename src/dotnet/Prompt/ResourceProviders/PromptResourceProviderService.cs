@@ -101,7 +101,11 @@ namespace FoundationaLLM.Prompt.ResourceProviders
 
             resourcePath.MainResourceTypeName switch
             {
-                PromptResourceTypeNames.Prompts => await UpdatePrompt(resourcePath, serializedResource!, userIdentity),
+                PromptResourceTypeNames.Prompts => await UpdatePrompt(
+                    resourcePath,
+                    serializedResource!,
+                    authorizationResult,
+                    userIdentity),
                 _ => throw new ResourceProviderException(
                         $"The resource type {resourcePath.MainResourceTypeName} is not supported by the {_name} resource provider.",
                         StatusCodes.Status400BadRequest),
@@ -176,6 +180,7 @@ namespace FoundationaLLM.Prompt.ResourceProviders
                     ((await UpdatePrompt(
                         resourcePath,
                         (resource as PromptBase)!,
+                        authorizationResult,
                         userIdentity)).ToResourceProviderUpsertResult<PromptBase>() as TResult)!,
                 _ => throw new ResourceProviderException($"The resource type {resource.GetType().Name} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest)
@@ -197,20 +202,41 @@ namespace FoundationaLLM.Prompt.ResourceProviders
                 JsonSerializer.Deserialize<ResourceName>(serializedAction)!);
         }
 
-        private async Task<ResourceProviderUpsertResult> UpdatePrompt(ResourcePath resourcePath, string serializedPrompt, UnifiedUserIdentity userIdentity)
+        private async Task<ResourceProviderUpsertResult> UpdatePrompt(
+            ResourcePath resourcePath,
+            string serializedPrompt,
+            ResourcePathAuthorizationResult authorizationResult,
+            UnifiedUserIdentity userIdentity)
         {
             var prompt = JsonSerializer.Deserialize<PromptBase>(serializedPrompt)
                 ?? throw new ResourceProviderException("The object definition is invalid.",
                     StatusCodes.Status400BadRequest);
 
-            return await UpdatePrompt(resourcePath, prompt, userIdentity);
+            return await UpdatePrompt(
+                resourcePath,
+                prompt,
+                authorizationResult,
+                userIdentity);
         }
         private async Task<ResourceProviderUpsertResult> UpdatePrompt(
             ResourcePath resourcePath,
             PromptBase prompt,
+            ResourcePathAuthorizationResult authorizationResult,
             UnifiedUserIdentity userIdentity)
         {
             var existingPromptReference = await _resourceReferenceStore!.GetResourceReference(prompt.Name);
+
+            if (existingPromptReference is not null
+                && !authorizationResult.Authorized)
+            {
+                // The resource already exists and the user is not authorized to update it.
+                // Irrespective of whether the user has the required role or not, we need to throw an exception in the case of existing resources.
+                // The required role only allows the user to create a new resource.
+                // This check is needed because it's only here that we can determine if the resource exists.
+                _logger.LogWarning("Access to the resource path {ResourcePath} was not authorized for user {UserName} : userId {UserId}.",
+                    resourcePath.RawResourcePath, userIdentity!.Username, userIdentity!.UserId);
+                throw new ResourceProviderException("Access is not authorized.", StatusCodes.Status403Forbidden);
+            }
 
             if (resourcePath.ResourceTypeInstances[0].ResourceId != prompt.Name)
                 throw new ResourceProviderException("The resource path does not match the object definition (name mismatch).",

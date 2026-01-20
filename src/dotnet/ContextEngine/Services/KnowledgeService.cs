@@ -71,6 +71,83 @@ namespace FoundationaLLM.Context.Services
         private readonly SemaphoreSlim _cacheLock = new(1, 1);
 
         /// <inheritdoc/>
+        public async Task<Result<ResourceNameCheckResult>> CheckKnowledgeUnitName(
+            string instanceId,
+            ResourceName resourceName,
+            UnifiedUserIdentity userIdentity)
+        {
+            try
+            {
+                var nameCheckResult = await _contextResourceProvider.ExecuteResourceActionAsync<KnowledgeUnit, ResourceName, ResourceNameCheckResult>(
+                    instanceId,
+                    null,
+                    ResourceProviderActions.CheckName,
+                    resourceName,
+                    userIdentity);
+
+                return Result<ResourceNameCheckResult>.Success(nameCheckResult);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while checking the knowledge unit name {KnowledgeUnitName} from instance {InstanceId}.",
+                    resourceName.Name, instanceId);
+                return Result<ResourceNameCheckResult>.FailureFromException(ex);
+            }
+        }
+
+        /// <inheritdoc/>
+        public async Task<Result<ResourceNameCheckResult>> CheckVectorStoreId(
+            string instanceId,
+            CheckVectorStoreIdRequest checkVectorStoreIdRequest,
+            UnifiedUserIdentity userIdentity)
+        {
+            try
+            {
+                var idCheckResult = await _contextResourceProvider.ExecuteResourceActionAsync<KnowledgeUnit, CheckVectorStoreIdRequest, ResourceNameCheckResult>(
+                    instanceId,
+                    null,
+                    ResourceProviderActions.CheckVectorStoreId,
+                    checkVectorStoreIdRequest,
+                    userIdentity);
+
+                return Result<ResourceNameCheckResult>.Success(idCheckResult);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while checking the vector store id {VectorStoreId} in vector data base {VectorDatabaseName} from instance {InstanceId}.",
+                    checkVectorStoreIdRequest.VectorDataBaseObjectId,
+                    checkVectorStoreIdRequest.VectorStoreId,
+                    instanceId);
+                return Result<ResourceNameCheckResult>.FailureFromException(ex);
+            }
+        }
+
+        /// <inheritdoc/>
+        public async Task<Result<ResourceNameCheckResult>> CheckKnowledgeSourceName(
+            string instanceId,
+            ResourceName resourceName,
+            UnifiedUserIdentity userIdentity)
+        {
+            try
+            {
+                var nameCheckResult = await _contextResourceProvider.ExecuteResourceActionAsync<KnowledgeSource, ResourceName, ResourceNameCheckResult>(
+                    instanceId,
+                    null,
+                    ResourceProviderActions.CheckName,
+                    resourceName,
+                    userIdentity);
+
+                return Result<ResourceNameCheckResult>.Success(nameCheckResult);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while checking the knowledge source name {KnowledgeSourceName} from instance {InstanceId}.",
+                    resourceName.Name, instanceId);
+                return Result<ResourceNameCheckResult>.FailureFromException(ex);
+            }
+        }
+
+        /// <inheritdoc/>
         public async Task<Result<ResourceProviderGetResult<KnowledgeUnit>>> GetKnowledgeUnit(
             string instanceId,
             string knowledgeUnitId,

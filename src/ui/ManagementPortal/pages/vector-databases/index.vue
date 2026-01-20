@@ -2,15 +2,15 @@
 	<main id="main-content">
 		<div style="display: flex">
 			<div style="flex: 1">
-				<h2 class="page-header">Vector Stores</h2>
-				<div class="page-subheader">The following vector stores are available.</div>
+				<h2 class="page-header">Vector Databases</h2>
+				<div class="page-subheader">The following vector databases are available.</div>
 			</div>
 
 			<div style="display: flex; align-items: center">
-				<NuxtLink to="/vector-stores/create" tabindex="-1">
-					<Button aria-label="Create vector store">
+				<NuxtLink to="/vector-databases/create" tabindex="-1">
+					<Button aria-label="Create vector database">
 						<i class="pi pi-plus" style="color: var(--text-primary); margin-right: 8px"></i>
-						Create Vector Store
+						Create Vector Database
 					</Button>
 				</NuxtLink>
 			</div>
@@ -19,7 +19,12 @@
 		<div :class="{ 'grid--loading': loading }">
 			<!-- Loading overlay -->
 			<template v-if="loading">
-				<div class="grid__loading-overlay" role="status" aria-live="polite" aria-label="Loading vector stores">
+				<div
+					class="grid__loading-overlay"
+					role="status"
+					aria-live="polite"
+					aria-label="Loading vector databases"
+				>
 					<LoadingGrid />
 					<div>{{ loadingStatusText }}</div>
 				</div>
@@ -34,7 +39,7 @@
 				:rows="10"
 				:rowsPerPageOptions="[10, 25, 50, 100]"
 				:paginatorTemplate="'FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown'"
-				:value="vectorStores"
+				:value="vectorDatabases"
 				striped-rows
 				scrollable
 				:sort-field="'resource.name'"
@@ -44,20 +49,16 @@
 			>
 				<template #header>
 					<div class="w-full flex justify-between">
-						<TableSearch v-model="filters" placeholder="Search vector stores" />
-						<Button
-							type="button"
-							icon="pi pi-refresh"
-							@click="getVectorStores"
-						/>
+						<TableSearch v-model="filters" placeholder="Search vector databases" />
+						<Button type="button" icon="pi pi-refresh" @click="getVectorDatabases" />
 					</div>
 				</template>
 
 				<template #empty>
-					<div role="alert" aria-live="polite">No vector stores found.</div>
+					<div role="alert" aria-live="polite">No vector databases found.</div>
 				</template>
 
-				<template #loading>Loading vector stores. Please wait.</template>
+				<template #loading>Loading vector databases. Please wait.</template>
 
 				<!-- Name -->
 				<Column
@@ -75,8 +76,8 @@
 
 				<!-- Type -->
 				<Column
-					field="resource.indexer"
-					header="Source Indexer"
+					field="resource.database_type"
+					header="Database Type"
 					sortable
 					style="min-width: 200px"
 					:pt="{
@@ -100,20 +101,27 @@
 					}"
 				>
 					<template #body="{ data }">
-						<NuxtLink
-							:to="'/vector-stores/edit/' + data.resource.name"
-							class="table__button"
-							tabindex="-1"
-						>
-							<VTooltip :auto-hide="false" :popper-triggers="['hover']">
-								<Button link :aria-label="`Edit ${data.resource.name}`">
-									<i class="pi pi-cog" style="font-size: 1.2rem" aria-hidden="true"></i>
-								</Button>
-								<template #popper
-									><div role="tooltip">Edit {{ data.resource.name }}</div></template
-								>
-							</VTooltip>
-						</NuxtLink>
+						<template v-if="data.actions.includes('FoundationaLLM.Vector/vectorDatabases/write')">
+							<NuxtLink :to="'/vector-databases/edit/' + data.resource.name" class="table__button">
+								<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+									<Button link :aria-label="`Edit ${data.resource.name}`">
+										<i class="pi pi-cog" style="font-size: 1.2rem" aria-hidden="true"></i>
+									</Button>
+									<template #popper
+										><div role="tooltip">Edit {{ data.resource.name }}</div></template
+									>
+								</VTooltip>
+							</NuxtLink>
+						</template>
+						<template v-else>
+							<span
+								aria-disabled="true"
+								class="table__button"
+								style="opacity: 0.6; cursor: default"
+							>
+								<i class="pi pi-cog" style="font-size: 1.2rem" aria-hidden="true"></i>
+							</span>
+						</template>
 					</template>
 				</Column>
 
@@ -130,76 +138,91 @@
 					}"
 				>
 					<template #body="{ data }">
-						<VTooltip :auto-hide="false" :popper-triggers="['hover']">
-							<Button
-								link
-								:aria-label="`Delete ${data.resource.name}`"
-								@click="vectorStoreToDelete = data.resource"
-							>
+						<template v-if="data.actions.includes('FoundationaLLM.Vector/vectorDatabases/delete')">
+							<VTooltip :auto-hide="false" :popper-triggers="['hover']">
+								<Button
+									link
+									:aria-label="`Delete ${data.resource.name}`"
+									@click="vectorDatabaseToDelete = data.resource"
+								>
+									<i class="pi pi-trash" style="font-size: 1.2rem" aria-hidden="true"></i>
+								</Button>
+								<template #popper
+									><div role="tooltip">Delete {{ data.resource.name }}</div></template
+								>
+							</VTooltip>
+						</template>
+						<template v-else>
+							<span aria-disabled="true" style="opacity: 0.6; cursor: default">
 								<i class="pi pi-trash" style="font-size: 1.2rem" aria-hidden="true"></i>
-							</Button>
-							<template #popper
-								><div role="tooltip">Delete {{ data.resource.name }}</div></template
-							>
-						</VTooltip>
+							</span>
+						</template>
 					</template>
 				</Column>
 			</DataTable>
 		</div>
 
-		<!-- Delete agent dialog -->
+		<!-- Delete dialog -->
 		<ConfirmationDialog
-			v-if="vectorStoreToDelete !== null"
-			:visible="vectorStoreToDelete !== null"
-			header="Delete Vector Store"
+			v-if="vectorDatabaseToDelete !== null"
+			:visible="vectorDatabaseToDelete !== null"
+			header="Delete Vector Database"
 			confirm-text="Yes"
 			cancel-text="Cancel"
 			confirm-button-severity="danger"
-			@confirm="handleDeleteVectorStore"
-			@cancel="vectorStoreToDelete = null"
-			@update:visible="vectorStoreToDelete = null"
+			@confirm="handleDeleteVectorDatabase"
+			@cancel="vectorDatabaseToDelete = null"
+			@update:visible="vectorDatabaseToDelete = null"
 		>
-			Do you want to delete the vector store "{{ vectorStoreToDelete!.name }}"?
+			Do you want to delete the vector database "{{ vectorDatabaseToDelete.name }}"?
 		</ConfirmationDialog>
 	</main>
 </template>
 
 <script lang="ts">
 import api from '@/js/api';
-import type { DataSource, ResourceProviderGetResult } from '@/js/types';
+import type { VectorDatabase, ResourceProviderGetResult } from '@/js/types';
+import { useListFilterStore } from '@/stores/listFilterStore';
+
+const FILTER_KEY = 'vectorDatabases';
 
 export default {
-	name: 'PublicDataSources',
+	name: 'VectorDatabases',
 
 	data() {
 		return {
-			dataSources: [] as ResourceProviderGetResult<DataSource>[],
-			vectorStores: [] as [],
+			vectorDatabases: [] as ResourceProviderGetResult<VectorDatabase>[],
 			loading: false as boolean,
 			loadingStatusText: 'Retrieving data...' as string,
 			filters: {
-				global: { value: null, matchMode: 'contains' }
+				global: { value: null, matchMode: 'contains' },
 			},
-			dataSourceToDelete: null as DataSource | null,
-			vectorStoreToDelete: null,
+			vectorDatabaseToDelete: null as VectorDatabase | null,
 		};
 	},
 
 	async created() {
-		await this.getAgentDataSources();
-		await this.getVectorStores();
+		// Restore filter from store
+		const listFilterStore = useListFilterStore();
+		const savedFilter = listFilterStore.getFilter(FILTER_KEY);
+		if (savedFilter) {
+			this.filters.global.value = savedFilter;
+		}
+
+		await this.getVectorDatabases();
 	},
 
 	beforeUnmount() {
-		// Clear filters when leaving the component
-		this.filters.global.value = null;
+		// Save filter to store when leaving
+		const listFilterStore = useListFilterStore();
+		listFilterStore.setFilter(FILTER_KEY, this.filters.global.value);
 	},
 
 	methods: {
-		async getAgentDataSources() {
+		async getVectorDatabases() {
 			this.loading = true;
 			try {
-				this.dataSources = await api.getAgentDataSources();
+				this.vectorDatabases = await api.getVectorDatabases();
 			} catch (error) {
 				this.$toast.add({
 					severity: 'error',
@@ -210,24 +233,10 @@ export default {
 			this.loading = false;
 		},
 
-		async getVectorStores() {
-			this.loading = true;
+		async handleDeleteVectorDatabase() {
 			try {
-				this.vectorStores = await api.getIndexingProfiles();
-			} catch (error) {
-				this.$toast.add({
-					severity: 'error',
-					detail: error?.response?._data || error,
-					life: 5000,
-				});
-			}
-			this.loading = false;
-		},
-
-		async handleDeleteDataSource() {
-			try {
-				await api.deleteDataSource(this.dataSourceToDelete!.name);
-				this.dataSourceToDelete = null;
+				await api.deleteVectorDatabase(this.vectorDatabaseToDelete!.name);
+				this.vectorDatabaseToDelete = null;
 			} catch (error) {
 				return this.$toast.add({
 					severity: 'error',
@@ -236,22 +245,7 @@ export default {
 				});
 			}
 
-			await this.getAgentDataSources();
-		},
-
-		async handleDeleteVectorStore() {
-			try {
-				await api.deleteIndexingProfile(this.vectorStoreToDelete!.name);
-				this.vectorStoreToDelete = null;
-			} catch (error) {
-				return this.$toast.add({
-					severity: 'error',
-					detail: error?.response?._data || error,
-					life: 5000,
-				});
-			}
-
-			await this.getVectorStores();
+			await this.getVectorDatabases();
 		},
 	},
 };
