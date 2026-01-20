@@ -581,7 +581,7 @@ export default {
 				} else if (response.status === 'Denied') {
 					// Name is taken
 					this.nameValidationStatus = 'invalid';
-					this.validationMessage = response.message;
+					this.validationMessage = response.error_message;
 				}
 			} catch (error) {
 				console.error('Error checking data source name: ', error);

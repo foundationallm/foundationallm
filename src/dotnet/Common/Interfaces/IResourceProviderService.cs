@@ -159,7 +159,7 @@ namespace FoundationaLLM.Common.Interfaces
         /// </remarks>
         Task<TResult> ExecuteResourceActionAsync<T, TAction, TResult>(
             string instanceId,
-            string resourceName,
+            string? resourceName,
             string actionName,
             TAction actionPayload,
             UnifiedUserIdentity userIdentity,
@@ -191,7 +191,7 @@ namespace FoundationaLLM.Common.Interfaces
         Task<TResult> ExecuteResourceActionAsync<TMain, TSubordinate, TAction, TResult>(
             string instanceId,
             string mainResourceName,
-            string resourceName,
+            string? resourceName,
             string actionName,
             TAction actionPayload,
             UnifiedUserIdentity userIdentity,

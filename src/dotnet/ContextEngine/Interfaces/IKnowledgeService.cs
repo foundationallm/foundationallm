@@ -12,6 +12,48 @@ namespace FoundationaLLM.Context.Interfaces
     public interface IKnowledgeService
     {
         /// <summary>
+        /// Checks whether the specified knowledge unit name is available within the given instance.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="resourceName">The knowledge unit name to validate. Cannot be null.</param>
+        /// <param name="userIdentity">The identity of the security principal submitting the request.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains a <see
+        /// cref="ResourceNameCheckResult"/> indicating whether the knowledge unit name is available and, if not, the
+        /// reason for unavailability.</returns>
+        Task<Result<ResourceNameCheckResult>> CheckKnowledgeUnitName(
+            string instanceId,
+            ResourceName resourceName,
+            UnifiedUserIdentity userIdentity);
+
+        /// <summary>
+        /// Checks whether the specified vector store identifier is available within the given instance.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="checkVectorStoreIdRequest">The vector store identifier validation request. Cannot be null.</param>
+        /// <param name="userIdentity">The identity of the security principal submitting the request.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains a <see
+        /// cref="ResourceNameCheckResult"/> indicating whether the vector store identifier is available and, if not, the
+        /// reason for unavailability.</returns>
+        Task<Result<ResourceNameCheckResult>> CheckVectorStoreId(
+            string instanceId,
+            CheckVectorStoreIdRequest checkVectorStoreIdRequest,
+            UnifiedUserIdentity userIdentity);
+
+        /// <summary>
+        /// Checks whether the specified knowledge source name is available within the given instance.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="resourceName">The knowledge source name to validate. Cannot be null.</param>
+        /// <param name="userIdentity">The identity of the security principal submitting the request.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains a <see
+        /// cref="ResourceNameCheckResult"/> indicating whether the knowledge source name is available and, if not, the
+        /// reason for unavailability.</returns>
+        Task<Result<ResourceNameCheckResult>> CheckKnowledgeSourceName(
+            string instanceId,
+            ResourceName resourceName,
+            UnifiedUserIdentity userIdentity);
+
+        /// <summary>
         /// Retrieves a specified knowledge unit.
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>

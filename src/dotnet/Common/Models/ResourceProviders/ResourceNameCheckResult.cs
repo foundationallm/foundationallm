@@ -5,33 +5,25 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
     /// <summary>
     /// The result of a resource name check.
     /// </summary>
-    public class ResourceNameCheckResult : ResourceName
-    {
-        /// <summary>
-        /// The <see cref="NameCheckResultType"/> indicating whether the name is allowed or not.
-        /// </summary>
-        [JsonConverter(typeof(JsonStringEnumConverter))]
-        public NameCheckResultType Status { get; set; }
-
-        /// <summary>
-        /// An optional message indicating why is the name not allowed.
-        /// </summary>
-        public string? Message { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the resource exists or not.
-        /// </summary>
-        /// <remarks>
-        /// For logically deleted resources, the value of this property will be <c>true</c>.
-        /// The <see cref="Deleted"/> property indicates whether the resource was logically deleted or not.
-        /// </remarks>
-        public required bool Exists { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the resource is logically deleted or not.
-        /// </summary>
-        public required bool Deleted { get; set; }
-    }
+    /// <param name="Name">The name of the resource.</param>
+    /// <param name="Type">The type of the resource.</param>
+    /// <param name="Status">The <see cref="NameCheckResultType"/> indicating whether the name is allowed or not.</param>
+    /// <param name="Exists">Indicates whether the resource exists or not. For logically deleted resources, the value will be <c>true</c>.</param>
+    /// <param name="Deleted">Indicates whether the resource is logically deleted or not.</param>
+    /// <param name="ErrorMessage">An optional error message if the name check failed.</param>
+    public record ResourceNameCheckResult(
+        [property: JsonPropertyName("name")]
+        string Name,
+        [property: JsonPropertyName("type")]
+        string? Type,
+        [property: JsonPropertyName("status")]
+        [property: JsonConverter(typeof(JsonStringEnumConverter))]
+        NameCheckResultType Status,
+        [property: JsonPropertyName("exists")]
+        bool Exists,
+        [property: JsonPropertyName("deleted")]
+        bool Deleted,
+        string? ErrorMessage = null) : ResourceProviderActionResult(string.Empty, true, ErrorMessage);
 
     /// <summary>
     /// The result types of resource name checks.

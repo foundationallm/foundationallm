@@ -372,7 +372,7 @@ export type CheckNameResponse = {
 	type: string;
 	name: string;
 	status: string;
-	message: string;
+	error_message: string;
 };
 
 export type FilterRequest = {

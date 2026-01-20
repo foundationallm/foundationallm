@@ -1149,12 +1149,55 @@ export default {
 	/*
 		Knowledge Sources
 	*/
-	async getKnowledgeSources(): Promise<any> {
+	async getKnowledgeSources(): Promise<ResourceProviderGetResult<any>[]> {
 		return await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Context/knowledgeSources?api-version=${this.apiVersion}`,
 		);
 	},
 
+	async getKnowledgeSource(knowledgeSourceName: string): Promise<ResourceProviderGetResult<any>[]> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Context/knowledgeSources/${knowledgeSourceName}?api-version=${this.apiVersion}`,
+		);
+	},
+
+	async createOrUpdateKnowledgeSource(knowledgeSourceName: string, request: any): Promise<any> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Context/knowledgeSources/${knowledgeSourceName}?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: request,
+			},
+		);
+	},
+
+	async deleteKnowledgeSource(knowledgeSourceName: string): Promise<any> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Context/knowledgeSources/${knowledgeSourceName}?api-version=${this.apiVersion}`,
+			{
+				method: 'DELETE',
+			},
+		);
+	},
+
+	async checkKnowledgeSourceName(name: string): Promise<CheckNameResponse> {
+		const payload = {
+			name,
+			type: 'knowledge-source',
+		};
+
+		return (await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Context/knowledgeSources/checkname?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: payload,
+			},
+		)) as CheckNameResponse;
+	},
+
+	/*
+		Knowledge Units
+	*/
 	async getKnowledgeUnits(): Promise<ResourceProviderGetResult<any>[]> {
 		return await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Context/knowledgeUnits?api-version=${this.apiVersion}`,
@@ -1184,6 +1227,36 @@ export default {
 				method: 'DELETE',
 			},
 		);
+	},
+
+	async checkKnowledgeUnitName(name: string): Promise<CheckNameResponse> {
+		const payload = {
+			name,
+			type: 'knowledge-unit',
+		};
+
+		return (await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Context/knowledgeUnits/checkname?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: payload,
+			},
+		)) as CheckNameResponse;
+	},
+
+	async checkVectorStoreId(vectorDatabaseObjectId: string, vectorStoreId: string): Promise<CheckNameResponse> {
+		const payload = {
+			vector_database_object_id: vectorDatabaseObjectId,
+			vector_store_id: vectorStoreId,
+		};
+
+		return (await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Context/knowledgeUnits/check-vector-store-id?api-version=${this.apiVersion}`,
+			{
+				method: 'POST',
+				body: payload,
+			},
+		)) as CheckNameResponse;
 	},
 
 	async queryKnowledgeSource(knowledgeSourceName: string, queryRequest: any): Promise<any> {

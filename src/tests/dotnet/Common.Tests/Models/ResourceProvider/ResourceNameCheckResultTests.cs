@@ -1,4 +1,4 @@
-﻿using FoundationaLLM.Common.Models.ResourceProviders;
+using FoundationaLLM.Common.Models.ResourceProviders;
 
 namespace FoundationaLLM.Common.Tests.Models.ResourceProvider
 {
@@ -14,19 +14,18 @@ namespace FoundationaLLM.Common.Tests.Models.ResourceProvider
             string expectedMessage = "TestMessage";
 
             // Act
-            var resourceNameCheckResult = new ResourceNameCheckResult(
-                expectedName,
-                expectedType,
-                expectedStatus,
-                false,
-                false,
-                expectedMessage);
+            var resourceNameCheckResult = new ResourceNameCheckResult(expectedName, Exists: false, Deleted: false)
+            {
+                Type = expectedType,
+                Status = expectedStatus,
+                Message = expectedMessage
+            };
 
             // Assert
             Assert.Equal(expectedName, resourceNameCheckResult.Name);
             Assert.Equal(expectedType, resourceNameCheckResult.Type);
             Assert.Equal(expectedStatus, resourceNameCheckResult.Status);
-            Assert.Equal(expectedMessage, resourceNameCheckResult.ErrorMessage);
+            Assert.Equal(expectedMessage, resourceNameCheckResult.Message);
         }
     }
 }

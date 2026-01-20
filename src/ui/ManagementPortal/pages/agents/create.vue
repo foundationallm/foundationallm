@@ -1627,7 +1627,7 @@ export default {
 				} else if (response.status === 'Denied') {
 					// Name is taken
 					this.nameValidationStatus = 'invalid';
-					this.validationMessage = response.message;
+					this.validationMessage = response.error_message;
 					// this.$toast.add({
 					// 	severity: 'warn',
 					// 	detail: `Agent name "${this.agentName}" is already taken for the selected ${response.type} agent type. Please choose another name.`,

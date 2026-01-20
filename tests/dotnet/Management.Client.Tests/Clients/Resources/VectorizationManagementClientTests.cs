@@ -651,14 +651,13 @@ namespace Management.Client.Tests.Clients.Resources
         {
             // Arrange
             var resourceName = new ResourceName { Name = "test-profile", Type = "indexing-profile" };
-            var expectedCheckResult = new ResourceNameCheckResult
-            {
-                Name = resourceName.Name,
-                Status = NameCheckResultType.Allowed,
-                Message = "Name is allowed",
-                Exists = false,
-                Deleted = false
-            };
+            var expectedCheckResult = new ResourceNameCheckResult(
+                resourceName.Name,
+                null,
+                NameCheckResultType.Allowed,
+                false,
+                false,
+                "Name is allowed");
 
             _mockRestClient.Resources
                 .ExecuteResourceActionAsync<ResourceNameCheckResult>(

@@ -101,6 +101,14 @@
 					</li>
 					<li>
 						<NuxtLink
+							to="/knowledge-sources"
+							:class="{ 'router-link-active': isRouteActive('/knowledge-sources') }"
+							class="sidebar__item"
+							>Knowledge Sources</NuxtLink
+						>
+					</li>
+					<li>
+						<NuxtLink
 							to="/vector-databases"
 							:class="{ 'router-link-active': isRouteActive('/vector-databases') }"
 							class="sidebar__item"

@@ -5,7 +5,6 @@ using FoundationaLLM.Common.Models.CodeExecution;
 using FoundationaLLM.Common.Models.Context;
 using FoundationaLLM.Common.Models.Context.Knowledge;
 using FoundationaLLM.Common.Models.ResourceProviders;
-using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Models.ResourceProviders.Context;
 using FoundationaLLM.Common.Models.Services;
 using Microsoft.Extensions.Logging;
@@ -279,26 +278,29 @@ namespace FoundationaLLM.Common.Clients
         /// <inheritdoc/>
         public async Task<Result<ResourceNameCheckResult>> CheckKnowledgeUnitName(
             string instanceId,
-            ResourceName resourceName)
-        {
-
-        }
+            ResourceName resourceName) =>
+            await CheckResourceName<ResourceName>(
+                instanceId,
+                "knowledgeUnits/check-name",
+                resourceName);
 
         /// <inheritdoc/>
         public async Task<Result<ResourceNameCheckResult>> CheckVectorStoreId(
             string instanceId,
-            CheckVectorStoreIdRequest checkVectorStoreIdRequest)
-        {
-
-        }
+            CheckVectorStoreIdRequest checkVectorStoreIdRequest) =>
+            await CheckResourceName<CheckVectorStoreIdRequest>(
+                instanceId,
+                "knowledgeUnits/check-vectorstore-id",
+                checkVectorStoreIdRequest);
 
         /// <inheritdoc/>
         public async Task<Result<ResourceNameCheckResult>> CheckKnowledgeSourceName(
             string instanceId,
-            ResourceName resourceName)
-        {
-
-        }
+            ResourceName resourceName) =>
+            await CheckResourceName<ResourceName>(
+                instanceId,
+                "knowledgeSources/check-name",
+                resourceName);
 
         private async Task<Result<ResourceNameCheckResult>> CheckResourceName<T>(
             string instanceId,
@@ -322,19 +324,19 @@ namespace FoundationaLLM.Common.Clients
 
                     return response == null
                         ? Result<ResourceNameCheckResult>.FailureFromErrorMessage(
-                            $"An error occurred deserializing the response from the service for knowledge resource {resource.Name} of type {knowledgeResourceType}.")
+                            $"An error occurred deserializing the check resource name response for {JsonSerializer.Serialize(checkActionPayload)}.")
                         : Result<ResourceNameCheckResult>.Success(response);
                 }
                 _logger.LogError(
-                    "An error occurred while upserting the knowledge resorce {ResourceName}. Status code: {StatusCode}.",
-                    resource.Name,
+                    "An error occurred while checking resource name for {CheckActionPayload}. Status code: {StatusCode}.",
+                    JsonSerializer.Serialize(checkActionPayload),
                     responseMessage.StatusCode);
                 return await Result<ResourceNameCheckResult>.FailureFromHttpResponse(responseMessage);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while upserting the knowledge resource {ResourceName}.",
-                    resource.Name);
+                _logger.LogError(ex, "An error occurred while checking resource name for {CheckActionPayload}.",
+                    JsonSerializer.Serialize(checkActionPayload));
                 return Result<ResourceNameCheckResult>.FailureFromException(ex);
             }
         }

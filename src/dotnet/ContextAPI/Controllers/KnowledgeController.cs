@@ -28,6 +28,70 @@ namespace FoundationaLLM.Context.API.Controllers
         private readonly ILogger<KnowledgeController> _logger = logger;
 
         /// <summary>
+        /// Checks whether a knowledge unit name is available within the specified instance.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="resourceName">An object containing the name of the knowledge unit to check. Cannot be null.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains an <see cref="IActionResult"/>
+        /// indicating whether the knowledge unit name is available.</returns>
+        [HttpPost("knowledgeUnits/check-name")]
+        public async Task<IActionResult> CheckKnowledgeUnitName(
+            string instanceId,
+            [FromBody] ResourceName resourceName)
+        {
+            var result = await _knowledgeService.CheckKnowledgeUnitName(
+                instanceId,
+                resourceName,
+                _callContext.CurrentUserIdentity!);
+
+            return
+                result.ToActionResult();
+        }
+
+        /// <summary>
+        /// Checks whether a vector store identifier is available within the specified vector database.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="checkVectorStoreIdRequest">An object containing the name of the vector database and
+        /// the identifier of the vector store to check. Cannot be null.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains an <see cref="IActionResult"/>
+        /// indicating whether the vector store identifier is available.</returns>
+        [HttpPost("knowledgeUnits/check-vectorstore-id")]
+        public async Task<IActionResult> CheckVectorStoreId(
+            string instanceId,
+            [FromBody] CheckVectorStoreIdRequest checkVectorStoreIdRequest)
+        {
+            var result = await _knowledgeService.CheckVectorStoreId(
+                instanceId,
+                checkVectorStoreIdRequest,
+                _callContext.CurrentUserIdentity!);
+
+            return
+                result.ToActionResult();
+        }
+
+        /// <summary>
+        /// Checks whether a knowledge source name is available within the specified instance.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="resourceName">An object containing the name of the knowledge source to check. Cannot be null.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains an <see cref="IActionResult"/>
+        /// indicating whether the knowledge source name is available.</returns>
+        [HttpPost("knowledgeSources/check-name")]
+        public async Task<IActionResult> CheckKnowledgeSourceName(
+            string instanceId,
+            [FromBody] ResourceName resourceName)
+        {
+            var result = await _knowledgeService.CheckKnowledgeSourceName(
+                instanceId,
+                resourceName,
+                _callContext.CurrentUserIdentity!);
+
+            return
+                result.ToActionResult();
+        }
+
+        /// <summary>
         /// Retrieves a specified knowledge unit.
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>

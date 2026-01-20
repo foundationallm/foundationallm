@@ -8,6 +8,7 @@ using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Configuration.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders;
+using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Models.ResourceProviders.Vector;
 using FoundationaLLM.Common.Services.ResourceProviders;
 using FoundationaLLM.Plugin.Models;
@@ -110,6 +111,29 @@ namespace FoundationaLLM.Vector.ResourceProviders
             };
 
         /// <inheritdoc/>
+        protected override async Task<object> ExecuteActionAsync(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            string serializedAction,
+            UnifiedUserIdentity userIdentity,
+            Func<object, bool>? requestPayloadValidator = null) =>
+            resourcePath.ResourceTypeName switch
+            {
+                VectorResourceTypeNames.VectorDatabases => resourcePath.Action switch
+                {
+                    ResourceProviderActions.CheckName => await CheckVectorDatabaseName(
+                        authorizationResult,
+                        serializedAction),
+                    _ => throw new ResourceProviderException(
+                        $"The action {resourcePath.Action} is not supported for resource type {resourcePath.ResourceTypeName} by the {_name} resource provider.",
+                        StatusCodes.Status400BadRequest)
+                },
+                _ => throw new ResourceProviderException(
+                    $"The resource type {resourcePath.ResourceTypeName} is not supported by the {_name} resource provider.",
+                    StatusCodes.Status400BadRequest)
+            };
+
+        /// <inheritdoc/>
         protected override async Task DeleteResourceAsync(ResourcePath resourcePath, UnifiedUserIdentity userIdentity)
         {
             switch (resourcePath.ResourceTypeName)
@@ -141,6 +165,18 @@ namespace FoundationaLLM.Vector.ResourceProviders
         #endregion
 
         #region Resource management
+
+        private async Task<ResourceNameCheckResult> CheckVectorDatabaseName(
+            ResourcePathAuthorizationResult authorizationResult,
+            string serializedAction)
+        {
+            if (!authorizationResult.Authorized
+                && !authorizationResult.HasRequiredRole)
+                throw new ResourceProviderException("Access is not authorized.", StatusCodes.Status403Forbidden);
+
+            return await CheckResourceName<VectorDatabase>(
+                JsonSerializer.Deserialize<ResourceName>(serializedAction)!);
+        }
 
         private async Task<ResourceProviderUpsertResult> UpdateVectorDatabase(
             ResourcePath resourcePath,
