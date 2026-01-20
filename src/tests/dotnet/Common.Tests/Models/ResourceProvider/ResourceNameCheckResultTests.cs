@@ -14,18 +14,19 @@ namespace FoundationaLLM.Common.Tests.Models.ResourceProvider
             string expectedMessage = "TestMessage";
 
             // Act
-            var resourceNameCheckResult = new ResourceNameCheckResult(expectedName, Exists: false, Deleted: false)
-            {
-                Type = expectedType,
-                Status = expectedStatus,
-                Message = expectedMessage
-            };
+            var resourceNameCheckResult = new ResourceNameCheckResult(
+                Name: expectedName,
+                Type: expectedType,
+                Status: expectedStatus,
+                Exists: false,
+                Deleted: false,
+                ErrorMessage: expectedMessage);
 
             // Assert
             Assert.Equal(expectedName, resourceNameCheckResult.Name);
             Assert.Equal(expectedType, resourceNameCheckResult.Type);
             Assert.Equal(expectedStatus, resourceNameCheckResult.Status);
-            Assert.Equal(expectedMessage, resourceNameCheckResult.Message);
+            Assert.Equal(expectedMessage, resourceNameCheckResult.ErrorMessage);
         }
     }
 }
