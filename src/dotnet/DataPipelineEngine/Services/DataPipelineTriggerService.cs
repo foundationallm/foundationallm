@@ -1,15 +1,22 @@
-﻿using FoundationaLLM.Common.Extensions;
+﻿using Cronos;
+using FoundationaLLM.Common.Authentication;
+using FoundationaLLM.Common.Constants.DataPipelines;
+using FoundationaLLM.Common.Extensions;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Authentication;
+using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.DataPipeline;
 using FoundationaLLM.Common.Validation;
 using FoundationaLLM.DataPipelineEngine.Exceptions;
 using FoundationaLLM.DataPipelineEngine.Interfaces;
+using FoundationaLLM.DataPipelineEngine.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using System.Collections.Concurrent;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
@@ -17,27 +24,35 @@ using System.Text.Json;
 namespace FoundationaLLM.DataPipelineEngine.Services
 {
     /// <summary>
-    /// Provides capabilities for triggering data pipeline runs.
+    /// Provides capabilities for triggering data pipeline runs and scheduling automatic execution based on configured cron schedules.
     /// </summary>
+    /// <param name="instanceOptions">The options providing the FoundationaLLM instance settings.</param>
     /// <param name="resourceValidatorFactory">The factory used to create resource validators.</param>
     /// <param name="serviceProvider">The service collection provided by the dependency injection container.</param>
     /// <param name="logger">The logger used for logging.</param>
     public class DataPipelineTriggerService(
+        IOptions<InstanceSettings> instanceOptions,
         IResourceValidatorFactory resourceValidatorFactory,
         IServiceProvider serviceProvider,
         ILogger<DataPipelineTriggerService> logger) :
             DataPipelineBackgroundService(
-                TimeSpan.FromMinutes(1),
+                TimeSpan.FromSeconds(15),
                 serviceProvider,
                 logger),
             IDataPipelineTriggerService
     {
         protected override string ServiceName => "Data Pipeline Trigger Service";
 
+        private readonly InstanceSettings _instanceSettings = instanceOptions.Value;
         private readonly StandardValidator _validator = new(
             resourceValidatorFactory,
             s => new DataPipelineServiceException(s, StatusCodes.Status400BadRequest));
         private IDataPipelineRunnerService _dataPipelineRunnerService = null!;
+
+        // Scheduling state
+        private readonly ConcurrentDictionary<string, ScheduledPipelineInfo> _scheduledPipelines = new();
+        private DateTimeOffset _lastPipelineRefresh = DateTimeOffset.MinValue;
+        private readonly TimeSpan _pipelineRefreshInterval = TimeSpan.FromMinutes(5);
 
         #region Initialization
 
@@ -56,8 +71,23 @@ namespace FoundationaLLM.DataPipelineEngine.Services
 
         protected override async Task ExecuteAsyncInternal(CancellationToken stoppingToken)
         {
-            _logger.LogInformation("The {ServiceName} service is executing...", ServiceName);
-            await Task.CompletedTask;
+            _logger.LogInformation("The {ServiceName} service is executing a schedule evaluation cycle...", ServiceName);
+
+            try
+            {
+                // Refresh pipeline list periodically
+                if (DateTimeOffset.UtcNow - _lastPipelineRefresh > _pipelineRefreshInterval)
+                {
+                    await RefreshScheduledPipelinesAsync(stoppingToken);
+                }
+
+                // Evaluate schedules and trigger pipelines that are due
+                await EvaluateAndTriggerSchedulesAsync(stoppingToken);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while evaluating scheduled pipelines in the {ServiceName} service.", ServiceName);
+            }
         }
 
 
@@ -178,5 +208,297 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                         p => p,
                         p => dataPipelineRun.TriggerParameterValues[p]);
         }
+
+        #region Scheduling Methods
+
+        /// <summary>
+        /// Refreshes the list of scheduled pipelines from the resource provider.
+        /// </summary>
+        private async Task RefreshScheduledPipelinesAsync(CancellationToken cancellationToken)
+        {
+            try
+            {
+                _logger.LogInformation("Refreshing scheduled pipelines list...");
+
+                // Wait for initialization to complete
+                await _initializationTask;
+
+                // Query all data pipelines for the current instance using the service identity
+                var pipelinesResult = await _dataPipelineResourceProvider.GetResourcesAsync<DataPipelineDefinition>(
+                    instanceId: _instanceSettings.Id,
+                    userIdentity: ServiceContext.ServiceIdentity!,
+                    options: new ResourceProviderGetOptions());
+
+                var newScheduledPipelines = new ConcurrentDictionary<string, ScheduledPipelineInfo>();
+
+                foreach (var pipelineResult in pipelinesResult)
+                {
+                    var pipeline = pipelineResult.Resource;
+
+                    // Skip inactive pipelines
+                    if (!pipeline.Active)
+                        continue;
+
+                    // Process each trigger of type Schedule
+                    foreach (var trigger in pipeline.Triggers.Where(t => t.TriggerType == DataPipelineTriggerType.Schedule))
+                    {
+                        if (string.IsNullOrWhiteSpace(trigger.TriggerCronSchedule))
+                        {
+                            _logger.LogWarning(
+                                "Pipeline {PipelineName} has a Schedule trigger {TriggerName} without a cron schedule. Skipping.",
+                                pipeline.Name,
+                                trigger.Name);
+                            continue;
+                        }
+
+                        try
+                        {
+                            var cacheKey = $"{pipeline.Name}|{trigger.Name}";
+                            
+                            // Check if we already have this scheduled pipeline cached
+                            if (_scheduledPipelines.TryGetValue(cacheKey, out var existingInfo))
+                            {
+                                // Preserve the last execution time
+                                newScheduledPipelines[cacheKey] = new ScheduledPipelineInfo
+                                {
+                                    Pipeline = pipeline,
+                                    Trigger = trigger,
+                                    NextRunTime = CalculateNextRunTime(trigger.TriggerCronSchedule),
+                                    LastExecutionTime = existingInfo.LastExecutionTime
+                                };
+                            }
+                            else
+                            {
+                                // New scheduled pipeline
+                                newScheduledPipelines[cacheKey] = new ScheduledPipelineInfo
+                                {
+                                    Pipeline = pipeline,
+                                    Trigger = trigger,
+                                    NextRunTime = CalculateNextRunTime(trigger.TriggerCronSchedule),
+                                    LastExecutionTime = null
+                                };
+                            }
+
+                            _logger.LogDebug(
+                                "Scheduled pipeline {PipelineName} with trigger {TriggerName} (cron: {CronSchedule}). Next run: {NextRunTime}",
+                                pipeline.Name,
+                                trigger.Name,
+                                trigger.TriggerCronSchedule,
+                                newScheduledPipelines[cacheKey].NextRunTime);
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.LogError(
+                                ex,
+                                "Failed to parse cron schedule '{CronSchedule}' for pipeline {PipelineName}, trigger {TriggerName}. Skipping this trigger.",
+                                trigger.TriggerCronSchedule,
+                                pipeline.Name,
+                                trigger.Name);
+                        }
+                    }
+                }
+
+                // Replace the old cache with the new one
+                _scheduledPipelines.Clear();
+                foreach (var kvp in newScheduledPipelines)
+                {
+                    _scheduledPipelines[kvp.Key] = kvp.Value;
+                }
+
+                _lastPipelineRefresh = DateTimeOffset.UtcNow;
+                _logger.LogInformation(
+                    "Successfully refreshed {Count} scheduled pipeline triggers.",
+                    _scheduledPipelines.Count);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to refresh scheduled pipelines list.");
+            }
+        }
+
+        /// <summary>
+        /// Evaluates all scheduled pipelines and triggers those that are due.
+        /// </summary>
+        private async Task EvaluateAndTriggerSchedulesAsync(CancellationToken cancellationToken)
+        {
+            var currentTime = DateTimeOffset.UtcNow;
+            var triggeredCount = 0;
+            var skippedCount = 0;
+
+            foreach (var kvp in _scheduledPipelines)
+            {
+                if (cancellationToken.IsCancellationRequested)
+                    break;
+
+                var scheduledInfo = kvp.Value;
+
+                try
+                {
+                    // Check if the pipeline is due to run
+                    if (scheduledInfo.NextRunTime.HasValue && currentTime >= scheduledInfo.NextRunTime.Value)
+                    {
+                        // Check if we've already executed this within the last minute (prevent duplicates)
+                        if (scheduledInfo.LastExecutionTime.HasValue &&
+                            (currentTime - scheduledInfo.LastExecutionTime.Value).TotalSeconds < 60)
+                        {
+                            _logger.LogDebug(
+                                "Skipping scheduled pipeline {PipelineName} trigger {TriggerName} - already executed at {LastExecutionTime}",
+                                scheduledInfo.Pipeline.Name,
+                                scheduledInfo.Trigger.Name,
+                                scheduledInfo.LastExecutionTime.Value);
+                            skippedCount++;
+                            continue;
+                        }
+
+                        // Trigger the pipeline
+                        _logger.LogInformation(
+                            "Triggering scheduled pipeline {PipelineName} with trigger {TriggerName} (scheduled: {ScheduledTime})",
+                            scheduledInfo.Pipeline.Name,
+                            scheduledInfo.Trigger.Name,
+                            scheduledInfo.NextRunTime.Value);
+
+                        await TriggerScheduledPipelineAsync(scheduledInfo, cancellationToken);
+
+                        // Update last execution time and calculate next run time
+                        scheduledInfo.LastExecutionTime = currentTime;
+                        scheduledInfo.NextRunTime = CalculateNextRunTime(scheduledInfo.Trigger.TriggerCronSchedule!);
+
+                        _logger.LogInformation(
+                            "Successfully triggered pipeline {PipelineName}. Next run: {NextRunTime}",
+                            scheduledInfo.Pipeline.Name,
+                            scheduledInfo.NextRunTime);
+
+                        triggeredCount++;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(
+                        ex,
+                        "Failed to trigger scheduled pipeline {PipelineName} with trigger {TriggerName}",
+                        scheduledInfo.Pipeline.Name,
+                        scheduledInfo.Trigger.Name);
+                }
+            }
+
+            if (triggeredCount > 0 || skippedCount > 0)
+            {
+                _logger.LogInformation(
+                    "Schedule evaluation complete. Triggered: {TriggeredCount}, Skipped: {SkippedCount}",
+                    triggeredCount,
+                    skippedCount);
+            }
+        }
+
+        /// <summary>
+        /// Triggers a scheduled pipeline execution.
+        /// </summary>
+        private async Task TriggerScheduledPipelineAsync(
+            ScheduledPipelineInfo scheduledInfo,
+            CancellationToken cancellationToken)
+        {
+            // Use service identity for scheduled executions
+            var serviceIdentity = ServiceContext.ServiceIdentity!;
+
+            // Create a DataPipelineRun for the scheduled execution using the factory method
+            var dataPipelineRun = DataPipelineRun.Create(
+                dataPipelineObjectId: scheduledInfo.Pipeline.ObjectId!,
+                triggerName: scheduledInfo.Trigger.Name,
+                triggerParameterValues: new Dictionary<string, object>(scheduledInfo.Trigger.ParameterValues),
+                upn: serviceIdentity.UPN!,
+                processor: DataPipelineRunProcessors.Backend); // Scheduled pipelines always use Backend Worker
+
+            // Get the existing snapshot from the data pipeline object ID
+            var snapshot = await _dataPipelineResourceProvider.GetResourceAsync<DataPipelineDefinitionSnapshot>(
+                scheduledInfo.Pipeline.ObjectId!,
+                serviceIdentity);
+
+            // Extract instance ID from the pipeline's object ID using ResourcePath
+            if (!ResourcePath.TryParseInstanceId(scheduledInfo.Pipeline.ObjectId!, out var instanceId) || string.IsNullOrWhiteSpace(instanceId))
+            {
+                _logger.LogError(
+                    "Could not extract instance ID from object ID: {ObjectId}. Skipping scheduled pipeline {PipelineName} with trigger {TriggerName}.",
+                    scheduledInfo.Pipeline.ObjectId,
+                    scheduledInfo.Pipeline.Name,
+                    scheduledInfo.Trigger.Name);
+                return;
+            }
+
+            // Set up the run with instance ID and other properties needed for CanStartRun check
+            var newDataPipelineRunId = $"run-{DateTimeOffset.UtcNow:yyyyMMdd-HHmmss}-{Guid.NewGuid().ToBase64String()}-{Guid.Parse(instanceId).ToBase64String()}";
+            dataPipelineRun.Id = newDataPipelineRunId;
+            dataPipelineRun.Name = newDataPipelineRunId;
+            dataPipelineRun.ObjectId = ResourcePath.Join(
+                dataPipelineRun.DataPipelineObjectId,
+                $"dataPipelineRuns/{newDataPipelineRunId}");
+            dataPipelineRun.InstanceId = instanceId;
+            dataPipelineRun.DataPipelineObjectId = snapshot.ObjectId!;
+
+            var dataPipeline = snapshot.DataPipelineDefinition;
+            var dataPipelineTrigger = dataPipeline.Triggers.SingleOrDefault(t => t.Name == dataPipelineRun.TriggerName);
+            
+            if (dataPipelineTrigger == null)
+            {
+                _logger.LogError(
+                    "The data pipeline trigger with name {TriggerName} does not exist in the data pipeline {PipelineName}. Skipping scheduled execution.",
+                    dataPipelineRun.TriggerName,
+                    dataPipeline.Name);
+                return;
+            }
+
+            // Add the default parameter values if they are not already set
+            foreach (var item in dataPipelineTrigger.ParameterValues)
+                if (!dataPipelineRun.TriggerParameterValues.ContainsKey(item.Key))
+                    dataPipelineRun.TriggerParameterValues.Add(item.Key, item.Value);
+
+            // Generate canonical run ID
+            var canonicalRunIdRaw = $"{dataPipeline.Name}|"
+                + JsonSerializer.Serialize(GetParameterValuesForCanonicalId(
+                    dataPipelineRun,
+                    dataPipelineTrigger));
+
+            dataPipelineRun.CanonicalRunId = Convert.ToBase64String(
+                    MD5.HashData(Encoding.UTF8.GetBytes(canonicalRunIdRaw)))
+                    .Replace("+", "--")
+                    .Replace("/", "--");
+
+            // Check if the pipeline can start (not conflicting with an existing run)
+            if (!await _dataPipelineRunnerService.CanStartRun(dataPipelineRun))
+            {
+                _logger.LogWarning(
+                    "Skipping scheduled pipeline {PipelineName} with trigger {TriggerName} - a conflicting run with canonical ID {CanonicalRunId} is already in progress.",
+                    scheduledInfo.Pipeline.Name,
+                    scheduledInfo.Trigger.Name,
+                    dataPipelineRun.CanonicalRunId);
+                return;
+            }
+
+            // Trigger the pipeline through the existing TriggerDataPipeline method
+            await TriggerDataPipeline(
+                instanceId,
+                dataPipelineRun,
+                snapshot,
+                serviceIdentity);
+        }
+
+        /// <summary>
+        /// Calculates the next run time based on a cron expression.
+        /// </summary>
+        private DateTimeOffset? CalculateNextRunTime(string cronExpression)
+        {
+            try
+            {
+                var cronExpr = CronExpression.Parse(cronExpression, CronFormat.IncludeSeconds);
+                var next = cronExpr.GetNextOccurrence(DateTimeOffset.UtcNow, TimeZoneInfo.Utc);
+                return next;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to parse cron expression: {CronExpression}", cronExpression);
+                return null;
+            }
+        }
+
+        #endregion
     }
 }
