@@ -424,6 +424,55 @@ namespace FoundationaLLM.DataPipelineEngine.Services
                 return;
             }
 
+            // Set up the run with instance ID and other properties needed for CanStartRun check
+            var newDataPipelineRunId = $"run-{DateTimeOffset.UtcNow:yyyyMMdd-HHmmss}-{Guid.NewGuid().ToBase64String()}-{Guid.Parse(instanceId).ToBase64String()}";
+            dataPipelineRun.Id = newDataPipelineRunId;
+            dataPipelineRun.Name = newDataPipelineRunId;
+            dataPipelineRun.ObjectId = ResourcePath.Join(
+                dataPipelineRun.DataPipelineObjectId,
+                $"dataPipelineRuns/{newDataPipelineRunId}");
+            dataPipelineRun.InstanceId = instanceId;
+            dataPipelineRun.DataPipelineObjectId = snapshot.ObjectId!;
+
+            var dataPipeline = snapshot.DataPipelineDefinition;
+            var dataPipelineTrigger = dataPipeline.Triggers.SingleOrDefault(t => t.Name == dataPipelineRun.TriggerName);
+            
+            if (dataPipelineTrigger == null)
+            {
+                _logger.LogError(
+                    "The data pipeline trigger with name {TriggerName} does not exist in the data pipeline {PipelineName}. Skipping scheduled execution.",
+                    dataPipelineRun.TriggerName,
+                    dataPipeline.Name);
+                return;
+            }
+
+            // Add the default parameter values if they are not already set
+            foreach (var item in dataPipelineTrigger.ParameterValues)
+                if (!dataPipelineRun.TriggerParameterValues.ContainsKey(item.Key))
+                    dataPipelineRun.TriggerParameterValues.Add(item.Key, item.Value);
+
+            // Generate canonical run ID
+            var canonicalRunIdRaw = $"{dataPipeline.Name}|"
+                + JsonSerializer.Serialize(GetParameterValuesForCanonicalId(
+                    dataPipelineRun,
+                    dataPipelineTrigger));
+
+            dataPipelineRun.CanonicalRunId = Convert.ToBase64String(
+                    MD5.HashData(Encoding.UTF8.GetBytes(canonicalRunIdRaw)))
+                    .Replace("+", "--")
+                    .Replace("/", "--");
+
+            // Check if the pipeline can start (not conflicting with an existing run)
+            if (!await _dataPipelineRunnerService.CanStartRun(dataPipelineRun))
+            {
+                _logger.LogWarning(
+                    "Skipping scheduled pipeline {PipelineName} with trigger {TriggerName} - a conflicting run with canonical ID {CanonicalRunId} is already in progress.",
+                    scheduledInfo.Pipeline.Name,
+                    scheduledInfo.Trigger.Name,
+                    dataPipelineRun.CanonicalRunId);
+                return;
+            }
+
             // Trigger the pipeline through the existing TriggerDataPipeline method
             await TriggerDataPipeline(
                 instanceId,
