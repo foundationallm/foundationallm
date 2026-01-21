@@ -1288,4 +1288,51 @@ export default {
 			},
 		);
 	},
+
+	/**
+	 * Role definition IDs for contributor roles.
+	 */
+	contributorRoleDefinitionIds: {
+		'Data Sources Contributor': '/providers/FoundationaLLM.Authorization/roleDefinitions/78ee11d9-6e6a-4adc-8c16-3613e7445113',
+		'Data Pipelines Contributor': '/providers/FoundationaLLM.Authorization/roleDefinitions/2da16a58-ed63-431a-b90e-9df32c2cae4a',
+		'Knowledge Sources Contributor': '/providers/FoundationaLLM.Authorization/roleDefinitions/8eec6664-9abf-4beb-84f7-18d9c2917c7f',
+		'Knowledge Units Contributor': '/providers/FoundationaLLM.Authorization/roleDefinitions/5f38b653-e3b7-47a8-8fde-e70ea9e4fa91',
+		'Vector Databases Contributor': '/providers/FoundationaLLM.Authorization/roleDefinitions/c026f070-abc2-4419-aed9-ec0676f81519',
+	} as Record<string, string>,
+
+	/**
+	 * Checks if the current user has a specific contributor role at the instance level.
+	 * @param roleName - The display name of the role to check (e.g., 'Data Sources Contributor').
+	 * @returns Promise resolving to boolean indicating if user has the role.
+	 */
+	async hasContributorRole(roleName: string): Promise<boolean> {
+		try {
+			const roleDefinitionId = this.contributorRoleDefinitionIds[roleName];
+			if (!roleDefinitionId) {
+				console.error(`Unknown contributor role: ${roleName}`);
+				return false;
+			}
+
+			const assignments = await this.fetch(
+				`/instances/${this.instanceId}/providers/FoundationaLLM.Authorization/roleAssignments/filter?api-version=${this.apiVersion}`,
+				{
+					method: 'POST',
+					body: JSON.stringify({
+						scope: `/instances/${this.instanceId}`,
+						security_principal_ids: ['CURRENT_USER_IDS'],
+					}),
+				},
+			);
+
+			for (const assignment of assignments) {
+				if (assignment.resource.role_definition_id === roleDefinitionId) {
+					return true;
+				}
+			}
+			return false;
+		} catch (error) {
+			console.error(`Error checking ${roleName} role:`, error);
+			return false;
+		}
+	},
 };

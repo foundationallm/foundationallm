@@ -6,7 +6,7 @@
 				<div class="page-subheader">The following knowledge units are available.</div>
 			</div>
 
-			<div style="display: flex; align-items: center">
+			<div v-if="hasContributorRole" style="display: flex; align-items: center">
 				<NuxtLink to="/knowledge-units/create" tabindex="-1">
 					<Button aria-label="Create knowledge unit">
 						<i class="pi pi-plus" style="color: var(--text-primary); margin-right: 8px"></i>
@@ -188,6 +188,7 @@ export default {
 				global: { value: null, matchMode: 'contains' }
 			},
 			knowledgeUnitToDelete: null as any | null,
+			hasContributorRole: false as boolean,
 		};
 	},
 
@@ -199,7 +200,10 @@ export default {
 			this.filters.global.value = savedFilter;
 		}
 
-		await this.getKnowledgeUnits();
+		await Promise.all([
+			this.getKnowledgeUnits(),
+			this.checkContributorRole(),
+		]);
 	},
 
 	beforeUnmount() {
@@ -208,6 +212,10 @@ export default {
 	},
 
 	methods: {
+		async checkContributorRole() {
+			this.hasContributorRole = await api.hasContributorRole('Knowledge Units Contributor');
+		},
+
 		async getKnowledgeUnits() {
 			this.loading = true;
 			try {

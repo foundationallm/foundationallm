@@ -446,7 +446,7 @@ export default {
 				type: 'azure-data-lake',
 				name: '',
 				display_name: '',
-				object_id: '',
+				object_id: null,
 				description: '',
 				cost_center: '',
 				resolved_configuration_references: {

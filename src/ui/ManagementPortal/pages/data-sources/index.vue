@@ -6,7 +6,7 @@
 				<div class="page-subheader">The following data sources are available.</div>
 			</div>
 
-			<div style="display: flex; align-items: center">
+			<div v-if="hasDataSourcesContributorRole" style="display: flex; align-items: center">
 				<NuxtLink to="/data-sources/create" tabindex="-1">
 					<Button aria-label="Create data source">
 						<i class="pi pi-plus" style="color: var(--text-primary); margin-right: 8px"></i>
@@ -189,6 +189,7 @@ export default {
 				global: { value: null, matchMode: 'contains' }
 			},
 			dataSourceToDelete: null as DataSource | null,
+			hasDataSourcesContributorRole: false as boolean,
 		};
 	},
 
@@ -200,7 +201,10 @@ export default {
 			this.filters.global.value = savedFilter;
 		}
 
-		await this.getAgentDataSources();
+		await Promise.all([
+			this.getAgentDataSources(),
+			this.checkDataSourcesContributorRole(),
+		]);
 	},
 
 	beforeUnmount() {
@@ -209,6 +213,10 @@ export default {
 	},
 
 	methods: {
+		async checkDataSourcesContributorRole() {
+			this.hasDataSourcesContributorRole = await api.hasContributorRole('Data Sources Contributor');
+		},
+
 		async getAgentDataSources() {
 			this.loading = true;
 			try {

@@ -188,7 +188,7 @@ export default {
 				name: '',
 				description: '',
 				type: 'knowledge-unit',
-				object_id: '',
+				object_id: null,
 				vector_database_object_id: '',
 				vector_store_id: '',
 				has_knowledge_graph: false,

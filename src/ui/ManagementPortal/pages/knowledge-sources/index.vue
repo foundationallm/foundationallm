@@ -6,7 +6,7 @@
 				<div class="page-subheader">The following knowledge sources are available.</div>
 			</div>
 
-			<div style="display: flex; align-items: center">
+			<div v-if="hasContributorRole" style="display: flex; align-items: center">
 				<NuxtLink to="/knowledge-sources/create" tabindex="-1">
 					<Button aria-label="Create knowledge source">
 						<i class="pi pi-plus" style="color: var(--text-primary); margin-right: 8px"></i>
@@ -205,6 +205,7 @@ export default {
 				global: { value: null, matchMode: 'contains' }
 			},
 			knowledgeSourceToDelete: null as any | null,
+			hasContributorRole: false as boolean,
 		};
 	},
 
@@ -216,7 +217,10 @@ export default {
 			this.filters.global.value = savedFilter;
 		}
 
-		await this.getKnowledgeSources();
+		await Promise.all([
+			this.getKnowledgeSources(),
+			this.checkContributorRole(),
+		]);
 	},
 
 	beforeUnmount() {
@@ -225,6 +229,10 @@ export default {
 	},
 
 	methods: {
+		async checkContributorRole() {
+			this.hasContributorRole = await api.hasContributorRole('Knowledge Sources Contributor');
+		},
+
 		async getKnowledgeSources() {
 			this.loading = true;
 			try {

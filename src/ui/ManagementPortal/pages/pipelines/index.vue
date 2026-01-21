@@ -6,7 +6,7 @@
 				<div class="page-subheader">The following pipelines are available.</div>
 			</div>
 
-			<div style="display: flex; align-items: center">
+			<div v-if="hasContributorRole" style="display: flex; align-items: center">
 				<NuxtLink to="/pipelines/create" tabindex="-1">
 					<Button aria-label="Create Pipeline">
 						<i class="pi pi-plus" style="color: var(--text-primary); margin-right: 8px"></i>
@@ -379,6 +379,7 @@ export default {
 				{ value: 'DataPipelineFrontendWorker' },
 				{ value: 'DataPipelineBackendWorker' },
 			] as { value: string }[],
+			hasContributorRole: false as boolean,
 		};
 	},
 
@@ -390,7 +391,10 @@ export default {
 			this.filters.global.value = savedFilter;
 		}
 
-		await this.getPipelines();
+		await Promise.all([
+			this.getPipelines(),
+			this.checkContributorRole(),
+		]);
 	},
 
 	beforeUnmount() {
@@ -399,6 +403,10 @@ export default {
 	},
 
 	methods: {
+		async checkContributorRole() {
+			this.hasContributorRole = await api.hasContributorRole('Data Pipelines Contributor');
+		},
+
 		async getPipelines() {
 			this.loading = true;
 			try {

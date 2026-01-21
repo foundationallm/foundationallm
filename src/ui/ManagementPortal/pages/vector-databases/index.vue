@@ -6,7 +6,7 @@
 				<div class="page-subheader">The following vector databases are available.</div>
 			</div>
 
-			<div style="display: flex; align-items: center">
+			<div v-if="hasContributorRole" style="display: flex; align-items: center">
 				<NuxtLink to="/vector-databases/create" tabindex="-1">
 					<Button aria-label="Create vector database">
 						<i class="pi pi-plus" style="color: var(--text-primary); margin-right: 8px"></i>
@@ -198,6 +198,7 @@ export default {
 				global: { value: null, matchMode: 'contains' },
 			},
 			vectorDatabaseToDelete: null as VectorDatabase | null,
+			hasContributorRole: false as boolean,
 		};
 	},
 
@@ -209,7 +210,10 @@ export default {
 			this.filters.global.value = savedFilter;
 		}
 
-		await this.getVectorDatabases();
+		await Promise.all([
+			this.getVectorDatabases(),
+			this.checkContributorRole(),
+		]);
 	},
 
 	beforeUnmount() {
@@ -219,6 +223,10 @@ export default {
 	},
 
 	methods: {
+		async checkContributorRole() {
+			this.hasContributorRole = await api.hasContributorRole('Vector Databases Contributor');
+		},
+
 		async getVectorDatabases() {
 			this.loading = true;
 			try {

@@ -136,7 +136,7 @@ export default {
 				name: '',
 				description: '',
 				type: 'knowledge-source',
-				object_id: '',
+				object_id: null,
 				knowledge_unit_object_ids: [] as string[],
 			},
 			knowledgeUnitOptions: [] as { name: string; object_id: string }[],

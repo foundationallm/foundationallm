@@ -278,7 +278,7 @@ export default {
 				type: 'vector-database',
 				name: '',
 				display_name: '',
-				object_id: '',
+				object_id: null,
 				description: '',
 				cost_center: '',
 				database_type: 'AzureAISearch' as VectorDatabaseType,
