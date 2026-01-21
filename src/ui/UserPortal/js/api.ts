@@ -230,6 +230,15 @@ export default {
 	},
 
 	/**
+	 * Retrieves a single chat session by ID.
+	 * @param sessionId - The ID of the session to retrieve.
+	 * @returns {Promise<Session>} A promise that resolves to the session.
+	 */
+	async getSession(sessionId: string): Promise<Session> {
+		return await this.fetch<Session>(`/instances/${this.instanceId}/sessions/${sessionId}`);
+	},
+
+	/**
 	 * Adds a new chat session.
 	 * @returns {Promise<Session>} A promise that resolves to the created session.
 	 */

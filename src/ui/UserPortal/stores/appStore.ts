@@ -33,6 +33,7 @@ export const useAppStore = defineStore('app', {
 		currentSessionConfirmedEmpty: false as boolean,
 		newSession: null as Session | null, // Used to store the newly created session. Deleted after the first prompt is sent. This is to prevent an unnecessary fetch of its messages.
 		pollingSession: null as string | null, // Contains the ID of a session that is currently being polled for completion.
+		sessionsPendingNameRefresh: new Set<string>(), // Sessions that need their display_name refreshed after first response completes.
 		renamedSessions: [] as Session[],
 		deletedSessions: [] as Session[],
 		currentMessages: [] as Message[],
@@ -305,6 +306,34 @@ export const useAppStore = defineStore('app', {
 			} catch (error) {
 				existingSession.display_name = previousName;
 				existingSession.metadata = previousMetadata;
+			}
+		},
+
+		/**
+		 * Refreshes the display_name of a session from the backend.
+		 * Used after the first response is received in a newly created conversation,
+		 * as the backend may have generated a meaningful name based on the conversation.
+		 */
+		async refreshSessionName(sessionId: string) {
+			try {
+				const updatedSession = await api.getSession(sessionId);
+				
+				if (updatedSession) {
+					// Update the session in our local list
+					const existingSession = this.sessions.find((s: Session) => s.sessionId === sessionId);
+					if (existingSession && existingSession.display_name !== updatedSession.display_name) {
+						existingSession.display_name = updatedSession.display_name;
+						existingSession.name = updatedSession.name;
+					}
+					
+					// Update currentSession if it matches
+					if (this.currentSession?.sessionId === sessionId) {
+						this.currentSession.display_name = updatedSession.display_name;
+						this.currentSession.name = updatedSession.name;
+					}
+				}
+			} catch (error) {
+				console.error('Failed to refresh session name:', error);
 			}
 		},
 
@@ -708,8 +737,9 @@ export const useAppStore = defineStore('app', {
 				// it is complete and do no initiate polling as it will return empty data
 				if (message.operation_id) this.startPolling(message, this.currentSession?.sessionId);
 
-				// Remove the new session if matches this one, now that we have sent the first message.
+				// Track this session for name refresh after first response completes.
 				if (this.newSession && this.newSession.sessionId === initialSession) {
+					this.sessionsPendingNameRefresh.add(initialSession);
 					this.newSession = null;
 				}
 
@@ -809,6 +839,11 @@ export const useAppStore = defineStore('app', {
 
 					if (updatedMessage.status === 'Completed' || updatedMessage.status === 'Failed') {
 						this.stopPolling(sessionId);
+						// Refresh session name if this was the first response in a newly created conversation
+						if (this.sessionsPendingNameRefresh.has(sessionId)) {
+							this.sessionsPendingNameRefresh.delete(sessionId);
+							this.refreshSessionName(sessionId);
+						}
 						return;
 					}
 				} catch (error) {

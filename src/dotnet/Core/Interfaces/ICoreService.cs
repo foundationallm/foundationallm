@@ -33,6 +33,15 @@ public interface ICoreService
     Task<List<Conversation>> GetAllConversationsAsync(string instanceId);
 
     /// <summary>
+    /// Asynchronously retrieves a conversation by its unique identifier within the specified instance.
+    /// </summary>
+    /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+    /// <param name="conversationId">The unique identifier of the conversation to retrieve. Cannot be null or empty.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the conversation associated with the
+    /// specified identifier.</returns>
+    Task<Conversation> GetConversationAsync(string instanceId, string conversationId);
+
+    /// <summary>
     /// Creates a new chat session.
     /// </summary>
     /// <param name="instanceId">The instance Id.</param>

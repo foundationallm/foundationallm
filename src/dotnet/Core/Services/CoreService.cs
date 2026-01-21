@@ -159,6 +159,17 @@ public partial class CoreService(
     }
 
     /// <inheritdoc/>
+    public async Task<Conversation> GetConversationAsync(string instanceId, string conversationId)
+    {
+        ArgumentNullException.ThrowIfNull(conversationId);
+        var conversation = await _conversationResourceProvider.GetResourceAsync<Conversation>(
+            instanceId,
+            conversationId,
+            _userIdentity);
+        return conversation;
+    }
+
+    /// <inheritdoc/>
     public async Task<Conversation> CreateConversationAsync(string instanceId, ConversationProperties chatSessionProperties)
     {
         ArgumentException.ThrowIfNullOrEmpty(chatSessionProperties.Name);

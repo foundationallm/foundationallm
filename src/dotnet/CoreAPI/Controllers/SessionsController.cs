@@ -42,6 +42,15 @@ namespace FoundationaLLM.Core.API.Controllers
             await _coreService.GetAllConversationsAsync(instanceId);
 
         /// <summary>
+        /// Get a single conversation.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="conversationId">The identifier of the conversation to retrieve.</param>
+        [HttpGet("{conversationId}", Name = "GetConversation")]
+        public async Task<ConversationModels.Conversation> GetConversation(string instanceId, string conversationId) =>
+            await _coreService.GetConversationAsync(instanceId, conversationId);
+
+        /// <summary>
         /// Returns the messages for a conversation.
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
