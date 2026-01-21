@@ -11,7 +11,7 @@
 		<!-- Table -->
 		<DataTable
 			v-model:expandedRowGroups="expandedRowGroups"
-			:value="roleAssignments"
+			:value="filteredRoleAssignments"
 			expandable-row-groups
 			row-group-mode="subheader"
 			group-rows-by="role.display_name"
@@ -22,7 +22,15 @@
 			size="small"
 		>
 			<template #header>
-				<div class="w-full flex justify-end">
+				<div class="w-full flex justify-between items-center">
+					<div class="flex items-center gap-2">
+						<Checkbox
+							v-model="hideInherited"
+							inputId="hideInherited"
+							:binary="true"
+						/>
+						<label for="hideInherited">Hide inherited</label>
+					</div>
 					<Button
 						type="button"
 						icon="pi pi-refresh"
@@ -215,12 +223,21 @@ export default {
 			loading: false as boolean,
 			loadingStatusText: 'Retrieving role assignments...' as string,
 			roleAssignmentToDelete: null as RoleAssignment | null,
+			hideInherited: false as boolean,
 		};
 	},
 
 	computed: {
 		columnStyle() {
 			return window.innerWidth <= 768 ? {} : { minWidth: '200px' };
+		},
+		filteredRoleAssignments() {
+			if (!this.hideInherited) {
+				return this.roleAssignments;
+			}
+			return this.roleAssignments.filter(
+				(assignment) => assignment.scope_name !== 'Instance (Inherited)'
+			);
 		},
 	},
 

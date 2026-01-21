@@ -1281,8 +1281,7 @@ export default {
 			const newTriggerName = `Trigger${this.pipeline.triggers.length + 1}`;
 			this.pipeline.triggers.push({
 				name: newTriggerName,
-				trigger_type: 'Schedule',
-				trigger_cron_schedule: '0 6 * * *',
+				trigger_type: 'Manual',
 				parameter_values: { ...this.triggerParametersMap },
 			});
 			this.triggerCollapseState[newTriggerName] = false; // Initialize as collapsed
