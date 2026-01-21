@@ -550,6 +550,7 @@ namespace FoundationaLLM.Common.Services.Azure
         {
             var userProfiles = await _userProfilesTask;
             PartitionKey partitionKey = new(userProfile.UPN);
+            userProfile.UpdatedOn = DateTimeOffset.UtcNow;
             await userProfiles.UpsertItemAsync(
                 item: userProfile,
                 partitionKey: partitionKey,
@@ -561,6 +562,7 @@ namespace FoundationaLLM.Common.Services.Azure
         {
             var userProfiles = await _userProfilesTask;
             PartitionKey partitionKey = new(userData.UPN);
+            userData.UpdatedOn = DateTimeOffset.UtcNow;
             await userProfiles.UpsertItemAsync(
                 item: userData,
                 partitionKey: partitionKey,
