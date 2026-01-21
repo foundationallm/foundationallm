@@ -380,6 +380,7 @@ class GenericAgent(AgentBase):
                     message_history=request.message_history,
                     file_history=request.file_history,
                     conversation_id=request.session_id,
+                    is_new_conversation=request.is_new_conversation,
                     objects=request.objects
                 )
                 # Ensure the user prompt rewrite is returned in the response
@@ -393,7 +394,7 @@ class GenericAgent(AgentBase):
             content = f'The agent workflow type {agent.workflow.type} is not supported.',
             user_prompt = request.user_prompt,
             user_prompt_rewrite = request.user_prompt_rewrite,
-            full_prompt = self.full_prompt.text,
+            full_prompt = '',
             completion_tokens = 0,
             prompt_tokens = 0,
             total_tokens = 0,

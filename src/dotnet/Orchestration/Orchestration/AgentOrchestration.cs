@@ -345,6 +345,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
             {
                 OperationId = completionRequest.OperationId,
                 SessionId = completionRequest.SessionId,
+                IsNewConversation = completionRequest.IsNewConversation,
                 UserPrompt = completionRequest.UserPrompt!,
                 UserPromptRewrite = completionRequest.UserPromptRewrite,
                 MessageHistory = completionRequest.MessageHistory,
@@ -630,6 +631,7 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
                 UserPrompt = llmCompletionResponse.UserPrompt!,
                 UserPromptRewrite = llmCompletionResponse.UserPromptRewrite,
                 ContentArtifacts = llmCompletionResponse.ContentArtifacts,
+                ConversationName = llmCompletionResponse.ConversationName,
                 FullPrompt = llmCompletionResponse.FullPrompt,
                 PromptTemplate = llmCompletionResponse.PromptTemplate,
                 AgentName = llmCompletionResponse.AgentName,

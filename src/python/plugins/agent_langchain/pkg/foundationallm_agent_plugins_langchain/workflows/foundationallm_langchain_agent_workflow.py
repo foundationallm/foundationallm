@@ -80,11 +80,6 @@ class FoundationaLLMLangChainAgentWorkflow(FoundationaLLMWorkflowBase):
             Whether to intercept HTTP calls made by the workflow, by default False.
         """
         super().__init__(workflow_config, objects, tools, operations_manager, user_identity, config)
-        self.name = workflow_config.name
-        self.default_error_message = workflow_config.properties.get(
-            'default_error_message',
-            'An error occurred while processing the request.') \
-            if workflow_config.properties else 'An error occurred while processing the request.'
 
         # Sets self.workflow_llm
         self.create_workflow_llm(intercept_http_calls=intercept_http_calls)
@@ -98,6 +93,7 @@ class FoundationaLLMLangChainAgentWorkflow(FoundationaLLMWorkflowBase):
         message_history: List[MessageHistoryItem],
         file_history: List[FileHistoryItem],
         conversation_id: Optional[str] = None,
+        is_new_conversation: bool = False,
         objects: dict = None
     )-> CompletionResponse:
 
@@ -198,6 +194,18 @@ class FoundationaLLMLangChainAgentWorkflow(FoundationaLLMWorkflowBase):
             total_tokens=output_tokens + input_tokens,
             total_cost=0
         )
+
+        if is_new_conversation:
+            # Generate a conversation name if this is a new conversation.
+            conversation_name, input_tokens, output_tokens = await self.get_conversation_name(
+                llm_prompt,
+                response_content.value
+            )
+            if conversation_name:
+                retvalue.conversation_name = conversation_name
+                retvalue.prompt_tokens += input_tokens
+                retvalue.completion_tokens += output_tokens
+
         return retvalue
 
     def __get_message_list(

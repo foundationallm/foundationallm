@@ -4,10 +4,16 @@ Description: FoundationaLLM base class for tools that uses the agent workflow mo
 """
 
 from abc import ABC, abstractmethod
-from typing import List, Optional
+from typing import Dict, List, Optional
+from opentelemetry.trace import SpanKind
 
 from azure.identity import DefaultAzureCredential
-from langchain_core.messages import BaseMessage
+from langchain_core.messages import (
+    AIMessage,
+    BaseMessage,
+    HumanMessage,
+    SystemMessage
+)
 
 from foundationallm.langchain.common import (
     FoundationaLLMToolBase
@@ -81,6 +87,12 @@ class FoundationaLLMWorkflowBase(ABC):
         self.tracer = Telemetry.get_tracer(self.workflow_config.name)
         self.default_credential = DefaultAzureCredential(exclude_environment_credential=True)
 
+        self.name = workflow_config.name
+        self.default_error_message = workflow_config.properties.get(
+            'default_error_message',
+            'An error occurred while processing the request.') \
+            if workflow_config.properties else 'An error occurred while processing the request.'
+        
         self.workflow_llm = None  # To be set in derived classes by calling create_workflow_llm()
 
     @abstractmethod
@@ -92,6 +104,7 @@ class FoundationaLLMWorkflowBase(ABC):
         message_history: List[MessageHistoryItem],
         file_history: List[FileHistoryItem],
         conversation_id: Optional[str] = None,
+        is_new_conversation: bool = False,
         objects: dict = None
     ) -> CompletionResponse:
         """
@@ -361,3 +374,80 @@ class FoundationaLLMWorkflowBase(ABC):
         text_parts = [block["text"] for block in message.content_blocks if block.get("type") == "text"]
         text = " ".join(text_parts)
         return text.strip()
+
+    def get_canonical_usage(
+            self,
+            llm_response: AIMessage
+    ) -> Dict:
+        """
+        Returns the canonical usage dictionary from the LLM response.
+
+        Parameters
+        ----------
+        llm_response : AIMessage
+            The LLM response message containing usage metadata.
+        """
+        if llm_response.usage_metadata:
+            return llm_response.usage_metadata
+
+        if llm_response.response_metadata \
+            and 'usage' in llm_response.response_metadata \
+            and 'prompt_tokens' in llm_response.response_metadata['usage'] \
+            and 'completion_tokens' in llm_response.response_metadata['usage']:
+            return {
+                'input_tokens': llm_response.response_metadata['usage']['prompt_tokens'],
+                'output_tokens': llm_response.response_metadata['usage']['completion_tokens'],
+                'total_tokens': llm_response.response_metadata['usage']['total_tokens']
+            }
+
+        return {
+            'input_tokens': 0,
+            'output_tokens': 0,
+            'total_tokens': 0
+        }
+
+    async def get_conversation_name(
+        self,
+        user_prompt: str,
+        agent_response: str
+    ) -> tuple[str, int, int]:
+        """
+        Generates a conversation name based on the initial user message.
+
+        Parameters
+        ----------
+        user_prompt: str
+            The initial user message of the conversation.
+        agent_response: str
+            The agent's response to the user message.
+
+        Returns
+        -------
+        tuple[str, int, int]
+            A tuple containing the generated conversation name, input tokens, and output tokens.
+        """
+        input_tokens = 0
+        output_tokens = 0
+        conversation_name = "New Conversation"
+
+        messages = [
+            SystemMessage(content="Generate a brief title (3-6 words) that summarizes the main topic of this conversation. Return only the title, no quotes or punctuation."),
+            HumanMessage(content=user_prompt),
+            AIMessage(content=agent_response)
+        ]
+
+        with self.tracer.start_as_current_span(
+            f'{self.name}_get_conversation_name',
+            kind=SpanKind.INTERNAL
+        ):
+            try:
+                llm_response = await self.workflow_llm.ainvoke(messages)
+                conversation_name = self.get_text_from_message(llm_response)
+                usage = self.get_canonical_usage(llm_response)
+                input_tokens = usage['input_tokens']
+                output_tokens = usage['output_tokens']
+                return conversation_name, input_tokens, output_tokens
+            except Exception as ex:
+                self.logger.error('Error during conversation name generation: %s', str(ex))
+                return None, 0, 0
+

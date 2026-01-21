@@ -29,7 +29,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Text.Json;
 using Conversation = FoundationaLLM.Common.Models.Conversation.Conversation;
@@ -1260,6 +1259,21 @@ public partial class CoreService(
 
         #endregion
 
+        #region Rename conversation if needed
+
+        if (!string.IsNullOrWhiteSpace(completionResponse.ConversationName))
+        {
+            _logger.LogInformation("Renaming conversation {ConversationId} to [{ConversationName}]",
+                operationContext.SessionId, completionResponse.ConversationName);
+
+            await UpdateConversationAsync(
+                operationContext.InstanceId,
+                operationContext.SessionId,
+                new ConversationProperties { Name = completionResponse.ConversationName });
+        }
+
+        #endregion
+
         var completionPromptText =
             $"User prompt: {completionResponse.UserPrompt}{Environment.NewLine}Agent: {completionResponse.AgentName}{Environment.NewLine}Prompt template: {(!string.IsNullOrWhiteSpace(completionResponse.FullPrompt) ? completionResponse.FullPrompt : completionResponse.PromptTemplate)}";
 
@@ -1349,6 +1363,11 @@ public partial class CoreService(
 
         // Retrieve the complete conversation.
         var messages = await _cosmosDBService.GetConversationMessagesAsync(request.SessionId!, _userIdentity.UPN!);
+
+        // Check if this is a new conversation.
+        // Later stages may use this information (e.g. to derive the name of the conversation).
+        request.IsNewConversation = (messages.Count == 0);
+
         var fileHistory = new List<FileHistoryItem>();
         int attachmentOrder = 0;
         foreach (var message in messages)

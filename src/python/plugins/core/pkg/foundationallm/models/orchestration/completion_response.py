@@ -31,6 +31,7 @@ class CompletionResponse(BaseModel):
     ] = None
     analysis_results: Optional[List[AnalysisResult]] = []
     content_artifacts: Optional[List[ContentArtifact]] = []
+    conversation_name: Optional[str] = None
     user_prompt_embedding: Optional[List[float]] = []
     prompt_tokens: int = 0
     completion_tokens: int = 0

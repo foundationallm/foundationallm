@@ -27,6 +27,12 @@ namespace FoundationaLLM.Common.Models.Orchestration.Request
         public string? SessionId { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether this is a new conversation.
+        /// </summary>
+        [JsonPropertyName("is_new_conversation")]
+        public bool IsNewConversation { get; set; }
+
+        /// <summary>
         /// Gets or sets the user prompt.
         /// </summary>
         [JsonPropertyName("user_prompt")]
