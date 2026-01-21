@@ -1,4 +1,4 @@
-﻿using FoundationaLLM.Common.Constants;
+using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Interfaces;
 using FoundationaLLM.Common.Models.Azure.CosmosDB;
 using FoundationaLLM.Common.Models.Configuration.CosmosDB;
@@ -9,6 +9,7 @@ using FoundationaLLM.Common.Models.Orchestration.Response;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles;
 using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
+using FoundationaLLM.Common.Models.ResourceProviders.Skill;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -36,6 +37,8 @@ namespace FoundationaLLM.Common.Services.Azure
         private Container _dataPipelines;
         private readonly Lazy<Task<Container>> _userProfiles;
         private Task<Container> _userProfilesTask => _userProfiles.Value;
+        private readonly Lazy<Task<Container>> _skills;
+        private Task<Container> _skillsTask => _skills.Value;
         private readonly Database _database;
         private readonly AzureCosmosDBSettings _settings;
         private readonly ResiliencePipeline _resiliencePipeline;
@@ -110,6 +113,7 @@ namespace FoundationaLLM.Common.Services.Azure
                     $"Unable to connect to existing Azure Cosmos DB container ({AzureCosmosDBContainers.Operations}).");
 
             _userProfiles = new Lazy<Task<Container>>(InitializeUserProfilesContainer);
+            _skills = new Lazy<Task<Container>>(InitializeSkillsContainer);
 
             _agents = database?.GetContainer(AzureCosmosDBContainers.Agents)
                 ?? throw new ArgumentException(
@@ -144,6 +148,10 @@ namespace FoundationaLLM.Common.Services.Azure
 
         private async Task<Container> InitializeUserProfilesContainer() =>
             await _resiliencePipeline.ExecuteAsync<Container>(async token => await _database?.CreateContainerIfNotExistsAsync(new ContainerProperties(AzureCosmosDBContainers.UserProfiles,
+                "/upn"), ThroughputProperties.CreateAutoscaleThroughput(1000), cancellationToken: token)!);
+
+        private async Task<Container> InitializeSkillsContainer() =>
+            await _resiliencePipeline.ExecuteAsync<Container>(async token => await _database?.CreateContainerIfNotExistsAsync(new ContainerProperties(AzureCosmosDBContainers.Skills,
                 "/upn"), ThroughputProperties.CreateAutoscaleThroughput(1000), cancellationToken: token)!);
 
         #region Methods reserved for the FoundationaLLM.Conversation resource provider
@@ -827,6 +835,122 @@ namespace FoundationaLLM.Common.Services.Azure
             return null;
         }
 
+        #region Skill Methods (Procedural Memory)
+
+        /// <inheritdoc/>
+        public async Task<SkillReference?> GetSkillAsync(string upn, string skillId, CancellationToken cancellationToken = default)
+        {
+            var skills = await _skillsTask;
+
+            try
+            {
+                var response = await skills.ReadItemAsync<SkillReference>(
+                    id: skillId,
+                    partitionKey: new PartitionKey(upn),
+                    cancellationToken: cancellationToken);
+
+                // Check if soft-deleted
+                if (response.Resource?.Deleted == true)
+                    return null;
+
+                return response.Resource;
+            }
+            catch (CosmosException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+            {
+                return null;
+            }
+        }
+
+        /// <inheritdoc/>
+        public async Task<List<SkillReference>> GetSkillsAsync(string upn, string? agentObjectId = null, CancellationToken cancellationToken = default)
+        {
+            var skills = await _skillsTask;
+
+            var queryText = agentObjectId != null
+                ? $"SELECT * FROM c WHERE c.upn = @upn AND c.agent_object_id = @agentObjectId AND c.type = 'skill' AND {SoftDeleteQueryRestriction} ORDER BY c._ts DESC"
+                : $"SELECT * FROM c WHERE c.upn = @upn AND c.type = 'skill' AND {SoftDeleteQueryRestriction} ORDER BY c._ts DESC";
+
+            var query = new QueryDefinition(queryText)
+                .WithParameter("@upn", upn);
+
+            if (agentObjectId != null)
+            {
+                query.WithParameter("@agentObjectId", agentObjectId);
+            }
+
+            var response = skills.GetItemQueryIterator<SkillReference>(query);
+
+            List<SkillReference> output = [];
+            while (response.HasMoreResults)
+            {
+                var results = await response.ReadNextAsync(cancellationToken);
+                output.AddRange(results);
+            }
+
+            return output;
+        }
+
+        /// <inheritdoc/>
+        public async Task<SkillReference> UpsertSkillAsync(SkillReference skill, CancellationToken cancellationToken = default)
+        {
+            var skills = await _skillsTask;
+
+            // Ensure required fields are set
+            skill.Type = "skill";
+            if (skill.CreatedOn == default)
+            {
+                skill.CreatedOn = DateTimeOffset.UtcNow;
+            }
+            skill.UpdatedOn = DateTimeOffset.UtcNow;
+
+            var response = await skills.UpsertItemAsync(
+                item: skill,
+                partitionKey: new PartitionKey(skill.UPN),
+                cancellationToken: cancellationToken);
+
+            return response.Resource;
+        }
+
+        /// <inheritdoc/>
+        public async Task DeleteSkillAsync(SkillReference skill, CancellationToken cancellationToken = default)
+        {
+            var skills = await _skillsTask;
+
+            // Soft delete
+            skill.Deleted = true;
+            skill.UpdatedOn = DateTimeOffset.UtcNow;
+
+            await skills.UpsertItemAsync(
+                item: skill,
+                partitionKey: new PartitionKey(skill.UPN),
+                cancellationToken: cancellationToken);
+        }
+
+        /// <inheritdoc/>
+        public async Task<SkillReference> UpdateSkillExecutionAsync(string upn, string skillId, bool success, CancellationToken cancellationToken = default)
+        {
+            var skill = await GetSkillAsync(upn, skillId, cancellationToken);
+
+            if (skill == null)
+            {
+                throw new InvalidOperationException($"Skill '{skillId}' not found for user '{upn}'.");
+            }
+
+            // Update execution statistics
+            skill.ExecutionCount++;
+
+            // Update success rate with exponential moving average
+            var alpha = 0.1; // Smoothing factor
+            var successValue = success ? 1.0 : 0.0;
+            skill.SuccessRate = (alpha * successValue) + ((1 - alpha) * skill.SuccessRate);
+
+            skill.UpdatedOn = DateTimeOffset.UtcNow;
+
+            return await UpsertSkillAsync(skill, cancellationToken);
+        }
+
+        #endregion
+
         private async Task EnsureContainerAvailability(string containerName)
         {
             if (_containers.ContainsKey(containerName))
@@ -836,6 +960,9 @@ namespace FoundationaLLM.Common.Services.Azure
             {
                 case AzureCosmosDBContainers.UserProfiles:
                     _containers[containerName] = await _userProfilesTask;
+                    return;
+                case AzureCosmosDBContainers.Skills:
+                    _containers[containerName] = await _skillsTask;
                     return;
                 default:
                     return;

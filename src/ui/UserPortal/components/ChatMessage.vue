@@ -89,6 +89,11 @@
 
 					<div v-for="(artifact, artifactIndex) in message.contentArtifacts" :key="`${artifact.id}-${artifactIndex}`">
 						<ChatMessageContentArtifactBlock v-if="artifact.type === 'image'" :value="artifact" />
+						<SkillArtifact
+							v-else-if="artifact.type === 'skill_saved' || artifact.type === 'skill_used'"
+							:artifact="artifact"
+							@view-skill="handleViewSkill"
+						/>
 					</div>
 
 					<!-- Analysis button -->
@@ -130,9 +135,13 @@
 							:key="`${artifact.id}-${artifactIndex}`"
 							v-tooltip.top="{ content: 'Click to view content', showDelay: 500, hideDelay: 300 }"
 							class="content-artifact"
-							@click="selectedContentArtifact = artifact"
+							:class="{
+								'content-artifact--skill-saved': artifact.type === 'skill_saved',
+								'content-artifact--skill-used': artifact.type === 'skill_used',
+							}"
+							@click="artifact.type === 'skill_saved' || artifact.type === 'skill_used' ? handleViewSkill(artifact) : (selectedContentArtifact = artifact)"
 						>
-							<i class="pi pi-file"></i>
+							<i :class="artifact.type === 'skill_saved' ? 'pi pi-wrench' : artifact.type === 'skill_used' ? 'pi pi-bolt' : 'pi pi-file'"></i>
 							{{ artifact.title ? artifact.title?.split('/').pop() : '(No Title)' }}
 						</span>
 					</div>
@@ -227,6 +236,17 @@
 			:visible="isAnalysisModalVisible"
 			:analysis-results="message.analysisResults ?? []"
 			@update:visible="isAnalysisModalVisible = $event"
+		/>
+
+		<!-- Skill Review Modal -->
+		<SkillReviewModal
+			v-if="selectedSkillArtifact"
+			:artifact="selectedSkillArtifact"
+			v-model:visible="isSkillReviewModalVisible"
+			@skill-approved="handleSkillApproved"
+			@skill-rejected="handleSkillRejected"
+			@skill-kept="handleSkillKept"
+			@skill-removed="handleSkillRemoved"
 		/>
 
 		<!-- Content Artifact Modal -->
@@ -487,6 +507,8 @@ export default {
 	components: {
 		Image,
 		Dialog,
+		SkillArtifact: () => import('./SkillArtifact.vue'),
+		SkillReviewModal: () => import('./SkillReviewModal.vue'),
 	},
 
 	props: {
@@ -704,6 +726,31 @@ export default {
 			const img = event.currentTarget;
 			this.previewImageUrl = img.getAttribute('data-src') || img.src;
 			this.isImagePreviewVisible = true;
+		},
+
+		handleViewSkill(artifact: any) {
+			this.selectedSkillArtifact = artifact;
+			this.isSkillReviewModalVisible = true;
+		},
+
+		handleSkillApproved(artifact: any) {
+			// Skill was approved - could refresh or update UI if needed
+			this.selectedSkillArtifact = null;
+		},
+
+		handleSkillRejected(artifact: any) {
+			// Skill was rejected/deleted - remove from message artifacts if needed
+			this.selectedSkillArtifact = null;
+		},
+
+		handleSkillKept(artifact: any) {
+			// Skill was kept - no action needed
+			this.selectedSkillArtifact = null;
+		},
+
+		handleSkillRemoved(artifact: any) {
+			// Skill was removed/deleted - remove from message artifacts if needed
+			this.selectedSkillArtifact = null;
 		},
 
 		processContentBlock(contentToProcess) {

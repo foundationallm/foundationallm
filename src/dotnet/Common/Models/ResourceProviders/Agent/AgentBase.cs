@@ -58,6 +58,14 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
         public RealtimeSpeechSettings? RealtimeSpeechSettings { get; set; }
 
         /// <summary>
+        /// Configuration for procedural memory capabilities (skill learning).
+        /// When null or when Enabled is false, the Code Interpreter tool works in 
+        /// backwards-compatible mode without any skill functionality.
+        /// </summary>
+        [JsonPropertyName("procedural_memory_settings")]
+        public ProceduralMemorySettings? ProceduralMemorySettings { get; set; }
+
+        /// <summary>
         /// Gets or sets a list of tools that are registered with the agent.
         /// </summary>
         /// <remarks>
@@ -153,5 +161,12 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
         public bool HasRealtimeSpeechCapabilities =>
             RealtimeSpeechSettings?.Enabled == true &&
             !string.IsNullOrWhiteSpace(RealtimeSpeechSettings?.RealtimeSpeechAIModelObjectId);
+
+        /// <summary>
+        /// Indicates whether procedural memory (skill learning) is enabled for this agent.
+        /// </summary>
+        [JsonIgnore]
+        public bool HasProceduralMemoryEnabled =>
+            ProceduralMemorySettings?.Enabled == true;
     }
 }

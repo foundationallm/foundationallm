@@ -50,10 +50,10 @@ from foundationallm.models.constants import (
 
 user_identity_json = {
     "name": "Experimental Test",
-    "user_name":"ciprian@foundationaLLM.ai",
-    "upn":"ciprian@foundationaLLM.ai",
-    "user_id": "949195b1-f432-4da3-8f7d-5298e3fda432",
-    "group_ids": ["c54871ba-1fa1-439a-9e86-30d74dfe4a4a"]}
+    "user_name":"zoinertejada@foundationaLLM.ai",
+    "upn":"ZoinerTejada@foundationaLLM.ai",
+    "user_id": "4a0cc1d0-b7e9-4db8-883b-e72192f40602",
+    "group_ids": []}
 
 # user_identity_json = {
 #     "name": "Experimental Test",
@@ -72,7 +72,7 @@ with open(full_request_json_file_name, 'r') as f:
 
 operation_id = request_json['operation_id']
 conversation_id = request_json['session_id']
-user_prompt = request_json['user_prompt']
+user_prompt = "Calculate the factorial of 10 using Python"
 
 request = CompletionRequest(**request_json)
 agent = request.agent

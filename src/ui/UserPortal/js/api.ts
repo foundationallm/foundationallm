@@ -1221,6 +1221,63 @@ export default {
 			`/instances/${this.instanceId}/agents/${agentName}/realtime-speech/config`
 		);
 	},
+
+	/**
+	 * Gets skill details for review.
+	 * @param skillId The skill ID (from artifact filepath).
+	 * @returns Promise resolving to skill details.
+	 */
+	async getSkill(skillId: string): Promise<any> {
+		try {
+			return await this.fetch(
+				`/instances/${this.instanceId}/skills/${skillId}`
+			);
+		} catch (error) {
+			console.error('Error getting skill:', error);
+			throw error;
+		}
+	},
+
+	/**
+	 * Approves a skill (sets status to Active).
+	 * @param skillId The skill ID (from artifact filepath).
+	 * @returns Promise resolving to updated skill details.
+	 */
+	async approveSkill(skillId: string): Promise<any> {
+		try {
+			return await this.fetch(
+				`/instances/${this.instanceId}/skills/${skillId}/approve`,
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					}
+				}
+			);
+		} catch (error) {
+			console.error('Error approving skill:', error);
+			throw error;
+		}
+	},
+
+	/**
+	 * Deletes (rejects/removes) a skill.
+	 * @param skillId The skill ID (from artifact filepath).
+	 * @returns Promise resolving to deletion result.
+	 */
+	async deleteSkill(skillId: string): Promise<any> {
+		try {
+			return await this.fetch(
+				`/instances/${this.instanceId}/skills/${skillId}`,
+				{
+					method: 'DELETE'
+				}
+			);
+		} catch (error) {
+			console.error('Error deleting skill:', error);
+			throw error;
+		}
+	},
 };
 
 function formatError(error: any): string {

@@ -1,4 +1,4 @@
-﻿using FoundationaLLM.Common.Models.Azure.CosmosDB;
+using FoundationaLLM.Common.Models.Azure.CosmosDB;
 using FoundationaLLM.Common.Models.Configuration.Users;
 using FoundationaLLM.Common.Models.Conversation;
 using FoundationaLLM.Common.Models.Orchestration;
@@ -6,6 +6,7 @@ using FoundationaLLM.Common.Models.Orchestration.Response;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent.AgentFiles;
 using FoundationaLLM.Common.Models.ResourceProviders.Attachment;
+using FoundationaLLM.Common.Models.ResourceProviders.Skill;
 
 namespace FoundationaLLM.Common.Interfaces;
 
@@ -322,6 +323,53 @@ public interface IAzureCosmosDBService
     /// <param name="cancellationToken">Cancellation token for async calls.</param>
     /// <returns></returns>
     Task DeleteAgentFile(AgentFileReference agentFile, CancellationToken cancellationToken = default);
+
+    #region Skill Methods (Procedural Memory)
+
+    /// <summary>
+    /// Gets a skill by its identifier.
+    /// </summary>
+    /// <param name="upn">The user principal name (partition key).</param>
+    /// <param name="skillId">The skill identifier.</param>
+    /// <param name="cancellationToken">Cancellation token for async calls.</param>
+    /// <returns>The skill if found, null otherwise.</returns>
+    Task<SkillReference?> GetSkillAsync(string upn, string skillId, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Gets all skills for a user, optionally filtered by agent.
+    /// </summary>
+    /// <param name="upn">The user principal name.</param>
+    /// <param name="agentObjectId">Optional agent object ID to filter by.</param>
+    /// <param name="cancellationToken">Cancellation token for async calls.</param>
+    /// <returns>List of skills for the user.</returns>
+    Task<List<SkillReference>> GetSkillsAsync(string upn, string? agentObjectId = null, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Creates or updates a skill.
+    /// </summary>
+    /// <param name="skill">The skill to upsert.</param>
+    /// <param name="cancellationToken">Cancellation token for async calls.</param>
+    /// <returns>The upserted skill.</returns>
+    Task<SkillReference> UpsertSkillAsync(SkillReference skill, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Deletes a skill.
+    /// </summary>
+    /// <param name="skill">The skill to delete.</param>
+    /// <param name="cancellationToken">Cancellation token for async calls.</param>
+    Task DeleteSkillAsync(SkillReference skill, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Updates the execution statistics for a skill.
+    /// </summary>
+    /// <param name="upn">The user principal name.</param>
+    /// <param name="skillId">The skill identifier.</param>
+    /// <param name="success">Whether the execution was successful.</param>
+    /// <param name="cancellationToken">Cancellation token for async calls.</param>
+    /// <returns>The updated skill.</returns>
+    Task<SkillReference> UpdateSkillExecutionAsync(string upn, string skillId, bool success, CancellationToken cancellationToken = default);
+
+    #endregion
 
     /// <summary>
     /// Creates a new container for vector search.

@@ -4,3 +4,5 @@ class ContentArtifactTypeNames:
     TOOL_ERROR = 'ToolError'
     WORKFLOW_EXECUTION = 'WorkflowExecution'
     FILE = 'File'
+    SKILL_SAVED = 'skill_saved'
+    SKILL_USED = 'skill_used'
