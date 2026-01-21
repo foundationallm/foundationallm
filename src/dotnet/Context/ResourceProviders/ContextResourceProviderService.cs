@@ -13,6 +13,7 @@ using FoundationaLLM.Common.Models.Orchestration;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Models.ResourceProviders.Context;
+using FoundationaLLM.Common.Models.ResourceProviders.Vector;
 using FoundationaLLM.Common.Models.Services;
 using FoundationaLLM.Common.Services.ResourceProviders;
 using FoundationaLLM.Context.Models;
@@ -189,6 +190,27 @@ namespace FoundationaLLM.Context.ResourceProviders
                     StatusCodes.Status400BadRequest)
             };
 
+        /// <inheritdoc/>
+        protected override async Task DeleteResourceAsync(
+            ResourcePath resourcePath,
+            UnifiedUserIdentity userIdentity)
+        {
+            switch (resourcePath.ResourceTypeName)
+            {
+                case ContextResourceTypeNames.KnowledgeUnits:
+                    await DeleteKnowledgeResource<KnowledgeUnit>(resourcePath, userIdentity);
+                    break;
+                case ContextResourceTypeNames.KnowledgeSources:
+                    await DeleteKnowledgeResource<KnowledgeSource>(resourcePath, userIdentity);
+                    break;
+                default:
+                    throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeName} is not supported by the {_name} resource provider.",
+                    StatusCodes.Status400BadRequest);
+            }
+
+            await SendResourceProviderEvent(EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand);
+        }
+
         #endregion
 
         #region Resource provider strongly typed operations
@@ -308,9 +330,20 @@ namespace FoundationaLLM.Context.ResourceProviders
                     StatusCodes.Status400BadRequest)
             };
 
+        /// <inheritdoc/>
+        protected override async Task DeleteResourceAsyncInternal<T>(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            UnifiedUserIdentity userIdentity) =>
+            await DeleteKnowledgeResource<T>(
+                resourcePath,
+                userIdentity);
+
         #endregion
 
         #region Resource management
+
+        #region Check resource names and identifiers
 
         private async Task<ResourceNameCheckResult> CheckKnowledgeUnitName(
             ResourcePath resourcePath,
@@ -469,6 +502,8 @@ namespace FoundationaLLM.Context.ResourceProviders
                     StatusCodes.Status500InternalServerError);
         }
 
+        #endregion
+
         private async Task<KnowledgeSource> GetKnowledgeSource(
             ResourcePath resourcePath,
             ResourcePathAuthorizationResult authorizationResult,
@@ -522,7 +557,6 @@ namespace FoundationaLLM.Context.ResourceProviders
                     $"The following error occured when retrieving the knowledge unit {resourcePath.MainResourceId!} from the {_name} resource provider: {contextResponse.Error?.Detail ?? "N/A"}.",
                     StatusCodes.Status500InternalServerError);
         }
-
 
         private async Task<List<ResourceProviderGetResult<KnowledgeSource>>> GetKnowledgeSources(
             ResourcePath resourcePath,
@@ -691,6 +725,45 @@ namespace FoundationaLLM.Context.ResourceProviders
                         $"The resource type {resource.GetType().Name} is not supported by the {_name} resource provider.",
                             StatusCodes.Status400BadRequest);
             };
+        }
+
+        private async Task DeleteKnowledgeResource<T>(
+            ResourcePath resourcePath,
+            UnifiedUserIdentity userIdentity) where T : ResourceBase
+        {
+            if (!_proxyMode)
+            {
+                //TODO: Add checks to prevent deletion if resource is in use
+                await DeleteResource<T>(resourcePath);
+                return;
+            }
+
+            var contextServiceClient = GetContextServiceClient(userIdentity);
+            switch (typeof(T))
+            {
+                case Type t when t == typeof(KnowledgeUnit):
+                    var knowledgeUnitResult = await contextServiceClient.DeleteKnowledgeUnit(
+                        resourcePath.InstanceId!,
+                        resourcePath.MainResourceId!);
+                    if (knowledgeUnitResult.IsSuccess)
+                        return;
+                    throw new ResourceProviderException(
+                        $"The following error occured when deleting knowledge unit {resourcePath.MainResourceId!} in the {_name} resource provider: {knowledgeUnitResult.Error?.Detail ?? "N/A"}.",
+                        StatusCodes.Status500InternalServerError);
+                case Type t when t == typeof(KnowledgeSource):
+                    var knowledgeSourceResult = await contextServiceClient.DeleteKnowledgeSource(
+                        resourcePath.InstanceId!,
+                        resourcePath.MainResourceId!);
+                    if (knowledgeSourceResult.IsSuccess)
+                        return;
+                    throw new ResourceProviderException(
+                        $"The following error occured when deleting knowledge source {resourcePath.MainResourceId!} in the {_name} resource provider: {knowledgeSourceResult.Error?.Detail ?? "N/A"}.",
+                        StatusCodes.Status500InternalServerError);
+                default:
+                    throw new ResourceProviderException(
+                        $"The resource type {typeof(T).Name} is not supported by the {_name} resource provider.",
+                            StatusCodes.Status400BadRequest);
+            }
         }
 
         private async Task<ResourceProviderActionResult> SetKnowledgeUnitGraph(

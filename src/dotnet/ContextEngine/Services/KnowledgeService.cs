@@ -331,6 +331,57 @@ namespace FoundationaLLM.Context.Services
         }
 
         /// <inheritdoc />
+        public async Task<Result> DeleteKnowledgeUnit(
+            string instanceId,
+            string knowledgeUnitId,
+            UnifiedUserIdentity userIdentity)
+        {
+            try
+            {
+                await _contextResourceProvider.DeleteResourceAsync<KnowledgeUnit>(
+                    instanceId,
+                    knowledgeUnitId,
+                    userIdentity);
+
+                // If the knowledge source is cached, remove it from the cache.
+                RemoveKnowledgeUnitFromCache(
+                    instanceId,
+                    knowledgeUnitId);
+
+                return Result.Success();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while deleting the knowledge unit {KnowledgeUnitId} from instance {InstanceId}.",
+                    knowledgeUnitId, instanceId);
+                return Result.FailureFromException(ex);
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task<Result> DeleteKnowledgeSource(
+            string instanceId,
+            string knowledgeSourceId,
+            UnifiedUserIdentity userIdentity)
+        {
+            try
+            {
+                await _contextResourceProvider.DeleteResourceAsync<KnowledgeSource>(
+                    instanceId,
+                    knowledgeSourceId,
+                    userIdentity);
+                return Result.Success();
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while deleting the knowledge source {KnowledgeSourceId} from instance {InstanceId}.",
+                    knowledgeSourceId, instanceId);
+                return Result.FailureFromException(ex);
+            }
+        }
+
+        /// <inheritdoc />
         public async Task<Result<ResourceProviderActionResult>> SetKnowledgeUnitGraph(
             string instanceId,
             string knowledgeUnitId,

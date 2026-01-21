@@ -150,6 +150,32 @@ namespace FoundationaLLM.Context.Interfaces
             UnifiedUserIdentity userIdentity);
 
         /// <summary>
+        /// Deletes a knowledge unit.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="knowledgeUnitId">The unique identifier of the knowledge unit to delete. Cannot be null or empty.</param>
+        /// <param name="userIdentity">The identity of the user performing the deletion. Cannot be null.</param>
+        /// <returns>A task that represents the asynchronous delete operation. The result contains the outcome of the deletion
+        /// request.</returns>
+        Task<Result> DeleteKnowledgeUnit(
+            string instanceId,
+            string knowledgeUnitId,
+            UnifiedUserIdentity userIdentity);
+
+        /// <summary>
+        /// Deletes a knowledge source.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="knowledgeSourceId">The unique identifier of the knowledge source to delete. Cannot be null or empty.</param>
+        /// <param name="userIdentity">The identity of the user performing the deletion. Cannot be null.</param>
+        /// <returns>A task that represents the asynchronous delete operation. The result contains the outcome of the deletion
+        /// request.</returns>
+        Task<Result> DeleteKnowledgeSource(
+            string instanceId,
+            string knowledgeSourceId,
+            UnifiedUserIdentity userIdentity);
+
+        /// <summary>
         /// Sets the knowledge graph associated with a knowledge unit.
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>

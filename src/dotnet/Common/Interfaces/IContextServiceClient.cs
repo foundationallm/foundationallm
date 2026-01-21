@@ -205,6 +205,28 @@ namespace FoundationaLLM.Common.Interfaces
             KnowledgeSource knowledgeSource);
 
         /// <summary>
+        /// Deletes the specified knowledge unit from the given instance asynchronously.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="knowledgeUnitId">The unique identifier of the knowledge unit to delete. Cannot be null or empty.</param>
+        /// <returns>A task that represents the asynchronous delete operation. The task result contains a <see cref="Result"/>
+        /// indicating whether the deletion was successful.</returns>
+        Task<Result> DeleteKnowledgeUnit(
+            string instanceId,
+            string knowledgeUnitId);
+
+        /// <summary>
+        /// Deletes the specified knowledge source from the given instance asynchronously.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="knowledgeSourceId">The unique identifier of the knowledge source to delete. Cannot be null or empty.</param>
+        /// <returns>A task that represents the asynchronous delete operation. The task result contains a <see cref="Result"/>
+        /// indicating whether the deletion was successful.</returns>
+        Task<Result> DeleteKnowledgeSource(
+            string instanceId,
+            string knowledgeSourceId);
+
+        /// <summary>
         /// Sets the knowledge graph for a knowledge unit.
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>

@@ -139,13 +139,14 @@ namespace FoundationaLLM.Vector.ResourceProviders
             switch (resourcePath.ResourceTypeName)
             {
                 case VectorResourceTypeNames.VectorDatabases:
+                    //TODO: Add checks to prevent deletion if the vector database is in use.
                     await DeleteResource<VectorDatabase>(resourcePath);
                     break;
                 default:
                     throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeName} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest);
             }
-            ;
+
             await SendResourceProviderEvent(EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand);
         }
 

@@ -554,6 +554,55 @@ namespace FoundationaLLM.Common.Clients
         }
 
         /// <inheritdoc/>
+        public async Task<Result> DeleteKnowledgeUnit(
+            string instanceId,
+            string knowledgeUnitId) =>
+            await DeleteKnowledgeResource(
+                instanceId,
+                ContextResourceTypeNames.KnowledgeUnits,
+                knowledgeUnitId);
+
+        /// <inheritdoc/>
+        public async Task<Result> DeleteKnowledgeSource(
+            string instanceId,
+            string knowledgeSourceId) =>
+            await DeleteKnowledgeResource(
+                instanceId,
+                ContextResourceTypeNames.KnowledgeSources,
+                knowledgeSourceId);
+
+        private async Task<Result> DeleteKnowledgeResource(
+            string instanceId,
+            string knowledgeResourceType,
+            string knowledgeResourceId)
+        {
+            try
+            {
+                var client = await _httpClientFactoryService.CreateClient(
+                    instanceId,
+                    HttpClientNames.ContextAPI,
+                    _callContext.CurrentUserIdentity!);
+                var responseMessage = await client.DeleteAsync(
+                    $"instances/{instanceId}/{knowledgeResourceType}/{knowledgeResourceId}");
+                if (responseMessage.IsSuccessStatusCode)
+                    return Result.Success();
+                _logger.LogError(
+                    "An error occurred while deleting the knowledge resource {KnowledgeResourceId} of type {KnowledgeResourceType}. Status code: {StatusCode}.",
+                    knowledgeResourceId,
+                    knowledgeResourceType,
+                    responseMessage.StatusCode);
+                return await Result.FailureFromHttpResponse(responseMessage);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while deleting the knowledge resource {KnowledgeResourceId} of type {KnowledgeResourceType}.",
+                    knowledgeResourceId,
+                    knowledgeResourceType);
+                return Result.FailureFromException(ex);
+            }
+        }
+
+        /// <inheritdoc/>
         public async Task<Result<ResourceProviderActionResult>> SetKnowledgeUnitGraph(
             string instanceId,
             string knowledgeUnitId,

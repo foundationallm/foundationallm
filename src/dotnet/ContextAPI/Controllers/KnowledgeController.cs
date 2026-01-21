@@ -230,6 +230,46 @@ namespace FoundationaLLM.Context.API.Controllers
         }
 
         /// <summary>
+        /// Deletes a specified knowledge unit.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="knowledgeUnitId">The knowledge unit identifier.</param>
+        /// <returns></returns>
+        [HttpDelete("knowledgeUnits/{knowledgeUnitId}")]
+        public async Task<IActionResult> DeleteKnowledgeUnit(
+            string instanceId,
+            string knowledgeUnitId)
+        {
+            var result = await _knowledgeService.DeleteKnowledgeUnit(
+                instanceId,
+                knowledgeUnitId,
+                _callContext.CurrentUserIdentity!);
+
+            return
+                result.ToActionResult();
+        }
+
+        /// <summary>
+        /// Deletes a specified knowledge source.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="knowledgeSourceId">The knowledge source identifier.</param>
+        /// <returns></returns>
+        [HttpDelete("knowledgeSources/{knowledgeSourceId}")]
+        public async Task<IActionResult> DeleteKnowledgeSource(
+            string instanceId,
+            string knowledgeSourceId)
+        {
+            var result = await _knowledgeService.DeleteKnowledgeSource(
+                instanceId,
+                knowledgeSourceId,
+                _callContext.CurrentUserIdentity!);
+
+            return
+                result.ToActionResult();
+        }
+
+        /// <summary>
         /// Sets the knowledge graph for a knowledge unit.
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
