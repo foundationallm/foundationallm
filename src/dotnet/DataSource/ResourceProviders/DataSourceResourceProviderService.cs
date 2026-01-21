@@ -118,8 +118,11 @@ namespace FoundationaLLM.DataSource.ResourceProviders
             {
                 DataSourceResourceTypeNames.DataSources => resourcePath.Action switch
                 {
-                    ResourceProviderActions.CheckName => await CheckResourceName<DataSourceBase>(
-                        JsonSerializer.Deserialize<ResourceName>(serializedAction)!),
+                    ResourceProviderActions.CheckName => await CheckDataSourceName(
+                        resourcePath,
+                        authorizationResult,
+                        JsonSerializer.Deserialize<ResourceName>(serializedAction)!,
+                        userIdentity),
                     ResourceProviderActions.Filter => await FilterResources<DataSourceBase>(
                         resourcePath,
                         JsonSerializer.Deserialize<ResourceFilter>(serializedAction)!,
@@ -184,6 +187,20 @@ namespace FoundationaLLM.DataSource.ResourceProviders
 
         #region Resource management
 
+        private async Task<ResourceNameCheckResult> CheckDataSourceName(
+            ResourcePath resourcePath,
+            ResourcePathAuthorizationResult authorizationResult,
+            ResourceName actionPayload,
+            UnifiedUserIdentity userIdentity)
+        {
+            if (!authorizationResult.Authorized
+                && !authorizationResult.HasRequiredRole)
+                throw new ResourceProviderException("Access is not authorized.", StatusCodes.Status403Forbidden);
+
+            return await CheckResourceName<DataSourceBase>(
+                actionPayload);
+        }
+
         private async Task<ResourceProviderUpsertResult> UpdateDataSource(ResourcePath resourcePath, string serializedDataSource, UnifiedUserIdentity userIdentity)
         {
             var dataSource = JsonSerializer.Deserialize<DataSourceBase>(serializedDataSource)
@@ -218,8 +235,8 @@ namespace FoundationaLLM.DataSource.ResourceProviders
                 }
             }
 
-            UpdateBaseProperties(dataSource, userIdentity, isNew: existingDataSourceReference == null);
-            if (existingDataSourceReference == null)
+            UpdateBaseProperties(dataSource, userIdentity, isNew: existingDataSourceReference is null);
+            if (existingDataSourceReference is null)
                 await CreateResource<DataSourceBase>(dataSourceReference, dataSource);
             else
                 await SaveResource<DataSourceBase>(existingDataSourceReference, dataSource);
@@ -227,7 +244,7 @@ namespace FoundationaLLM.DataSource.ResourceProviders
             return new ResourceProviderUpsertResult
             {
                 ObjectId = dataSource!.ObjectId,
-                ResourceExists = existingDataSourceReference != null
+                ResourceExists = existingDataSourceReference is not null
             };
         }
 

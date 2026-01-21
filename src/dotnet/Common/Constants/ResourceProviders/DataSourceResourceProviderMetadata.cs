@@ -22,12 +22,12 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                 {
                     AllowedTypes = [
                             new ResourceTypeAllowedTypes(HttpMethod.Get.Method, AuthorizableOperations.Read, [], [], [typeof(ResourceProviderGetResult<DataSourceBase>)]),
-                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Write, [], [typeof(DataSourceBase)], [typeof(ResourceProviderUpsertResult)]),
+                            new ResourceTypeAllowedTypes(HttpMethod.Post.Method, $"{AuthorizableOperations.Write}|{RoleDefinitionNames.Data_Sources_Contributor}", [], [typeof(DataSourceBase)], [typeof(ResourceProviderUpsertResult)]),
                             new ResourceTypeAllowedTypes(HttpMethod.Delete.Method, AuthorizableOperations.Delete, [], [], []),
                     ],
                     Actions = [
                             new ResourceTypeAction(ResourceProviderActions.CheckName, false, true, [
-                                new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Read, [], [typeof(ResourceName)], [typeof(ResourceNameCheckResult)])
+                                new ResourceTypeAllowedTypes(HttpMethod.Post.Method, $"{AuthorizableOperations.Read}|{RoleDefinitionNames.Data_Sources_Contributor}", [], [typeof(ResourceName)], [typeof(ResourceNameCheckResult)])
                             ]),
                             new ResourceTypeAction(ResourceProviderActions.Filter, false, true, [
                                 new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Read, [], [typeof(ResourceFilter)], [typeof(DataSourceBase)])

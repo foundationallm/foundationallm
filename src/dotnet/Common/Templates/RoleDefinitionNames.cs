@@ -71,6 +71,11 @@ namespace FoundationaLLM.Common.Constants.Authorization
         public const string Knowledge_Sources_Contributor = "8eec6664-9abf-4beb-84f7-18d9c2917c7f";
 
         /// <summary>
+        /// Create new data sources.
+        /// </summary>
+        public const string Data_Sources_Contributor = "78ee11d9-6e6a-4adc-8c16-3613e7445113";
+
+        /// <summary>
         /// Create new knowledge units.
         /// </summary>
         public const string Knowledge_Units_Contributor = "5f38b653-e3b7-47a8-8fde-e70ea9e4fa91";

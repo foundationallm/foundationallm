@@ -372,6 +372,31 @@ namespace FoundationaLLM.Common.Models.Authorization
                     }
                 },
                 {
+                    "/providers/FoundationaLLM.Authorization/roleDefinitions/78ee11d9-6e6a-4adc-8c16-3613e7445113",
+                    new RoleDefinition
+                    {
+                        Name = "78ee11d9-6e6a-4adc-8c16-3613e7445113",
+                        Type = "FoundationaLLM.Authorization/roleDefinitions",
+                        ObjectId = "/providers/FoundationaLLM.Authorization/roleDefinitions/78ee11d9-6e6a-4adc-8c16-3613e7445113",
+                        DisplayName = "Data Sources Contributor",
+                        Description = "Create new data sources.",
+                        AssignableScopes = [
+                            "/",],
+                        Permissions = [                            
+                            new RoleDefinitionPermissions
+                            {
+                                Actions = [],
+                                NotActions = [],
+                                DataActions = [],
+                                NotDataActions = [],
+                            },],
+                        CreatedOn = DateTimeOffset.Parse("2026-01-10T00:00:00.0000000Z"),
+                        UpdatedOn = DateTimeOffset.Parse("2026-01-10T00:00:00.0000000Z"),
+                        CreatedBy = null,
+                        UpdatedBy = null
+                    }
+                },
+                {
                     "/providers/FoundationaLLM.Authorization/roleDefinitions/5f38b653-e3b7-47a8-8fde-e70ea9e4fa91",
                     new RoleDefinition
                     {
