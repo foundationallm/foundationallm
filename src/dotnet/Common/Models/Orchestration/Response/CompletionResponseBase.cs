@@ -38,6 +38,13 @@ namespace FoundationaLLM.Common.Models.Orchestration.Response
         public ContentArtifact[]? ContentArtifacts { get; set; }
 
         /// <summary>
+        /// Gets or sets the display name of the conversation.
+        /// </summary>
+        /// <remarks>This property is expected to be filled in only for the first completion response in a conversation.</remarks>
+        [JsonPropertyName("conversation_name")]
+        public string? ConversationName { get; set; }
+
+        /// <summary>
         /// The user prompt the language model responded to.
         /// </summary>
         [JsonPropertyName("user_prompt")]
