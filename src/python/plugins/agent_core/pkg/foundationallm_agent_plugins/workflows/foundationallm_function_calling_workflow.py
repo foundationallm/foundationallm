@@ -83,11 +83,6 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
             Whether to intercept HTTP calls made by the workflow, by default False.
         """
         super().__init__(workflow_config, objects, tools, operations_manager, user_identity, config)
-        self.name = workflow_config.name
-        self.default_error_message = workflow_config.properties.get(
-            'default_error_message',
-            'An error occurred while processing the request.') \
-            if workflow_config.properties else 'An error occurred while processing the request.'
 
         self.create_workflow_llm(intercept_http_calls=intercept_http_calls)
         self.__create_context_client()
@@ -100,14 +95,16 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
             r'^\[\s*([A-Za-z_][A-Za-z0-9_]*(\s*,\s*[A-Za-z_][A-Za-z0-9_]*)*)?\s*\]:'
         )
 
-    async def invoke_async(self,
-                           operation_id: str,
-                           user_prompt:str,
-                           user_prompt_rewrite: Optional[str],
-                           message_history: List[MessageHistoryItem],
-                           file_history: List[FileHistoryItem],
-                           conversation_id: Optional[str] = None,
-                           objects: dict = None)-> CompletionResponse:
+    async def invoke_async(
+        self,
+        operation_id: str,
+        user_prompt:str,
+        user_prompt_rewrite: Optional[str],
+        message_history: List[MessageHistoryItem],
+        file_history: List[FileHistoryItem],
+        conversation_id: Optional[str] = None,
+        is_new_conversation: bool = False,
+        objects: dict = None)-> CompletionResponse:
         """
         Invokes the workflow asynchronously.
 
@@ -198,7 +195,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                         messages,
                         tool_choice='auto')
                     initial_response = self.get_text_from_message(llm_response)
-                    usage = self.__get_canonical_usage(llm_response)
+                    usage = self.get_canonical_usage(llm_response)
                     input_tokens += usage['input_tokens']
                     output_tokens += usage['output_tokens']
                 except Exception as ex:
@@ -300,7 +297,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                     try:
                         final_llm_response = await self.workflow_llm.ainvoke(final_messages)
 
-                        usage = self.__get_canonical_usage(final_llm_response)
+                        usage = self.get_canonical_usage(final_llm_response)
                         input_tokens += usage['input_tokens']
                         output_tokens += usage['output_tokens']
                         final_response = self.get_text_from_message(final_llm_response)
@@ -314,7 +311,7 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                             HumanMessage(content=f"Produce a non-technical summary of the following error message: {error_message}." +
                                                  "\n\nRemove any references to technology or platform names, code, stack traces, or technical details.")
                         ])
-                        usage = self.__get_canonical_usage(error_llm_response)
+                        usage = self.get_canonical_usage(error_llm_response)
                         input_tokens += usage['input_tokens']
                         output_tokens += usage['output_tokens']
                         
@@ -366,6 +363,18 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
                 total_tokens=output_tokens + input_tokens,
                 total_cost=0
             )
+
+            if is_new_conversation:
+                # Generate a conversation name if this is a new conversation.
+                conversation_name, input_tokens, output_tokens = await self.get_conversation_name(
+                    llm_prompt,
+                    final_response_content.value
+                )
+                if conversation_name:
+                    retvalue.conversation_name = conversation_name
+                    retvalue.prompt_tokens += input_tokens
+                    retvalue.completion_tokens += output_tokens
+
             return retvalue
 
     def __create_context_client(self):
@@ -572,33 +581,3 @@ class FoundationaLLMFunctionCallingWorkflow(FoundationaLLMWorkflowBase):
             return commands, main_prompt
         return [], llm_prompt
 
-    def __get_canonical_usage(
-            self,
-            llm_response: AIMessage
-    ) -> Dict:
-        """
-        Returns the canonical usage dictionary from the LLM response.
-
-        Parameters
-        ----------
-        llm_response : AIMessage
-            The LLM response message containing usage metadata.
-        """
-        if llm_response.usage_metadata:
-            return llm_response.usage_metadata
-
-        if llm_response.response_metadata \
-            and 'usage' in llm_response.response_metadata \
-            and 'prompt_tokens' in llm_response.response_metadata['usage'] \
-            and 'completion_tokens' in llm_response.response_metadata['usage']:
-            return {
-                'input_tokens': llm_response.response_metadata['usage']['prompt_tokens'],
-                'output_tokens': llm_response.response_metadata['usage']['completion_tokens'],
-                'total_tokens': llm_response.response_metadata['usage']['total_tokens']
-            }
-
-        return {
-            'input_tokens': 0,
-            'output_tokens': 0,
-            'total_tokens': 0
-        }
