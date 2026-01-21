@@ -597,7 +597,7 @@ export default {
 			pipeline: {
 				type: 'data-pipeline',
 				name: '',
-				object_id: '',
+				object_id: null,
 				display_name: '',
 				description: '',
 				cost_center: null,
@@ -1393,8 +1393,8 @@ export default {
 			try {
 				const response = await api.filterResources(hints.resourcePath, hints.filterActionPayload);
 				const options = response.map((resource) => ({
-					display_name: resource.display_name ?? resource.name,
-					value: resource.object_id,
+					display_name: resource.resource.display_name ?? resource.resource.name,
+					value: resource.resource.object_id,
 				}));
 
 				// Cache the response to prevent redundant API calls
