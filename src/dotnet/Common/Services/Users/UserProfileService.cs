@@ -222,7 +222,6 @@ namespace FoundationaLLM.Common.Services.Users
 
                 userProfile.Agents = [.. agents
                     .Select(a => a.Resource.ObjectId!)];
-                userProfile.UpdatedOn = DateTimeOffset.UtcNow;
                 await _cosmosDBService.UpsertUserProfileAsync(userProfile);
             }
 
@@ -237,18 +236,38 @@ namespace FoundationaLLM.Common.Services.Users
 
             if (userData is null)
             {
-                // The user alredy has the newwer version of the user profile, but does not have
+                // The user already has the newer version of the user profile, but does not have
                 // a user data document. Create a new user data document with an empty allowed agents list.
                 // it will be populated later when the user retrieves the list of agents.
 
                 _logger.LogInformation("Creating new user data for user '{UPN}'.",
                     upn);
 
+                // Since we're initializing the user data for the first time,
+                // we will consider all users the agent has access to as net new allowed agents.
                 userData = new UserData(upn)
                 {
                     AllowedAgents = [.. agents.Select(a => a.Resource.ObjectId!)]
                 };
                 await _cosmosDBService.UpsertUserDataAsync(userData);
+
+                var newAllowedAgents = agents
+                    .Where(a => !userProfile.Agents.Contains(a.Resource.ObjectId!))
+                    .ToList();
+                var newAllowedAgentIds = newAllowedAgents
+                    .Select(a => a.Resource.ObjectId!)
+                    .ToList();
+
+                if (newAllowedAgents.Count > 0)
+                {
+                    _logger.LogInformation("Enabing {AgentCount} new allowed agents for user {UPN}. The new agents are: {AgentNames}.",
+                        newAllowedAgents.Count,
+                        upn,
+                        string.Join(',', newAllowedAgents.Select(a => a.Resource.Name)));
+
+                    userProfile.Agents.AddRange(newAllowedAgentIds);
+                    await _cosmosDBService.UpsertUserProfileAsync(userProfile);
+                }
             }
             else
             {
