@@ -1635,6 +1635,57 @@ Before testing, ensure the following are in place:
 
 This section describes how to run the modified components locally while using the deployed instance for everything else.
 
+#### 10.2.0 Setup URL exception to allow use of local services
+
+In order to redirect requests to use your locally running instances of the services, you need to setup URL exceptions for each of the services in the call chain you want to invoke your local instance instead of the deployed instance. 
+
+The following table summarizes the required settings and the steps that follow describe how you configure them.
+
+| API Endpoint | URL Exception Value | Enabled | Notes |
+| ------------ | ------------------- | ------- | ----- |
+| CoreAPI      | Not needed          | N/A     | Not needed when running locally |
+| ContextAPI   | https://localhost:6004/ | true | Required |
+| LangChainAPI   | http://localhost:8765/ | true | Required |
+| OrchestrationAPI   | https://localhost:7324// | true | Required |
+
+
+These URL Exceptions are all configured using the same process:
+1. In the Management Portal, go to API Endpoints.
+2. Select the API from the list and click the configure (gear) button.
+3. Scroll to the URL Exceptions area, select Add URL Exception.
+4. Add the URL Exception Value to the URL field and enter your User Principal Name (usually your email) and select Enabled.
+5. Select Save on the Create URL Exception dialog.
+6. Select Save Changes on the Edit API Endpoint screen.
+
+Repeat the above steps for each API.
+
+When running the Python Code Sessions API locally, you need to enable a similar URL excepetion but it is configured on the Code tools of the agent. Follow these steps:
+
+1. In the Management Portal, edit your agent.
+2. On the Edit Agent page, scroll down to the Tools area and select the configure gear that is to the right of the Code tool.
+3. On the Configure Tool dialog, scroll down to Tool Properties.
+4. Select Add Property.
+5. On the Create Property dialog, configure the settings as follows:
+   Property Key: code_session_endpoint_overrides
+   Property Type: Object/Array
+   Property Value (enter an array like this with UPN and endpoints, ensure enabled is true):
+      [
+      {
+         "upn": "ciprian@foundationallm.ai",
+         "endpoint": "http://localhost:8000",
+         "enabled": false
+      },
+      {
+         "upn": "zoinertejada@foundationallm.ai",
+         "endpoint": "http://localhost:8000",
+         "enabled": true
+      }
+      ]
+6. Select Save on the Create Property dialog.
+7. Select Save on the Configure Tool dialog.
+8. Select Save Changes on the Edit Agent screen.
+
+
 #### 10.2.1 Build the .NET Solution
 
 Before running any .NET services, rebuild the solution to include your changes:
@@ -1672,45 +1723,7 @@ dotnet run --configuration Debug --no-build 2>&1
 
 **Verify:** Check the console output for startup messages and ensure no errors occur.
 
-#### 10.2.4 Run User Portal Locally
-
-The User Portal displays skill artifacts and allows skill review. Run it locally:
-
-```powershell
-cd C:\Repos\foundationallm\src\ui\UserPortal
-npm run dev 2>&1
-```
-
-**Expected:** User Portal starts and is accessible (typically `http://localhost:3000` or similar).
-
-**Note:** You can also use the "User Portal UI - Backend" configuration in VS Code/Cursor debug panel.
-
-#### 10.2.5 Run Management Portal Locally
-
-The Management Portal allows configuration of procedural memory settings. Run it locally:
-
-```powershell
-cd C:\Repos\foundationallm\src\ui\ManagementPortal
-npm run dev
-```
-
-**Expected:** Management Portal starts and is accessible (typically `http://localhost:3001` or similar).
-
-**Note:** You can also use the "Management Portal UI - Backend" configuration in VS Code/Cursor debug panel.
-
-#### 10.2.6 Configuration for Local Services
-
-Ensure your local services are configured to:
-- Connect to the **deployed** Cosmos DB instance (for skill storage)
-- Connect to the **deployed** storage account (for conversation data)
-- Use the **deployed** LangChain API and Context API
-- Authenticate using your Entra ID credentials
-
-**Important:** Only the services you're modifying (Core API, Management API, portals) run locally. All other services use the deployed instance.
-
----
-
-### 10.3 Running Code Interpreter Sandbox Locally
+### 10.2.4 Running Code Interpreter Sandbox Locally
 
 The Code Interpreter tool requires a local Python sandbox environment. Set it up as follows:
 
@@ -1728,9 +1741,68 @@ The Code Interpreter tool requires a local Python sandbox environment. Set it up
    - Select the **PythonCodeSessionAPI** configuration
    - Click the Run button (or press F5)
 
+Alternately, run it from the command line as follows:
+
+```powershell
+cd src\python\PythonCodeSessionAPI\app
+..\.venv\Scripts\Activate.ps1
+& '..\.venv\Scripts\python.exe' '-m' 'uvicorn' 'main:app' '--reload' '--port' '8000'
+```
+
 **Expected:** The Python sandbox service starts and is ready to execute Python code.
 
 **Verify:** Check the console output for startup messages indicating the sandbox is running.
+
+---
+
+### 10.2.5 Run Context API locally
+
+```powershell
+cd C:\Repos\foundationallm\src\dotnet\ContextAPI
+dotnet run --configuration Debug --launch-profile https --no-build 2>&1   
+```
+
+### 10.2.6 Run Orchestration API locally
+
+```powershell
+cd C:\Repos\foundationallm\src\dotnet\OrchestrationAPI
+dotnet run --configuration Debug --launch-profile https --no-build 2>&1   
+```
+
+### 10.2.7 Run User Portal Locally
+
+The User Portal displays skill artifacts and allows skill review. Run it locally:
+
+```powershell
+cd C:\Repos\foundationallm\src\ui\UserPortal
+npm run dev 2>&1
+```
+
+**Expected:** User Portal starts and is accessible (typically `http://localhost:3000` or similar).
+
+**Note:** You can also use the "User Portal UI - Backend" configuration in VS Code/Cursor debug panel.
+
+### 10.2.8 Run Management Portal Locally
+
+The Management Portal allows configuration of procedural memory settings. Run it locally:
+
+```powershell
+cd C:\Repos\foundationallm\src\ui\ManagementPortal
+npm run dev
+```
+
+**Expected:** Management Portal starts and is accessible (typically `http://localhost:3001` or similar).
+
+**Note:** You can also use the "Management Portal UI - Backend" configuration in VS Code/Cursor debug panel.
+
+#### 10.2.6 Configuration for Local Services
+
+Ensure your local services are configured to:
+- Connect to the **deployed** Cosmos DB instance (for skill storage)
+- Connect to the **deployed** storage account (for conversation data)
+- Authenticate using your Entra ID credentials
+
+**Important:** Only the services you're modifying (Core API, Management API, portals) run locally. All other services use the deployed instance.
 
 ---
 
