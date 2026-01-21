@@ -428,12 +428,12 @@ class FoundationaLLMWorkflowBase(ABC):
         """
         input_tokens = 0
         output_tokens = 0
-        conversation_name = "New Conversation"
+        conversation_name = None
 
         messages = [
-            SystemMessage(content="Generate a brief title (3-6 words) that summarizes the main topic of this conversation. Return only the title, no quotes or punctuation."),
             HumanMessage(content=user_prompt),
-            AIMessage(content=agent_response)
+            AIMessage(content=agent_response),
+            HumanMessage(content="Generate a brief title (3-6 words) that summarizes the main topic of this conversation. Return only the title, no quotes or punctuation.")
         ]
 
         with self.tracer.start_as_current_span(
@@ -446,8 +446,7 @@ class FoundationaLLMWorkflowBase(ABC):
                 usage = self.get_canonical_usage(llm_response)
                 input_tokens = usage['input_tokens']
                 output_tokens = usage['output_tokens']
-                return conversation_name, input_tokens, output_tokens
             except Exception as ex:
                 self.logger.error('Error during conversation name generation: %s', str(ex))
-                return None, 0, 0
-
+            
+            return conversation_name, input_tokens, output_tokens

@@ -72,6 +72,7 @@ with open(full_request_json_file_name, 'r') as f:
 
 operation_id = request_json['operation_id']
 conversation_id = request_json['session_id']
+is_new_conversation = request_json['is_new_conversation']
 user_prompt = request_json['user_prompt']
 
 request = CompletionRequest(**request_json)
@@ -143,6 +144,7 @@ async def run_workflow():
         message_history=message_history,
         file_history=file_history,
         conversation_id=conversation_id,
+        is_new_conversation=is_new_conversation,
         objects=objects
     )
     # Close the credential to avoid "Unclosed client session" warning
