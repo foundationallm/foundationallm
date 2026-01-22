@@ -102,6 +102,12 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
         public bool? ShowFileUpload { get; set; } = true;
 
         /// <summary>
+        /// Gets or sets a value indicating whether content artifacts are displayed.
+        /// </summary>
+        [JsonPropertyName("show_content_artifacts")]
+        public bool? ShowContentArtifacts { get; set; } = true;
+
+        /// <summary>
         /// Gets or sets the user identifier of the agent owner.
         /// </summary>
         [JsonPropertyName("owner_user_id")]
