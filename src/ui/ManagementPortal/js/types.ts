@@ -85,6 +85,7 @@ export type Agent = ResourceBase & {
 	show_message_rating?: boolean;
 	show_view_prompt?: boolean;
 	show_file_upload?: boolean;
+	show_content_artifacts?: boolean;
 
 	ai_model_object_id: string;
 	prompt_object_id: string;
@@ -411,6 +412,7 @@ export type CreateAgentRequest = ResourceBase & {
 	show_message_rating?: boolean;
 	show_view_prompt?: boolean;
 	show_file_upload?: boolean;
+	show_content_artifacts?: boolean;
 
 	ai_model_object_id: string;
 	prompt_object_id: string;

@@ -794,6 +794,28 @@
 						aria-labelledby="aria-show-file-upload"
 					/>
 				</div>
+
+				<div id="aria-show-content-artifacts" class="step-header">
+					Would you like to show content artifacts in messages?
+				</div>
+				<div class="step-header">
+					<!-- Empty placeholder for grid alignment -->
+				</div>
+
+				<!-- Show content artifacts -->
+				<div>
+					<ToggleButton
+						v-model="showContentArtifacts"
+						on-label="Yes"
+						on-icon="pi pi-check-circle"
+						off-label="No"
+						off-icon="pi pi-times-circle"
+						aria-labelledby="aria-show-content-artifacts"
+					/>
+				</div>
+				<div>
+					<!-- Empty placeholder for grid alignment -->
+				</div>
 			</section>
 
 			<!-- Workflow -->
@@ -1203,6 +1225,7 @@ const getDefaultFormValues = () => {
 		showMessageRating: true as boolean,
 		showViewPrompt: true as boolean,
 		showFileUpload: false as boolean,
+		showContentArtifacts: true as boolean,
 
 		userPromptRewriteEnabled: false as boolean,
 		realtimeSpeechEnabled: false as boolean,
@@ -1569,6 +1592,7 @@ export default {
 			this.showMessageRating = agent.show_message_rating ?? false;
 			this.showViewPrompt = agent.show_view_prompt ?? false;
 			this.showFileUpload = agent.show_file_upload ?? false;
+			this.showContentArtifacts = agent.show_content_artifacts ?? true;
 
 			const userPromptRewriteSettings = agent.text_rewrite_settings?.user_prompt_rewrite_settings;
 			this.userPromptRewriteEnabled =
@@ -2053,6 +2077,7 @@ export default {
 					show_message_rating: this.showMessageRating,
 					show_view_prompt: this.showViewPrompt,
 					show_file_upload: this.showFileUpload,
+					show_content_artifacts: this.showContentArtifacts,
 
 					vectorization: null,
 

@@ -80,6 +80,10 @@ export const useAppStore = defineStore('app', {
 			return !!(this.lastSelectedAgent && this.lastSelectedAgent.resource?.show_file_upload);
 		},
 
+		agentShowContentArtifacts(): boolean {
+			return !!(this.lastSelectedAgent && this.lastSelectedAgent.resource?.show_content_artifacts);
+		},
+
 		/**
 		 * Single source of truth for the current session's agent.
 		 * Components should read this instead of calling getSessionAgent directly.

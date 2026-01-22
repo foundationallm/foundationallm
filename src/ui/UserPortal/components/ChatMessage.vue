@@ -88,7 +88,7 @@
 					</div>
 
 					<div v-for="(artifact, artifactIndex) in message.contentArtifacts" :key="`${artifact.id}-${artifactIndex}`">
-						<ChatMessageContentArtifactBlock v-if="artifact.type === 'image'" :value="artifact" />
+						<ChatMessageContentArtifactBlock v-if="artifact.type === 'image' && $appStore.agentShowContentArtifacts" :value="artifact" />
 					</div>
 
 					<!-- Analysis button -->
@@ -123,7 +123,7 @@
 					</div>
 
 					<!-- Content artifacts -->
-					<div v-if="message.contentArtifacts?.length" class="content-artifacts">
+					<div v-if="message.contentArtifacts?.length && $appStore.agentShowContentArtifacts" class="content-artifacts">
 						<span><b>Content Artifacts: </b></span>
 						<span
 							v-for="(artifact, artifactIndex) in message.contentArtifacts"

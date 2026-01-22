@@ -333,6 +333,7 @@ export interface AgentBase extends ResourceBase {
 	show_message_rating: boolean;
 	show_view_prompt: boolean;
 	show_file_upload: boolean;
+	show_content_artifacts: boolean;
 	isReadonly: boolean;
 	/**
 	 * The primary owner's security principal identifier for this agent.
