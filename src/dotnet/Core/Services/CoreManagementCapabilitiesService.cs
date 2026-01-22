@@ -132,7 +132,7 @@ namespace FoundationaLLM.Core.Services
                     {
                         [AgentResourceTypeNames.Agents] = new ResourceTypeAvailability
                         {
-                            IsResourceTypeAvailable = false,
+                            IsResourceTypeAvailable = true,
                             AvailableSubordinateResourceTypes = new Dictionary<string, ResourceTypeAvailability>(StringComparer.OrdinalIgnoreCase)
                             {
                                 [AgentResourceTypeNames.AgentFiles] = new ResourceTypeAvailability
