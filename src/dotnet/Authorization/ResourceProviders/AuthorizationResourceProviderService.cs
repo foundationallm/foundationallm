@@ -135,6 +135,13 @@ namespace FoundationaLLM.Authorization.ResourceProviders
                     StatusCodes.Status400BadRequest);
             }
 
+            // Perform scope-based authorization check
+            // This allows users with Owner role on the scope to create role assignments for that scope
+            await AuthorizeRoleAssignmentOperation(
+                roleAssignment.Scope,
+                AuthorizableOperations.Write,
+                userIdentity);
+
             var roleAssignmentResult = await _authorizationServiceClient.CreateRoleAssignment(
                 _instanceSettings.Id,
                 new RoleAssignmentCreateRequest()
@@ -171,6 +178,33 @@ namespace FoundationaLLM.Authorization.ResourceProviders
             switch (resourcePath.ResourceTypeName)
             {
                 case AuthorizationResourceTypeNames.RoleAssignments:
+                    // First, retrieve the role assignment to get its scope for authorization
+                    var roleAssignmentName = resourcePath.ResourceId!;
+                    var queryParameters = new RoleAssignmentQueryParameters
+                    {
+                        Scope = "/" // Get all role assignments to find the one we're deleting
+                    };
+
+                    var roleAssignments = await _authorizationServiceClient.GetRoleAssignments(
+                        _instanceSettings.Id,
+                        queryParameters,
+                        userIdentity);
+
+                    var roleAssignment = roleAssignments.FirstOrDefault(ra => ra.Name == roleAssignmentName);
+
+                    if (roleAssignment == null)
+                        throw new ResourceProviderException(
+                            $"Could not locate the role assignment {roleAssignmentName}.",
+                            StatusCodes.Status404NotFound);
+
+                    // Perform scope-based authorization check
+                    // This allows users with Owner role on the scope to delete role assignments for that scope
+                    await AuthorizeRoleAssignmentOperation(
+                        roleAssignment.Scope,
+                        AuthorizableOperations.Delete,
+                        userIdentity);
+
+                    // Now delete the role assignment
                     await _authorizationServiceClient.DeleteRoleAssignment(
                         _instanceSettings.Id,
                         resourcePath.ResourceId!,
@@ -180,6 +214,66 @@ namespace FoundationaLLM.Authorization.ResourceProviders
                     throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeName} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest);
             };
+        }
+
+        /// <summary>
+        /// Authorizes a role assignment operation based on the scope of the role assignment.
+        /// </summary>
+        /// <param name="scope">The scope at which the role assignment is being made.</param>
+        /// <param name="operation">The operation being performed (write or delete).</param>
+        /// <param name="userIdentity">The user identity.</param>
+        /// <exception cref="ResourceProviderException">Thrown when authorization fails.</exception>
+        private async Task AuthorizeRoleAssignmentOperation(
+            string scope,
+            string operation,
+            UnifiedUserIdentity userIdentity)
+        {
+            // Validate the scope format
+            if (string.IsNullOrWhiteSpace(scope))
+                throw new ResourceProviderException(
+                    "The role assignment scope cannot be empty.",
+                    StatusCodes.Status400BadRequest);
+
+            // The authorizable action for role assignments
+            var authorizableAction = $"{ResourceProviderNames.FoundationaLLM_Authorization}/{AuthorizationResourceTypeNames.RoleAssignments}/{operation}";
+
+            _logger.LogDebug(
+                "Authorizing role assignment {Operation} operation on scope {Scope} for user {UserId}.",
+                operation,
+                scope,
+                userIdentity.UserId);
+
+            // Check if user has permission to manage role assignments at the specified scope
+            var authResult = await _authorizationServiceClient.ProcessAuthorizationRequest(
+                _instanceSettings.Id,
+                authorizableAction,
+                null,
+                [scope],
+                false,
+                false,
+                false,
+                userIdentity);
+
+            if (!authResult.AuthorizationResults.TryGetValue(scope, out var scopeAuthResult) 
+                || !scopeAuthResult.Authorized)
+            {
+                _logger.LogWarning(
+                    "The role assignment {Operation} operation on scope {Scope} was not authorized for user {UserId}.",
+                    operation,
+                    scope,
+                    userIdentity.UserId);
+
+                throw new ResourceProviderException(
+                    $"You do not have permission to manage role assignments at the scope '{scope}'. " +
+                    $"You must have the Owner role or a role with role assignment management permissions on the target resource.",
+                    StatusCodes.Status403Forbidden);
+            }
+
+            _logger.LogDebug(
+                "Role assignment {Operation} operation on scope {Scope} authorized for user {UserId}.",
+                operation,
+                scope,
+                userIdentity.UserId);
         }
 
         /// <inheritdoc/>
