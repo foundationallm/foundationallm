@@ -269,6 +269,7 @@ export default {
             // This will be sent to the API when querying a knowledge source
             queryRequest: {
                 user_prompt: null as string | null,
+                knowledge_task: 'none' as string,
                 vector_store_query: null as any,
                 knowledge_graph_query: null as any,
                 knowledge_unit_vector_store_filters: null as any
