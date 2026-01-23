@@ -77,6 +77,7 @@ namespace FoundationaLLM.Authorization.ResourceProviders
             var roleName = authorizationRequirementsTokens.Length > 1
                 ? authorizationRequirementsTokens[1]
                 : null;
+            var scopeResourceObjectId = default(string);
 
             if (userIdentity is null
                 || userIdentity.UserId is null)
@@ -88,43 +89,56 @@ namespace FoundationaLLM.Authorization.ResourceProviders
 
                 // Access to all resources must be authorized against the object identifier of the scope resource.
                 // This is specifc to the Authorization resource provider.
-                var resourceObjectId = await GetScopeResourceObjectId(
+                var scopeResourcePath = await GetScopeResourcePath(
                     resourcePath, actionType, authorizationPayload, userIdentity)
                     ?? throw new ResourceProviderException(
                         $"The scope resource path {resourcePath} does not nave a valid object identifier.",
                         StatusCodes.Status400BadRequest);
+                scopeResourceObjectId = scopeResourcePath.RawResourcePath;
 
                 var result = await _authorizationServiceClient.ProcessAuthorizationRequest(
                     _instanceSettings.Id,
                     authorizableAction,
                     roleName,
-                    [resourceObjectId],
+                    [scopeResourceObjectId],
                     false,
                     false,
                     false,
                     userIdentity);
 
-                if (!result.AuthorizationResults[resourceObjectId].Authorized)
+                if (
+                    (
+                        !resourcePath.HasAction
+                        || !(resourcePath.Action == ResourceProviderActions.Filter)
+                        || resourcePath.MainResourceTypeName is not AuthorizationResourceTypeNames.RoleAssignments
+                        || !scopeResourcePath.IsInstancePath
+                        || scopeResourcePath.MainResourceType is not null
+                    )
+                    && !result.AuthorizationResults[scopeResourceObjectId].Authorized
+                )
+                    // For "filter" actions on role assignments at the instance level, we allow further processing
+                    // even if not authorized at this point. The filtering logic will handle it.
                     throw new AuthorizationException("Access is not authorized.");
 
-                return result.AuthorizationResults[resourceObjectId];
+                return result.AuthorizationResults[scopeResourceObjectId];
             }
             catch (AuthorizationException)
             {
                 _logger.LogWarning("The {ActionType} access to the resource path {ResourcePath} was not authorized for user {UserName} : userId {UserId}.",
-                    actionType, resourcePath.GetObjectId(_instanceSettings.Id, _name), userIdentity!.Username, userIdentity!.UserId);
-                throw new ResourceProviderException($"Access is not authorized for {resourcePath.RawResourcePath}.", StatusCodes.Status403Forbidden);
+                    actionType, scopeResourceObjectId, userIdentity!.Username, userIdentity!.UserId);
+                throw new ResourceProviderException($"Access is not authorized for {scopeResourceObjectId}.", StatusCodes.Status403Forbidden);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while attempting to authorize access to the resource path.");
+                _logger.LogError(ex, "An error occurred while attempting to authorize access to the {ResourcePath} resource path.",
+                    scopeResourceObjectId);
                 throw new ResourceProviderException(
-                    $"An error occurred while attempting to authorize access to the resource path {resourcePath.RawResourcePath}.",
+                    $"An error occurred while attempting to authorize access to the resource path {scopeResourceObjectId}.",
                     StatusCodes.Status403Forbidden);
             }
         }
 
-        private async Task<string> GetScopeResourceObjectId(
+        private async Task<ResourcePath> GetScopeResourcePath(
             ResourcePath resourcePath,
             string actionType,
             string? authorizationPayload,
@@ -174,7 +188,7 @@ namespace FoundationaLLM.Authorization.ResourceProviders
                     scopeObjectId,
                     [_instanceSettings.Id]);
 
-                return scopeObjectId;
+                return scopeResourcePath;
 
             }
             catch (Exception ex)
