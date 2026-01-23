@@ -45,6 +45,7 @@ export const useAppConfigStore = defineStore('appConfig', {
 
 		instanceId: null as string | null,
 		allowedUploadFileExtensions: null as string | null,
+		statusMessage: null as string | null,
 
 		showMessageRating: null as boolean | null,
 		showLastConversionOnStartup: null as boolean | null,
@@ -196,6 +197,9 @@ export const useAppConfigStore = defineStore('appConfig', {
 							}
 							if (configValues['FoundationaLLM:UserPortal:Configuration:AgentManagementPermissionRequestUrl']) {
 								this.agentManagementPermissionRequestUrl = configValues['FoundationaLLM:UserPortal:Configuration:AgentManagementPermissionRequestUrl'] as string;
+							}
+							if (configValues['FoundationaLLM:Instance:StatusMessage']) {
+								this.statusMessage = configValues['FoundationaLLM:Instance:StatusMessage'] as string;
 							}
 						}
 					}

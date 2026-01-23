@@ -52,3 +52,31 @@
     color: var(--accent-text);
     background-color: var(--accent-color);
 }
+
+.navbar__content__center {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 16px;
+
+    .status-message {
+        background-color: var(--secondary-color);
+        border-radius: 6px;
+        padding: 8px 16px;
+        box-shadow: 0 2px 6px 0 rgba(27, 29, 33, 0.1);
+        color: var(--primary-text);
+        font-size: 0.9rem;
+        max-width: 600px;
+
+        p {
+            margin: 0;
+        }
+
+        a {
+            color: var(--primary-text);
+            text-decoration: underline;
+        }
+    }
+}

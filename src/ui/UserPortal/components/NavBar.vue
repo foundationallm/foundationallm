@@ -56,6 +56,12 @@
 					</div>
 				</div>
 
+				<!-- Center status message -->
+				<div v-if="appConfigStore.statusMessage" class="navbar__content__center">
+					<!-- eslint-disable-next-line vue/no-v-html -->
+					<div class="status-message" v-html="appConfigStore.statusMessage"></div>
+				</div>
+
 				<!-- Right side content -->
 				<div class="navbar__content__right">
 					<template v-if="currentSession">
