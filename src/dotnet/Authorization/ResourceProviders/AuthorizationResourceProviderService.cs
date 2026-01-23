@@ -11,6 +11,7 @@ using FoundationaLLM.Common.Models.Configuration.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Authorization;
 using FoundationaLLM.Common.Services.ResourceProviders;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -74,15 +75,19 @@ namespace FoundationaLLM.Authorization.ResourceProviders
             ResourceProviderGetOptions? options = null) =>
             resourcePath.MainResourceTypeName switch
             {
-                AuthorizationResourceTypeNames.RoleDefinitions => LoadRoleDefinitions(resourcePath.ResourceTypeInstances[0]),
+                AuthorizationResourceTypeNames.RoleDefinitions => LoadRoleDefinitions(
+                    resourcePath.ResourceTypeInstances[0]),
                 _ => throw new ResourceProviderException($"The resource type {resourcePath.MainResourceTypeName} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest)
             };
 
         #region Helpers for GetResourcesAsyncInternal
 
-        private static List<RoleDefinition> LoadRoleDefinitions(ResourceTypeInstance instance)
+        private static List<RoleDefinition> LoadRoleDefinitions(
+            ResourceTypeInstance instance)
         {
+            // The authorization result is ignored since role definitions are not secured resources.
+
             if (instance.ResourceId == null)
                 return [.. RoleDefinitions.All.Values];
             else
@@ -107,14 +112,20 @@ namespace FoundationaLLM.Authorization.ResourceProviders
 
             resourcePath.MainResourceTypeName switch
             {
-                AuthorizationResourceTypeNames.RoleAssignments => await UpdateRoleAssignments(resourcePath, serializedResource!, userIdentity),
+                AuthorizationResourceTypeNames.RoleAssignments => await UpdateRoleAssignments(
+                    resourcePath,
+                    serializedResource!,
+                    userIdentity),
                 _ => throw new ResourceProviderException($"The resource type {resourcePath.MainResourceTypeName} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest)
             };
 
         #region Helpers for UpsertResourceAsync
 
-        private async Task<ResourceProviderUpsertResult> UpdateRoleAssignments(ResourcePath resourcePath, string serializedRoleAssignment, UnifiedUserIdentity userIdentity)
+        private async Task<ResourceProviderUpsertResult> UpdateRoleAssignments(
+            ResourcePath resourcePath,
+            string serializedRoleAssignment,
+            UnifiedUserIdentity userIdentity)
         {
             var roleAssignment = JsonSerializer.Deserialize<RoleAssignment>(serializedRoleAssignment)
                 ?? throw new ResourceProviderException("The object definition is invalid.",
@@ -166,7 +177,9 @@ namespace FoundationaLLM.Authorization.ResourceProviders
         #endregion
 
         /// <inheritdoc/>
-        protected override async Task DeleteResourceAsync(ResourcePath resourcePath, UnifiedUserIdentity userIdentity)
+        protected override async Task DeleteResourceAsync(
+            ResourcePath resourcePath,
+            UnifiedUserIdentity userIdentity)
         {
             switch (resourcePath.ResourceTypeName)
             {
@@ -196,6 +209,7 @@ namespace FoundationaLLM.Authorization.ResourceProviders
                     ResourceProviderActions.Filter => await FilterRoleAssignments(
                         resourcePath.ResourceTypeInstances[0],
                         serializedAction,
+                        authorizationResult,
                         userIdentity,
                         requestPayloadValidator: requestPayloadValidator),
                     _ => throw new ResourceProviderException($"The action {resourcePath.Action} is not supported by the {_name} resource provider.",
@@ -208,6 +222,7 @@ namespace FoundationaLLM.Authorization.ResourceProviders
                         JsonSerializer.Deserialize<SecurityPrincipalQueryParameters>(serializedAction)
                             ?? throw new ResourceProviderException("Invalid query parameters object.",
                                 StatusCodes.Status400BadRequest),
+                        authorizationResult,
                         userIdentity,
                         requestPayloadValidator: requestPayloadValidator),
                     _ => throw new ResourceProviderException($"The action {resourcePath.Action} is not supported by the {_name} resource provider.",
@@ -221,9 +236,13 @@ namespace FoundationaLLM.Authorization.ResourceProviders
         private async Task<List<ResourceProviderGetResult<RoleAssignment>>> FilterRoleAssignments(
             ResourceTypeInstance instance,
             string serializedAction,
+            ResourcePathAuthorizationResult authorizationResult,
             UnifiedUserIdentity userIdentity,
             Func<object, bool>? requestPayloadValidator = null)
         {
+            if (!authorizationResult.Authorized)
+                throw new ResourceProviderException("Access is not authorized.", StatusCodes.Status403Forbidden);
+
             var queryParameters = JsonSerializer.Deserialize<RoleAssignmentQueryParameters>(serializedAction)!;
 
             if (string.IsNullOrWhiteSpace(queryParameters.Scope))
@@ -263,9 +282,13 @@ namespace FoundationaLLM.Authorization.ResourceProviders
         private async Task<List<ResourceProviderGetResult<SecurityPrincipal>>> FilterSecurityPrincipals(
             ResourcePath resourcePath,
             SecurityPrincipalQueryParameters queryParameters,
+            ResourcePathAuthorizationResult authorizationResult,
             UnifiedUserIdentity userIdentity,
             Func<object, bool>? requestPayloadValidator = null)
         {
+            if (!authorizationResult.Authorized)
+                throw new ResourceProviderException("Access is not authorized.", StatusCodes.Status403Forbidden);
+
             await _validator.ValidateAndThrowAsync<SecurityPrincipalQueryParameters>(queryParameters);
 
             if (queryParameters.Ids is not null)
