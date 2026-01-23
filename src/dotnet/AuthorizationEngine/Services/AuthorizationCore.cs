@@ -422,10 +422,12 @@ namespace FoundationaLLM.AuthorizationEngine.Services
             if (_policyAssignmentCaches.TryGetValue(resourcePath.InstanceId!, out var policyAssignmentCache))
             {
                 // Policies are only assigned to resource type paths.
-                result.PolicyDefinitionIds = [.. policyAssignmentCache
-                    .GetPolicyAssignments(resourcePath.GetResourceTypeObjectId())
-                    .Where(pa => securityPrincipalIds.Contains(pa.PrincipalId))
-                    .Select(pa => pa.PolicyDefinitionId)];
+                result.PolicyDefinitionIds = resourcePath.ResourceTypeInstances.Count > 0
+                    ? [.. policyAssignmentCache
+                        .GetPolicyAssignments(resourcePath.GetResourceTypeObjectId())
+                        .Where(pa => securityPrincipalIds.Contains(pa.PrincipalId))
+                        .Select(pa => pa.PolicyDefinitionId)]
+                    : [];
             }
 
             // Get cache associated with the instance id.
