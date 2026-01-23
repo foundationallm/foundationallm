@@ -1060,15 +1060,19 @@ export default {
 	/**
 	 * Retrieves security principals (users/groups) by their IDs.
 	 * @param ids - Array of principal IDs to retrieve.
+	 * @param scope - Optional scope to filter security principals for.
 	 * @returns Promise resolving to an array of security principals.
 	 */
-	async getSecurityPrincipals(ids: string[]): Promise<SecurityPrincipal[]> {
+	async getSecurityPrincipals(ids: string[], scope?: string): Promise<SecurityPrincipal[]> {
 		try {
 			const principals = await this.fetch<ResourceProviderGetResult<SecurityPrincipal>[]>(
 				`/management/instances/${this.instanceId}/providers/FoundationaLLM.Authorization/securityPrincipals/filter`,
 				{
 					method: 'POST',
-					body: { ids },
+					body: {
+						ids,
+						scope: scope ? `/instances/${this.instanceId}/${scope}` : undefined
+					},
 				}
 			);
 			// Extract the resource from each ResourceProviderGetResult wrapper
@@ -1113,9 +1117,10 @@ export default {
 	/**
 	 * Filters security principals by name for user search functionality.
 	 * @param name - Partial name to search for.
+	 * @param scope - Optional scope to filter security principals for.
 	 * @returns Promise resolving to an array of security principals.
 	 */
-	async filterSecurityPrincipalsByName(name: string): Promise<SecurityPrincipal[]> {
+	async filterSecurityPrincipalsByName(name: string, scope?: string): Promise<SecurityPrincipal[]> {
 		try {
 			const principals = await this.fetch<ResourceProviderGetResult<SecurityPrincipal>[]>(
 				`/management/instances/${this.instanceId}/providers/FoundationaLLM.Authorization/securityPrincipals/filter`,
@@ -1123,7 +1128,8 @@ export default {
 					method: 'POST',
 					body: {
 						name: name,
-						security_principal_type: 'User'
+						security_principal_type: 'User',
+						scope: scope ? `/instances/${this.instanceId}/${scope}` : undefined
 					},
 				}
 			);

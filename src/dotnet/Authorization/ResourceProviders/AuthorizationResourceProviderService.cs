@@ -366,9 +366,6 @@ namespace FoundationaLLM.Authorization.ResourceProviders
             UnifiedUserIdentity userIdentity,
             Func<object, bool>? requestPayloadValidator = null)
         {
-            if (!authorizationResult.Authorized)
-                throw new ResourceProviderException("Access is not authorized.", StatusCodes.Status403Forbidden);
-
             var queryParameters = JsonSerializer.Deserialize<RoleAssignmentQueryParameters>(serializedAction)!;
 
             if (string.IsNullOrWhiteSpace(queryParameters.Scope))
@@ -379,11 +376,31 @@ namespace FoundationaLLM.Authorization.ResourceProviders
                     StatusCodes.Status400BadRequest);
             else
             {
+                var skipAuthorizationCheck = false;
+
                 if (queryParameters.SecurityPrincipalIds is not null
                     && queryParameters.SecurityPrincipalIds.Count == 1
                     && queryParameters.SecurityPrincipalIds[0] == SecurityPrincipalVariableNames.CurrentUserIds)
-                        queryParameters.SecurityPrincipalIds =
-                            [userIdentity.UserId!, .. userIdentity.GroupIds];
+                {
+                    queryParameters.SecurityPrincipalIds =
+                        [userIdentity.UserId!, .. userIdentity.GroupIds];
+                    if (!string.IsNullOrEmpty(queryParameters.Scope))
+                    {
+                        var resourcePath = ResourcePathUtils.ParseForRoleAssignmentScope(
+                            queryParameters.Scope,
+                            [_instanceSettings.Id]);
+                        if (resourcePath.IsInstancePath
+                            && resourcePath.MainResourceId is null)
+                        {
+                            // We always allow retrieving role assignments for the current user at the instance level.
+                            skipAuthorizationCheck = true;
+                        }
+                    }
+                }
+
+                if (!skipAuthorizationCheck
+                    && !authorizationResult.Authorized)
+                    throw new ResourceProviderException("Access is not authorized.", StatusCodes.Status403Forbidden);
 
                 var roleAssignments = (await _authorizationServiceClient.GetRoleAssignments(
                     _instanceSettings.Id, queryParameters, userIdentity))

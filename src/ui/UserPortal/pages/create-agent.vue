@@ -1950,7 +1950,7 @@ export default defineComponent({
 
                 // Get security principals and role definitions in parallel
                 const [principalsResult, roleDefinitionsResult] = await Promise.allSettled([
-                    principalIds.length > 0 ? api.getSecurityPrincipals(principalIds) : Promise.resolve([]),
+                    principalIds.length > 0 ? api.getSecurityPrincipals(principalIds, scope) : Promise.resolve([]),
                     api.getRoleDefinitions()
                 ]);
 
@@ -2013,7 +2013,8 @@ export default defineComponent({
 
             this.userSearchLoading = true;
             try {
-                const results = await api.filterSecurityPrincipalsByName(this.newRoleAssignment.userSearch);
+                const scope = this.selectedAgentName ? api.getAgentScopeIdentifier(this.selectedAgentName) : undefined;
+                const results = await api.filterSecurityPrincipalsByName(this.newRoleAssignment.userSearch, scope);
                 // Filter to only show actual users (not service accounts, groups, or other types)
                 // Check that the type property indicates it's a User
                 this.userSearchResults = (Array.isArray(results) ? results : []).filter(principal => {
