@@ -157,7 +157,7 @@
 				<ul>
 					<li>
 						<NuxtLink to="/security/role-assignments" class="sidebar__item">
-							Instance Access Control
+							Access Control
 						</NuxtLink>
 					</li>
 				</ul>

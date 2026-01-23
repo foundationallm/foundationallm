@@ -214,6 +214,12 @@ export default {
 			required: false,
 			default: null,
 		},
+
+		defaultHideInherited: {
+			type: Boolean,
+			required: false,
+			default: false,
+		},
 	},
 
 	data() {
@@ -223,7 +229,7 @@ export default {
 			loading: false as boolean,
 			loadingStatusText: 'Retrieving role assignments...' as string,
 			roleAssignmentToDelete: null as RoleAssignment | null,
-			hideInherited: false as boolean,
+			hideInherited: this.defaultHideInherited as boolean,
 		};
 	},
 

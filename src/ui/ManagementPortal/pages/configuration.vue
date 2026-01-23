@@ -2,25 +2,8 @@
   <main id="main-content" class="page-container">
     <h2 class="page-header">Configuration</h2>
     <div class="page-subheader">
-        <p>Manage configuration settings and role assignments.</p>
+        <p>Manage configuration settings.</p>
     </div>
-    <AccessControl
-        description="Manage access to User Portal and Management Portal"
-        :scopes="[
-            {
-                label: 'User Portal access',
-                labelOverride: 'Enable User Portal access',
-                allowedRoleDefinitionNames: ['Reader'],
-                value: `providers/FoundationaLLM.Configuration/appConfigurationSets/UserPortal`
-            },
-            {
-                label: 'Management Portal access',
-                labelOverride: 'Enable Management Portal access',
-                allowedRoleDefinitionNames: ['Reader'],
-                value: `providers/FoundationaLLM.Configuration/appConfigurationSets/ManagementPortal`
-            }
-        ]"
-    />
 
     <!-- Status Message Section -->
     <section class="status-message-section mt-6">

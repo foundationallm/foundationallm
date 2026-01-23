@@ -282,6 +282,9 @@ export default {
 				});
 			}
 		},
+		'roleAssignment.role_definition_id'() {
+			this.generateDescriptionIfEmpty();
+		},
 	},
 
 	async created() {
@@ -391,6 +394,27 @@ export default {
 			this.roleAssignment.principal_type = this.dialogPrincipal.object_type;
 			this.dialogPrincipal = null;
 			this.selectPrincipalDialogOpen = false;
+			this.generateDescriptionIfEmpty();
+		},
+
+		generateDescriptionIfEmpty() {
+			// Only generate if description is empty and both principal and role are selected
+			if (this.roleAssignment.description?.trim()) {
+				return;
+			}
+
+			if (!this.roleAssignment.principal_id || !this.roleAssignment.role_definition_id) {
+				return;
+			}
+
+			const roleDefinition = this.roleOptions.find(
+				(r) => r.object_id === this.roleAssignment.role_definition_id
+			);
+			const roleDisplayName = roleDefinition?.display_name || 'Unknown Role';
+			const principalDisplayName = this.principal?.display_name || 'Unknown Principal';
+			const scopeDisplay = this.scope || 'Instance';
+
+			this.roleAssignment.description = `${roleDisplayName} for ${principalDisplayName} on ${scopeDisplay}`;
 		},
 
 		async handleCreateRoleAssignment() {

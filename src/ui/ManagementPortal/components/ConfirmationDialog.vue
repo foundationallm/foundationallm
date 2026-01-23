@@ -1,17 +1,17 @@
 <template>
-	<Dialog modal :visible="isVisible" :header="title" :style="{ minWidth: '50%', maxWidth: '600px' }" :closable="false" class="confirmation-dialog">
+	<Dialog modal :visible="isVisible" :header="dialogTitle" :style="{ minWidth: '50%', maxWidth: '600px' }" :closable="false" class="confirmation-dialog">
 		<!-- Body slot -->
 		<div class="confirmation-message">
-			<slot>{{ message }}</slot>
+			<slot>{{ dialogMessage }}</slot>
 		</div>
 
 		<template #footer>
 		<div class="confirmation-dialog-footer">
 			<!-- Confirm -->
-			<Button :severity="confirmButtonSeverity === 'danger' ? 'danger' : 'primary'" :label="confirmText" @click="handleConfirm" autofocus/>
+			<Button :severity="dialogConfirmButtonSeverity === 'danger' ? 'danger' : 'primary'" :label="dialogConfirmText" @click="handleConfirm" autofocus/>
 
 			<!-- Cancel -->
-			<Button class="ml-2" :label="cancelText" text @click="handleCancel" />
+			<Button class="ml-2" :label="dialogCancelText" text @click="handleCancel" />
 		</div>
 		</template>
 	</Dialog>
@@ -70,23 +70,23 @@ export default {
 			return this.visible !== undefined ? this.visible : this.confirmationStore.isVisible;
 		},
 
-		title() {
+		dialogTitle() {
 			return this.header || this.confirmationStore.title;
 		},
 
-		message() {
+		dialogMessage() {
 			return this.$props.message || this.confirmationStore.message;
 		},
 
-		confirmText() {
+		dialogConfirmText() {
 			return this.$props.confirmText || this.confirmationStore.confirmText;
 		},
 
-		cancelText() {
+		dialogCancelText() {
 			return this.$props.cancelText || this.confirmationStore.cancelText;
 		},
 
-		confirmButtonSeverity() {
+		dialogConfirmButtonSeverity() {
 			return this.$props.confirmButtonSeverity || this.confirmationStore.confirmButtonSeverity;
 		},
 	},
