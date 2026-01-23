@@ -2,9 +2,10 @@
 	<div class="login-page">
 		<div class="login-container">
 			<img
+				v-if="$appConfigStore?.logoUrl"
 				:src="$appConfigStore.logoUrl"
 				class="login__logo"
-				:alt="$appConfigStore.logoText || 'Company Logo'"
+				:alt="$appConfigStore?.logoText || 'Company Logo'"
 			/>
 			<Button icon="pi pi-microsoft" label="Sign in" size="large" @click="signIn"></Button>
 			<div v-if="$route.query.message" class="login__message" role="alert" aria-live="polite">

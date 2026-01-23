@@ -49,12 +49,22 @@ export const useAuthStore = defineStore('auth', {
 		},
 
 		apiScopes() {
-			return [this.authConfig.scopes];
+			return [this.authConfig?.scopes];
 		},
 	},
 
 	actions: {
 		async init() {
+			// Validate auth config before initializing MSAL
+			if (!this.authConfig?.clientId || !this.authConfig?.instance || !this.authConfig?.tenantId) {
+				console.error('Auth configuration is incomplete:', {
+					clientId: !!this.authConfig?.clientId,
+					instance: !!this.authConfig?.instance,
+					tenantId: !!this.authConfig?.tenantId,
+				});
+				return this;
+			}
+
 			const msalInstance = new PublicClientApplication({
 				auth: {
 					clientId: this.authConfig.clientId,

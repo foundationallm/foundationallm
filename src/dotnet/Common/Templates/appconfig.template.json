@@ -55,6 +55,15 @@
             "tags": {}
         },
         {
+            "key": "FoundationaLLM:Instance:StatusMessage",
+            "value": "",
+            "key_vault_secret_name": null,
+            "key_vault_secret_value": null,
+            "label": null,
+            "content_type": "",
+            "tags": {}
+        },
+        {
             "key": "FoundationaLLM:Configuration:KeyVaultURI",
             "value": "${env:AZURE_KEY_VAULT_ENDPOINT}",
             "key_vault_secret_name": null,

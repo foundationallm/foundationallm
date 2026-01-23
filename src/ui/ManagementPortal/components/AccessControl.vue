@@ -1,6 +1,7 @@
 <template>
 	<!-- Trigger button -->
-	<div style="display: flex; align-items: center">
+	<div style="display: flex; align-items: center; gap: 12px">
+		<span v-if="description" class="text-muted">{{ description }}</span>
 		<Button @click="dialogOpen = true">
 			<i class="pi pi-lock" style="color: var(--text-primary); margin-right: 8px"></i>
 			Access Control
@@ -84,6 +85,10 @@ export default {
 			type: Array,
 			required: true,
 			// default: [],
+		},
+		description: {
+			type: String,
+			default: '',
 		},
 	},
 

@@ -59,6 +59,13 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_Instance_IdentitySubstitutionUserPrincipalNamePattern =
             "FoundationaLLM:Instance:IdentitySubstitutionUserPrincipalNamePattern";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:Instance:StatusMessage setting.
+        /// <para>Value description:<br/>An instance-wide status message that should be displayed by all relevant assets (e.g., User Portal).</para>
+        /// </summary>
+        public const string FoundationaLLM_Instance_StatusMessage =
+            "FoundationaLLM:Instance:StatusMessage";
 
         #endregion
 

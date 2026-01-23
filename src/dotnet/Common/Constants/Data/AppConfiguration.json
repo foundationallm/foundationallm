@@ -60,6 +60,14 @@
 				"value": "",
 				"content_type": "",
 				"first_version": "0.8.0"
+			},
+			{
+				"name": "StatusMessage",
+				"description": "An instance-wide status message that should be displayed by all relevant assets (e.g., User Portal).",
+				"secret": "",
+				"value": "",
+				"content_type": "",
+				"first_version": "0.9.8"
 			}
 		]
 	},
