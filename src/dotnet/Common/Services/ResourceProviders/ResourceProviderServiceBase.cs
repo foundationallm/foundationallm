@@ -426,10 +426,24 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                         StatusCodes.Status400BadRequest);
 
                 // Authorize access to the resource path.
-                // In the special case of the filter action, if the resource type path is not directly authorized,
-                // the subordinate authorized resource paths must be expanded (and the overrides for ExecuteActionAsync must handle this).
-                var actionAuthorizationResult = await Authorize(ParsedResourcePath, userIdentity, AuthorizationRequirements,
-                    ParsedResourcePath.Action! == ResourceProviderActions.Filter, false, false);
+                var actionAuthorizationResult =
+                    (
+                        _name == ResourceProviderNames.FoundationaLLM_Authorization
+                        && ParsedResourcePath.Action == ResourceProviderActions.Filter
+                    )
+                    // The filter action on the Authorization resource provider requires special handling.
+                    ? await AuthorizeForAuthorizationResourceProvider(
+                        ParsedResourcePath,
+                        AuthorizationRequirements,
+                        serializedResource,
+                        userIdentity)
+                    // In the special case of the filter action, if the resource type path is not directly authorized,
+                    // the subordinate authorized resource paths must be expanded (and the overrides for ExecuteActionAsync must handle this).
+                    : await Authorize(
+                        ParsedResourcePath,
+                        userIdentity,
+                        AuthorizationRequirements,
+                        ParsedResourcePath.Action! == ResourceProviderActions.Filter, false, false);
 
                 return await ExecuteActionAsync(
                     ParsedResourcePath,
@@ -446,7 +460,15 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                     StatusCodes.Status400BadRequest);
 
             // Authorize access to the resource path.
-            var authorizationResult = await Authorize(ParsedResourcePath, userIdentity, AuthorizationRequirements, false, false, false);
+            var authorizationResult =
+                _name == ResourceProviderNames.FoundationaLLM_Authorization
+                // The upsert on the Authorization resource provider requires special handling.
+                ? await AuthorizeForAuthorizationResourceProvider(
+                    ParsedResourcePath,
+                    AuthorizationRequirements,
+                    serializedResource,
+                    userIdentity)
+                : await Authorize(ParsedResourcePath, userIdentity, AuthorizationRequirements, false, false, false);
 
             var upsertResult = await UpsertResourceAsync(
                 ParsedResourcePath,
@@ -479,7 +501,15 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                     StatusCodes.Status400BadRequest);
 
             // Authorize access to the resource path.
-            await Authorize(ParsedResourcePath, userIdentity, AuthorizationRequirements, false, false, false);
+            if (_name == ResourceProviderNames.FoundationaLLM_Authorization)
+                // The delete on the Authorization resource provider requires special handling.
+                await AuthorizeForAuthorizationResourceProvider(
+                    ParsedResourcePath,
+                    AuthorizationRequirements,
+                    null,
+                    userIdentity);
+            else
+                await Authorize(ParsedResourcePath, userIdentity, AuthorizationRequirements, false, false, false);
 
             await DeleteResourceAsync(ParsedResourcePath, userIdentity);
 
@@ -702,7 +732,15 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                 : ParseAndValidateResourcePath(resource.ObjectId, HttpMethod.Post, false, typeof(T));
 
             // Authorize access to the resource path.
-            var authorizationResult = await Authorize(ParsedResourcePath, userIdentity, AuthorizationRequirements, false, false, false);
+            var authorizationResult =
+                _name == ResourceProviderNames.FoundationaLLM_Authorization
+                // The upsert on the Authorization resource provider requires special handling.
+                ? await AuthorizeForAuthorizationResourceProvider(
+                    ParsedResourcePath,
+                    AuthorizationRequirements,
+                    JsonSerializer.Serialize(resource),
+                    userIdentity)
+                : await Authorize(ParsedResourcePath, userIdentity, AuthorizationRequirements, false, false, false);
 
             var upsertResult = await UpsertResourceAsyncInternal<T, TResult>(ParsedResourcePath, authorizationResult, resource, userIdentity, options);
 
@@ -743,14 +781,27 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             EnsureServiceInitialization();
             var (ParsedResourcePath, AuthorizationRequirements) = CreateAndValidateResourcePath(instanceId, HttpMethod.Post, typeof(T), resourceName: resourceName, actionName: actionName);
 
-            var authorizationResult = await Authorize(
-                ParsedResourcePath,
-                userIdentity,
-                AuthorizationRequirements,
-                actionName == ResourceProviderActions.Filter,
-                false,
-                false,
-                parentResourceInstance: parentResourceInstance);
+            var authorizationResult =
+                (
+                    _name == ResourceProviderNames.FoundationaLLM_Authorization
+                    && ParsedResourcePath.Action == ResourceProviderActions.Filter
+                )
+                // The filter action on the Authorization resource provider requires special handling.
+                ? await AuthorizeForAuthorizationResourceProvider(
+                    ParsedResourcePath,
+                    AuthorizationRequirements,
+                    JsonSerializer.Serialize(actionPayload),
+                    userIdentity)
+                // In the special case of the filter action, if the resource type path is not directly authorized,
+                // the subordinate authorized resource paths must be expanded (and the overrides for ExecuteResourceActionAsync must handle this).
+                : await Authorize(
+                    ParsedResourcePath,
+                    userIdentity,
+                    AuthorizationRequirements,
+                    actionName == ResourceProviderActions.Filter,
+                    false,
+                    false,
+                    parentResourceInstance: parentResourceInstance);
 
             var actionResult =
                 await ExecuteResourceActionAsyncInternal<T, TAction, TResult>(ParsedResourcePath, authorizationResult, actionPayload, userIdentity);
@@ -815,7 +866,15 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                 CreateAndValidateResourcePath(instanceId, HttpMethod.Get, typeof(T), resourceName: resourceName);
 
             // Authorize access to the resource path.
-            var authorizationResult = await Authorize(ParsedResourcePath, userIdentity, AuthorizationRequirements, false, false, false);
+            var authorizationResult =
+                _name == ResourceProviderNames.FoundationaLLM_Authorization
+                // The delete on the Authorization resource provider requires special handling.
+                ? await AuthorizeForAuthorizationResourceProvider(
+                    ParsedResourcePath,
+                    AuthorizationRequirements,
+                    null,
+                    userIdentity)
+                : await Authorize(ParsedResourcePath, userIdentity, AuthorizationRequirements, false, false, false);
 
             await DeleteResourceAsyncInternal<T>(ParsedResourcePath, authorizationResult, userIdentity);
         }
@@ -991,6 +1050,8 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// <returns></returns>
         /// <exception cref="ResourceProviderException"></exception>
         /// <remarks>
+        /// This method is used for all resource providers except the FoundationaLLM.Authorization resource provider,
+        /// which uses a dedicated authorization mechanism.
         /// <para>
         /// The authorization requirements contain the name of the authorizable operation optionally followed by a RBAC role name
         /// When the RBAC role name is specified, it must be separated from the authorizable operation by the '|' character.
@@ -1134,6 +1195,56 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                     StatusCodes.Status403Forbidden);
             }
         }
+
+        /// <summary>
+        /// Validates the specified authorization requirements on a resource path managed by the FoundationaLLM.Authorization resource provider.
+        /// </summary>
+        /// <param name="resourcePath">The resource path being authorized.</param>
+        /// <param name="authorizationRequirements">The authorization requirements to be validated.</param>
+        /// <param name="authorizationPayload">The optional authorization payload.</param>
+        /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> containing information about the identity of the user.</param>
+        /// <returns></returns>
+        /// <exception cref="ResourceProviderException"></exception>
+        /// <remarks>
+        /// This method is only used by the FoundationaLLM.Authorization resource provider,
+        /// which uses a dedicated authorization mechanism.
+        /// </remarks>
+        private async Task<ResourcePathAuthorizationResult> AuthorizeForAuthorizationResourceProvider(
+            ResourcePath resourcePath,
+            string authorizationRequirements,
+            string? authorizationPayload,
+            UnifiedUserIdentity? userIdentity)
+        {
+            if (_name != ResourceProviderNames.FoundationaLLM_Authorization)
+                throw new ResourceProviderException(
+                    "This method can only be used by the FoundationaLLM.Authorization resource provider.",
+                    StatusCodes.Status400BadRequest);
+
+            return await AuthorizeForAuthorizationResourceProviderInternal(
+                resourcePath,
+                authorizationRequirements,
+                authorizationPayload,
+                userIdentity);
+        }
+
+        /// <summary>
+        /// Validates the specified authorization requirements on a resource path managed by the FoundationaLLM.Authorization resource provider.
+        /// </summary>
+        /// <param name="resourcePath">The resource path being authorized.</param>
+        /// <param name="authorizationRequirements">The authorization requirements to be validated.</param>
+        /// <param name="authorizationPayload">The optional authorization payload.</param>
+        /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> containing information about the identity of the user.</param>
+        /// <returns></returns>
+        /// <exception cref="ResourceProviderException"></exception>
+        /// <remarks>
+        /// This method must be overridden in the FoundationaLLM.Authorization resource provider only.
+        /// </remarks>
+        protected virtual async Task<ResourcePathAuthorizationResult> AuthorizeForAuthorizationResourceProviderInternal(
+            ResourcePath resourcePath,
+            string authorizationRequirements,
+            string? authorizationPayload,
+            UnifiedUserIdentity? userIdentity) =>
+            throw new NotImplementedException();
 
         #endregion
 

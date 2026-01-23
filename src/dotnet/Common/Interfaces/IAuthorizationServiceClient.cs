@@ -70,15 +70,27 @@ namespace FoundationaLLM.Common.Interfaces
             UnifiedUserIdentity userIdentity);
 
         /// <summary>
+        /// Retrieves a role assignment.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="roleAssignmentName">The role assignment name.</param>
+        /// <param name="userIdentity">The user identity.</param>
+        /// <returns>A <see cref="RoleAssignment"/> object.</returns>
+        Task<RoleAssignment?> GetRoleAssignment(
+            string instanceId,
+            string roleAssignmentName,
+            UnifiedUserIdentity userIdentity);
+
+        /// <summary>
         /// Deletes a role assignment.
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
-        /// <param name="roleAssignment">The role assignment object identifier.</param>
+        /// <param name="roleAssignmentName">The role assignment name.</param>
         /// <param name="userIdentity">The user identity.</param>
         /// <returns>A <see cref="RoleAssignmentOperationResult"/> containing information about the result of the operation.</returns>
         Task<RoleAssignmentOperationResult> DeleteRoleAssignment(
             string instanceId,
-            string roleAssignment,
+            string roleAssignmentName,
             UnifiedUserIdentity userIdentity);
 
         /// <summary>

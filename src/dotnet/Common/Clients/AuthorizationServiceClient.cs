@@ -183,16 +183,46 @@ namespace FoundationaLLM.Common.Clients
         }
 
         /// <inheritdoc/>
+        public async Task<RoleAssignment?> GetRoleAssignment(
+            string instanceId,
+            string roleAssignmentName,
+            UnifiedUserIdentity userIdentity)
+        {
+            try
+            {
+                var httpClient = await CreateHttpClient();
+                var response = await httpClient.GetAsync(
+                    $"/instances/{instanceId}/roleassignments/{roleAssignmentName}");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    var result = JsonSerializer.Deserialize<RoleAssignment>(responseContent);
+
+                    return result;
+                }
+
+                _logger.LogError("The call to the Authorization API returned an error: {StatusCode} - {ReasonPhrase}.", response.StatusCode, response.ReasonPhrase);
+                return null;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "There was an error calling the Authorization API");
+                return null;
+            }
+        }
+
+        /// <inheritdoc/>
         public async Task<RoleAssignmentOperationResult> DeleteRoleAssignment(
             string instanceId,
-            string roleAssignment,
+            string roleAssignmentName,
             UnifiedUserIdentity userIdentity)
         {
             try
             {
                 var httpClient = await CreateHttpClient();
                 var response = await httpClient.DeleteAsync(
-                    $"/instances/{instanceId}/roleassignments/{roleAssignment}");
+                    $"/instances/{instanceId}/roleassignments/{roleAssignmentName}");
 
                 if (response.IsSuccessStatusCode)
                 {

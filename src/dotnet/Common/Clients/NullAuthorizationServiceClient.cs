@@ -89,5 +89,7 @@ namespace FoundationaLLM.Common.Clients
             return new SecretKeyValidationResult() { Valid = true };
         }
 
+        /// <inheritdoc/>
+        public Task<RoleAssignment?> GetRoleAssignment(string instanceId, string roleAssignmentName, UnifiedUserIdentity userIdentity) => throw new NotImplementedException();
     }
 }

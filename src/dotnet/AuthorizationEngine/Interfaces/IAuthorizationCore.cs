@@ -50,6 +50,14 @@ namespace FoundationaLLM.AuthorizationEngine.Interfaces
         List<RoleAssignment> GetRoleAssignments(string instanceId, RoleAssignmentQueryParameters queryParameters);
 
         /// <summary>
+        /// Retrieves a role assignment.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="roleAssignmentName">The unique name of the role assignment to retrieve.</param>
+        /// <returns>The role assignment.</returns>
+        RoleAssignment? GetRoleAssignment(string instanceId, string roleAssignmentName);
+
+        /// <summary>
         /// Gets a list of <see cref="SecretKey"/> items that are associated with the specified instance and context.
         /// </summary>
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>

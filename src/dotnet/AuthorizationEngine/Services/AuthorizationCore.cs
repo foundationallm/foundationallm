@@ -636,6 +636,11 @@ namespace FoundationaLLM.AuthorizationEngine.Services
         }
 
         /// <inheritdoc/>
+        public RoleAssignment? GetRoleAssignment(string instanceId, string roleAssignmentName) =>
+            _roleAssignmentStores[instanceId].RoleAssignments
+                .SingleOrDefault(x => x.Name == roleAssignmentName);
+
+        /// <inheritdoc/>
         public async Task<RoleAssignmentOperationResult> DeleteRoleAssignment(string instanceId, string roleAssignmentName)
         {
             var existingRoleAssignment = _roleAssignmentStores[instanceId].RoleAssignments

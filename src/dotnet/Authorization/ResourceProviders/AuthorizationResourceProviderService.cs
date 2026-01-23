@@ -11,7 +11,7 @@ using FoundationaLLM.Common.Models.Configuration.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Authorization;
 using FoundationaLLM.Common.Services.ResourceProviders;
-using Microsoft.AspNetCore.Authorization;
+using FoundationaLLM.Common.Utils;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -62,6 +62,132 @@ namespace FoundationaLLM.Authorization.ResourceProviders
         /// <inheritdoc/>
         protected override async Task InitializeInternal() =>
             await Task.CompletedTask;
+
+        #region Special handling of authorization requests
+
+        /// <inheritdoc/>
+        protected override async Task<ResourcePathAuthorizationResult> AuthorizeForAuthorizationResourceProviderInternal(
+            ResourcePath resourcePath,
+            string authorizationRequirements,
+            string? authorizationPayload,
+            UnifiedUserIdentity? userIdentity)
+        {
+            var authorizationRequirementsTokens = authorizationRequirements.Split('|');
+            var actionType = authorizationRequirementsTokens[0];
+            var roleName = authorizationRequirementsTokens.Length > 1
+                ? authorizationRequirementsTokens[1]
+                : null;
+
+            if (userIdentity is null
+                || userIdentity.UserId is null)
+                throw new ResourceProviderException("The provided user identity information cannot be used for authorization.");
+
+            try
+            {
+                var authorizableAction = $"{_name}/{resourcePath.MainResourceTypeName!}/{actionType}";
+
+                // Access to all resources must be authorized against the object identifier of the scope resource.
+                // This is specifc to the Authorization resource provider.
+                var resourceObjectId = await GetScopeResourceObjectId(
+                    resourcePath, actionType, authorizationPayload, userIdentity)
+                    ?? throw new ResourceProviderException(
+                        $"The scope resource path {resourcePath} does not nave a valid object identifier.",
+                        StatusCodes.Status400BadRequest);
+
+                var result = await _authorizationServiceClient.ProcessAuthorizationRequest(
+                    _instanceSettings.Id,
+                    authorizableAction,
+                    roleName,
+                    [resourceObjectId],
+                    false,
+                    false,
+                    false,
+                    userIdentity);
+
+                if (!result.AuthorizationResults[resourceObjectId].Authorized)
+                    throw new AuthorizationException("Access is not authorized.");
+
+                return result.AuthorizationResults[resourceObjectId];
+            }
+            catch (AuthorizationException)
+            {
+                _logger.LogWarning("The {ActionType} access to the resource path {ResourcePath} was not authorized for user {UserName} : userId {UserId}.",
+                    actionType, resourcePath.GetObjectId(_instanceSettings.Id, _name), userIdentity!.Username, userIdentity!.UserId);
+                throw new ResourceProviderException($"Access is not authorized for {resourcePath.RawResourcePath}.", StatusCodes.Status403Forbidden);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while attempting to authorize access to the resource path.");
+                throw new ResourceProviderException(
+                    $"An error occurred while attempting to authorize access to the resource path {resourcePath.RawResourcePath}.",
+                    StatusCodes.Status403Forbidden);
+            }
+        }
+
+        private async Task<string> GetScopeResourceObjectId(
+            ResourcePath resourcePath,
+            string actionType,
+            string? authorizationPayload,
+            UnifiedUserIdentity? userIdentity)
+        {
+            var scopeObjectId = string.Empty;
+
+            try
+            {
+                switch (actionType)
+                {
+                    case AuthorizableOperations.Delete:
+                        // We need to retrieve the role assignment to get its scope.
+                        var roleAssignment = await _authorizationServiceClient.GetRoleAssignment(
+                            _instanceSettings.Id,
+                            resourcePath.ResourceId!,
+                            userIdentity!)
+                            ?? throw new ResourceProviderException(
+                                $"Could not locate the {resourcePath.ResourceId} role assignment resource.",
+                                StatusCodes.Status404NotFound);
+                        scopeObjectId = roleAssignment.Scope;
+                        break;
+                    case AuthorizableOperations.Read:
+                    case AuthorizableOperations.Write:
+                        // Attempt to get the scope resource object identifier from the authorization payload.
+                        // It must be a top-level property named "scope".
+                        if (!string.IsNullOrWhiteSpace(authorizationPayload))
+                        {
+                            using var jsonDoc = JsonDocument.Parse(authorizationPayload);
+                            if (jsonDoc.RootElement.TryGetProperty("scope", out var scopeProperty)
+                                && scopeProperty.ValueKind == JsonValueKind.String)
+                            {
+                                var scopeValue = scopeProperty.GetString();
+                                if (!string.IsNullOrWhiteSpace(scopeValue))
+                                    scopeObjectId = scopeValue;
+                            }
+                        }
+                        break;
+                    default:
+                        throw new ResourceProviderException(
+                            $"The action type {actionType} is not supported by the {_name} resource provider.",
+                            StatusCodes.Status400BadRequest);
+                }
+
+                // Validate the scope object identifier.
+                var scopeResourcePath = ResourcePathUtils.ParseForRoleAssignmentScope(
+                    scopeObjectId,
+                    [_instanceSettings.Id]);
+
+                return scopeObjectId;
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while attempting to retrieve the scope resource object identifier for resource path {ResourcePath} and payload {Payload}.",
+                    resourcePath.RawResourcePath, authorizationPayload ?? "N/A");
+                throw new ResourceProviderException(
+                    $"An error occurred while attempting to retrieve the scope resource object identifier for resource path {resourcePath.RawResourcePath} and payload {authorizationPayload ?? "N/A"}.",
+                    StatusCodes.Status400BadRequest);
+            }
+        }
+
+        #endregion
 
         #region Resource provider support for Management API
 
