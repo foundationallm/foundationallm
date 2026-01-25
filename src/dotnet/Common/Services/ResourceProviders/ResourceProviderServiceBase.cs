@@ -378,10 +378,40 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                     $"The resource path {resourcePath} is not available.",
                     StatusCodes.Status400BadRequest);
 
+            // If we're looking to retrieve a specific resource, give a chance to resource providers
+            // to load the parent resource instance for authorization purposes.
+            // They will get the URL-friendly form of the parent resource identifier to help with the resolution.
+            var parentResourceInstance =
+                ParsedResourcePath.IsResourceTypePath
+                || string.IsNullOrWhiteSpace(options?.ParentResource)
+                ? null
+                : await GetParentResourceInstance(
+                    ParsedResourcePath,
+                    options.ParentResource,
+                    userIdentity);
+
+            if (parentResourceInstance is not null)
+                _logger.LogInformation("The parent resource {ParentResourceObjectId} will be used to authorize {AuthorizationRequirements} access for resource {ResourceObjectId}.",
+                    parentResourceInstance.ObjectId,
+                    AuthorizationRequirements,
+                    ParsedResourcePath.ObjectId);
+
             // Authorize access to the resource path.
             var authorizationResult = ParsedResourcePath.IsResourceTypePath
-                ? await Authorize(ParsedResourcePath, userIdentity, AuthorizationRequirements, true, options?.IncludeRoles ?? false, options?.IncludeActions ?? false)
-                : await Authorize(ParsedResourcePath, userIdentity, AuthorizationRequirements, false, options?.IncludeRoles ?? false, options?.IncludeActions ?? false);
+                ? await Authorize(
+                    ParsedResourcePath,
+                    userIdentity,
+                    AuthorizationRequirements,
+                    true, options?.IncludeRoles ?? false, options?.IncludeActions ?? false)
+                // If we're looking to retrieve a specific resource, we should consider the possible parent resource instance for authorization purposes.
+                : await Authorize(
+                    ParsedResourcePath,
+                    userIdentity,
+                    AuthorizationRequirements,
+                    false,
+                    (parentResourceInstance is null) && (options?.IncludeRoles ?? false), // when a parent resource instance is specified, must be false.
+                    (parentResourceInstance is null) && (options?.IncludeActions ?? false), // when a parent resource instance is specified, must be false.
+                    parentResourceInstance: parentResourceInstance);
            
             return await GetResourcesAsync(ParsedResourcePath, authorizationResult, userIdentity, options);
         }
@@ -547,6 +577,24 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             await Task.CompletedTask;
             throw new NotImplementedException();
         }
+
+        /// <summary>
+        /// Asynchronously retrieves the parent resource instance for the specified resource path.
+        /// </summary>
+        /// <remarks>
+        /// <para>The format of the parent resource identifier must be {resource_provider}|{resource_type}|{resource_name}.
+        /// For example, an agent named MAA-01 will be identified by <code>FoundationaLLM.Agent|agents|MAA-01</code></para>
+        /// Override this method in a derived class to provide custom logic for resolving parent
+        /// resources based on the resource path and the parent resource identifier.</remarks>
+        /// <param name="resourcePath">The resource path for which to retrieve the parent resource instance. Cannot be null.</param>
+        /// <param name="parentResource">The URL-friendly identifier of the parent resource.</param>
+        /// <param name="userIdentity">The <see cref="UnifiedUserIdentity"/> with details about the identity of the user.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains the parent resource instance if
+        /// found; otherwise, null.</returns>
+        protected virtual async Task<ResourceBase?> GetParentResourceInstance(
+            ResourcePath resourcePath,
+            string parentResource,
+            UnifiedUserIdentity userIdentity) => null;
 
         /// <summary>
         /// Attempts to extract a ResourceProviderFormFile from the specified result object.

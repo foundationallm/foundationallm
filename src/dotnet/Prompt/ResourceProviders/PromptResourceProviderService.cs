@@ -91,6 +91,44 @@ namespace FoundationaLLM.Prompt.ResourceProviders
             };
 
         /// <inheritdoc/>
+        protected override async Task<ResourceBase?> GetParentResourceInstance(
+            ResourcePath resourcePath,
+            string parentResource,
+            UnifiedUserIdentity userIdentity)
+        {
+            if (ResourcePath.TryParseFromURLEncodedString(
+                resourcePath.InstanceId!,
+                parentResource,
+                out var parentResourcePath)
+                && (parentResourcePath is not null)
+                && parentResourcePath.HasResourceId)
+            {
+                if (parentResourcePath.ResourceProvider != ResourceProviderNames.FoundationaLLM_Agent
+                    && parentResourcePath.MainResourceTypeName != AgentResourceTypeNames.Agents)
+                {
+                    _logger.LogWarning("The parent resource path {ParentResourcePath} for resource {ResourcePath} is not supported.",
+                        parentResourcePath.RawResourcePath,
+                        resourcePath.RawResourcePath);
+                    return null;
+                }
+
+                var agent = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_Agent)
+                    .GetResourceAsync<AgentBase>(
+                        resourcePath.InstanceId!,
+                        parentResourcePath.MainResourceId!,
+                        userIdentity);
+
+                return agent;
+            }
+
+            _logger.LogWarning("The parent resource path {ParentResourcePath} for resource {ResourcePath} could not be parsed.",
+                parentResource,
+                resourcePath.RawResourcePath);
+
+            return null;
+        }
+
+        /// <inheritdoc/>
         protected override async Task<object> UpsertResourceAsync(
             ResourcePath resourcePath,
             string? serializedResource,

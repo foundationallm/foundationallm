@@ -30,11 +30,19 @@
         /// </remarks>
         public bool IncludeActions { get; set; }
 
+        /// <summary>
+        /// Gets or sets a URL-friendly identifier of the parent resource.
+        /// </summary>
+        /// <remarks>The format of the identifier must be {resource_provider}|{resource_type}|{resource_name}.
+        /// For example, an agent named MAA-01 will be identified by <code>FoundationaLLM.Agent|agents|MAA-01</code></remarks>
+        public string? ParentResource { get; set; }
+
         private static readonly HashSet<string> KnownParameters = new(StringComparer.OrdinalIgnoreCase)
         {
             "loadContent",
             "includeRoles",
-            "includeActions"
+            "includeActions",
+            "parentResource"
         };
 
         /// <summary>
@@ -77,6 +85,10 @@
                 bool.TryParse(includeActionsValue, out var includeActions))
             {
                 options.IncludeActions = includeActions;
+            }
+            if (queryParams.TryGetValue("parentResource", out var parentResourceValue))
+            {
+                options.ParentResource = parentResourceValue;
             }
 
             // Add unrecognized query parameters to the Parameters dictionary.

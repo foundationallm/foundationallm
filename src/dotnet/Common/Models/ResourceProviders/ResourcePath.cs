@@ -280,6 +280,43 @@ namespace FoundationaLLM.Common.Models.ResourceProviders
         }
 
         /// <summary>
+        /// Attempts to parse an object instance from a URL-encoded resource path.
+        /// </summary>
+        /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
+        /// <param name="urlEncodedResourcePath">The URL-encoded representation of the resource path.</param>
+        /// <param name="resourcePathInstance">The parsed resource path.</param>
+        /// <returns>true if the string was successfully parsed and the object was created; otherwise, false.</returns>
+        /// <remarks>The format of the URL-encoded string representation must be {resource_provider}|{resource_type}|{resource_name}.
+        /// For example, an agent named MAA-01 will be identified by <code>FoundationaLLM.Agent|agents|MAA-01</code></remarks>
+        public static bool TryParseFromURLEncodedString(
+            string instanceId,
+            string urlEncodedResourcePath,
+            out ResourcePath? resourcePathInstance)
+        {
+            ArgumentNullException.ThrowIfNullOrWhiteSpace(instanceId);
+
+            resourcePathInstance = null;
+            if (string.IsNullOrWhiteSpace(urlEncodedResourcePath))
+                return false;
+            try
+            {
+                var tokens = urlEncodedResourcePath.Split('|');
+                if (tokens.Length != 3
+                    || tokens.Any(t => string.IsNullOrWhiteSpace(t)))
+                    return false;
+
+                var resourcePath = $"/instances/{instanceId}/providers/{tokens[0]}/{tokens[1]}/{tokens[2]}";
+                resourcePathInstance = ResourcePath.GetResourcePath(resourcePath);
+                return true;
+            }
+            catch
+            {
+                
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Tries to retrieve the identifier of the FoundationaLLM instance from a resource path.
         /// </summary>
         /// <param name="resourcePath">The resource path to analyze.</param>
