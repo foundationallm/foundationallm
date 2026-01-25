@@ -159,5 +159,24 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
         public bool HasRealtimeSpeechCapabilities =>
             RealtimeSpeechSettings?.Enabled == true &&
             !string.IsNullOrWhiteSpace(RealtimeSpeechSettings?.RealtimeSpeechAIModelObjectId);
+
+        /// <summary>
+        /// Determines whether the agent references a specific resource object identifier.
+        /// </summary>
+        /// <param name="resourceObjectId">The unique identifier of the resource to be checked. Cannot be null or empty.</param>
+        /// <returns>true if the prompt resource object identifier is referenced; otherwise, false.</returns>
+        public bool HasResourceReference(
+            string resourceObjectId)
+        {
+            // Check if the workflow references the prompt
+            if (Workflow?.ResourceObjectIds.Values.Any(r => r.ObjectId == resourceObjectId) ?? false)
+                return true;
+
+            // Check if any tool references the prompt
+            if (Tools.Any(t => t.ResourceObjectIds.Values.Any(r => r.ObjectId == resourceObjectId)))
+                return true;
+
+            return false;
+        }
     }
 }

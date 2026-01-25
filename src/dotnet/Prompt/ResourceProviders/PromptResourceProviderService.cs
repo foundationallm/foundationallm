@@ -16,6 +16,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.Graph.Models;
+using OpenTelemetry.Resources;
 using System.Text.Json;
 
 namespace FoundationaLLM.Prompt.ResourceProviders
@@ -91,42 +93,45 @@ namespace FoundationaLLM.Prompt.ResourceProviders
             };
 
         /// <inheritdoc/>
-        protected override async Task<ResourceBase?> GetParentResourceInstance(
-            ResourcePath resourcePath,
-            string parentResource,
-            UnifiedUserIdentity userIdentity)
-        {
-            if (ResourcePath.TryParseFromURLEncodedString(
-                resourcePath.InstanceId!,
-                parentResource,
-                out var parentResourcePath)
-                && (parentResourcePath is not null)
-                && parentResourcePath.HasResourceId)
+        protected override Dictionary<
+            string,
+            (
+                string ResourceProviderName,
+                Func<IResourceProviderService, string, string, UnifiedUserIdentity, Task<ResourceBase?>> BuildInstanceAsync,
+                 Dictionary<
+                    string,
+                    Func<ResourcePath, ResourceBase, UnifiedUserIdentity, Task<bool>>
+                > InstanceValidators
+            )> _parentResourceFactory => new()
             {
-                if (parentResourcePath.ResourceProvider != ResourceProviderNames.FoundationaLLM_Agent
-                    && parentResourcePath.MainResourceTypeName != AgentResourceTypeNames.Agents)
                 {
-                    _logger.LogWarning("The parent resource path {ParentResourcePath} for resource {ResourcePath} is not supported.",
-                        parentResourcePath.RawResourcePath,
-                        resourcePath.RawResourcePath);
-                    return null;
+                    AgentResourceTypeNames.Agents, // The parent resource type name (e.g., "agents")
+                    (
+                        // 1. The name of the resource provider that manages this parent resource type.
+                        ResourceProviderNames.FoundationaLLM_Agent,
+                        // 2. Async function to build/load the parent resource instance
+                        async (resourceProviderService, instanceId, resourceName, userIdentity) =>
+                            await resourceProviderService.GetResourceAsync<AgentBase>(
+                                instanceId,
+                                resourceName,
+                                userIdentity),
+                        // 3. Dictionary of validators: maps resource type -> validation function
+                        new()
+                        {
+                            {
+                                PromptResourceTypeNames.Prompts,
+                                async (resourcePath, parentResourceInstance, userIdentity) =>
+                                {
+                                    // Validate that the parent (agent) actually references this prompt
+                                    if (parentResourceInstance is AgentBase agent)
+                                        return agent.HasResourceReference(resourcePath.ObjectId!);
+                                    return false;
+                                }
+                            }
+                        }
+                    )
                 }
-
-                var agent = await GetResourceProviderServiceByName(ResourceProviderNames.FoundationaLLM_Agent)
-                    .GetResourceAsync<AgentBase>(
-                        resourcePath.InstanceId!,
-                        parentResourcePath.MainResourceId!,
-                        userIdentity);
-
-                return agent;
-            }
-
-            _logger.LogWarning("The parent resource path {ParentResourcePath} for resource {ResourcePath} could not be parsed.",
-                parentResource,
-                resourcePath.RawResourcePath);
-
-            return null;
-        }
+            };
 
         /// <inheritdoc/>
         protected override async Task<object> UpsertResourceAsync(
