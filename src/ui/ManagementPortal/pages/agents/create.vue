@@ -1997,7 +1997,8 @@ export default {
 				// Handle Prompt creation/update.
 				let promptObjectId = '';
 				if (promptRequest.prefix !== '') {
-					const promptResponse = await api.createOrUpdatePrompt(promptRequest.name, promptRequest);
+					const parentResource = this.editAgent ? `FoundationaLLM.Agent|agents|${this.editAgent}` : undefined;
+					const promptResponse = await api.createOrUpdatePrompt(promptRequest.name, promptRequest, parentResource);
 					promptObjectId = promptResponse.object_id;
 				}
 

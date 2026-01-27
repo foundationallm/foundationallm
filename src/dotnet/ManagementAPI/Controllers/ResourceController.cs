@@ -77,9 +77,14 @@ namespace FoundationaLLM.Management.API.Controllers
         /// <param name="instanceId">The FoundationaLLM instance identifier.</param>
         /// <param name="resourceProvider">The name of the resource provider that should handle the request.</param>
         /// <param name="resourcePath">The logical path of the resource type.</param>
+        /// <param name="queryParams">The query parameters.</param>
         /// <returns>The ObjectId of the created or updated resource.</returns>
         [HttpPost("{*resourcePath}", Name = "UpsertResource")]
-        public async Task<IActionResult> UpsertResource(string instanceId, string resourceProvider, string resourcePath) =>
+        public async Task<IActionResult> UpsertResource(
+            string instanceId,
+            string resourceProvider,
+            string resourcePath,
+            [FromQuery] Dictionary<string, string> queryParams) =>
             await HandleRequest(
                 resourceProvider,
                 resourcePath,
@@ -120,7 +125,10 @@ namespace FoundationaLLM.Management.API.Controllers
                         $"instances/{instanceId}/providers/{resourceProvider}/{resourcePath}",
                         serializedResource?.ToString(),
                         resourceProviderFormFile,
-                        _callContext.CurrentUserIdentity!);
+                        _callContext.CurrentUserIdentity!,
+                        urlEncodedParentResourcePath: queryParams.TryGetValue("parentResource", out var parentResource)
+                            ? parentResource
+                            : null);
                     return new OkObjectResult(result);
                 });
 

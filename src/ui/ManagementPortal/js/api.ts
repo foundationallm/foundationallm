@@ -430,9 +430,13 @@ export default {
 		}
 	},
 
-	async createOrUpdatePrompt(promptName: string, request: CreatePromptRequest): Promise<any> {
+	async createOrUpdatePrompt(promptName: string, request: CreatePromptRequest, parentResource?: string): Promise<any> {
+		let url = `/instances/${this.instanceId}/providers/FoundationaLLM.Prompt/prompts/${promptName}?api-version=${this.apiVersion}`;
+		if (parentResource) {
+			url += `&parentResource=${encodeURIComponent(parentResource)}`;
+		}
 		return await this.fetch(
-			`/instances/${this.instanceId}/providers/FoundationaLLM.Prompt/prompts/${promptName}?api-version=${this.apiVersion}`,
+			url,
 			{
 				method: 'POST',
 				body: request,
