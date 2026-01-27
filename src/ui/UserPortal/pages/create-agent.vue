@@ -1211,7 +1211,7 @@ export default defineComponent({
 
             try {
                 const scope = this.selectedAgentName ? api.getAgentScopeIdentifier(this.selectedAgentName) : undefined;
-                const principals = await api.getSecurityPrincipals([this.createdAgent.updated_by], null, scope);
+                const principals = await api.getSecurityPrincipals(null, this.createdAgent.updated_by, 'User', scope);
                 if (principals && principals.length > 0 && principals[0].name) {
                     this.lastEditedByName = principals[0].name;
                 } else {
@@ -2007,7 +2007,7 @@ export default defineComponent({
 
                 // Get security principals and role definitions in parallel
                 const [principalsResult, roleDefinitionsResult] = await Promise.allSettled([
-                    principalIds.length > 0 ? api.getSecurityPrincipals(principalIds, null, scope) : Promise.resolve([]),
+                    principalIds.length > 0 ? api.getSecurityPrincipals(principalIds, null, null, scope) : Promise.resolve([]),
                     api.getRoleDefinitions()
                 ]);
 
