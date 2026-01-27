@@ -178,5 +178,21 @@ namespace FoundationaLLM.Common.Models.ResourceProviders.Agent
 
             return false;
         }
+
+        /// <summary>
+        /// Determines whether the workflow contains a reference to a resource with the specified object identifier and role.
+        /// </summary>
+        /// <param name="resourceObjectId">The unique identifier of the resource to check for within the workflow.</param>
+        /// <param name="role">The role associated with the resource reference to search for.</param>
+        /// <returns>true if the workflow references a resource with the specified object identifier and role; otherwise, false.</returns>
+        public bool HasWorkflowResourceReference(
+            string resourceObjectId,
+            string role)
+        {
+            // Check if the workflow references the prompt
+            if (Workflow?.ResourceObjectIds.Values.Any(r => r.ObjectId == resourceObjectId && r.HasObjectRole(role)) ?? false)
+                return true;
+            return false;
+        }
     }
 }

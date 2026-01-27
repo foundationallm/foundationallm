@@ -565,28 +565,30 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
                         case VectorResourceTypeNames.VectorDatabases:
 
-                            var vectorDatabase = await vectorResourceProvider.GetResourceAsync<VectorDatabase>(
-                                resourceObjectId.ObjectId,
-                                currentUserIdentity,
-                                parentResourceInstance: agentBase);
+                            // No need to send in the details of the vector database anymore.
 
-                            explodedObjectsManager.TryAdd(
-                                resourceObjectId.ObjectId,
-                                vectorDatabase);
+                            //var vectorDatabase = await vectorResourceProvider.GetResourceAsync<VectorDatabase>(
+                            //    resourceObjectId.ObjectId,
+                            //    currentUserIdentity,
+                            //    parentResourceInstance: agentBase);
 
-                            if (!explodedObjectsManager.HasKey(vectorDatabase.APIEndpointConfigurationObjectId))
-                            {
-                                // Explode the object only if it hasn't been exploded yet.
+                            //explodedObjectsManager.TryAdd(
+                            //    resourceObjectId.ObjectId,
+                            //    vectorDatabase);
 
-                                var vectorDatabaseApiEndpoint = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
-                                    vectorDatabase.APIEndpointConfigurationObjectId,
-                                    currentUserIdentity,
-                                    parentResourceInstance: agentBase);
+                            //if (!explodedObjectsManager.HasKey(vectorDatabase.APIEndpointConfigurationObjectId))
+                            //{
+                            //    // Explode the object only if it hasn't been exploded yet.
 
-                                explodedObjectsManager.TryAdd(
-                                    vectorDatabase.APIEndpointConfigurationObjectId,
-                                    vectorDatabaseApiEndpoint);
-                            }
+                            //    var vectorDatabaseApiEndpoint = await configurationResourceProvider.GetResourceAsync<APIEndpointConfiguration>(
+                            //        vectorDatabase.APIEndpointConfigurationObjectId,
+                            //        currentUserIdentity,
+                            //        parentResourceInstance: agentBase);
+
+                            //    explodedObjectsManager.TryAdd(
+                            //        vectorDatabase.APIEndpointConfigurationObjectId,
+                            //        vectorDatabaseApiEndpoint);
+                            //}
 
                             break;
 
@@ -626,27 +628,31 @@ namespace FoundationaLLM.Orchestration.Core.Orchestration
 
                         case ContextResourceTypeNames.KnowledgeUnits:
 
-                            var knowledgeUnit = await contextResourceProvider.GetResourceAsync<KnowledgeUnit>(
-                                resourceObjectId.ObjectId,
-                                currentUserIdentity,
-                                parentResourceInstance: agentBase);
+                            // No need to send in the details of the knowledge unit anymore.
 
-                            explodedObjectsManager.TryAdd(
-                                resourceObjectId.ObjectId,
-                                knowledgeUnit);
+                            //var knowledgeUnit = await contextResourceProvider.GetResourceAsync<KnowledgeUnit>(
+                            //    resourceObjectId.ObjectId,
+                            //    currentUserIdentity,
+                            //    parentResourceInstance: agentBase);
+
+                            //explodedObjectsManager.TryAdd(
+                            //    resourceObjectId.ObjectId,
+                            //    knowledgeUnit);
 
                             break;
 
                         case DataSourceResourceTypeNames.DataSources:
 
-                            var dataSource = await dataSourceResourceProvider.GetResourceAsync<DataSourceBase>(
-                                resourceObjectId.ObjectId,
-                                currentUserIdentity,
-                                parentResourceInstance: agentBase);
+                            // No need to send in the details of the data source anymore.
 
-                            explodedObjectsManager.TryAdd(
-                                dataSource.ObjectId!,
-                                dataSource);
+                            //var dataSource = await dataSourceResourceProvider.GetResourceAsync<DataSourceBase>(
+                            //    resourceObjectId.ObjectId,
+                            //    currentUserIdentity,
+                            //    parentResourceInstance: agentBase);
+
+                            //explodedObjectsManager.TryAdd(
+                            //    dataSource.ObjectId!,
+                            //    dataSource);
                             break;
 
                         default:

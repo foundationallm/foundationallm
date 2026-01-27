@@ -416,10 +416,14 @@ export default {
 		}
 	},
 
-	async getPrompt(promptId: string): Promise<ResourceProviderGetResult<Prompt> | null> {
+	async getPrompt(promptId: string, parentResource?: string): Promise<ResourceProviderGetResult<Prompt> | null> {
 		// Attempt to retrieve the prompt. If it doesn't exist, return an empty object.
 		try {
-			const data = await this.fetch(`${promptId}?api-version=${this.apiVersion}`);
+			let url = `${promptId}?api-version=${this.apiVersion}`;
+			if (parentResource) {
+				url += `&parentResource=${encodeURIComponent(parentResource)}`;
+			}
+			const data = await this.fetch(url);
 			return data[0];
 		} catch (error) {
 			return null;

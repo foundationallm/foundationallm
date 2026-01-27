@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using FoundationaLLM.AIModel.Models;
+using FoundationaLLM.Common.Constants.Authorization;
 using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Constants.Events;
 using FoundationaLLM.Common.Constants.ResourceProviders;
@@ -197,6 +198,50 @@ namespace FoundationaLLM.AIModel.ResourceProviders
             await SendResourceProviderEvent(
                     EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand);
         }
+
+        /// <inheritdoc/>
+        protected override Dictionary<
+            string,
+            (
+                string ResourceProviderName,
+                Func<IResourceProviderService, string, string, UnifiedUserIdentity, Task<ResourceBase?>> BuildInstanceAsync,
+                 Dictionary<
+                    string,
+                    Func<ResourcePath, string, ResourceBase, UnifiedUserIdentity, Task<bool>>
+                > InstanceValidators
+            )> _parentResourceFactory => new()
+            {
+                {
+                    AgentResourceTypeNames.Agents, // The parent resource type name (e.g., "agents")
+                    (
+                        // 1. The name of the resource provider that manages this parent resource type.
+                        ResourceProviderNames.FoundationaLLM_Agent,
+                        // 2. Async function to build/load the parent resource instance
+                        async (resourceProviderService, instanceId, resourceName, userIdentity) =>
+                            await resourceProviderService.GetResourceAsync<AgentBase>(
+                                instanceId,
+                                resourceName,
+                                userIdentity),
+                        // 3. Dictionary of validators: maps resource type -> validation function
+                        new()
+                        {
+                            {
+                                AIModelResourceTypeNames.AIModels,
+                                async (resourcePath, actionType, parentResourceInstance, userIdentity) =>
+                                {
+                                    // Validate that the parent (agent) actually references this AI model.
+                                    if (parentResourceInstance is AgentBase agent)
+                                        return
+                                            agent.HasResourceReference(resourcePath.ObjectId!)
+                                            && actionType == AuthorizableOperations.Read;
+
+                                    return false;
+                                }
+                            }
+                        }
+                    )
+                }
+            };
 
         #endregion
 

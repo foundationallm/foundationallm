@@ -262,6 +262,57 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand);
         }
 
+        /// <inheritdoc/>
+        protected override Dictionary<
+            string,
+            (
+                string ResourceProviderName,
+                Func<IResourceProviderService, string, string, UnifiedUserIdentity, Task<ResourceBase?>> BuildInstanceAsync,
+                 Dictionary<
+                    string,
+                    Func<ResourcePath, string, ResourceBase, UnifiedUserIdentity, Task<bool>>
+                > InstanceValidators
+            )> _parentResourceFactory => new()
+            {
+                {
+                    AgentResourceTypeNames.Agents, // The parent resource type name (e.g., "agents")
+                    (
+                        // 1. The name of the resource provider that manages this parent resource type.
+                        ResourceProviderNames.FoundationaLLM_Agent,
+                        // 2. Async function to build/load the parent resource instance
+                        async (resourceProviderService, instanceId, resourceName, userIdentity) =>
+                            await resourceProviderService.GetResourceAsync<AgentBase>(
+                                instanceId,
+                                resourceName,
+                                userIdentity),
+                        // 3. Dictionary of validators: maps resource type -> validation function
+                        new()
+                        {
+                            {
+                                AgentResourceTypeNames.Tools,
+                                async (resourcePath, actionType, parentResourceInstance, userIdentity) =>
+                                {
+                                    // All tool definitions are available for reading only.
+                                    if (parentResourceInstance is AgentBase agent)
+                                        return actionType == AuthorizableOperations.Read;
+                                    return false;
+                                }
+                            },
+                            {
+                                AgentResourceTypeNames.Workflows,
+                                async (resourcePath, actionType, parentResourceInstance, userIdentity) =>
+                                {
+                                    // All workflow definitions are available for reading only.
+                                    if (parentResourceInstance is AgentBase agent)
+                                        return actionType == AuthorizableOperations.Read;
+                                    return false;
+                                }
+                            }
+                        }
+                    )
+                }
+            };
+
         #endregion
 
         #region Resource provider strongly typed operations

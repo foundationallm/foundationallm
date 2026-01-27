@@ -1,4 +1,5 @@
 ﻿using Azure.Messaging;
+using FoundationaLLM.Common.Constants.Authorization;
 using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Constants.Events;
 using FoundationaLLM.Common.Constants.ResourceProviders;
@@ -11,6 +12,7 @@ using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Configuration.ResourceProviders;
 using FoundationaLLM.Common.Models.Events;
 using FoundationaLLM.Common.Models.ResourceProviders;
+using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Models.ResourceProviders.Configuration;
 using FoundationaLLM.Common.Services;
 using FoundationaLLM.Common.Services.ResourceProviders;
@@ -187,6 +189,55 @@ namespace FoundationaLLM.Configuration.Services
                         StatusCodes.Status400BadRequest)
                 },
                 _ => throw new ResourceProviderException()
+            };
+
+        /// <inheritdoc/>
+        protected override Dictionary<
+            string,
+            (
+                string ResourceProviderName,
+                Func<IResourceProviderService, string, string, UnifiedUserIdentity, Task<ResourceBase?>> BuildInstanceAsync,
+                 Dictionary<
+                    string,
+                    Func<ResourcePath, string, ResourceBase, UnifiedUserIdentity, Task<bool>>
+                > InstanceValidators
+            )> _parentResourceFactory => new()
+            {
+                {
+                    AgentResourceTypeNames.Agents, // The parent resource type name (e.g., "agents")
+                    (
+                        // 1. The name of the resource provider that manages this parent resource type.
+                        ResourceProviderNames.FoundationaLLM_Agent,
+                        // 2. Async function to build/load the parent resource instance
+                        async (resourceProviderService, instanceId, resourceName, userIdentity) =>
+                            await resourceProviderService.GetResourceAsync<AgentBase>(
+                                instanceId,
+                                resourceName,
+                                userIdentity),
+                        // 3. Dictionary of validators: maps resource type -> validation function
+                        new()
+                        {
+                            {
+                                ConfigurationResourceTypeNames.APIEndpointConfigurations,
+                                async (resourcePath, actionType, parentResourceInstance, userIdentity) =>
+                                {
+                                    // Validate that the parent (agent) actually references this API endpoint configuration.
+                                    if (parentResourceInstance is AgentBase agent)
+                                        return
+                                            actionType == AuthorizableOperations.Read;
+
+                                    // NOTE:
+                                    // API endpoint configurations are not directly referenced by agents (instead, they are
+                                    // referenced by objects like AI models, for example). For now, access to an agent allows read access
+                                    // to all API endpoint configurations. This will be revisited in the future when
+                                    // FoundationaLLM resource graph is implemented.
+
+                                    return false;
+                                }
+                            }
+                        }
+                    )
+                }
             };
 
         #endregion

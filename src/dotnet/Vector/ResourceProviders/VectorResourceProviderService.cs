@@ -1,4 +1,5 @@
-﻿using FoundationaLLM.Common.Constants.Configuration;
+﻿using FoundationaLLM.Common.Constants.Authorization;
+using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Constants.Events;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
@@ -9,6 +10,7 @@ using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Configuration.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders.Agent;
+using FoundationaLLM.Common.Models.ResourceProviders.Context;
 using FoundationaLLM.Common.Models.ResourceProviders.Vector;
 using FoundationaLLM.Common.Services.ResourceProviders;
 using FoundationaLLM.Plugin.Models;

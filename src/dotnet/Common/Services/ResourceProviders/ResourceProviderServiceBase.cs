@@ -13,7 +13,6 @@ using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Configuration.ResourceProviders;
 using FoundationaLLM.Common.Models.Events;
 using FoundationaLLM.Common.Models.ResourceProviders;
-using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Models.ResourceProviders.Global;
 using FoundationaLLM.Common.Services.Cache;
 using FoundationaLLM.Common.Services.Events;
@@ -127,7 +126,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                 Func<IResourceProviderService, string, string, UnifiedUserIdentity, Task<ResourceBase?>> BuildInstanceAsync,
                 Dictionary<
                     string,
-                    Func<ResourcePath, ResourceBase, UnifiedUserIdentity, Task<bool>>
+                    Func<ResourcePath, string, ResourceBase, UnifiedUserIdentity, Task<bool>>
                 > InstanceValidators
             )> _parentResourceFactory => [];
 
@@ -400,9 +399,6 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                     $"The resource path {resourcePath} is not available.",
                     StatusCodes.Status400BadRequest);
 
-            // If we can use parent resource authorization and authorization fails on the resource,
-            // we don't want to throw as part of the authorization
-            // because we want to use a second chance to authorize using the parent resource (if available).
             var authorizationResult = await Authorize(
                    ParsedResourcePath,
                    userIdentity,
@@ -426,7 +422,8 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
             ResourceProviderFormFile? formFile,
             UnifiedUserIdentity userIdentity,
             Func<HttpMethod, ResourcePath, bool>? resourcePathAvailabilityChecker = null,
-            Func<object, bool>? requestPayloadValidator = null)
+            Func<object, bool>? requestPayloadValidator = null,
+            string? urlEncodedParentResourcePath = null)
         {
             EnsureServiceInitialization();
             var (ParsedResourcePath, AuthorizationRequirements) = ParseAndValidateResourcePath(resourcePath, HttpMethod.Post, true, requireResource: false);
@@ -470,7 +467,8 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                         ParsedResourcePath,
                         userIdentity,
                         AuthorizationRequirements,
-                        ParsedResourcePath.Action! == ResourceProviderActions.Filter, false, false);
+                        ParsedResourcePath.Action! == ResourceProviderActions.Filter, false, false,
+                        urlEncodedParentResourcePath: urlEncodedParentResourcePath);
 
                 return await ExecuteActionAsync(
                     ParsedResourcePath,
@@ -495,7 +493,11 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                     AuthorizationRequirements,
                     serializedResource,
                     userIdentity)
-                : await Authorize(ParsedResourcePath, userIdentity, AuthorizationRequirements, false, false, false);
+                : await Authorize(
+                    ParsedResourcePath,
+                    userIdentity,
+                    AuthorizationRequirements, false, false, false,
+                    urlEncodedParentResourcePath: urlEncodedParentResourcePath);
 
             var upsertResult = await UpsertResourceAsync(
                 ParsedResourcePath,
@@ -611,6 +613,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// identity.
         /// </summary>
         /// <param name="resourcePath">The resource path for which the parent resource instance is being validated.</param>
+        /// <param name="actionType">The type of action for which validation is required.</param>
         /// <param name="parentResourceInstance">The parent resource instance to validate. Represents the expected parent of the resource identified by
         /// <paramref name="resourcePath"/>.</param>
         /// <param name="userIdentity">The user identity on whose behalf the validation is performed.</param>
@@ -618,6 +621,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
         /// <exception cref="ResourceProviderException">Thrown if the specified parent resource instance is not valid for the given resource path.</exception>
         protected async Task ValidateParentResourceInstance(
             ResourcePath resourcePath,
+            string actionType,
             ResourceBase parentResourceInstance,
             UnifiedUserIdentity userIdentity)
         {
@@ -639,14 +643,15 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                     StatusCodes.Status400BadRequest);
             }
 
-            var isValid = await instanceValidator(resourcePath, parentResourceInstance, userIdentity);
+            var isValid = await instanceValidator(resourcePath, actionType, parentResourceInstance, userIdentity);
             if (!isValid)
             {
-                _logger.LogError("The parent resource instance {ParentResourcePath} is not valid for resource {ResourcePath}.",
+                _logger.LogError("The parent resource instance {ParentResourcePath} is not valid for action type {ActionType} and resource {ResourcePath}.",
                     parentResourceInstance.ObjectId,
+                    actionType,
                     resourcePath.ObjectId);
                 throw new ResourceProviderException(
-                    $"The parent resource instance {parentResourceInstance.ObjectId} is not valid for resource {resourcePath.ObjectId}.",
+                    $"The parent resource instance {parentResourceInstance.ObjectId} is not valid for action type {actionType} and resource {resourcePath.ObjectId}.",
                     StatusCodes.Status400BadRequest);
             }
         }
@@ -1324,6 +1329,7 @@ namespace FoundationaLLM.Common.Services.ResourceProviders
                     // It is the responsibility of the resource providers to override this method and provide the appropriate validation logic.
                     await ValidateParentResourceInstance(
                         resourcePath,
+                        actionType,
                         parentResourceInstance,
                         userIdentity);
 

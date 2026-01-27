@@ -1,4 +1,5 @@
-﻿using FoundationaLLM.Common.Constants.Configuration;
+﻿using FoundationaLLM.Common.Constants.Authorization;
+using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Constants.Events;
 using FoundationaLLM.Common.Constants.ResourceProviders;
 using FoundationaLLM.Common.Exceptions;
@@ -93,47 +94,6 @@ namespace FoundationaLLM.Prompt.ResourceProviders
             };
 
         /// <inheritdoc/>
-        protected override Dictionary<
-            string,
-            (
-                string ResourceProviderName,
-                Func<IResourceProviderService, string, string, UnifiedUserIdentity, Task<ResourceBase?>> BuildInstanceAsync,
-                 Dictionary<
-                    string,
-                    Func<ResourcePath, ResourceBase, UnifiedUserIdentity, Task<bool>>
-                > InstanceValidators
-            )> _parentResourceFactory => new()
-            {
-                {
-                    AgentResourceTypeNames.Agents, // The parent resource type name (e.g., "agents")
-                    (
-                        // 1. The name of the resource provider that manages this parent resource type.
-                        ResourceProviderNames.FoundationaLLM_Agent,
-                        // 2. Async function to build/load the parent resource instance
-                        async (resourceProviderService, instanceId, resourceName, userIdentity) =>
-                            await resourceProviderService.GetResourceAsync<AgentBase>(
-                                instanceId,
-                                resourceName,
-                                userIdentity),
-                        // 3. Dictionary of validators: maps resource type -> validation function
-                        new()
-                        {
-                            {
-                                PromptResourceTypeNames.Prompts,
-                                async (resourcePath, parentResourceInstance, userIdentity) =>
-                                {
-                                    // Validate that the parent (agent) actually references this prompt
-                                    if (parentResourceInstance is AgentBase agent)
-                                        return agent.HasResourceReference(resourcePath.ObjectId!);
-                                    return false;
-                                }
-                            }
-                        }
-                    )
-                }
-            };
-
-        /// <inheritdoc/>
         protected override async Task<object> UpsertResourceAsync(
             ResourcePath resourcePath,
             string? serializedResource,
@@ -197,6 +157,60 @@ namespace FoundationaLLM.Prompt.ResourceProviders
             };
             await SendResourceProviderEvent(EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand);
         }
+
+        /// <inheritdoc/>
+        protected override Dictionary<
+            string,
+            (
+                string ResourceProviderName,
+                Func<IResourceProviderService, string, string, UnifiedUserIdentity, Task<ResourceBase?>> BuildInstanceAsync,
+                 Dictionary<
+                    string,
+                    Func<ResourcePath, string, ResourceBase, UnifiedUserIdentity, Task<bool>>
+                > InstanceValidators
+            )> _parentResourceFactory => new()
+            {
+                {
+                    AgentResourceTypeNames.Agents, // The parent resource type name (e.g., "agents")
+                    (
+                        // 1. The name of the resource provider that manages this parent resource type.
+                        ResourceProviderNames.FoundationaLLM_Agent,
+                        // 2. Async function to build/load the parent resource instance
+                        async (resourceProviderService, instanceId, resourceName, userIdentity) =>
+                            await resourceProviderService.GetResourceAsync<AgentBase>(
+                                instanceId,
+                                resourceName,
+                                userIdentity),
+                        // 3. Dictionary of validators: maps resource type -> validation function
+                        new()
+                        {
+                            {
+                                PromptResourceTypeNames.Prompts,
+                                async (resourcePath, actionType, parentResourceInstance, userIdentity) =>
+                                {
+                                    // Validate that the parent (agent) actually references this prompt
+                                    if (parentResourceInstance is AgentBase agent)
+                                        switch (actionType)
+                                        {
+                                            case AuthorizableOperations.Read:
+                                                // All agent prompts can be read.
+                                                return agent.HasResourceReference(resourcePath.ObjectId!);
+                                            case AuthorizableOperations.Write:
+                                                // Only the agent workflow's main prompt can be updated.
+                                                return agent.HasWorkflowResourceReference(
+                                                    resourcePath.ObjectId!,
+                                                    ResourceObjectIdPropertyValues.MainPrompt);
+                                            default:
+                                                return false;
+                                        }
+                                        
+                                    return false;
+                                }
+                            }
+                        }
+                    )
+                }
+            };
 
         #endregion
 

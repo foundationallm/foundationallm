@@ -830,10 +830,14 @@ export default {
 		// Extract the prompt name from the object_id (last segment)
 		const promptId = mainPromptObjectId.split('/').pop();
 		if (!promptId) return null;
+		// Build the URL with parentResource query parameter
+		const parentResource = agent.name ? `FoundationaLLM.Agent|agents|${agent.name}` : null;
+		let url = `/management/instances/${this.instanceId}/providers/FoundationaLLM.Prompt/prompts/${promptId}`;
+		if (parentResource) {
+			url += `?parentResource=${encodeURIComponent(parentResource)}`;
+		}
 		// Fetch the prompt resource
-		const result = await this.fetch<ResourceProviderGetResult<MultipartPrompt>[]>(
-			`/management/instances/${this.instanceId}/providers/FoundationaLLM.Prompt/prompts/${promptId}`
-		);
+		const result = await this.fetch<ResourceProviderGetResult<MultipartPrompt>[]>(url);
 
 		// Check if the result contains the expected prompt
 		if (Array.isArray(result) && result.length > 0 && result[0].resource?.prefix) {
@@ -868,10 +872,13 @@ export default {
 		const promptId = mainPromptObjectId.split('/').pop();
 		if (!promptId) throw new Error('Prompt ID could not be determined.');
 
+		// Build the URL with parentResource query parameter
+		const parentResource = agent.name ? `FoundationaLLM.Agent|agents|${agent.name}` : null;
+		let baseUrl = `/management/instances/${this.instanceId}/providers/FoundationaLLM.Prompt/prompts/${promptId}`;
+		const urlWithParent = parentResource ? `${baseUrl}?parentResource=${encodeURIComponent(parentResource)}` : baseUrl;
+
 		// Fetch the current MultipartPrompt resource
-		const result = await this.fetch<ResourceProviderGetResult<MultipartPrompt>[]>(
-			`/management/instances/${this.instanceId}/providers/FoundationaLLM.Prompt/prompts/${promptId}`
-		);
+		const result = await this.fetch<ResourceProviderGetResult<MultipartPrompt>[]>(urlWithParent);
 		if (!Array.isArray(result) || result.length === 0 || !result[0].resource) {
 			throw new Error('Prompt resource not found.');
 		}
@@ -879,7 +886,7 @@ export default {
 
 		// Update the prompt by POSTing the full MultipartPrompt resource
 		const updated = await this.fetch<MultipartPrompt>(
-			`/management/instances/${this.instanceId}/providers/FoundationaLLM.Prompt/prompts/${promptId}`,
+			urlWithParent,
 			{
 				method: 'POST',
 				body: promptResource,

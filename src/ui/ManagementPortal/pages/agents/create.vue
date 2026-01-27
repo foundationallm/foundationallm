@@ -1475,7 +1475,8 @@ export default {
 
 			if (agent.prompt_object_id) {
 				this.loadingStatusText = `Retrieving prompt...`;
-				const prompt = await api.getPrompt(agent.prompt_object_id);
+				const parentResource = `FoundationaLLM.Agent|agents|${agent.name}`;
+				const prompt = await api.getPrompt(agent.prompt_object_id, parentResource);
 				if (prompt && prompt.resource) {
 					this.agentPrompt = prompt;
 					this.systemPrompt = prompt.resource.prefix;
@@ -1488,7 +1489,8 @@ export default {
 				);
 
 				if (existingMainPrompt) {
-					const prompt = await api.getPrompt(existingMainPrompt.object_id);
+					const parentResource = `FoundationaLLM.Agent|agents|${agent.name}`;
+					const prompt = await api.getPrompt(existingMainPrompt.object_id, parentResource);
 					if (prompt && prompt.resource) {
 						this.agentPrompt = prompt;
 						this.systemPrompt = prompt.resource.prefix;

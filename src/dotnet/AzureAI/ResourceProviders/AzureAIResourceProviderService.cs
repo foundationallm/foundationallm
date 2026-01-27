@@ -4,6 +4,7 @@ using FoundationaLLM.Common.Authentication;
 using FoundationaLLM.Common.Clients;
 using FoundationaLLM.Common.Constants;
 using FoundationaLLM.Common.Constants.Agents;
+using FoundationaLLM.Common.Constants.Authorization;
 using FoundationaLLM.Common.Constants.AzureAI;
 using FoundationaLLM.Common.Constants.Configuration;
 using FoundationaLLM.Common.Constants.Events;
@@ -16,6 +17,7 @@ using FoundationaLLM.Common.Models.Authorization;
 using FoundationaLLM.Common.Models.Configuration.Instance;
 using FoundationaLLM.Common.Models.Configuration.ResourceProviders;
 using FoundationaLLM.Common.Models.ResourceProviders;
+using FoundationaLLM.Common.Models.ResourceProviders.Agent;
 using FoundationaLLM.Common.Models.ResourceProviders.AzureAI;
 using FoundationaLLM.Common.Services.ResourceProviders;
 using Microsoft.AspNetCore.Http;
@@ -174,6 +176,50 @@ namespace AzureAI.ResourceProviders
             await SendResourceProviderEvent(
                     EventTypes.FoundationaLLM_ResourceProvider_Cache_ResetCommand);
         }
+
+        /// <inheritdoc/>
+        protected override Dictionary<
+            string,
+            (
+                string ResourceProviderName,
+                Func<IResourceProviderService, string, string, UnifiedUserIdentity, Task<ResourceBase?>> BuildInstanceAsync,
+                 Dictionary<
+                    string,
+                    Func<ResourcePath, string, ResourceBase, UnifiedUserIdentity, Task<bool>>
+                > InstanceValidators
+            )> _parentResourceFactory => new()
+            {
+                {
+                    AgentResourceTypeNames.Agents, // The parent resource type name (e.g., "agents")
+                    (
+                        // 1. The name of the resource provider that manages this parent resource type.
+                        ResourceProviderNames.FoundationaLLM_Agent,
+                        // 2. Async function to build/load the parent resource instance
+                        async (resourceProviderService, instanceId, resourceName, userIdentity) =>
+                            await resourceProviderService.GetResourceAsync<AgentBase>(
+                                instanceId,
+                                resourceName,
+                                userIdentity),
+                        // 3. Dictionary of validators: maps resource type -> validation function
+                        new()
+                        {
+                            {
+                                AzureAIResourceTypeNames.Projects,
+                                async (resourcePath, actionType, parentResourceInstance, userIdentity) =>
+                                {
+                                    // Validate that the parent (agent) actually references this Azure AI project.
+                                    if (parentResourceInstance is AgentBase agent)
+                                        return
+                                            agent.HasResourceReference(resourcePath.ObjectId!)
+                                            && actionType == AuthorizableOperations.Read;
+
+                                    return false;
+                                }
+                            }
+                        }
+                    )
+                }
+            };
 
         #endregion
 

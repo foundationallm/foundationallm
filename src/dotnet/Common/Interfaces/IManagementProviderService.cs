@@ -45,6 +45,9 @@ namespace FoundationaLLM.Common.Interfaces
         /// <param name="resourcePathAvailabilityChecker">An optional resource path availability checker used to block certain resource
         /// providers and resource types.</param>
         /// <param name="requestPayloadValidator">An optional function to validate the request payload after deserialization.</param>
+        /// <param name="urlEncodedParentResourcePath">An optional URL-friendly identifier of the parent resource.</param>
+        /// <remarks>The format of the parent resource identifier must be {resource_provider}|{resource_type}|{resource_name}.
+        /// For example, an agent named MAA-01 will be identified by <code>FoundationaLLM.Agent|agents|MAA-01</code></remarks>
         /// <returns>The serialized form of the result of handling the request.</returns>
         Task<object> HandlePostAsync(
             string resourcePath,
@@ -52,7 +55,8 @@ namespace FoundationaLLM.Common.Interfaces
             ResourceProviderFormFile? formFile,
             UnifiedUserIdentity userIdentity,
             Func<HttpMethod, ResourcePath, bool>? resourcePathAvailabilityChecker = null,
-            Func<object, bool>? requestPayloadValidator = null);
+            Func<object, bool>? requestPayloadValidator = null,
+            string? urlEncodedParentResourcePath = null);
 
         /// <summary>
         /// Handles a HTTP DELETE request for a specified resource path.
