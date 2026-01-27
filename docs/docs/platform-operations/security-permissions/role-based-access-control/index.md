@@ -99,6 +99,7 @@ See [Role Management](role-management.md) for API details.
 
 | Topic | Description |
 |-------|-------------|
+| [RBAC & Permissioning Capabilities](../rbac-permissioning-capabilities.md) | Comprehensive summary of RBAC and permissioning system capabilities |
 | [Role Definitions](role-definitions.md) | Understanding role structure and permissions |
 | [Role Assignments](role-assignments.md) | How assignments work |
 | [Scope](scope.md) | Understanding scope levels |

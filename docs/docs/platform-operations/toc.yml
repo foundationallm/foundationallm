@@ -45,6 +45,8 @@ items:
   - name: Role-Based Access Control
     href: security-permissions/role-based-access-control/index.md
     items:
+    - name: RBAC & Permissioning Capabilities
+      href: security-permissions/rbac-permissioning-capabilities.md
     - name: Role Definitions
       href: security-permissions/role-based-access-control/role-definitions.md
     - name: Role Assignments
