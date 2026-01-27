@@ -65,7 +65,7 @@
                         </span>
                     </div>
                     <p v-if="isEditMode && lastEditedDate" class="text-sm text-[#898989] mt-1">
-                        Last Edited: {{ lastEditedDate }}
+                        Last Edited: {{ lastEditedDate }}<span v-if="lastEditedByName"> by {{ lastEditedByName }}</span>
                     </p>
                 </div>
 
@@ -188,8 +188,31 @@
                                             id="agentWelcomeMessage"
                                         />
 
-                                        <p class="text-xs text-[#898989]">(<span class="charectersControl">{{
-                                            characterCount }}</span> / 180 characters)</p>
+                                        <p :class="['text-xs', !welcomeMessageIsValid ? 'text-red-500' : 'text-[#898989]']">
+                                            (<span class="charectersControl">{{ welcomeMessageCharacterCount }}</span> / 180 characters)
+                                            <span v-if="!welcomeMessageIsValid" class="ml-1">- Please reduce to 180 characters</span>
+                                        </p>
+                                    </div>
+
+                                    <div class="w-full max-w-full md:max-w-[50%] px-4 mb-6">
+                                        <label for="chatModelGeneral" class="block text-base text-[#898989] mb-2">
+                                            <VTooltip :auto-hide="isMobile"
+                                                :popper-triggers="isMobile ? [] : ['hover']"
+                                                class="inline-block relative top-[2px]">
+                                                <i class="pi pi-info-circle text-[#5472d4]"></i>
+                                                <template #popper>
+                                                    <div role="tooltip" class="max-w-[250px]">Select the AI model that will power your agent's responses. Different models have varying capabilities, response styles, and performance characteristics.</div>
+                                                </template>
+                                            </VTooltip>
+                                            Chat Model <span class="text-[#ff0000]">*</span>
+                                        </label>
+                                        <Dropdown class="w-full" :options="aiModels"
+                                            :optionLabel="model => model.display_name || model.name"
+                                            optionValue="object_id" v-model="selectedAIModel"
+                                            placeholder="--Select--" aria-label="Select a chat model" :filter="true"
+                                            :showClear="!isEditMode" :virtualScrollerOptions="{ itemSize: 38 }"
+                                            :disabled="isEditMode"
+                                            :itemTemplate="(model: ResourceBase) => model?.name || model?.display_name || model?.object_id" />
                                     </div>
                                 </div>
                             </div>
@@ -199,9 +222,10 @@
                                     <li class="mb-4 pr-3">
                                         <Button v-if="!isEditMode" label="Create" severity="primary"
                                             class="min-h-[45px] min-w-[125px]" @click="onCreateAgent"
-                                            :loading="isCreating" :disabled="isCreating" />
+                                            :loading="isCreating" :disabled="isCreating || !welcomeMessageIsValid" />
                                         <Button v-else label="Save" severity="primary"
-                                            class="min-h-[45px] min-w-[125px]" @click="onSaveAgent" />
+                                            class="min-h-[45px] min-w-[125px]" @click="onSaveAgent"
+                                            :disabled="!welcomeMessageIsValid" />
                                     </li>
                                     <li class="mb-4">
                                         <Button label="Cancel" severity="secondary" class="min-h-[45px] min-w-[125px]"
@@ -217,64 +241,10 @@
                         <div class="px-4 py-8 mt-8 border border-solid border-gray-300">
                             <div class="w-full max-w-[1000px] mx-auto">
                                 <div class="flex flex-wrap -mx-4">
-                                    <div class="w-full max-w-full md:max-w-[50%] px-4">
-                                        <div class="mb-6">
-                                            <label for="chatModel" class="block text-base text-[#898989] mb-2">
-                                                <VTooltip :auto-hide="isMobile"
-                                                    :popper-triggers="isMobile ? [] : ['hover']"
-                                                    class="inline-block relative top-[2px]">
-                                                    <i class="pi pi-info-circle text-[#5472d4]"></i>
-                                                    <template #popper>
-                                                        <div role="tooltip" class="max-w-[250px]">Select the AI model that will power your agent's responses. Different models have varying capabilities, response styles, and performance characteristics.</div>
-                                                    </template>
-                                                </VTooltip>
-                                                Chat Model <span class="text-[#ff0000]">*</span>
-                                            </label>
-                                            <Dropdown class="w-full" :options="aiModels"
-                                                :optionLabel="model => model.display_name || model.name"
-                                                optionValue="object_id" v-model="selectedAIModel"
-                                                placeholder="--Select--" aria-label="Select a chat model" :filter="true"
-                                                :showClear="true" :virtualScrollerOptions="{ itemSize: 38 }"
-                                                :itemTemplate="(model: ResourceBase) => model?.name || model?.display_name || model?.object_id" />
-                                        </div>
-
-                                        <div class="mb-6">
-                                            <label for="systemPrompt" class="block text-base text-[#898989] mb-2">
-                                                <VTooltip :auto-hide="isMobile"
-                                                    :popper-triggers="isMobile ? [] : ['hover']"
-                                                    class="inline-block relative top-[2px]">
-                                                    <i class="pi pi-info-circle text-[#5472d4]"></i>
-                                                    <template #popper>
-                                                        <div role="tooltip" class="max-w-[250px]">Define the agent's personality, behavior, and instructions. This prompt guides how the agent responds to users and sets the context for all conversations.</div>
-                                                    </template>
-                                                </VTooltip>
-                                                System Prompt
-                                            </label>
-                                            <Textarea
-                                                class="w-full resize-none"
-                                                name="systemPrompt"
-                                                id="systemPrompt"
-                                                aria-labelledby="aria-system-prompt"
-                                                rows="5"
-                                                v-model="systemPrompt"
-                                                :readonly="!isEditMode"
-                                            />
-                                            <p class="text-xs text-[#898989]">({{ systemPromptCharacterCount }} characters)</p>
-                                            <Button
-                                                v-if="isEditMode"
-                                                label="Save System Prompt"
-                                                class="mt-2 min-h-[35px] min-w-[100px]"
-                                                :loading="isSavingSystemPrompt"
-                                                :disabled="isSavingSystemPrompt || !createdAgent"
-                                                @click="onSaveSystemPrompt"
-                                            />
-                                        </div>
-                                    </div>
-
                                     <div class="w-full max-w-full md:max-w-[50%] px-4 mb-6">
                                         <!-- Image Generation section hidden for now - default value remains false -->
                                         <!--
-                                        <div class="flex flex-wrap items-center mt-8 max-w-[275px] m-auto">
+                                        <div class="flex flex-wrap items-center max-w-[275px]">
                                             <div class="w-full max-w-[calc(100%-50px)] pr-4">
                                                 <p class="block text-base text-[#898989] my-0">
                                                     <VTooltip :auto-hide="isMobile"
@@ -296,7 +266,7 @@
                                         </div>
                                         -->
 
-                                        <div class="flex flex-wrap items-center mt-8 max-w-[275px] m-auto">
+                                        <div class="flex flex-wrap items-center max-w-[275px]">
                                             <div class="w-full max-w-[calc(100%-50px)] pr-4">
                                                 <p class="block text-base text-[#898989] my-0">
                                                     <VTooltip :auto-hide="isMobile"
@@ -315,6 +285,40 @@
                                                 <InputSwitch v-model="(($appStore as any).showToastLogs)"
                                                     class="csm-input-switch-1" />
                                             </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="w-full px-4">
+                                        <div class="mb-6">
+                                            <label for="systemPrompt" class="block text-base text-[#898989] mb-2">
+                                                <VTooltip :auto-hide="isMobile"
+                                                    :popper-triggers="isMobile ? [] : ['hover']"
+                                                    class="inline-block relative top-[2px]">
+                                                    <i class="pi pi-info-circle text-[#5472d4]"></i>
+                                                    <template #popper>
+                                                        <div role="tooltip" class="max-w-[250px]">Define the agent's personality, behavior, and instructions. This prompt guides how the agent responds to users and sets the context for all conversations.</div>
+                                                    </template>
+                                                </VTooltip>
+                                                System Prompt
+                                            </label>
+                                            <Textarea
+                                                class="w-full resize-none"
+                                                name="systemPrompt"
+                                                id="systemPrompt"
+                                                aria-labelledby="aria-system-prompt"
+                                                rows="10"
+                                                v-model="systemPrompt"
+                                                :readonly="!isEditMode"
+                                            />
+                                            <p class="text-xs text-[#898989]">({{ systemPromptCharacterCount }} characters)</p>
+                                            <Button
+                                                v-if="isEditMode"
+                                                label="Save System Prompt"
+                                                class="mt-2 min-h-[35px] min-w-[100px]"
+                                                :loading="isSavingSystemPrompt"
+                                                :disabled="isSavingSystemPrompt || !createdAgent"
+                                                @click="onSaveSystemPrompt"
+                                            />
                                         </div>
                                     </div>
                                 </div>
@@ -857,7 +861,7 @@ export default defineComponent({
             return {
                 isMobile: window.screen.width < 950,
                 textCounter: '',
-                characterCount: 0,
+                welcomeMessageCharacterCount: 0,
                 isDragOver: false,
                 uploadedFiles: [] as File[],
                 activeTabIndex: 0,
@@ -890,6 +894,9 @@ export default defineComponent({
 
                 // Track if page was opened from Settings -> Agents
                 openedFromSettings: false as boolean,
+
+                // Resolved display name for the last editor
+                lastEditedByName: null as string | null,
 
                 roleAssignments: [] as any[],
                 roleAssignmentsLoading: false as boolean,
@@ -1082,6 +1089,10 @@ export default defineComponent({
 
             systemPromptCharacterCount() {
                 return (this.systemPrompt || '').length;
+            },
+
+            welcomeMessageIsValid() {
+                return this.welcomeMessageCharacterCount <= 180;
             }
         },
 
@@ -1137,7 +1148,7 @@ export default defineComponent({
                     // Load welcome message from properties
                     if (this.createdAgent.properties?.welcome_message) {
                         this.welcomeMessage = this.createdAgent.properties.welcome_message;
-                        this.characterCount = this.getTextCharacterCount(this.welcomeMessage);
+                        this.welcomeMessageCharacterCount = this.getTextCharacterCount(this.welcomeMessage);
                     }
 
                     // Load expiration date
@@ -1155,6 +1166,9 @@ export default defineComponent({
 
                     // Load current AI model
                     this.loadCurrentAIModel();
+
+                    // Load last edited by user name
+                    this.loadLastEditedByName();
 
                     // Load agent files
                     await this.loadAgentFiles();
@@ -1186,6 +1200,28 @@ export default defineComponent({
                     this.selectedAIModel = obj.object_id;
                     break;
                 }
+            }
+        },
+
+        async loadLastEditedByName() {
+            if (!this.createdAgent?.updated_by) {
+                this.lastEditedByName = null;
+                return;
+            }
+
+            try {
+                const scope = this.selectedAgentName ? api.getAgentScopeIdentifier(this.selectedAgentName) : undefined;
+                const principals = await api.getSecurityPrincipals([this.createdAgent.updated_by], null, scope);
+                if (principals && principals.length > 0 && principals[0].name) {
+                    this.lastEditedByName = principals[0].name;
+                } else {
+                    // Fallback to the raw UPN if resolution fails
+                    this.lastEditedByName = this.createdAgent.updated_by;
+                }
+            } catch (e) {
+                console.warn('Could not resolve last edited by user:', e);
+                // Fallback to the raw UPN
+                this.lastEditedByName = this.createdAgent.updated_by;
             }
         },
 
@@ -1347,7 +1383,14 @@ export default defineComponent({
                 const wrappers = await api.getAIModels();
 
                 this.aiModels = Array.isArray(wrappers)
-                    ? wrappers.map((w: any) => w.resource)
+                    ? wrappers
+                        .map((w: any) => w.resource)
+                        .filter((model: any) => model?.type === 'completion')
+                        .sort((a: any, b: any) => {
+                            const nameA = (a.display_name || a.name || '').toLowerCase();
+                            const nameB = (b.display_name || b.name || '').toLowerCase();
+                            return nameA.localeCompare(nameB);
+                        })
                     : [];
             } catch (e) {
                 this.aiModels = [];
@@ -1409,8 +1452,9 @@ export default defineComponent({
         },
 
         updateAgentWelcomeMessage(newContent: string) {
-			this.welcomeMessage = newContent;
-            this.characterCount = this.getTextCharacterCount(this.welcomeMessage);
+            const charCount = this.getTextCharacterCount(newContent);
+            this.welcomeMessage = newContent;
+            this.welcomeMessageCharacterCount = charCount;
 		},
 
 
@@ -1465,6 +1509,12 @@ export default defineComponent({
         async onCreateAgent() {
             if (this.isCreating || this.isEditMode) return;
 
+            // Validate AI model selection
+            if (!this.selectedAIModel) {
+                this.$toast.add({ severity: 'error', summary: 'Validation Error', detail: 'Please select a Chat Model before creating the agent.', life: 5000 });
+                return;
+            }
+
             // Collect form data from v-model bindings
             const displayName = this.agentDisplayName || '';
             const description = this.agentDescription || '';
@@ -1483,12 +1533,19 @@ export default defineComponent({
                 const d = new Date(this.agentExpirationDate);
                 formattedDate = d.toISOString().split('T')[0] + 'T00:00:00+00:00';
             }
+
+            // Find the AI model name from the selected object_id
+            const selectedModel = this.aiModels.find((m: any) => m.object_id === this.selectedAIModel);
+            const selectedModelName = selectedModel?.name || '';
+
             const payload: AgentCreationFromTemplateRequest = {
                 AGENT_NAME: agentName,
                 AGENT_DISPLAY_NAME: displayName,
                 AGENT_EXPIRATION_DATE: formattedDate,
                 AGENT_DESCRIPTION: description,
                 AGENT_WELCOME_MESSAGE: welcomeMessage,
+                MAIN_LLM: selectedModelName,
+                MAIN_KNOWLEDGE_LLM: selectedModelName,
             };
             this.isCreating = true;
             try {
@@ -1950,7 +2007,7 @@ export default defineComponent({
 
                 // Get security principals and role definitions in parallel
                 const [principalsResult, roleDefinitionsResult] = await Promise.allSettled([
-                    principalIds.length > 0 ? api.getSecurityPrincipals(principalIds, scope) : Promise.resolve([]),
+                    principalIds.length > 0 ? api.getSecurityPrincipals(principalIds, null, scope) : Promise.resolve([]),
                     api.getRoleDefinitions()
                 ]);
 

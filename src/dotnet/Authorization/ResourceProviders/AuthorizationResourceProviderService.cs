@@ -472,6 +472,27 @@ namespace FoundationaLLM.Authorization.ResourceProviders
                 })];
             }
 
+            if (!string.IsNullOrWhiteSpace(queryParameters.UPN))
+            {
+                var identityObject = await _identityManagementService.GetUserById(queryParameters.UPN);
+                return
+                    [
+                        new ResourceProviderGetResult<SecurityPrincipal>
+                        {
+                            Resource = new SecurityPrincipal
+                            {
+                                Id = identityObject.Id!,
+                                Type = identityObject.ObjectType,
+                                Name = identityObject.DisplayName!,
+                                Email = identityObject.Email,
+                                OnPremisesAccountName = identityObject.OnPremisesAccountName
+                            },
+                            Roles = [],
+                            Actions = []
+                        }
+                    ];
+            }
+
             var identityObjects2 = queryParameters.SecurityPrincipalType switch
             {
                 SecurityPrincipalTypes.User => await _identityManagementService.GetUsers(

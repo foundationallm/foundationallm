@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using FoundationaLLM.Common.Constants.Authentication;
 using FoundationaLLM.Common.Models.Authorization;
+using Microsoft.Graph.Models;
 
 namespace FoundationaLLM.Authorization.Validation
 {
@@ -20,13 +21,18 @@ namespace FoundationaLLM.Authorization.Validation
                 .Must(x =>
                 {
                     bool hasNameAndType = !string.IsNullOrWhiteSpace(x.Name) && !string.IsNullOrWhiteSpace(x.SecurityPrincipalType);
+                    bool hasUPNAndType = !string.IsNullOrWhiteSpace(x.UPN) && !string.IsNullOrWhiteSpace(x.SecurityPrincipalType);
                     bool hasIds = x.Ids != null && x.Ids.Length > 0;
 
-                    // Only one of the two options can be true
-                    return (hasNameAndType && !hasIds) || (hasIds && string.IsNullOrWhiteSpace(x.Name) && string.IsNullOrWhiteSpace(x.SecurityPrincipalType));
+                    // Exactly one must be true
+                    return new[] { hasNameAndType, hasUPNAndType, hasIds }.Count(b => b) == 1;
                 })
-                .WithMessage("Specify either both Name and SecurityPrincipalType, or Ids, but not both.");
+                .WithMessage("Specify only one of Name + SecurityPrincipalType, UPN + SecurityPrincipalType, or Ids.");
 
+            RuleFor(x => x.SecurityPrincipalType)
+                .Equal(SecurityPrincipalTypes.User)
+                .When(x => !string.IsNullOrWhiteSpace(x.UPN))
+                .WithMessage("SecurityPrincipalType must be 'User' when UPN is specified.");
 
             RuleFor(x => x.SecurityPrincipalType)
                 .Must(type => string.IsNullOrWhiteSpace(type) || SecurityPrincipalTypes.All.Contains(type))

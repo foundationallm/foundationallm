@@ -1066,11 +1066,12 @@ export default {
 
 	/**
 	 * Retrieves security principals (users/groups) by their IDs.
-	 * @param ids - Array of principal IDs to retrieve.
+	 * @param ids - Optional array of principal IDs to retrieve.
+	 * @param upn - Optional UPN to identify a security principal.
 	 * @param scope - Optional scope to filter security principals for.
 	 * @returns Promise resolving to an array of security principals.
 	 */
-	async getSecurityPrincipals(ids: string[], scope?: string): Promise<SecurityPrincipal[]> {
+	async getSecurityPrincipals(ids?: string[], upn?: string, scope?: string): Promise<SecurityPrincipal[]> {
 		try {
 			const principals = await this.fetch<ResourceProviderGetResult<SecurityPrincipal>[]>(
 				`/management/instances/${this.instanceId}/providers/FoundationaLLM.Authorization/securityPrincipals/filter`,
@@ -1078,6 +1079,7 @@ export default {
 					method: 'POST',
 					body: {
 						ids,
+						upn,
 						scope: scope ? `/instances/${this.instanceId}/${scope}` : undefined
 					},
 				}

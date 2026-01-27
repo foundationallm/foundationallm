@@ -404,6 +404,8 @@ export interface AgentCreationFromTemplateRequest {
 	AGENT_EXPIRATION_DATE: string;
 	AGENT_DESCRIPTION: string;
 	AGENT_WELCOME_MESSAGE: string;
+	MAIN_LLM: string;
+	MAIN_KNOWLEDGE_LLM: string;
 }
 
 // --- MultipartPrompt Type ---

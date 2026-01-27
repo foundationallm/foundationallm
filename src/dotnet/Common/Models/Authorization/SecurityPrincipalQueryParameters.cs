@@ -20,6 +20,12 @@ namespace FoundationaLLM.Common.Models.Authorization
         public string? Name { get; set; }
 
         /// <summary>
+        /// Gets or sets the user principal name (UPN) of the security principal to query.
+        /// </summary>
+        [JsonPropertyName("upn")]
+        public string? UPN { get; set; }
+
+        /// <summary>
         /// Gets or sets the type of security principal to query.
         /// Must be one of the <see cref="SecurityPrincipalTypes"/> values.
         /// </summary>
