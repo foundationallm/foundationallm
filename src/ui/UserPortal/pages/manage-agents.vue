@@ -331,7 +331,8 @@ export default defineComponent({
 
                 if (ids.length > 0) {
                     try {
-                        const principals = await api.getSecurityPrincipals(ids);
+                        // Pass empty string as scope to filter at instance level (FoundationaLLM instance identifier)
+                        const principals = await api.getSecurityPrincipals(ids, undefined, undefined, '');
                         for (const p of principals) {
                             ownerEmailById.value[p.id] = p.email ?? p.name ?? 'N/A';
                         }

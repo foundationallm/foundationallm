@@ -1074,6 +1074,11 @@ export default {
 	 */
 	async getSecurityPrincipals(ids?: string[], upn?: string, securityPrincipalType?: string, scope?: string): Promise<SecurityPrincipal[]> {
 		try {
+			// Build scope: undefined means no scope, empty string means instance-level, otherwise append to instance path
+			let resolvedScope: string | undefined;
+			if (scope !== undefined) {
+				resolvedScope = scope ? `/instances/${this.instanceId}/${scope}` : `/instances/${this.instanceId}`;
+			}
 			const principals = await this.fetch<ResourceProviderGetResult<SecurityPrincipal>[]>(
 				`/management/instances/${this.instanceId}/providers/FoundationaLLM.Authorization/securityPrincipals/filter`,
 				{
@@ -1082,7 +1087,7 @@ export default {
 						ids,
 						upn,
 						security_principal_type: securityPrincipalType,
-						scope: scope ? `/instances/${this.instanceId}/${scope}` : undefined
+						scope: resolvedScope
 					},
 				}
 			);
