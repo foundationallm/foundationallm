@@ -29,5 +29,15 @@
         /// The identifier of the agent's virtual security group.
         /// </summary>
         public const string VirtualSecurityGroupId = "VIRTUAL_SECURITY_GROUP_ID";
+
+        /// <summary>
+        /// The LLM used by the agent's workflow and some of the tools.
+        /// </summary>
+        public const string MainLLM = "MAIN_LLM";
+
+        /// <summary>
+        /// The LLM used by the agent's Knowledge tool.
+        /// </summary>
+        public const string MainKnowledgeLLM = "MAIN_KNOWLEDGE_LLM";
     }
 }

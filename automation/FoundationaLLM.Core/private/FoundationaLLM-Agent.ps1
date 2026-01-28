@@ -1,4 +1,3 @@
-
 function Get-AllAgents {
     return Invoke-ManagementAPI `
         -Method GET `
@@ -135,4 +134,40 @@ function Merge-WorkflowType {
         -Method POST `
         -RelativeUri "providers/FoundationaLLM.Agent/workflows/$($WorkflowType.name)" `
         -Body $WorkflowType
+}
+
+function Get-AgentTemplate {
+    param (
+        [string]$AgentTemplateName
+    )
+
+    return Invoke-ManagementAPI `
+        -Method GET `
+        -RelativeUri "providers/FoundationaLLM.Agent/agentTemplates/$AgentTemplateName"
+}
+
+function Merge-AgentTemplate {
+    param (
+        [hashtable]$AgentTemplate,
+        [string]$AgentTemplateFileName,
+        [byte[]]$AgentTemplateFileContent
+    )
+
+    $multipart = [System.Net.Http.MultipartFormDataContent]::new()
+
+    # Add the agent template as a JSON payload
+    $agentTemplateJson = $AgentTemplate | ConvertTo-Json -Depth 10
+    $jsonContent = [System.Net.Http.StringContent]::new($agentTemplateJson, [System.Text.Encoding]::UTF8, "application/json")
+    $multipart.Add($jsonContent, "resource")
+
+    # Add the file content
+    $stream = [System.IO.MemoryStream]::new($AgentTemplateFileContent)
+    $streamContent = [System.Net.Http.StreamContent]::new($stream)
+    $streamContent.Headers.ContentType = [System.Net.Http.Headers.MediaTypeHeaderValue]::Parse("application/octet-stream")
+    $multipart.Add($streamContent, "file", $AgentTemplateFileName)
+
+    return Invoke-ManagementAPI `
+        -Method POST `
+        -RelativeUri "providers/FoundationaLLM.Agent/agentTemplates/$($AgentTemplate.name)" `
+        -MultipartContent $multipart
 }

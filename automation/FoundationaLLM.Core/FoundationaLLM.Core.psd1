@@ -92,7 +92,9 @@ FunctionsToExport = @(
     'Get-RoleDefinitionName',
     'Find-RoleAssignments',
     'Find-RoleAssignmentId',
-    'Remove-RoleAssignment'
+    'Remove-RoleAssignment',
+    'Get-AgentTemplate',
+    'Merge-AgentTemplate'
 )
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
@@ -134,7 +136,7 @@ PrivateData = @{
         # ReleaseNotes = ''
 
         # Prerelease string of this module
-        Prerelease = 'rc104'
+        Prerelease = 'rc105'
 
         # Flag to indicate whether the module requires explicit user acceptance for install/update/save
         # RequireLicenseAcceptance = $false

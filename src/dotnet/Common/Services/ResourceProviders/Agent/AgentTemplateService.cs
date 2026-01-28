@@ -168,7 +168,9 @@ namespace FoundationaLLM.Common.Services.ResourceProviders.Agent
                     {
                         AgentTemplateParameterNames.AgentName
                         or AgentTemplateParameterNames.AgentDisplayName
-                        or AgentTemplateParameterNames.AgentTools =>
+                        or AgentTemplateParameterNames.AgentTools
+                        or AgentTemplateParameterNames.MainLLM
+                        or AgentTemplateParameterNames.MainKnowledgeLLM =>
                             throw new ResourceProviderException(
                                 $"The parameter {parameterName} is required and cannot be empty.",
                                 StatusCodes.Status400BadRequest),

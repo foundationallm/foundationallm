@@ -335,4 +335,31 @@ function Deploy-FoundationaLLMPackage {
             Write-Host "AI model updated: $($aiModelResult)" -ForegroundColor Green
         }
     }
+
+    if (Test-Path -Path "$($PackageRoot)/artifacts/agentTemplate.json") {
+
+        Write-Host "Updating agent template..."
+
+        $agentTemplate = Get-Content "$($PackageRoot)/artifacts/agentTemplate.json" `
+            | Resolve-Placeholders -Parameters $Parameters `
+            | ConvertFrom-Json -AsHashTable
+
+        Write-Host "Updating agent template: $($agentTemplate.name)"
+
+        # Read the binary content of the agent template ZIP file
+        $agentTemplateFileName = $Parameters["AGENT_TEMPLATE_FILE"]
+        $agentTemplateFilePath = "$($PackageRoot)/packages/$agentTemplateFileName"
+        if (-not $agentTemplateFilePath -or -not (Test-Path -Path $agentTemplateFilePath)) {
+            Write-Error "Agent template file not found: $agentTemplateFilePath"
+            return
+        }
+        $agentTemplateFileContent = Get-Content -Path $agentTemplateFilePath -AsByteStream -Raw
+        
+        $agentTemplateResult = Merge-AgentTemplate `
+            -AgentTemplate $agentTemplate `
+            -AgentTemplateFileName $agentTemplateFileName `
+            -AgentTemplateFileContent $agentTemplateFileContent
+        
+        Write-Host "Agent template updated: $($agentTemplateResult)" -ForegroundColor Green
+    }
 }

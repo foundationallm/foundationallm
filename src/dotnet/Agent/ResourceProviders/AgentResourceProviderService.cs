@@ -35,6 +35,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Data;
+using System.IO.Compression;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -134,6 +135,9 @@ namespace FoundationaLLM.Agent.ResourceProviders
                 AgentResourceTypeNames.AgentAccessTokens => await LoadAgentAccessTokens(resourcePath)!,
                 AgentResourceTypeNames.AgentFiles => await LoadAgentFiles(resourcePath, userIdentity, options)!,
                 AgentResourceTypeNames.AgentFileToolAssociations => await LoadAgentFileToolAssociations(resourcePath, userIdentity)!,
+                AgentResourceTypeNames.AgentTemplates => await LoadResources<AgentTemplate>(
+                    resourcePath.ResourceTypeInstances[0],
+                    authorizationResult),
                 _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeName} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest)
             };
@@ -174,13 +178,22 @@ namespace FoundationaLLM.Agent.ResourceProviders
                     resourcePath,
                     JsonSerializer.Deserialize<AgentBase>(serializedResource!)
                         ?? throw new ResourceProviderException(
-                            "The object definition is invalid.",
+                            "The serialized agent resource is invalid.",
                             StatusCodes.Status400BadRequest),
                     authorizationResult,
                     userIdentity),
                 AgentResourceTypeNames.AgentFiles => await UpdateAgentFile(resourcePath, formFile!, userIdentity),
                 AgentResourceTypeNames.AgentAccessTokens => await UpdateAgentAccessToken(resourcePath, serializedResource!, authorizationResult, userIdentity),
                 AgentResourceTypeNames.AgentFileToolAssociations => await UpdateFileToolAssociations(resourcePath, serializedResource!, userIdentity),
+                AgentResourceTypeNames.AgentTemplates => await UpdateAgentTemplate(
+                    resourcePath,
+                    JsonSerializer.Deserialize<AgentTemplate>(serializedResource!)
+                        ?? throw new ResourceProviderException(
+                            "The serialized agent template resource is invalid.",
+                            StatusCodes.Status400BadRequest),
+                    formFile,
+                    authorizationResult,
+                    userIdentity),
                 _ => throw new ResourceProviderException($"The resource type {resourcePath.ResourceTypeName} is not supported by the {_name} resource provider.",
                     StatusCodes.Status400BadRequest)
             };
@@ -1961,6 +1974,100 @@ namespace FoundationaLLM.Agent.ResourceProviders
             if (!removalSuccess)
                 throw new OrchestrationException($"The removal of file id {fileId} from the code interpreter resources for assistant with id {assistantId} failed.");
             return removalSuccess;
+        }
+
+        private async Task<ResourceProviderUpsertResult> UpdateAgentTemplate(
+            ResourcePath resourcePath,
+            AgentTemplate agentTemplate,
+            ResourceProviderFormFile? formFile,
+            ResourcePathAuthorizationResult authorizationResult,
+            UnifiedUserIdentity userIdentity)
+        {
+            if (formFile?.BinaryContent is null)
+                throw new ResourceProviderException("The agent template ZIP archive file is required.",
+                    StatusCodes.Status400BadRequest);
+
+            var existingAgentTemplateReference = await _resourceReferenceStore!.GetResourceReference(agentTemplate.Name);
+            var existingAgentTemplate = existingAgentTemplateReference is not null
+                ? await LoadResource<AgentTemplate>(existingAgentTemplateReference)
+                : null;
+
+            if (existingAgentTemplateReference is not null
+                && !authorizationResult.Authorized)
+            {
+                // The resource already exists and the user is not authorized to update it.
+                // Irrespective of whether the user has the required role or not, we need to throw an exception in the case of existing resources.
+                // The required role only allows the user to create a new resource.
+                // This check is needed because it's only here that we can determine if the resource exists.
+                _logger.LogWarning("Access to the resource path {ResourcePath} was not authorized for user {UserName} : userId {UserId}.",
+                    resourcePath.RawResourcePath, userIdentity!.Username, userIdentity!.UserId);
+                throw new ResourceProviderException("Access is not authorized.", StatusCodes.Status403Forbidden);
+            }
+
+            if (resourcePath.ResourceTypeInstances[0].ResourceId != agentTemplate.Name)
+                throw new ResourceProviderException("The resource path does not match the object definition (name mismatch).",
+                    StatusCodes.Status400BadRequest);
+
+            var agentReference = new AgentReference
+            {
+                Name = agentTemplate.Name!,
+                Type = agentTemplate.Type!,
+                Filename = $"/{_name}/{agentTemplate.Name}.json",
+                Deleted = false
+            };
+
+            agentTemplate.ObjectId = resourcePath.GetObjectId(_instanceSettings.Id, _name);
+
+            UpdateBaseProperties(agentTemplate, userIdentity, isNew: existingAgentTemplateReference is null);
+            if (existingAgentTemplateReference is null)
+                await CreateResource<AgentTemplate>(agentReference, agentTemplate);
+            else
+                await SaveResource<AgentTemplate>(existingAgentTemplateReference, agentTemplate);
+
+            var agentTemplateFolderPath = string.Join('/', [
+                _storageRootPath ?? string.Empty,
+                _name,
+                resourcePath.InstanceId!,
+                agentTemplate.Name
+            ]);
+
+            using var zipStream = new MemoryStream(formFile.BinaryContent.ToArray());
+            using var zipArchive = new ZipArchive(zipStream, ZipArchiveMode.Read);
+
+            foreach (var entry in zipArchive.Entries)
+            {
+                // Skip directories (entries with names ending in '/').
+                if (string.IsNullOrEmpty(entry.Name))
+                    continue;
+
+                var filePath = $"{agentTemplateFolderPath}/{entry.FullName}";
+
+                using var entryStream = entry.Open();
+                using var memoryStream = new MemoryStream();
+                await entryStream.CopyToAsync(memoryStream);
+                memoryStream.Position = 0;
+
+                await _storageService.WriteFileAsync(
+                    _storageContainerName,
+                    filePath,
+                    memoryStream,
+                    default,
+                    default);
+
+                _logger.LogInformation(
+                    "Saved agent template file {FileName} for template {TemplateName}.",
+                    entry.FullName,
+                    agentTemplate.Name);
+            }
+
+            var upsertResult = new ResourceProviderUpsertResult
+            {
+                ObjectId = agentTemplate!.ObjectId,
+                ResourceExists = existingAgentTemplateReference is not null,
+                Resource = null
+            };
+
+            return upsertResult;
         }
 
         private async Task<ResourceProviderUpsertResult> CreateNewAgentFromTemplate(

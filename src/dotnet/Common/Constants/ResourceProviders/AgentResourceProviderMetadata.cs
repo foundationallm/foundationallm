@@ -99,7 +99,10 @@ namespace FoundationaLLM.Common.Constants.ResourceProviders
                     AgentResourceTypeNames.AgentTemplates,
                         typeof(AgentTemplate))
                 {
-                    AllowedTypes = [],
+                    AllowedTypes = [
+                        new ResourceTypeAllowedTypes(HttpMethod.Get.Method, AuthorizableOperations.Read, [], [], [typeof(ResourceProviderGetResult<AgentTemplate>)]),
+                        new ResourceTypeAllowedTypes(HttpMethod.Post.Method, AuthorizableOperations.Write, [], [typeof(AgentBase)], [typeof(ResourceProviderUpsertResult)]),
+                    ],
                     Actions = [
                         new ResourceTypeAction(ResourceProviderActions.CreateNew, true, false, [
                             new ResourceTypeAllowedTypes(HttpMethod.Post.Method, $"{AuthorizableOperations.Write}|{RoleDefinitionNames.Agents_Contributor}", [], [typeof(AgentCreationFromTemplateRequest)], [typeof(ResourceProviderUpsertResult)])
