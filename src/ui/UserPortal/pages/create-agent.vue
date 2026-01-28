@@ -1382,10 +1382,21 @@ export default defineComponent({
             try {
                 const wrappers = await api.getAIModels();
 
+                // Get the list of allowed AI model names from the configuration
+                const allowedModelNames = this.$appConfigStore.selfServiceAgentAIModels;
+
                 this.aiModels = Array.isArray(wrappers)
                     ? wrappers
                         .map((w: any) => w.resource)
                         .filter((model: any) => model?.type === 'completion')
+                        .filter((model: any) => {
+                            // If no allowed models are configured, show all completion models
+                            if (!allowedModelNames || allowedModelNames.length === 0) {
+                                return true;
+                            }
+                            // Otherwise, filter to only show models in the allowed list
+                            return allowedModelNames.includes(model.name);
+                        })
                         .sort((a: any, b: any) => {
                             const nameA = (a.display_name || a.name || '').toLowerCase();
                             const nameB = (b.display_name || b.name || '').toLowerCase();

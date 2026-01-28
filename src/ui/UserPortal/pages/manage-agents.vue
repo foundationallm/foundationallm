@@ -57,30 +57,39 @@
                 </div>
 
                 <div class="w-full max-w-full md:max-w-[50%] px-4 mb-5">
-                    <div class="flex items-center relative">
-                        <InputText
-                            type="text"
-                            class="w-full"
-                            name="searchTabelInput1"
-                            id="searchTabelInput1"
-                            placeholder="Search by name"
-                            v-model="searchByName"
-                        />
+                    <div class="flex items-center gap-2">
+                        <div class="flex items-center relative flex-1">
+                            <InputText
+                                type="text"
+                                class="w-full"
+                                name="searchTabelInput1"
+                                id="searchTabelInput1"
+                                placeholder="Search by name"
+                                v-model="searchByName"
+                            />
 
+                            <Button
+                                aria-label="Clear Search"
+                                severity="primary"
+                                icon="pi pi-times"
+                                class="min-h-[40px] min-w-[40px] w-auto absolute top-0 right-0 z-[2]"
+                                @click="clearSearch"
+                                v-if="searchByName"
+                            />
+                            <Button
+                                aria-label="Search Users"
+                                severity="primary"
+                                icon="pi pi-search"
+                                class="min-h-[40px] min-w-[40px] w-auto absolute top-0 right-0 z-[2]"
+                                v-else
+                            />
+                        </div>
                         <Button
-                            aria-label="Clear Search"
-                            severity="primary"
-                            icon="pi pi-times"
-                            class="min-h-[40px] min-w-[40px] w-auto absolute top-0 right-0 z-[2]"
-                            @click="clearSearch"
-                            v-if="searchByName"
-                        />
-                        <Button
-                            aria-label="Search Users"
-                            severity="primary"
-                            icon="pi pi-search"
-                            class="min-h-[40px] min-w-[40px] w-auto absolute top-0 right-0 z-[2]"
-                            v-else
+                            aria-label="Refresh Agents"
+                            icon="pi pi-refresh"
+                            severity="secondary"
+                            :loading="loading"
+                            @click="loadAgents"
                         />
                     </div>
                 </div>

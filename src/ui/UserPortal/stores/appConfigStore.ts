@@ -68,6 +68,9 @@ export const useAppConfigStore = defineStore('appConfig', {
 
 		// Feature flags
 		agentSelfServiceFeatureEnabled: false,
+
+		// Self-service agent configuration
+		selfServiceAgentAIModels: [] as string[],
 	}),
 	getters: {},
 	actions: {
@@ -200,6 +203,13 @@ export const useAppConfigStore = defineStore('appConfig', {
 							}
 							if (configValues['FoundationaLLM:Instance:StatusMessage']) {
 								this.statusMessage = configValues['FoundationaLLM:Instance:StatusMessage'] as string;
+							}
+							if (configValues['FoundationaLLM:Instance:SelfServiceAgentAIModels']) {
+								const selfServiceAIModelsString = configValues['FoundationaLLM:Instance:SelfServiceAgentAIModels'] as string;
+								this.selfServiceAgentAIModels = selfServiceAIModelsString
+									.split(',')
+									.map((name: string) => name.trim())
+									.filter((name: string) => name.length > 0);
 							}
 						}
 					}
