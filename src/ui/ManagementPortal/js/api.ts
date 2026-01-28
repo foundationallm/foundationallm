@@ -1064,6 +1064,18 @@ export default {
 		);
 	},
 
+	async getPluginPackages(): Promise<any[]> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Plugin/pluginPackages?api-version=${this.apiVersion}&includeRoles=false&includeActions=false`,
+		);
+	},
+
+	async getAgentTemplates(): Promise<any[]> {
+		return await this.fetch(
+			`/instances/${this.instanceId}/providers/FoundationaLLM.Agent/agentTemplates?api-version=${this.apiVersion}&includeRoles=false&includeActions=false`,
+		);
+	},
+
 	async getPlugin(pluginId: string): Promise<ResourceProviderGetResult<Plugin>> {
 		return await this.fetch(
 			`/instances/${this.instanceId}/providers/FoundationaLLM.Plugin/plugins/${pluginId}?api-version=${this.apiVersion}`,
