@@ -67,7 +67,7 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
                 var promptInjectionResult = await _lakeraGuardService.DetectPromptInjection(completionRequest.UserPrompt!);
 
                 if (!string.IsNullOrWhiteSpace(promptInjectionResult))
-                    return new CompletionResponse() { OperationId = completionRequest.OperationId, Completion = promptInjectionResult };
+                    return new CompletionResponse() { OperationId = completionRequest.OperationId ?? string.Empty, Completion = promptInjectionResult };
             }
 
             if (_gatekeeperServiceSettings.EnableEnkryptGuardrails)
@@ -75,7 +75,7 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
                 var promptInjectionResult = await _enkryptGuardrailsService.DetectPromptInjection(completionRequest.UserPrompt!);
 
                 if (!string.IsNullOrWhiteSpace(promptInjectionResult))
-                    return new CompletionResponse() { OperationId = completionRequest.OperationId, Completion = promptInjectionResult };
+                    return new CompletionResponse() { OperationId = completionRequest.OperationId ?? string.Empty, Completion = promptInjectionResult };
             }
 
             if (_gatekeeperServiceSettings.EnableAzureContentSafetyPromptShield)
@@ -118,7 +118,7 @@ namespace FoundationaLLM.Gatekeeper.Core.Services
 
             var completionResponse = await _orchestrationAPIService.GetCompletion(instanceId, completionRequest);
 
-            if (_gatekeeperServiceSettings.EnableMicrosoftPresidio)
+            if (_gatekeeperServiceSettings.EnableMicrosoftPresidio && !string.IsNullOrEmpty(completionResponse.Completion))
                 completionResponse.Completion = await _gatekeeperIntegrationAPIService.AnonymizeText(completionResponse.Completion);
 
             return completionResponse;

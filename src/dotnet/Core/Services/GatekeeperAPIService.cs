@@ -52,7 +52,7 @@ namespace FoundationaLLM.Core.Services
 
             var defaultCompletionResponse = new CompletionResponse
             {
-                OperationId = completionRequest.OperationId,
+                OperationId = completionRequest.OperationId ?? string.Empty,
                 Completion = "A problem on my side prevented me from responding.",
                 UserPrompt = completionRequest.UserPrompt ?? string.Empty,
                 PromptTokens = 0,

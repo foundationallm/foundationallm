@@ -64,7 +64,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
 
             int maxContentSizeCharacters = 10000000; //10 million characters, ~2.5 million tokens
 
-            if (pluginParameters.TryGetValue(
+            if (_pluginParameters.TryGetValue(
                 PluginParameterNames.TEXTEXTRACTION_DATAPIPELINESTAGE_MAXCONTENTSIZECHARACTERS,
                 out var maxContentSizeCharactersObject))
                 maxContentSizeCharacters = (int)maxContentSizeCharactersObject;

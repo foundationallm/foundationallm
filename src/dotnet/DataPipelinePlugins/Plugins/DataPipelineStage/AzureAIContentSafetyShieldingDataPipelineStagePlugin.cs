@@ -61,7 +61,7 @@ namespace FoundationaLLM.Plugins.DataPipeline.Plugins.DataPipelineStage
                 return new PluginResult(true, false);
             }
 
-            var contentSafetyService = serviceProvider.GetRequiredService<IContentSafetyService>();
+            var contentSafetyService = _serviceProvider.GetRequiredService<IContentSafetyService>();
 
             var shieldingResult = await contentSafetyService.DetectPromptInjection(
                 dataPipelineRunWorkItem.Id,
