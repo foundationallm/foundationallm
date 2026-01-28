@@ -253,7 +253,9 @@
 		],
 		"permissions": [
 			{
-				"actions": [],
+				"actions": [
+					"FoundationaLLM.Authorization/securityPrincipals/read"
+				],
 				"not_actions": [],
 				"data_actions": [],
 				"not_data_actions": []

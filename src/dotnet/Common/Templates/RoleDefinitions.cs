@@ -285,7 +285,8 @@ namespace FoundationaLLM.Common.Models.Authorization
                         Permissions = [                            
                             new RoleDefinitionPermissions
                             {
-                                Actions = [],
+                                Actions = [
+                                    "FoundationaLLM.Authorization/securityPrincipals/read",],
                                 NotActions = [],
                                 DataActions = [],
                                 NotDataActions = [],
