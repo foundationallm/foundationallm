@@ -14,6 +14,7 @@
                 [
                     AppConfigurationKeys.FoundationaLLM_Instance_Id,
                     AppConfigurationKeys.FoundationaLLM_Instance_StatusMessage,
+                    AppConfigurationKeys.FoundationaLLM_Instance_SelfServiceAgentAIModels,
                     AppConfigurationKeys.FoundationaLLM_APIEndpoints_CoreAPI_Essentials_APIUrl,
                     AppConfigurationKeys.FoundationaLLM_APIEndpoints_ContextAPI_Configuration_FileService_AllowedFileExtensions,
                     // Branding

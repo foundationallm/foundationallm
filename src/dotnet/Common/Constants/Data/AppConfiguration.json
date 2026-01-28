@@ -68,6 +68,14 @@
 				"value": "",
 				"content_type": "",
 				"first_version": "0.9.8"
+			},
+			{
+				"name": "SelfServiceAgentAIModels",
+				"description": "A comma-separated list of AI model resource names that can be used in self-service agent management.",
+				"secret": "",
+				"value": "",
+				"content_type": "",
+				"first_version": "0.9.8"
 			}
 		]
 	},

@@ -66,6 +66,13 @@ namespace FoundationaLLM.Common.Constants.Configuration
         /// </summary>
         public const string FoundationaLLM_Instance_StatusMessage =
             "FoundationaLLM:Instance:StatusMessage";
+        
+        /// <summary>
+        /// The app configuration key for the FoundationaLLM:Instance:SelfServiceAgentAIModels setting.
+        /// <para>Value description:<br/>A comma-separated list of AI model resource names that can be used in self-service agent management.</para>
+        /// </summary>
+        public const string FoundationaLLM_Instance_SelfServiceAgentAIModels =
+            "FoundationaLLM:Instance:SelfServiceAgentAIModels";
 
         #endregion
 
